@@ -40,6 +40,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
      *
      * @type {{
      *   play?: boolean;
+     *   showUTC?: boolean;
      *   slider?: boolean;
      *   navigation?: boolean;
      *   currentStep: string|number;
@@ -137,7 +138,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
               },
             ]}
             @select=${this.#handleStepChange}
-            .showUTC=${true}
+            .showUTC=${this.layerDatetime.showUTC || false}
           >
             <eox-timecontrol-date
               .navigation=${this.layerDatetime.navigation ?? false}
