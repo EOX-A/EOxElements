@@ -324,6 +324,13 @@ export class EOxLayerControlLayerTools extends LitElement {
       padding: .5rem !important;
       display: block;
     }*/
+    :host {
+      display: block;
+      margin-block: var(--padding-vertical) !important;
+    }
+    details[open] eox-layercontrol-tools-items {
+      display: block;
+    }
   `;
 }
 
