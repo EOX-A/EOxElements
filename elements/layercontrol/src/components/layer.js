@@ -296,15 +296,11 @@ export class EOxLayerControlLayer extends LitElement {
                     ? this.tools[0]
                     : "dots"}"
                   @click=${() => {
-                    const toolsDetails =
-                      this.renderRoot
-                        .querySelector("eox-layercontrol-layer-tools")
-                        ?.shadowRoot?.querySelector("details") ||
-                      this.renderRoot
-                        .querySelector("eox-layercontrol-layer-tools")
-                        ?.querySelector("details");
-                    // Toggle tools details open/close
-                    toolsDetails.open = !toolsDetails.open;
+                    /** @type {import("./layer-tools").EOxLayerControlLayerTools} */
+                    const layerTools = this.renderRoot.querySelector(
+                      "eox-layercontrol-layer-tools",
+                    );
+                    layerTools.open = !layerTools.open;
                   }}
                 >
                   <i class="small">
@@ -391,7 +387,7 @@ export class EOxLayerControlLayer extends LitElement {
     eox-layercontrol-layer .action.tools.dots {
       transition: rotate 0s;
     }
-    eox-layercontrol-layer:has(eox-layercontrol-layer-tools > details[open]) .action.tools.dots {
+    eox-layercontrol-layer:has(eox-layercontrol-layer-tools[open]) .action.tools.dots {
       transform: rotate(180deg);
     }
     eox-layercontrol-layer > nav > .action.visibility {
