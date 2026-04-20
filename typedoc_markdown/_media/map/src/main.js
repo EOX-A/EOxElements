@@ -96,7 +96,8 @@ addCommonStylesheet();
  *
  * - **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.
  * - **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.
- * - **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured and styled for various use cases.
+ * - **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured with `position`, `target`, and `orientation` for flexible UI layouts. Developers can also inject custom HTML tools via Shadow DOM `<slot>`s mapped to specific regions.
+ * - **Responsive Design:** The map emits a `resize` event providing current dimensions and a mobile breakpoint flag (`isSmall`), allowing dynamic adjustment of control layouts and map properties.
  * - **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.
  * - **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.
  * - **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.
@@ -136,8 +137,17 @@ addCommonStylesheet();
  * @fires {CustomEvent} clusterSelect - A cluster is selected
  * @fires {CustomEvent} loadend - The map has finished loading
  * @fires {CustomEvent} mapmounted - The map has been successfully mounted
+ * @fires {CustomEvent} resize - Fired when the map container is resized
  * @fires {CustomEvent} select - A feature is selected
  * @fires {CustomEvent} layerschanged - The layers have been changed
+ *
+ * @cssproperty --map-controls-bg - Background color for controls.
+ * @cssproperty --map-controls-color - Text/icon color for controls.
+ * @cssproperty --map-controls-bg-surface - Background color for surface-level control containers.
+ * @cssproperty --map-controls-color-surface - Text color for surface-level control containers.
+ * @cssproperty --map-controls-backdrop-filter - Backdrop filter for supported control elements (e.g., blur).
+ * @cssproperty --map-controls-box-shadow - Box shadow for control buttons and containers.
+ * @cssproperty --map-control-size - Dimensions of dynamic controls like the loading-indicator.
  */
 export class EOxMap extends LitElement {
   // Define static properties for the component
@@ -256,6 +266,18 @@ export class EOxMap extends LitElement {
     useHighLOD: false,
   };
 
+  /**
+   * Internal container targets for map controls.
+   * @type {Object.<string, HTMLElement>}
+   */
+  #controlsTargets = {};
+
+  /**
+   * The resize observer instance for the map container.
+   * @type {ResizeObserver | null}
+   */
+  #resizeObserver = null;
+
   constructor() {
     super();
 
@@ -298,6 +320,7 @@ export class EOxMap extends LitElement {
      * @type {Object.<string, import("ol/control/Control").default>}
      */
     this.mapControls = {};
+
     /**
      * The globe instance when using globe projection.
      * todo: define proper type
@@ -409,9 +432,9 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Sets the controls for the map.
+   * Sets the controls for the map. Allows configuring the `position` (e.g. "top-right"), `target` (to group controls in the same region together), and `orientation` ("vertical" or "horizontal"). Custom tools can be additionally slotted alongside native OL controls using matching `top-x` / `bottom-x` slot names.
    *
-   * @param {ControlDictionary} controls - An array of control configurations.
+   * @param {ControlDictionary} controls - A dictionary object of control configurations.
    */
   set controls(controls) {
     this.#controls = setControlsMethod(controls, this.#controls, this);
@@ -645,11 +668,58 @@ export class EOxMap extends LitElement {
   }
 
   /**
+   * Internal method to handle a resize event for the map container.
+   *
+   * @param {ResizeObserverEntry} entry - The ResizeObserverEntry triggering the resize
+   */
+  mapResizeEvent(entry) {
+    /**
+     * @type {CustomEvent}
+     */
+    this.dispatchEvent(
+      new CustomEvent("resize", {
+        detail: {
+          width: entry.contentRect.width,
+          height: entry.contentRect.height,
+          isSmall: entry.contentRect.width < 768,
+        },
+      }),
+    );
+  }
+
+  /**
    * Lifecycle method called after the component's first update.
    * Sets up initial configurations like zoom extent.
    */
   firstUpdated() {
     firstUpdatedMethod(this.#zoomExtent, this);
+  }
+
+  /**
+   * Lifecycle method called when the component is removed from the DOM.
+   * Ensures that any associated event listeners or observers are properly disconnected.
+   */
+  disconnectedCallback() {
+    if (this.#resizeObserver) {
+      this.#resizeObserver.disconnect();
+    }
+    super.disconnectedCallback();
+  }
+
+  /**
+   * Returns a map's controls targets for interaction.
+   * @returns {Object.<string, HTMLElement>}
+   */
+  getControlsTargets() {
+    return this.#controlsTargets;
+  }
+
+  /**
+   * Set map resize observer instance.
+   * @param {ResizeObserver} observer
+   */
+  setResizeObserver(observer) {
+    this.#resizeObserver = observer;
   }
 
   /**
@@ -727,7 +797,43 @@ export class EOxMap extends LitElement {
         ${eoxStyle}
         ${controlCss}
       </style>
-      <div id="map" style="width: 100%; height: 100%"></div>
+      <div
+        class="eox-map-container"
+        style="position: relative; width: 100%; height: 100%;"
+      >
+        <div id="map" style="width: 100%; height: 100%"></div>
+        <div class="eox-map-controls-overlay">
+          <!-- Top Regions -->
+          <div class="eox-map-controls-region top-left">
+            <slot name="top-left"></slot>
+          </div>
+          <div class="eox-map-controls-region top-center">
+            <slot name="top-center"></slot>
+          </div>
+          <div class="eox-map-controls-region top-right">
+            <slot name="top-right"></slot>
+          </div>
+
+          <!-- Center Regions -->
+          <div class="eox-map-controls-region center-left">
+            <slot name="center-left"></slot>
+          </div>
+          <div class="eox-map-controls-region center-right">
+            <slot name="center-right"></slot>
+          </div>
+
+          <!-- Bottom Regions -->
+          <div class="eox-map-controls-region bottom-left">
+            <slot name="bottom-left"></slot>
+          </div>
+          <div class="eox-map-controls-region bottom-center">
+            <slot name="bottom-center"></slot>
+          </div>
+          <div class="eox-map-controls-region bottom-right">
+            <slot name="bottom-right"></slot>
+          </div>
+        </div>
+      </div>
       <slot></slot>
     `;
   }

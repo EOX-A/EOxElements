@@ -8,7 +8,7 @@
 
 > **WMTSCapabilitiesOptions** = `object`
 
-Defined in: [elements/map/src/types.ts:201](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L201)
+Defined in: [elements/map/src/types.ts:233](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L233)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/types.ts:201](https://github.com/EOX-A/EOxElements
 
 > `optional` **attributions?**: `AttributionLike`
 
-Defined in: [elements/map/src/types.ts:204](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L204)
+Defined in: [elements/map/src/types.ts:236](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L236)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/types.ts:204](https://github.com/EOX-A/EOxElements
 
 > `optional` **attributionsCollapsible?**: `boolean`
 
-Defined in: [elements/map/src/types.ts:205](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L205)
+Defined in: [elements/map/src/types.ts:237](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L237)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/types.ts:205](https://github.com/EOX-A/EOxElements
 
 > `optional` **cacheSize?**: `number`
 
-Defined in: [elements/map/src/types.ts:206](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L206)
+Defined in: [elements/map/src/types.ts:238](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L238)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/types.ts:206](https://github.com/EOX-A/EOxElements
 
 > `optional` **crossOrigin?**: `null` \| `string`
 
-Defined in: [elements/map/src/types.ts:207](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L207)
+Defined in: [elements/map/src/types.ts:239](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L239)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [elements/map/src/types.ts:207](https://github.com/EOX-A/EOxElements
 
 > **dimensions**: `object`
 
-Defined in: [elements/map/src/types.ts:215](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L215)
+Defined in: [elements/map/src/types.ts:247](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L247)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [elements/map/src/types.ts:215](https://github.com/EOX-A/EOxElements
 
 > `optional` **interpolate?**: `boolean`
 
-Defined in: [elements/map/src/types.ts:208](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L208)
+Defined in: [elements/map/src/types.ts:240](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L240)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [elements/map/src/types.ts:208](https://github.com/EOX-A/EOxElements
 
 > `optional` **key?**: `string`
 
-Defined in: [elements/map/src/types.ts:211](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L211)
+Defined in: [elements/map/src/types.ts:243](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L243)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [elements/map/src/types.ts:211](https://github.com/EOX-A/EOxElements
 
 > **layer**: `string`
 
-Defined in: [elements/map/src/types.ts:203](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L203)
+Defined in: [elements/map/src/types.ts:235](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L235)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [elements/map/src/types.ts:203](https://github.com/EOX-A/EOxElements
 
 > `optional` **projection?**: [`ProjectionLike`](ProjectionLike.md)
 
-Defined in: [elements/map/src/types.ts:209](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L209)
+Defined in: [elements/map/src/types.ts:241](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L241)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [elements/map/src/types.ts:209](https://github.com/EOX-A/EOxElements
 
 > `optional` **tilePixelRatio?**: `number`
 
-Defined in: [elements/map/src/types.ts:212](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L212)
+Defined in: [elements/map/src/types.ts:244](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L244)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [elements/map/src/types.ts:212](https://github.com/EOX-A/EOxElements
 
 > `optional` **transition?**: `number`
 
-Defined in: [elements/map/src/types.ts:210](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L210)
+Defined in: [elements/map/src/types.ts:242](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L242)
 
 ***
 
@@ -104,7 +104,7 @@ Defined in: [elements/map/src/types.ts:210](https://github.com/EOX-A/EOxElements
 
 > **url**: `string`
 
-Defined in: [elements/map/src/types.ts:202](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L202)
+Defined in: [elements/map/src/types.ts:234](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L234)
 
 ***
 
@@ -112,7 +112,7 @@ Defined in: [elements/map/src/types.ts:202](https://github.com/EOX-A/EOxElements
 
 > **version**: `string`
 
-Defined in: [elements/map/src/types.ts:216](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L216)
+Defined in: [elements/map/src/types.ts:248](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L248)
 
 ***
 
@@ -120,7 +120,7 @@ Defined in: [elements/map/src/types.ts:216](https://github.com/EOX-A/EOxElements
 
 > `optional` **wrapX?**: `boolean`
 
-Defined in: [elements/map/src/types.ts:214](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L214)
+Defined in: [elements/map/src/types.ts:246](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L246)
 
 ***
 
@@ -128,4 +128,4 @@ Defined in: [elements/map/src/types.ts:214](https://github.com/EOX-A/EOxElements
 
 > `optional` **zDirection?**: `number`
 
-Defined in: [elements/map/src/types.ts:213](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L213)
+Defined in: [elements/map/src/types.ts:245](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L245)

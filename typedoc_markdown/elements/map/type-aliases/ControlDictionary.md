@@ -8,92 +8,100 @@
 
 > **ControlDictionary** = `object`
 
-Defined in: [elements/map/src/types.ts:155](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L155)
+Defined in: [elements/map/src/types.ts:170](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L170)
 
 ## Properties
 
 ### Attribution?
 
-> `optional` **Attribution?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **Attribution?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L167)
+Defined in: [elements/map/src/types.ts:189](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L189)
 
 ***
 
 ### FullScreen?
 
-> `optional` **FullScreen?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **FullScreen?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:161](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L161)
+Defined in: [elements/map/src/types.ts:181](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L181)
 
 ***
 
 ### Geolocation?
 
-> `optional` **Geolocation?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **Geolocation?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:180](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L180)
+Defined in: [elements/map/src/types.ts:210](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L210)
+
+***
+
+### GlobeSwitcher?
+
+> `optional` **GlobeSwitcher?**: `ConstructorParameters`\<`GlobeSwitcher`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
+
+Defined in: [elements/map/src/types.ts:206](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L206)
 
 ***
 
 ### LoadingIndicator?
 
-> `optional` **LoadingIndicator?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **LoadingIndicator?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:183](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L183)
+Defined in: [elements/map/src/types.ts:214](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L214)
 
 ***
 
 ### MousePosition?
 
-> `optional` **MousePosition?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **MousePosition?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:177](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L177)
+Defined in: [elements/map/src/types.ts:202](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L202)
 
 ***
 
 ### OverviewMap?
 
-> `optional` **OverviewMap?**: `Override`\<`ConstructorParameters`\<`default`\>\[`0`\], \{ `layers?`: [`EoxLayer`](EoxLayer-1.md)[] \| [`AnyLayer`](AnyLayer.md)[]; \}\>
+> `optional` **OverviewMap?**: `Override`\<`ConstructorParameters`\<`default`\>\[`0`\], \{ `layers?`: [`EoxLayer`](EoxLayer-1.md)[] \| [`AnyLayer`](AnyLayer.md)[]; \}\> & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:170](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L170)
+Defined in: [elements/map/src/types.ts:193](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L193)
 
 ***
 
 ### Rotate?
 
-> `optional` **Rotate?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **Rotate?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:160](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L160)
+Defined in: [elements/map/src/types.ts:177](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L177)
 
 ***
 
 ### ScaleLine?
 
-> `optional` **ScaleLine?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **ScaleLine?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:157](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L157)
+Defined in: [elements/map/src/types.ts:173](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L173)
 
 ***
 
 ### Zoom?
 
-> `optional` **Zoom?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **Zoom?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:156](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L156)
+Defined in: [elements/map/src/types.ts:171](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L171)
 
 ***
 
 ### ZoomSlider?
 
-> `optional` **ZoomSlider?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **ZoomSlider?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:164](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L164)
+Defined in: [elements/map/src/types.ts:185](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L185)
 
 ***
 
 ### ZoomToExtent?
 
-> `optional` **ZoomToExtent?**: `ConstructorParameters`\<`default`\>\[`0`\]
+> `optional` **ZoomToExtent?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:174](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L174)
+Defined in: [elements/map/src/types.ts:198](https://github.com/EOX-A/EOxElements/blob/c1b563c0545f58b91b4204777509342099a5fac9/elements/map/src/types.ts#L198)

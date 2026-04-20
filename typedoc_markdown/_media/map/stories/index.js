@@ -10,6 +10,7 @@ export { default as MapboxStyleLayerStory } from "./mapbox-style-layer";
 export { default as GeoTIFFLayerStory } from "./geo-tiff-layer";
 export { default as GeoZarrLayerStory } from "./geo-zarr-layer";
 export { default as GroupLayerStory } from "./group-layer";
+export { default as ControlsLayoutStory } from "./controls-layout";
 export { default as ControlsStory } from "./controls";
 export { default as GeolocationStory } from "./geo-location";
 export { default as StandardLoadingIndicatorStory } from "./standard-loading-indicator";

@@ -165,227 +165,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ],
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "kind": "field",
-              "name": "schema",
-              "return": {
-                "type": {
-                  "text": "JsonSchema|null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newSchema",
-                  "type": {
-                    "text": "JsonSchema|null"
-                  }
-                }
-              ],
-              "type": {
-                "text": "JsonSchema"
-              },
-              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
-            },
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onTextareaInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onJsonFormChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_endpoint",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_schema",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_submitted",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "name": "unstyled",
-              "kind": "field"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles."
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -961,6 +740,227 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "return": {
+                "type": {
+                  "text": "JsonSchema|null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema|null"
+                  }
+                }
+              ],
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
+            },
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onTextareaInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onJsonFormChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_endpoint",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_schema",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_submitted",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "name": "unstyled",
+              "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -2760,8 +2760,38 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.\n\n## Basic usage:\n\n```\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\n\nSome basic layers, sources and formats are included in the default bundle, for advanced usage it is\nrequired to import the `advancedLayersAndSources` plugin.\n\nIncluded in the base bundle:\n- Formats: `GeoJSON`, `MVT`\n- Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`\n- Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`\n\nIn order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:\n\n```\nimport \"@eox/map/src/plugins/advancedLayersAndSources\"\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\nIncluded in the advanced plugin bundle:\n- Layers:\n  - All OpenLayers layer types\n  - [`STAC`](https://github.com/m-mohr/ol-stac)\n- Sources:\n  - All OpenLayers source types\n  - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)\n- Reprojection through [proj4](https://github.com/proj4js/proj4js)\n\nFor usage and story examples, see the Storybook stories in `/elements/map/stories`.\n\n## Features\n\n- **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.\n- **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.\n- **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured and styled for various use cases.\n- **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.\n- **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.\n- **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.\n- **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.\n- **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.\n- **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.\n- **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.\n- **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.\n- **Globe View:** Interactive 3D globe by using \"globe\" projection property. Configure via the `globeConfig` object.\n\n## Events\n\n- `clusterSelect`: Fired when a cluster is selected.\n- `loadend`: Fired when the map has finished loading.\n- `mapmounted`: Fired when the map is successfully mounted.\n- `select`: Fired when a feature is selected.\n- `layerschanged`: Fired when the layers have been changed.\n\n## Methods\n\n- `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.\n- `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.\n- `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.\n- `parseFeature`: Parses a feature from the input data.\n- `parseTextToFeature`: Parses text into a feature.\n\nUsage: `document.querySelector(\"eox-map\").registerProjection([...]);`\n\n## Additional Helper Methods\n\n- `buffer`: Applies a buffer around an extent\n- `transform`, `transformExtent`: Transform coordinates and extents between projections.\n\nUsage: `import { buffer, transform, transformExtent } from \"@eox/map\";`",
+          "description": "The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.\n\n## Basic usage:\n\n```\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\n\nSome basic layers, sources and formats are included in the default bundle, for advanced usage it is\nrequired to import the `advancedLayersAndSources` plugin.\n\nIncluded in the base bundle:\n- Formats: `GeoJSON`, `MVT`\n- Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`\n- Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`\n\nIn order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:\n\n```\nimport \"@eox/map/src/plugins/advancedLayersAndSources\"\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\nIncluded in the advanced plugin bundle:\n- Layers:\n  - All OpenLayers layer types\n  - [`STAC`](https://github.com/m-mohr/ol-stac)\n- Sources:\n  - All OpenLayers source types\n  - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)\n- Reprojection through [proj4](https://github.com/proj4js/proj4js)\n\nFor usage and story examples, see the Storybook stories in `/elements/map/stories`.\n\n## Features\n\n- **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.\n- **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.\n- **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured with `position`, `target`, and `orientation` for flexible UI layouts. Developers can also inject custom HTML tools via Shadow DOM `<slot>`s mapped to specific regions.\n- **Responsive Design:** The map emits a `resize` event providing current dimensions and a mobile breakpoint flag (`isSmall`), allowing dynamic adjustment of control layouts and map properties.\n- **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.\n- **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.\n- **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.\n- **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.\n- **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.\n- **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.\n- **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.\n- **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.\n- **Globe View:** Interactive 3D globe by using \"globe\" projection property. Configure via the `globeConfig` object.\n\n## Events\n\n- `clusterSelect`: Fired when a cluster is selected.\n- `loadend`: Fired when the map has finished loading.\n- `mapmounted`: Fired when the map is successfully mounted.\n- `select`: Fired when a feature is selected.\n- `layerschanged`: Fired when the layers have been changed.\n\n## Methods\n\n- `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.\n- `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.\n- `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.\n- `parseFeature`: Parses a feature from the input data.\n- `parseTextToFeature`: Parses text into a feature.\n\nUsage: `document.querySelector(\"eox-map\").registerProjection([...]);`\n\n## Additional Helper Methods\n\n- `buffer`: Applies a buffer around an extent\n- `transform`, `transformExtent`: Transform coordinates and extents between projections.\n\nUsage: `import { buffer, transform, transformExtent } from \"@eox/map\";`",
           "name": "EOxMap",
+          "cssProperties": [
+            {
+              "description": "Background color for controls.",
+              "name": "--map-controls-bg"
+            },
+            {
+              "description": "Text/icon color for controls.",
+              "name": "--map-controls-color"
+            },
+            {
+              "description": "Background color for surface-level control containers.",
+              "name": "--map-controls-bg-surface"
+            },
+            {
+              "description": "Text color for surface-level control containers.",
+              "name": "--map-controls-color-surface"
+            },
+            {
+              "description": "Backdrop filter for supported control elements (e.g., blur).",
+              "name": "--map-controls-backdrop-filter"
+            },
+            {
+              "description": "Box shadow for control buttons and containers.",
+              "name": "--map-controls-box-shadow"
+            },
+            {
+              "description": "Dimensions of dynamic controls like the loading-indicator.",
+              "name": "--map-control-size"
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -2884,6 +2914,26 @@
               },
               "default": "{ terrain: false, useHighLOD: false, }",
               "description": "Internal property to store the globe configuration options when globe mode is enabled."
+            },
+            {
+              "kind": "field",
+              "name": "#controlsTargets",
+              "privacy": "private",
+              "type": {
+                "text": "Object.<string, HTMLElement>"
+              },
+              "default": "{}",
+              "description": "Internal container targets for map controls."
+            },
+            {
+              "kind": "field",
+              "name": "#resizeObserver",
+              "privacy": "private",
+              "type": {
+                "text": "ResizeObserver | null"
+              },
+              "default": "null",
+              "description": "The resize observer instance for the map container."
             },
             {
               "kind": "field",
@@ -3017,7 +3067,7 @@
               "description": "Gets the current map controls.",
               "parameters": [
                 {
-                  "description": "An array of control configurations.",
+                  "description": "A dictionary object of control configurations.",
                   "name": "controls",
                   "type": {
                     "text": "ControlDictionary"
@@ -3280,6 +3330,43 @@
             },
             {
               "kind": "method",
+              "name": "mapResizeEvent",
+              "parameters": [
+                {
+                  "name": "entry",
+                  "description": "The ResizeObserverEntry triggering the resize",
+                  "type": {
+                    "text": "ResizeObserverEntry"
+                  }
+                }
+              ],
+              "description": "Internal method to handle a resize event for the map container."
+            },
+            {
+              "kind": "method",
+              "name": "getControlsTargets",
+              "description": "Returns a map's controls targets for interaction.",
+              "return": {
+                "type": {
+                  "text": "Object.<string, HTMLElement>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setResizeObserver",
+              "parameters": [
+                {
+                  "name": "observer",
+                  "type": {
+                    "text": "ResizeObserver"
+                  }
+                }
+              ],
+              "description": "Set map resize observer instance."
+            },
+            {
+              "kind": "method",
               "name": "parseFeature",
               "parameters": [
                 {
@@ -3463,6 +3550,13 @@
             }
           ],
           "events": [
+            {
+              "name": "resize",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when the map container is resized"
+            },
             {
               "type": {
                 "text": "CustomEvent"

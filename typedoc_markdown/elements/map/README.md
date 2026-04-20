@@ -17,6 +17,8 @@
 - [DrawOptions](type-aliases/DrawOptions.md)
 - [EOxAnimationOptions](type-aliases/EOxAnimationOptions.md)
 - [EOxClusterOptions](type-aliases/EOxClusterOptions.md)
+- [EOxControlLayoutOptions](type-aliases/EOxControlLayoutOptions.md)
+- [EOxControlPosition](type-aliases/EOxControlPosition.md)
 - [EOxFormat](type-aliases/EOxFormat.md)
 - [EOxFormatType](type-aliases/EOxFormatType.md)
 - [EOxInteraction](type-aliases/EOxInteraction.md)

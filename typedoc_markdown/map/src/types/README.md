@@ -19,6 +19,8 @@
 - [DrawOptions](../../../elements/map/type-aliases/DrawOptions.md)
 - [EOxAnimationOptions](../../../elements/map/type-aliases/EOxAnimationOptions.md)
 - [EOxClusterOptions](../../../elements/map/type-aliases/EOxClusterOptions.md)
+- [EOxControlLayoutOptions](../../../elements/map/type-aliases/EOxControlLayoutOptions.md)
+- [EOxControlPosition](../../../elements/map/type-aliases/EOxControlPosition.md)
 - [EOxInteraction](../../../elements/map/type-aliases/EOxInteraction.md)
 - [EoxLayer](../../../elements/map/type-aliases/EoxLayer-1.md)
 - [EoxLayers](../../../elements/map/type-aliases/EoxLayers.md)
