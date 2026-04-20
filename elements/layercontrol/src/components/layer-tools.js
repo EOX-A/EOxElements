@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -33,6 +33,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
+    open: { type: Boolean, reflect: true },
     embedded: { state: true },
     customEditorInterfaces: { attribute: false, type: Array },
   };
@@ -77,12 +78,29 @@ export class EOxLayerControlLayerTools extends LitElement {
     this.toolsAsList = false;
 
     /**
+     * If enabled, the tools section will be opened.
+     *
+     * @type {Boolean}
+     */
+    this.open = false;
+
+    /**
      * Determine if tools are embedded in layercontrol or stand-alone
      *
      * @type {Boolean}
      */
     setTimeout(() => {
       this.embedded = this.parentElement?.tagName === "EOX-LAYERCONTROL-LAYER";
+      if (
+        typeof this.open === "undefined" ||
+        this.open === false ||
+        this.open === null
+      ) {
+        this.open =
+          this.embedded === false
+            ? true
+            : this.layer?.get("layerControlToolsExpand");
+      }
     });
 
     /**
@@ -242,9 +260,12 @@ export class EOxLayerControlLayerTools extends LitElement {
             () => html`
               <details
                 class="tools"
-                open=${this.embedded === false
-                  ? true
-                  : this.layer.get("layerControlToolsExpand") || nothing}
+                .open=${live(this.open)}
+                @toggle=${(
+                  /** @type {{ target: { open: boolean; }; }} */ evt,
+                ) => {
+                  this.open = evt.target.open;
+                }}
               >
                 <summary></summary>
                 <eox-layercontrol-tools-items
