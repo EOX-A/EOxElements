@@ -93,14 +93,18 @@ export const calendarStyle = `
     color: var(--on-surface) !important;
   }
   button:hover {
-    background-color: var(--surface-container-low) !important;
-  }
-  .vc-date.vc-data-available .vc-date__btn {
-    background-color: var(--surface-container-low) !important;
+    background-color: color-mix(in srgb, var(--primary) 10%, transparent)!important
   }
   .vc-date[data-vc-date-selected] .vc-date__btn {
     background-color: var(--primary) !important;
     color: var(--on-primary) !important;
+  }
+  .vc-date[data-vc-date-month="prev"] button,
+  .vc-date[data-vc-date-month="next"] button {
+    opacity: 0.5 !important;
+  }
+  .vc-date[data-vc-date-today] button {
+    border: 1px solid var(--primary) !important;
   }
   .vc-arrow {
     padding: 0;
@@ -116,18 +120,13 @@ export const calendarStyle = `
   }
   .vc-arrow:hover:before {
     background: var(--primary) !important;
+    opacity: 1 !important;
   }
   .vc-dates__row {
     grid-gap: 2px;
   }
   .vc-date.vc-data-available:hover .vc-date__popup {
     opacity: 1 !important;
-  }
-  .vc-item-popup {
-    padding: 8px;
-    // max-width: 300px;
-    background-color: var(--surface-container-lowest);
-    border-radius: 0.75rem;
   }
   .v-date_popup {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
