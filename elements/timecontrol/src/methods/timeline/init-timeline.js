@@ -10,9 +10,11 @@ import {
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
+import duration from "dayjs/plugin/duration";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(duration);
 
 /**
  * @typedef {import("../../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline
@@ -183,12 +185,18 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !drag &&
     !props.event.shiftKey
   ) {
-    const isBackgroundClick = Boolean(props.what == "background");
-    const selectRangeType = isBackgroundClick
-      ? EOxTimeControlTimeline.selectRangeType
-      : "day";
+    // const isBackgroundClick = Boolean(props.what == "background");
+    // const selectRangeType2 = isBackgroundClick
+    //   ? EOxTimeControlTimeline.selectionDuration
+    //   : "day";
+
+    // const duration = dayjs.duration()
 
     const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
+    // console.log(props.time)
+    // console.log(dayjs(props.time).add(dayjs.duration(100000)).format())
+
+    const selectRangeType = "day";
 
     const startDate = EOxTimeControl.showUTC
       ? dayjs(utcFormattedDate).utc().startOf(selectRangeType).format()

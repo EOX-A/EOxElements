@@ -12,7 +12,7 @@ import { when } from "lit/directives/when.js";
 /**
  * @typedef {import("../types").DateRange} DateRange
  * @typedef {import("../main").EOxTimeControl} EOxTimeControl
- * @typedef {import("../types").selectRangeType} selectRangeType
+ * @typedef {import("../types").selectionDuration} selectionDuration
  */
 
 /**
@@ -31,7 +31,7 @@ export class EOxTimeControlTimeline extends LitElement {
   static get properties() {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
-      selectRangeType: { type: String, attribute: "select-range-type" },
+      selectionDuration: { type: Object, attribute: false },
       rangeSelection: { type: Boolean, attribute: "range-selection" },
     };
   }
@@ -67,9 +67,12 @@ export class EOxTimeControlTimeline extends LitElement {
      * The selected range of the timeline.
      * Use any unit type from dayjs - https://day.js.org/docs/en/manipulate/start-of#list-of-all-available-units
      *
-     * @type {selectRangeType}
+     * @type {selectionDuration}
      */
-    this.selectRangeType = "day";
+    this.selectionDuration = {
+      time: 1,
+      unit: "day",
+    };
 
     /**
      * Whether range selection is enabled.
