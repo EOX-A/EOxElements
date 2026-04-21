@@ -100,7 +100,9 @@ export const calendarStyle = `
     color: var(--on-primary) !important;
   }
   .vc-date[data-vc-date-month="prev"] button,
-  .vc-date[data-vc-date-month="next"] button {
+  .vc-date[data-vc-date-month="next"] button,
+  .vc-date[data-vc-date-month="prev"] .vc-day__dots,
+  .vc-date[data-vc-date-month="next"] .vc-day__dots {
     opacity: 0.5 !important;
   }
   .vc-date[data-vc-date-today] button {
