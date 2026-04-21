@@ -34,6 +34,10 @@ export class EOxLayerControlLayerTools extends LitElement {
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
     open: { type: Boolean, reflect: true },
+    toolsAutoExpand: {
+      attribute: "tools-auto-expand",
+      type: Boolean,
+    },
     embedded: { state: true },
     customEditorInterfaces: { attribute: false, type: Array },
   };
@@ -85,21 +89,32 @@ export class EOxLayerControlLayerTools extends LitElement {
     this.open = false;
 
     /**
+     * If enabled, toggling the layer visibility will also open/close the layer tools.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAutoExpand = false;
+
+    /**
      * Determine if tools are embedded in layercontrol or stand-alone
      *
      * @type {Boolean}
      */
     setTimeout(() => {
-      this.embedded = this.parentElement?.tagName === "EOX-LAYERCONTROL-LAYER";
+      const parent =
+        this.parentElement ||
+        /** @type {ShadowRoot} */ (this.getRootNode())?.host;
+      this.embedded = parent?.tagName === "EOX-LAYERCONTROL-LAYER";
       if (
         typeof this.open === "undefined" ||
         this.open === false ||
         this.open === null
       ) {
-        this.open =
-          this.embedded === false
+        this.open = this.toolsAutoExpand
+          ? !!this.layer?.getVisible()
+          : this.embedded === false
             ? true
-            : this.layer?.get("layerControlToolsExpand");
+            : !!this.layer?.get("layerControlToolsExpand");
       }
     });
 
@@ -118,6 +133,16 @@ export class EOxLayerControlLayerTools extends LitElement {
    */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
+  }
+
+  updated(changedProperties) {
+    if (
+      this.toolsAutoExpand &&
+      (changedProperties.has("toolsAutoExpand") ||
+        changedProperties.has("layer"))
+    ) {
+      this.open = !!this.layer?.getVisible();
+    }
   }
 
   /**

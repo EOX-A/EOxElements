@@ -12371,7 +12371,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-20T14:21:07.279Z",
+              default: "2026-04-21T08:56:55.734Z",
               options: {
                 hidden: true,
               },
@@ -12493,6 +12493,7 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `styleOverride` (String): Overrides elements current CSS.
 - `toolsAsList` (Boolean): If enabled, the tools section will be rendered as list.
 - `globally-exclusive-layers` (Boolean): If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
+- `tools-auto-expand` (Boolean): If enabled, toggling the layer visibility will also open/close the layer tools.
 
 ### Properties
 
@@ -12508,6 +12509,7 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `"eox-
 - `styleOverride` (String): Overrides elements current CSS. (Default: `""`)
 - `toolsAsList` (Boolean): If enabled, the tools section will be rendered as list. (Default: `false`)
 - `globallyExclusiveLayers` (Boolean): If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group). (Default: `false`)
+- `toolsAutoExpand` (Boolean): If enabled, toggling the layer visibility will also open/close the layer tools. (Default: `false`)
 - `customEditorInterfaces` (Array): List of custom editor interfaces for layer config eox-jsonforms
 Read more about the implementation of custom editor interfaces here:
 https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html (Default: `[]`)
@@ -14593,6 +14595,107 @@ Shows tools rendered as a list instead of tabs. By enabling the `toolsAsList` pr
     10: "i",
     11: "s",
     12: "t",
+  });
+</script>
+
+```
+
+#### ToolsAutoExpand
+
+Demonstrates the `toolsAutoExpand` property. When enabled, toggling a layer's visibility automatically expands or collapses its tools section. Additionally, the manual tools toggle button is hidden, as the visibility checkbox takes over its role.
+
+```html
+<eox-layercontrol
+  for="eox-map#tools-auto-expand"
+  style="width: 240px"
+></eox-layercontrol>
+<eox-map
+  style="width: 400px; height: 300px; margin-left: 7px"
+  id="tools-auto-expand"
+></eox-map>
+
+<script type="module">
+  import "@eox/layercontrol/dist/eox-layercontrol.js";
+  import "@eox/map/dist/eox-map.js";
+
+  const eoxLayercontrol = document.querySelector("eox-layercontrol");
+  const eoxMap = document.querySelector("eox-map");
+
+  // Assign properties
+  Object.assign(eoxLayercontrol, {
+    tools: ["info", "opacity"],
+    toolsAutoExpand: true,
+  });
+
+  Object.assign(eoxMap, {
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "terrain-light",
+          title: "Terrain Light",
+        },
+        source: {
+          type: "XYZ",
+          url: "//tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+          title: "Tile XYZ",
+          layerControlToolsExpand: true,
+          layerConfig: {
+            schema: {
+              type: "object",
+              properties: {
+                vminmax: {
+                  type: "object",
+                  properties: {
+                    vmin: {
+                      type: "number",
+                      minimum: 0,
+                      maximum: 10,
+                      format: "range",
+                    },
+                    vmax: {
+                      type: "number",
+                      minimum: 0,
+                      maximum: 10,
+                      format: "range",
+                    },
+                  },
+                  format: "minmax",
+                },
+                cbar: {
+                  type: "string",
+                  enum: ["rain", "temperature"],
+                },
+              },
+            },
+          },
+        },
+        source: {
+          type: "XYZ",
+          url: "https://reccap2.api.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG:3857&time=2018-01-01T00:00:00Z&vmin=0&vmax=3&cbar=rain",
+        },
+      },
+      {
+        type: "Vector",
+        properties: {
+          title: "Regions",
+          id: "regions",
+          description: "Ecological regions of the earth.",
+        },
+        source: {
+          type: "Vector",
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: "GeoJSON",
+          attributions: "Regions: @ openlayers.org",
+        },
+      },
+    ],
   });
 </script>
 

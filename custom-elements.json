@@ -2497,6 +2497,17 @@
             },
             {
               "kind": "field",
+              "name": "toolsAutoExpand",
+              "privacy": "public",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
+              "default": "false",
+              "attribute": "tools-auto-expand"
+            },
+            {
+              "kind": "field",
               "name": "customEditorInterfaces",
               "privacy": "public",
               "type": {
@@ -2593,6 +2604,15 @@
               "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
               "default": "false",
               "fieldName": "globallyExclusiveLayers"
+            },
+            {
+              "name": "tools-auto-expand",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
+              "default": "false",
+              "fieldName": "toolsAutoExpand"
             }
           ],
           "superclass": {
