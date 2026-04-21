@@ -218,8 +218,8 @@ export class EOxLayerControlLayer extends LitElement {
     return html`
       <style>
         ${this.#styleBasic}
-        ${!this.unstyled && this.#styleEOX}
-        .small.grey-text {
+          ${!this.unstyled && this.#styleEOX}
+          .small.grey-text {
           display: var(--layer-type-visibility);
         }
       </style>
