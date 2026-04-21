@@ -31,6 +31,10 @@ export class EOxLayerControlLayer extends LitElement {
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
     globallyExclusiveLayers: { type: Boolean },
+    toolsAutoExpand: {
+      attribute: "tools-auto-expand",
+      type: Boolean,
+    },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -108,6 +112,13 @@ export class EOxLayerControlLayer extends LitElement {
      * @type {Boolean}
      */
     this.toolsAsList = false;
+
+    /**
+     * If enabled, toggling the layer visibility will also open/close the layer tools.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAutoExpand = false;
 
     /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
@@ -288,7 +299,7 @@ export class EOxLayerControlLayer extends LitElement {
             </div>
 
             ${when(
-              isToolsAvail,
+              isToolsAvail && !this.toolsAutoExpand,
               () => html`
                 <button
                   class="transparent square primary-text small action tools ${this
@@ -364,6 +375,7 @@ export class EOxLayerControlLayer extends LitElement {
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
+            .toolsAutoExpand=${this.toolsAutoExpand}
             .customEditorInterfaces=${this.customEditorInterfaces}
           ></eox-layercontrol-layer-tools>
         `,
