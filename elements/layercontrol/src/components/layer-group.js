@@ -24,6 +24,10 @@ export class EOxLayerControlLayerGroup extends LitElement {
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
     globallyExclusiveLayers: { type: Boolean },
+    toolsAutoExpand: {
+      attribute: "tools-auto-expand",
+      type: Boolean,
+    },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -93,6 +97,13 @@ export class EOxLayerControlLayerGroup extends LitElement {
      * @type {Boolean}
      */
     this.toolsAsList = false;
+
+    /**
+     * If enabled, toggling the layer visibility will also open/close the layer tools.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAutoExpand = false;
 
     /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
@@ -179,6 +190,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
                 .unstyled=${this.unstyled}
                 .toolsAsList=${this.toolsAsList}
                 .globallyExclusiveLayers=${this.globallyExclusiveLayers}
+                .toolsAutoExpand=${this.toolsAutoExpand}
                 .customEditorInterfaces=${this.customEditorInterfaces}
                 @changed=${() => this.requestUpdate()}
               ></eox-layercontrol-layer>
@@ -186,7 +198,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
 
             <!-- Render the list of layers within the details -->
             <eox-layercontrol-layer-list
-              .noShadow=${true}
+              .noShadow=${this.noShadow}
               .idProperty=${this.idProperty}
               .layers=${this.group.getLayers()}
               .map=${this.map}
@@ -196,6 +208,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
               .unstyled=${this.unstyled}
               .toolsAsList=${this.toolsAsList}
               .globallyExclusiveLayers=${this.globallyExclusiveLayers}
+              .toolsAutoExpand=${this.toolsAutoExpand}
               .customEditorInterfaces=${this.customEditorInterfaces}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-layer-list>

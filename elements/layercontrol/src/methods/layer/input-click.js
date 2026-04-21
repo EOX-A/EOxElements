@@ -10,10 +10,22 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
   // Set the visibility of the layer based on the input's checked state.
   layer.setVisible(evt.target.checked);
 
+  if (EOxLayerControlLayer.toolsAutoExpand) {
+    /**
+     * @type {import("../../components/layer-tools").EOxLayerControlLayerTools}
+     */
+    const layerTools = EOxLayerControlLayer.renderRoot.querySelector(
+      "eox-layercontrol-layer-tools",
+    );
+    if (layerTools) {
+      layerTools.open = evt.target.checked;
+    }
+  }
+
   // Check if the layer is checked and marked as 'layerControlExclusive'.
   if (evt.target.checked && layer.get("layerControlExclusive")) {
     /**
-     * @type NodeListOf<Element & {layer: any, requestUpdate: function}>
+     * @type NodeListOf<import("../../components/layer").EOxLayerControlLayer>
      */
     const siblings = EOxLayerControlLayer.closest(
       `${EOxLayerControlLayer.globallyExclusiveLayers ? ".layers" : "eox-layercontrol-layer-list"} > ul`,
@@ -26,6 +38,17 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
         sibling.layer?.get("layerControlExclusive")
       ) {
         sibling.layer.setVisible(false);
+        if (sibling.toolsAutoExpand) {
+          /**
+           * @type {import("../../components/layer-tools").EOxLayerControlLayerTools}
+           */
+          const siblingLayerTools = sibling.renderRoot.querySelector(
+            "eox-layercontrol-layer-tools",
+          );
+          if (siblingLayerTools) {
+            siblingLayerTools.open = false;
+          }
+        }
         sibling.requestUpdate();
       }
     });
