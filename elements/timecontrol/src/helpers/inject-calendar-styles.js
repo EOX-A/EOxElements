@@ -24,10 +24,10 @@ export const calendarStyle = `
   :host {
     background-color: var(--surface-container-lowest);
   }
-  .vc:is(eox-timecontrol-picker .vc) {
+  .vc:not(body > .vc) {
     background-color: transparent !important;
   }
-  .vc:not(eox-timecontrol-picker .vc) {
+  .vc:is(body > .vc) {
     background-color: var(--surface-container-lowest);
     z-index: 9999;
   }
