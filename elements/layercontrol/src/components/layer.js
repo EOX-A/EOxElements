@@ -219,6 +219,9 @@ export class EOxLayerControlLayer extends LitElement {
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
+        .small.grey-text {
+          display: var(--layer-type-visibility);
+        }
       </style>
       ${when(
         this.layer,
