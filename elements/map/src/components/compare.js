@@ -47,7 +47,7 @@ export class EOxMapCompare extends LitElement {
           --thumb-size: 3rem;
         }
         .eox-map-compare {
-          --thumb-bgc: #fff;
+          --thumb-bgc: var(--surface-container-lowest, #fff);
           --thumb-w: var(--thumb-size);
 
           position: relative;
