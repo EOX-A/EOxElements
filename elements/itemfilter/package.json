@@ -9,7 +9,7 @@
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
     "@types/lodash.debounce": "^4.0.7",
-    "vite": "^7.1.12"
+    "vite": "^8.0.9"
   },
   "engines": {
     "npm": ">=8.0.0",

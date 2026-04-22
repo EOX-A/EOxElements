@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@types/proj4": "^2.5.4",
-    "vite": "^7.1.12"
+    "vite": "^8.0.9"
   },
   "engines": {
     "npm": ">=8.0.0",
