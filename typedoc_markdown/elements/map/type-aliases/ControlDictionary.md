@@ -8,7 +8,7 @@
 
 > **ControlDictionary** = `object`
 
-Defined in: [elements/map/src/types.ts:170](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L170)
+Defined in: [elements/map/src/types.ts:170](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L170)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/types.ts:170](https://github.com/EOX-A/EOxElements
 
 > `optional` **Attribution?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:189](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L189)
+Defined in: [elements/map/src/types.ts:189](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L189)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/types.ts:189](https://github.com/EOX-A/EOxElements
 
 > `optional` **FullScreen?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:181](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L181)
+Defined in: [elements/map/src/types.ts:181](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L181)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/types.ts:181](https://github.com/EOX-A/EOxElements
 
 > `optional` **Geolocation?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:210](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L210)
+Defined in: [elements/map/src/types.ts:210](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L210)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/types.ts:210](https://github.com/EOX-A/EOxElements
 
 > `optional` **GlobeSwitcher?**: `ConstructorParameters`\<`GlobeSwitcher`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:206](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L206)
+Defined in: [elements/map/src/types.ts:206](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L206)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [elements/map/src/types.ts:206](https://github.com/EOX-A/EOxElements
 
 > `optional` **LoadingIndicator?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:214](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L214)
+Defined in: [elements/map/src/types.ts:214](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L214)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [elements/map/src/types.ts:214](https://github.com/EOX-A/EOxElements
 
 > `optional` **MousePosition?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:202](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L202)
+Defined in: [elements/map/src/types.ts:202](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L202)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [elements/map/src/types.ts:202](https://github.com/EOX-A/EOxElements
 
 > `optional` **OverviewMap?**: `Override`\<`ConstructorParameters`\<`default`\>\[`0`\], \{ `layers?`: [`EoxLayer`](EoxLayer-1.md)[] \| [`AnyLayer`](AnyLayer.md)[]; \}\> & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:193](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L193)
+Defined in: [elements/map/src/types.ts:193](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L193)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [elements/map/src/types.ts:193](https://github.com/EOX-A/EOxElements
 
 > `optional` **Rotate?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:177](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L177)
+Defined in: [elements/map/src/types.ts:177](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L177)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [elements/map/src/types.ts:177](https://github.com/EOX-A/EOxElements
 
 > `optional` **ScaleLine?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:173](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L173)
+Defined in: [elements/map/src/types.ts:173](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L173)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [elements/map/src/types.ts:173](https://github.com/EOX-A/EOxElements
 
 > `optional` **Zoom?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:171](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L171)
+Defined in: [elements/map/src/types.ts:171](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L171)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [elements/map/src/types.ts:171](https://github.com/EOX-A/EOxElements
 
 > `optional` **ZoomSlider?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:185](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L185)
+Defined in: [elements/map/src/types.ts:185](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L185)
 
 ***
 
@@ -104,4 +104,4 @@ Defined in: [elements/map/src/types.ts:185](https://github.com/EOX-A/EOxElements
 
 > `optional` **ZoomToExtent?**: `ConstructorParameters`\<`default`\>\[`0`\] & [`EOxControlLayoutOptions`](EOxControlLayoutOptions.md)
 
-Defined in: [elements/map/src/types.ts:198](https://github.com/EOX-A/EOxElements/blob/f8a159ffacd6875c646efdd799068097290cb99e/elements/map/src/types.ts#L198)
+Defined in: [elements/map/src/types.ts:198](https://github.com/EOX-A/EOxElements/blob/dcfef5c0ed1deac526cd5b712fd70596259b24d9/elements/map/src/types.ts#L198)
