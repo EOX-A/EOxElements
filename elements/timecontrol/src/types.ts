@@ -151,7 +151,7 @@ export type TimeControlSliderOptions = {
 
 /**
  * Defines the possible time ranges for selection in the time control components.
- * Any unit type from dayjs - https://day.js.org/docs/en/manipulate/start-of#list-of-all-available-units
+ * Any unit type from dayjs - https://day.js.org/docs/en/plugin/duration
  */
 export type selectionDuration = {
   time: number;

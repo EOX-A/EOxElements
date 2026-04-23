@@ -65,7 +65,7 @@ export class EOxTimeControlTimeline extends LitElement {
 
     /**
      * The selected range of the timeline.
-     * Use any unit type from dayjs - https://day.js.org/docs/en/manipulate/start-of#list-of-all-available-units
+     * Use any unit type from dayjs - https://day.js.org/docs/en/plugin/duration
      *
      * @type {selectionDuration}
      */
