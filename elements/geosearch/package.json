@@ -16,14 +16,14 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/geosearch/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/geosearch/src/main.d.ts"
+        "./types/main.d.ts"
       ],
       "src/*": [
-        "./types/geosearch/src/*"
+        "./types/*"
       ]
     }
   },
@@ -43,6 +43,6 @@
     "@eox/ui": "^1.1.0",
     "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",
-    "proj4": "^2.11.0"
+    "proj4": "^2.20.8"
   }
 }

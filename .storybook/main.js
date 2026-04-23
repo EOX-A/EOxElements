@@ -21,8 +21,9 @@ const config = {
       // Only include stories from elements folders
       "../elements/**/stories/*.stories.@(js|jsx|mjs|ts|tsx)",
     ];
-    if (process.env.NODE_ENV === "development")
-      list.push("../elements/**/stories/*.stories.dev.@(js|jsx|mjs|ts|tsx)");
+    if (process.env.NODE_ENV === "development") {
+      list.push("*.stories.dev.@(js|jsx|mjs|ts|tsx)");
+    }
 
     return list;
   },

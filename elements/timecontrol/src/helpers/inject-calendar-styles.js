@@ -1,6 +1,12 @@
+import eoxColorsLight from "@eox/ui/style/colors/light.css?inline";
+import eoxColorsDark from "@eox/ui/style/colors/dark.css?inline";
+import eoxVariables from "@eox/ui/beercss/variables.css?inline";
 import vanillaCalendarCSS from "vanilla-calendar-pro/styles/index.css?inline";
 
 export const calendarStyle = `
+  ${eoxColorsLight}
+  ${eoxColorsDark}
+  ${eoxVariables}
   ${vanillaCalendarCSS}
   :root, :host, body {
     --dot-color-1: var(--primary);
@@ -15,7 +21,14 @@ export const calendarStyle = `
     --dot-color-10: #FF6B00;
     --dot-color-11: #E100FF;
   }
-  .vc {
+  :host {
+    background-color: var(--surface-container-lowest);
+  }
+  .vc:not(body > .vc) {
+    background-color: transparent !important;
+  }
+  .vc:is(body > .vc) {
+    background-color: var(--surface-container-lowest);
     z-index: 9999;
   }
   .vc * {
@@ -72,48 +85,60 @@ export const calendarStyle = `
   .vc-date[data-vc-date-selected] .vc-day__plus::before {
     background: var(--on-primary) !important;
   }
-  [data-vc-theme=light] .vc-date.vc-data-available .vc-date__btn {
-    --tw-bg-opacity: 1;
-    background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+  .vc-week__day {
+    color: var(--primary) !important;
   }
-  [data-vc-theme=dark] .vc-date.vc-data-available .vc-date__btn {
-    --tw-bg-opacity: 1;
-    background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+  button {
+    background-color: transparent !important;
+    color: var(--on-surface) !important;
   }
-  [data-vc-theme=light] .vc-date.vc-data-unavailable .vc-date__btn {
-    --tw-bg-opacity: 0;
-    background-color: rgb(241 245 249 / var(--tw-bg-opacity));
-    border: 3px solid rgb(241 245 249);
-  }
-  [data-vc-theme=dark] .vc-date.vc-data-unavailable .vc-date__btn {
-    --tw-bg-opacity: 0;
-    background-color: rgb(30 41 59 / var(--tw-bg-opacity));
-    border: 3px solid rgb(30 41 59);
+  button:hover {
+    background-color: color-mix(in srgb, var(--primary) 10%, transparent)!important
   }
   .vc-date[data-vc-date-selected] .vc-date__btn {
     background-color: var(--primary) !important;
-    border: none !important;
+    color: var(--on-primary) !important;
+  }
+  .vc-date[data-vc-date-month="prev"] button,
+  .vc-date[data-vc-date-month="next"] button,
+  .vc-date[data-vc-date-month="prev"] .vc-day__dots,
+  .vc-date[data-vc-date-month="next"] .vc-day__dots {
+    opacity: 0.5 !important;
+  }
+  .vc-date[data-vc-date-today] button {
+    border: 1px solid var(--primary) !important;
+  }
+  .vc-arrow {
+    padding: 0;
+    border-radius: 50%;
+  }
+  .vc-arrow:before {
+    display: block;
+    position: relative;
+    background: var(--on-surface) !important;
+    -webkit-mask-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><title>chevron-down</title><path d='M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z' /></svg>") !important;
+    mask-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><title>chevron-down</title><path d='M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z' /></svg>") !important;
+    mask-repeat: no-repeat;
+  }
+  .vc-arrow:hover:before {
+    background: var(--primary) !important;
+    opacity: 1 !important;
+  }
+  .vc-dates__row {
+    grid-gap: 2px;
   }
   .vc-date.vc-data-available:hover .vc-date__popup {
     opacity: 1 !important;
   }
-  .vc-item-popup {
-    padding: 8px;
-    // max-width: 300px;
-    background-color: #fff;
-    border-radius: 4px;
-  }
   .v-date_popup {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  }
-  [data-vc-theme=dark] .vc-item-popup {
-    background-color: #1e293b;
-    color: #fff;
   }
   .vc-date__popup {
     max-width: 300px !important;
     left: 0px !important;
     padding: 0.5rem !important;
+    background-color: var(--surface-container-lowest) !important;
+    color: var(--on-surface) !important;
   }
   .vc-item-popup__item {
     margin-bottom: 12px;
@@ -130,7 +155,7 @@ export const calendarStyle = `
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: var(--primary-color, var(--primary, #007bff));
+    background-color: var(--primary-color, var(--primary, #004170));
     margin-right: 8px;
     margin-top: 4px;
     flex-shrink: 0;
@@ -146,19 +171,13 @@ export const calendarStyle = `
   }
   .vc-item-popup__meta {
     margin-top: 2px;
-    color: #333;
+    color: var(--on-surface);
     font-size: 0.9em;
-  }
-  [data-vc-theme=dark] .vc-item-popup__meta {
-    color: #cbd5e1;
   }
   .vc-item-popup__more {
     margin-top: 4px;
     color: #999;
     font-size: 0.9em;
-  }
-  [data-vc-theme=dark] .vc-item-popup__more {
-    color: #94a3b8;
   }
 `;
 

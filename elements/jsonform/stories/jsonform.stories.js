@@ -27,6 +27,7 @@ import {
   DefaultsStory,
   GridStory,
   GridStrictStory,
+  StepsEditorStory,
 } from "./index.js";
 
 export default {
@@ -210,6 +211,36 @@ export const CustomEditorInterfaces = CustomEditorInterfacesStory;
  * Shows how to implement a custom upload handler using the `defaults` property.
  */
 export const Defaults = DefaultsStory;
+
+/**
+ * Steps Editor example. Renders a multi-step accordion wizard using the `"format": "steps"` custom editor.
+ * Each child property of the object becomes a selectable step. Steps support dependencies
+ * (`options.dependsOn`), auto-complete (`options.autoComplete`), disabled labels
+ * (`options.disabledLabel`), and card grid sizing via `options.grid_columns`.
+ *
+ * Example usage:
+ * ```html
+ * <eox-jsonform .schema=${
+ *   {
+ *     type: "object",
+ *     format: "steps",
+ *     properties: {
+ *       year: {
+ *         type: "string", title: "Choose Year",
+ *         enum: ["2024", "2023"],
+ *         options: { grid_columns: 3 }
+ *       },
+ *       product: {
+ *         type: "string", title: "Choose Product",
+ *         enum: ["cloudless-rgb"],
+ *         options: { dependsOn: "year", disabledLabel: "Select a year first" }
+ *       }
+ *     }
+ *   }
+ * }></eox-jsonform>
+ * ```
+ */
+export const StepsEditor = StepsEditorStory;
 
 /**
  * Unstyled example. Renders the form without default styles.

@@ -224,7 +224,6 @@ export const styleEOX = `
   [data-schematype] p {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-style: italic;
   }
   .errmsg {
     font-size: x-small;

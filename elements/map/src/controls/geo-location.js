@@ -34,7 +34,7 @@ export default class GeolocationControl extends Control {
     element.appendChild(button);
 
     // Call the superclass constructor to set up the control
-    super({ element: element });
+    super({ element: element, target: options.target });
 
     // Store the configuration options
     this._centerWhenReady = options.centerWhenReady;
@@ -102,45 +102,66 @@ export default class GeolocationControl extends Control {
    */
   initGeolocation() {
     return new Promise((resolve, reject) => {
-      const map = this.getMap();
-      if (map) {
-        this._geolocation = new Geolocation({
-          tracking: true,
-          trackingOptions: { enableHighAccuracy: this._highAccuracy },
-          projection: map.getView().getProjection(),
+      // If already initialized and position is known, resolve immediately
+      if (this._geolocation) {
+        const coords = this._geolocation.getPosition();
+        if (coords) {
+          resolve(coords);
+          return;
+        }
+        // If it exists but hasn't resolved position yet, we wait for it
+      } else {
+        const map = this.getMap();
+        if (map) {
+          this._geolocation = new Geolocation({
+            tracking: true,
+            trackingOptions: { enableHighAccuracy: this._highAccuracy },
+            projection: map.getView().getProjection(),
+          });
+        }
+
+        // Center the map on the user's location when the geolocation is first determined
+        if (this._centerWhenReady) {
+          this._geolocation.once("change:position", (e) => {
+            const map = this.getMap();
+            if (map) {
+              map.getView().setCenter(e.target.getPosition());
+            }
+          });
+        }
+
+        // Update the accuracy feature when the accuracy geometry changes
+        this._geolocation.on("change:accuracyGeometry", () => {
+          if (this._trackAccuracy) {
+            this._accuracyFeature.setGeometry(
+              this._geolocation.getAccuracyGeometry(),
+            );
+          }
+        });
+
+        // Track heading changes if the option is enabled
+        this._geolocation.on("change:heading", (e) => {
+          if (this._trackHeading && this._highAccuracy) {
+            this._positionFeature.set("heading", e.target.getHeading());
+          }
+        });
+
+        // Permanently track position for the feature
+        this._geolocation.on("change:position", () => {
+          const coordinates = this._geolocation.getPosition();
+          this._positionFeature
+            .getGeometry()
+            .setCoordinates(coordinates || null);
         });
       }
 
-      // Center the map on the user's location when the geolocation is first determined
-      if (this._centerWhenReady) {
-        this._geolocation.once("change:position", (e) => {
-          map.getView().setCenter(e.target.getPosition());
-        });
-      }
+      // Handle geolocation errors (bind to current or existing)
+      const errorListener = (evt) => reject(evt);
+      this._geolocation.once("error", errorListener);
 
-      // Handle geolocation errors
-      this._geolocation.on("error", (evt) => reject(evt));
-
-      // Update the accuracy feature when the accuracy geometry changes
-      this._geolocation.on("change:accuracyGeometry", () => {
-        if (this._trackAccuracy) {
-          this._accuracyFeature.setGeometry(
-            this._geolocation.getAccuracyGeometry(),
-          );
-        }
-      });
-
-      // Track heading changes if the option is enabled
-      this._geolocation.on("change:heading", (e) => {
-        if (this._trackHeading && this._highAccuracy) {
-          this._positionFeature.set("heading", e.target.getHeading());
-        }
-      });
-
-      // Update the position feature when the position changes
-      this._geolocation.on("change:position", () => {
+      // Wait for the next position change to resolve the promise
+      this._geolocation.once("change:position", () => {
         const coordinates = this._geolocation.getPosition();
-        this._positionFeature.getGeometry().setCoordinates(coordinates || null);
         resolve(coordinates);
       });
     });

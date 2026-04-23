@@ -152,37 +152,69 @@ export type ControlType = keyof ControlDictionary;
 
 type Override<T, V> = Omit<T, keyof V> & V;
 
+export type EOxControlPosition =
+  | "top-left"
+  | "top-center"
+  | "top-right"
+  | "center-left"
+  | "center-right"
+  | "bottom-left"
+  | "bottom-center"
+  | "bottom-right";
+
+export type EOxControlLayoutOptions = {
+  position?: EOxControlPosition;
+  orientation?: "horizontal" | "vertical";
+};
+
 export type ControlDictionary = {
-  Zoom?: ConstructorParameters<typeof import("ol/control/Zoom").default>[0];
+  Zoom?: ConstructorParameters<typeof import("ol/control/Zoom").default>[0] &
+    EOxControlLayoutOptions;
   ScaleLine?: ConstructorParameters<
     typeof import("ol/control/ScaleLine").default
-  >[0];
-  Rotate?: ConstructorParameters<typeof import("ol/control/Rotate").default>[0];
+  >[0] &
+    EOxControlLayoutOptions;
+  Rotate?: ConstructorParameters<
+    typeof import("ol/control/Rotate").default
+  >[0] &
+    EOxControlLayoutOptions;
   FullScreen?: ConstructorParameters<
     typeof import("ol/control/FullScreen").default
-  >[0];
+  >[0] &
+    EOxControlLayoutOptions;
   ZoomSlider?: ConstructorParameters<
     typeof import("ol/control/ZoomSlider").default
-  >[0];
+  >[0] &
+    EOxControlLayoutOptions;
   Attribution?: ConstructorParameters<
     typeof import("ol/control/Attribution").default
-  >[0];
+  >[0] &
+    EOxControlLayoutOptions;
   OverviewMap?: Override<
     ConstructorParameters<typeof import("ol/control/OverviewMap").default>[0],
     { layers?: EoxLayer[] | AnyLayer[] }
-  >;
+  > &
+    EOxControlLayoutOptions;
   ZoomToExtent?: ConstructorParameters<
     typeof import("ol/control/ZoomToExtent").default
-  >[0];
+  >[0] &
+    EOxControlLayoutOptions;
   MousePosition?: ConstructorParameters<
     typeof import("ol/control/MousePosition").default
-  >[0];
+  >[0] &
+    EOxControlLayoutOptions;
+  GlobeSwitcher?: ConstructorParameters<
+    typeof import("./controls/GlobeSwitcher").GlobeSwitcher
+  >[0] &
+    EOxControlLayoutOptions;
   Geolocation?: ConstructorParameters<
     typeof import("./controls/geo-location").default
-  >[0];
+  >[0] &
+    EOxControlLayoutOptions;
   LoadingIndicator?: ConstructorParameters<
     typeof import("./controls/loading-indicator").default
-  >[0];
+  >[0] &
+    EOxControlLayoutOptions;
 };
 
 export type AttributionLike =

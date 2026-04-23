@@ -13,6 +13,7 @@ import {
   showCorrectLayerTitle,
   checkLayerLegend,
   colorSwatch,
+  toolsAutoExpand,
   // checkLayerDatetime,
 } from "./cases/general";
 
@@ -65,6 +66,9 @@ describe("LayerControl", () => {
   it("replaces icon with color swatch if color property is present on the layer", () => {
     colorSwatch();
   });
+
+  // Test to verify the toolsAutoExpand property
+  it("supports toolsAutoExpand", () => toolsAutoExpand());
   // TODO: Fix this test
   // it("emit 'datetime:updated' correctly when moving the slider", () => {
   //   checkLayerDatetime();
