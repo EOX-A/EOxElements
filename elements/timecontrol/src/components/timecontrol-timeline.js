@@ -32,7 +32,7 @@ export class EOxTimeControlTimeline extends LitElement {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
       selectionDuration: { type: Object, attribute: false },
-      selectionResizable: { type: Boolean, attribute: "range-selection" },
+      selectionResizable: { type: Boolean, attribute: "selection-resizable" },
     };
   }
 
@@ -65,7 +65,7 @@ export class EOxTimeControlTimeline extends LitElement {
 
     /**
      * The selected range of the timeline.
-     * Use any unit type from dayjs - https://day.js.org/docs/en/plugin/duration
+     * Dayjs duration object - https://day.js.org/docs/en/plugin/duration
      *
      * @type {selectionDuration}
      */
