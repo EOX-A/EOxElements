@@ -170,7 +170,7 @@ export type TimeControlTimelineOptions = {
   /**
    *
    */
-  rangeSelection?: boolean;
+  selectionResizable?: boolean;
 
   /**
    * The selected range of the timeline.

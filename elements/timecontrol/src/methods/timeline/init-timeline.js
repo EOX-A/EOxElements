@@ -185,26 +185,34 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !drag &&
     !props.event.shiftKey
   ) {
-    // const isBackgroundClick = Boolean(props.what == "background");
-    // const selectRangeType2 = isBackgroundClick
-    //   ? EOxTimeControlTimeline.selectionDuration
-    //   : "day";
-
-    // const duration = dayjs.duration()
+    const isBackgroundClick = Boolean(props.what == "background");
 
     const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
-    // console.log(props.time)
-    // console.log(dayjs(props.time).add(dayjs.duration(100000)).format())
+    if (isBackgroundClick) {
+      const durationTime = EOxTimeControlTimeline.selectionDuration.time;
+      const durationUnit =
+        EOxTimeControlTimeline.selectionDuration.unit || undefined;
+      const duration = dayjs.duration(durationTime, durationUnit);
 
-    const selectRangeType = "day";
+      const startDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().format()
+        : dayjs(props.time).utc().format();
+      const endDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().add(duration).format()
+        : dayjs(props.time).add(duration).utc().format();
+      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+    } else {
+      // TODO: This needs to be made dynamic based on bin selection size
+      const rangeType = "day";
 
-    const startDate = EOxTimeControl.showUTC
-      ? dayjs(utcFormattedDate).utc().startOf(selectRangeType).format()
-      : dayjs(props.time).startOf(selectRangeType).utc().format();
-    const endDate = EOxTimeControl.showUTC
-      ? dayjs(utcFormattedDate).utc().endOf(selectRangeType).format()
-      : dayjs(props.time).endOf(selectRangeType).utc().format();
-    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+      const startDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().startOf(rangeType).format()
+        : dayjs(props.time).startOf(rangeType).utc().format();
+      const endDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().endOf(rangeType).format()
+        : dayjs(props.time).endOf(rangeType).utc().format();
+      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+    }
   }
 }
 
@@ -219,7 +227,7 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
   if (props.byUser) {
     drag = true;
     setTimeout(() => (drag = false));
-    if (EOxTimeControlTimeline.rangeSelection)
+    if (EOxTimeControlTimeline.selectionResizable)
       updateRangeElements(EOxTimeControlTimeline);
   }
   const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
@@ -320,7 +328,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl, options);
     });
     visTimeline.on("timechange", () => {
-      if (EOxTimeControlTimeline.rangeSelection)
+      if (EOxTimeControlTimeline.selectionResizable)
         updateRangeElements(EOxTimeControlTimeline);
       else
         EOxTimeControlTimeline.setDateRange(EOxTimeControl.selectedDateRange);

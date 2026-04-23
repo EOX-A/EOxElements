@@ -23,8 +23,11 @@ const TimelineWithRangeConfigurationStory = {
       "eox-timecontrol-timeline": {
         storyImport: false,
         storySlot: true,
-        selectRangeType: "second",
-        rangeSelection: true,
+        selectionDuration: {
+          time: 1,
+          unit: "second",
+        },
+        selectionResizable: true,
       },
     },
   },
@@ -45,31 +48,31 @@ const TimelineWithRangeConfigurationStory = {
       @select=${args.select}
     >
       <eox-timecontrol-timeline
-        .selectRangeType=${args.storyAdditionalComponents[
+        .selectionDuration=${args.storyAdditionalComponents[
           "eox-timecontrol-timeline"
-        ].selectRangeType}
-        .rangeSelection=${args.storyAdditionalComponents[
+        ].selectionDuration}
+        .selectionResizable=${args.storyAdditionalComponents[
           "eox-timecontrol-timeline"
-        ].rangeSelection}
+        ].selectionResizable}
       ></eox-timecontrol-timeline>
     </eox-timecontrol>
     <div
       style="margin-top: 10px; display: flex; align-items: center; gap: 10px;"
     >
-      <label for="rangeSelection">Enable/Disable range selection</label>
+      <label for="selectionResizable">Enable/Disable range selection</label>
       <input
         checked
         type="checkbox"
-        id="rangeSelection"
-        name="rangeSelection"
-        value="rangeSelection"
+        id="selectionResizable"
+        name="selectionResizable"
+        value="selectionResizable"
         @change=${(e) => {
           const isChecked = e.target.checked;
           const timeline = document.querySelector(
             "#timeline-with-range-configuration + eox-timecontrol eox-timecontrol-timeline",
           );
           if (timeline) {
-            timeline.rangeSelection = isChecked;
+            timeline.selectionResizable = isChecked;
           }
         }}
       />
@@ -77,17 +80,20 @@ const TimelineWithRangeConfigurationStory = {
     <div
       style="margin-top: 10px; display: flex; align-items: center; gap: 10px;"
     >
-      <label for="selectRangeType">Select range type:</label>
+      <label for="selectionDuration">Select duration:</label>
       <select
-        id="selectRangeType"
-        name="selectRangeType"
+        id="selectionDuration"
+        name="selectionDuration"
         @change=${(e) => {
           const type = e.target.value;
           const timeline = document.querySelector(
             "#timeline-with-range-configuration + eox-timecontrol eox-timecontrol-timeline",
           );
           if (timeline) {
-            timeline.selectRangeType = type;
+            timeline.selectionDuration = {
+              time: 1,
+              unit: type,
+            };
           }
         }}
       >

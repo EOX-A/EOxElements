@@ -32,7 +32,7 @@ export class EOxTimeControlTimeline extends LitElement {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
       selectionDuration: { type: Object, attribute: false },
-      rangeSelection: { type: Boolean, attribute: "range-selection" },
+      selectionResizable: { type: Boolean, attribute: "range-selection" },
     };
   }
 
@@ -79,7 +79,7 @@ export class EOxTimeControlTimeline extends LitElement {
      *
      * @type {boolean}
      */
-    this.rangeSelection = true;
+    this.selectionResizable = true;
   }
 
   /**
@@ -166,11 +166,11 @@ export class EOxTimeControlTimeline extends LitElement {
   }
 
   /**
-   * Whenever rangeSelection changes, update the CSS class on the timeline-wrapper div.
+   * Whenever selectionResizable changes, update the CSS class on the timeline-wrapper div.
    * @param {Map} changedProperties
    */
   updated(changedProperties) {
-    if (changedProperties.has("rangeSelection")) this.requestUpdate();
+    if (changedProperties.has("selectionResizable")) this.requestUpdate();
   }
 
   render() {
@@ -182,7 +182,7 @@ export class EOxTimeControlTimeline extends LitElement {
         ${styleTimeline}
       </style>
       <div
-        class="timeline-wrapper ${this.rangeSelection
+        class="timeline-wrapper ${this.selectionResizable
           ? "range-selection-enabled"
           : "range-selection-disabled"}"
       >

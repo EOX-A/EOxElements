@@ -25,8 +25,11 @@ const loadTimelineWithRangeConfiguration = () => {
     ></eox-map>
     <eox-timecontrol for="eox-map#timeline">
       <eox-timecontrol-timeline
-        select-range-type="minute"
-        range-selection="true"
+        .selectionDuration=${{
+          time: 1,
+          unit: "minute",
+        }}
+        .selectionResizable=${true}
       ></eox-timecontrol-timeline>
     </eox-timecontrol>
   `);
@@ -55,7 +58,7 @@ const loadTimelineWithRangeConfiguration = () => {
 
     // verify the selected range is 59 seconds
     const diffMinutes = end.diff(start, "second");
-    expect(diffMinutes).to.equal(59);
+    expect(diffMinutes).to.equal(60);
   });
 };
 
