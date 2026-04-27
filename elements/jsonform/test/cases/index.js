@@ -6,6 +6,7 @@ export { default as loadExternalSchemaTest } from "./load-external-schema";
 export { default as loadExternalValueTest } from "./load-external-value";
 export { default as loadReRenderFormOnChangeTest } from "./re-render-form-on-change";
 export { default as loadMarkdownTest } from "./load-markdown";
+export { default as loadCodeMarkdownToolbarTest } from "./load-code-markdown-toolbar";
 export { default as loadCodeTest } from "./load-code";
 export { default as triggerChangeEventTest } from "./trigger-change-event";
 export { default as loadValuesTest } from "./load-values";
@@ -20,3 +21,9 @@ export { default as loadSpatialValuesTest } from "./load-spatial-values";
 export { default as validationBehaviorTest } from "./validation-behavior";
 export { default as defaultsTest } from "./defaults";
 export { default as loadGridTest, loadGridStrictTest } from "./load-grid";
+export {
+  default as loadStepsEditorTest,
+  loadStepsEditorInteractionTest,
+  loadStepsEditorCascadingResetTest,
+  loadStepsEditorConditionalTest,
+} from "./load-steps-editor";

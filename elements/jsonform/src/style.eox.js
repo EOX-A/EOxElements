@@ -224,7 +224,6 @@ export const styleEOX = `
   [data-schematype] p {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-style: italic;
   }
   .errmsg {
     font-size: x-small;
@@ -294,6 +293,19 @@ export const styleEOX = `
   .ace_editor,
   .ace_editor * {
     font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
+  }
+  .markdown-toolbar {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  .ace_editor {
+    border-radius: 0.5rem;
+  }
+  .ace_editor * {
+    border-radius: 0;
+  }
+  .markdown-toolbar + .ace_editor {
+    border-top-left-radius: 0 !important;
   }
 
   /* Hide stuff on the root level */

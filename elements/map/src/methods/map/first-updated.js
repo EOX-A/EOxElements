@@ -27,6 +27,15 @@ export default function firstUpdatedMethod(zoomExtent, EOxMap) {
     EOxMap.dispatchEvent(new CustomEvent("loadend", { detail: EOxMap.map }));
   });
 
+  // Set up a ResizeObserver to expose the map container's width/height via a 'resize' event
+  const resizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      EOxMap.mapResizeEvent(entry);
+    }
+  });
+  EOxMap.setResizeObserver(resizeObserver);
+  resizeObserver.observe(EOxMap);
+
   // Dispatch a custom "mapmounted" event to indicate that the map has been successfully mounted
   EOxMap.dispatchEvent(new CustomEvent("mapmounted", { detail: EOxMap.map }));
 }

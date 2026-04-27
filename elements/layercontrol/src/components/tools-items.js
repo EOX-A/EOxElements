@@ -185,8 +185,6 @@ export class EOxLayerControlTabs extends LitElement {
     ${eoxStyle}
     figure {
       padding: var(--padding-vertical) var(--padding);
-      background-color: var(--surface); /* fallback */
-      background-color: var(--item-hover-color);
     }
     .listed [name*=-icon] {
       display: none;
@@ -197,7 +195,7 @@ export class EOxLayerControlTabs extends LitElement {
     }
     .tabbed > nav > div > label,
     .tabbed > nav > div > span {
-      border-bottom: 1px solid var(--surface);
+      border-bottom: 1px solid var(--surface-variant);
     }
     .tabbed > nav > div > label.highlighted,
     .tabbed > nav > div > span.highlighted {

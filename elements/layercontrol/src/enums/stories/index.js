@@ -610,6 +610,7 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
       slider: true,
       currentStep: "2021-03-01",
       displayFormat: "DD.MM.YYYY",
+      showUTC: true,
       controlValues: [
         "2022-12-01",
         "2022-11-01",

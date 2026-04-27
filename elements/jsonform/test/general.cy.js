@@ -8,6 +8,7 @@ import {
   loadExternalValueTest,
   loadReRenderFormOnChangeTest,
   loadMarkdownTest,
+  loadCodeMarkdownToolbarTest,
   triggerChangeEventTest,
   loadValuesTest,
   loadMisMatchingValuesTest,
@@ -23,6 +24,10 @@ import {
   loadBinaryCheckboxTest,
   loadGridTest,
   loadGridStrictTest,
+  loadStepsEditorTest,
+  loadStepsEditorInteractionTest,
+  loadStepsEditorCascadingResetTest,
+  loadStepsEditorConditionalTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -35,6 +40,7 @@ describe("Jsonform", () => {
   it("loads value from url", () => loadExternalValueTest());
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
   it("loads the binary checkbox", () => loadBinaryCheckboxTest());
+  it("loads the code markdown toolbar", () => loadCodeMarkdownToolbarTest());
   it("loads the markdown editor", () => loadMarkdownTest());
   it("loads the code editor", () => loadCodeTest());
   it("triggers a change event when typing", () => triggerChangeEventTest());
@@ -51,4 +57,11 @@ describe("Jsonform", () => {
   it("handles defaults correctly", () => defaultsTest());
   it("loads the grid layout", () => loadGridTest());
   it("loads the grid-strict layout", () => loadGridStrictTest());
+  it("loads the steps editor", () => loadStepsEditorTest());
+  it("handles steps editor interaction", () =>
+    loadStepsEditorInteractionTest());
+  it("handles steps editor cascading reset", () =>
+    loadStepsEditorCascadingResetTest());
+  it("handles steps editor conditional if/then", () =>
+    loadStepsEditorConditionalTest());
 });

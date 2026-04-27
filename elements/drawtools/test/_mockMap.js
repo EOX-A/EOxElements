@@ -62,6 +62,7 @@ export class MockMap extends HTMLElement {
       drawInteraction_modify: {
         // Simulating on method for drawInteraction_modify
         on() {},
+        un() {},
       },
     };
     // Simulating removeInteraction method

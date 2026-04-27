@@ -3,9 +3,19 @@ import { MinMaxEditor } from "./minmax";
 import { ButtonsEditor } from "./buttons";
 import { BinaryCheckboxEditor } from "./binarycheckbox";
 import { SpatialEditor, spatialValidatorCreator } from "./spatial";
+import { StepsEditor } from "./steps";
+import { AceCustomEditor } from "./ace-custom";
+
+// Override the default ace editor with our custom version that e.g. offers a markdown toolbar.
+JSONEditor.defaults.editors.ace = AceCustomEditor;
 
 // Define custom input types
 const inputs = [
+  {
+    type: "object",
+    format: "steps",
+    func: StepsEditor,
+  },
   {
     type: "object",
     format: "minmax",

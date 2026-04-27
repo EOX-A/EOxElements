@@ -6,6 +6,7 @@ export { default as CatalogStory } from "./catalog"; // Input form based on STAC
 export { default as CollectionStory } from "./collection"; // Input form based on STAC collection config
 export { default as ExternalStory } from "./external"; // Input form based on External URL
 export { default as MarkdownStory } from "./markdown"; // Input form based on Markdown Editor config
+export { default as CodeMarkdownToolbarStory } from "./code-markdown-toolbar"; // Input form based on Code Markdown Toolbar config
 export { default as UnStyledStory } from "./unstyled"; // Unstyled input form
 export { default as BoundingBoxStory } from "./bounding-box"; // Input form based on drawtools - Box
 export { default as PolygonStory } from "./polygons"; // Input form based on drawtools - Polygon
@@ -24,3 +25,4 @@ export { default as GridStory } from "./grid"; // Grid layout story
 export { default as GridStrictStory } from "./grid-strict"; // Grid strict layout story
 
 export { default as FlexLayoutStory } from "./flex-layout"; // Flex layout story
+export { default as StepsEditorStory } from "./steps-editor"; // Steps editor wizard story
