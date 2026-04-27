@@ -26,6 +26,12 @@ export const calendarStyle = `
   }
   .vc:not(body > .vc) {
     background-color: transparent !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+  }
+  .vc, .vc * {
+    box-sizing: border-box !important;
   }
   .vc:is(body > .vc) {
     background-color: var(--surface-container-lowest);
