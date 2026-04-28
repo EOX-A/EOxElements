@@ -12,6 +12,7 @@ import { when } from "lit/directives/when.js";
 /**
  * @typedef {import("../types").DateRange} DateRange
  * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("../types").selectionDuration} selectionDuration
  */
 
 /**
@@ -30,6 +31,8 @@ export class EOxTimeControlTimeline extends LitElement {
   static get properties() {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
+      selectionDuration: { type: Object, attribute: false },
+      selectionResizable: { type: Boolean, attribute: "selection-resizable" },
     };
   }
 
@@ -59,6 +62,26 @@ export class EOxTimeControlTimeline extends LitElement {
      * @type {boolean}
      */
     this.unstyled = false;
+
+    /**
+     * The selection duration to be applied when clicking on the timeline background.
+     * Strictly supports what dayjs.duration() supports:
+     * - ISO 8601 duration string: 'P1M', 'PT0S', etc.
+     * - Milliseconds: 100
+     * - Dayjs duration object: { months: 1, days: 2 }
+     *
+     * @type {selectionDuration}
+     */
+    this.selectionDuration = {
+      days: 1,
+    };
+
+    /**
+     * Whether range selection is enabled.
+     *
+     * @type {boolean}
+     */
+    this.selectionResizable = true;
   }
 
   /**
@@ -144,6 +167,14 @@ export class EOxTimeControlTimeline extends LitElement {
     setTimeout(() => initTimelineMethod(this));
   }
 
+  /**
+   * Whenever selectionResizable changes, update the CSS class on the timeline-wrapper div.
+   * @param {Map} changedProperties
+   */
+  updated(changedProperties) {
+    if (changedProperties.has("selectionResizable")) this.requestUpdate();
+  }
+
   render() {
     return html`
       <style>
@@ -152,7 +183,11 @@ export class EOxTimeControlTimeline extends LitElement {
         ${!this.unstyled && styleEOX}
         ${styleTimeline}
       </style>
-      <div class="timeline-wrapper">
+      <div
+        class="timeline-wrapper ${this.selectionResizable
+          ? "range-selection-enabled"
+          : "range-selection-disabled"}"
+      >
         <div id="timeline"></div>
         ${when(
           this.loading,

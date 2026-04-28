@@ -23,6 +23,7 @@ import {
   loadNoMapSynchronization,
   loadExpertModeExport,
   loadDateInUTC,
+  loadTimelineWithRangeConfiguration,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -56,6 +57,10 @@ describe("TimeControl", () => {
 
   // Test to verify that timeline component loads with vis-timeline visualization
   it("loads timeline", () => loadTimeline());
+
+  // Test to verify that timeline component loads with range configuration
+  it("loads timeline with range configuration", () =>
+    loadTimelineWithRangeConfiguration());
 
   // Test to verify that custom format and init date work together
   it("loads date with format and init date combined", () =>

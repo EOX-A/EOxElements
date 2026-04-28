@@ -15,6 +15,8 @@ import {
   NoMapStory,
   DateWithInitDateStory,
   DateInUTCStory,
+  TimelineSelectionDurationStory,
+  TimelineSelectionResizableStory,
 } from "./index";
 
 export default {
@@ -125,6 +127,24 @@ export const Slider = SliderStory;
  * comprehensive time navigation interface.
  */
 export const Timeline = TimelineStory;
+
+/**
+ * Timeline visualization with custom selection duration
+ *
+ * This example demonstrates the `selectionDuration` property, which allows defining the
+ * default selection duration (if no item is clicked).
+ * It strictly supports native dayjs duration formats (e.g., `{ months: 1 }`, `"P1M"`, or `100` for milliseconds).
+ */
+export const TimelineSelectionDuration = TimelineSelectionDurationStory;
+
+/**
+ * Timeline visualization with non-resizable selection
+ *
+ * This example demonstrates the `selectionResizable` property. If enabled, the selected
+ * range can be modified by the user. If false (as shown here), then the user can **not**
+ * modify the range.
+ */
+export const TimelineSelectionResizable = TimelineSelectionResizableStory;
 
 /**
  * External map rendering mode for timelapse export with custom map rendering logic
