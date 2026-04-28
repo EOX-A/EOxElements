@@ -26,8 +26,7 @@ const loadTimelineWithRangeConfiguration = () => {
     <eox-timecontrol for="eox-map#timeline">
       <eox-timecontrol-timeline
         .selectionDuration=${{
-          time: 1,
-          unit: "minute",
+          minutes: 1,
         }}
         .selectionResizable=${true}
       ></eox-timecontrol-timeline>
