@@ -2,7 +2,7 @@ import { html } from "lit";
 
 import { getDate } from "../utils.js";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
+import utc from "dayjs/plugin/utc.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 dayjs.extend(utc);
