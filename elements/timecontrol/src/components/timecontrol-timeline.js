@@ -64,14 +64,16 @@ export class EOxTimeControlTimeline extends LitElement {
     this.unstyled = false;
 
     /**
-     * The selected range of the timeline.
-     * Dayjs duration object - https://day.js.org/docs/en/plugin/duration
+     * The selection duration to be applied when clicking on the timeline background.
+     * Strictly supports what dayjs.duration() supports:
+     * - ISO 8601 duration string: 'P1M', 'PT0S', etc.
+     * - Milliseconds: 100
+     * - Dayjs duration object: { months: 1, days: 2 }
      *
      * @type {selectionDuration}
      */
     this.selectionDuration = {
-      time: 1,
-      unit: "day",
+      days: 1,
     };
 
     /**

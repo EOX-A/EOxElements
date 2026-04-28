@@ -189,10 +189,10 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
 
     const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
     if (isBackgroundClick) {
-      const durationTime = EOxTimeControlTimeline.selectionDuration.time;
-      const durationUnit =
-        EOxTimeControlTimeline.selectionDuration.unit || undefined;
-      const duration = dayjs.duration(durationTime, durationUnit);
+      const selection = /** @type {any} */ (
+        EOxTimeControlTimeline.selectionDuration
+      );
+      const duration = dayjs.duration(selection);
 
       const startDate = EOxTimeControl.showUTC
         ? dayjs(utcFormattedDate).utc().format()

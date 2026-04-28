@@ -15,7 +15,8 @@ import {
   NoMapStory,
   DateWithInitDateStory,
   DateInUTCStory,
-  TimelineWithRangeConfigurationStory,
+  TimelineSelectionDurationStory,
+  TimelineSelectionResizableStory,
 } from "./index";
 
 export default {
@@ -128,19 +129,22 @@ export const Slider = SliderStory;
 export const Timeline = TimelineStory;
 
 /**
- * Timeline visualization using vis-timeline with range configuration
+ * Timeline visualization with custom selection duration
  *
- * This example shows the full power of the timecontrol component with the `<eox-timecontrol-timeline>`
- * component. The timeline displays timeline items as milestones grouped by layer, allowing users
- * to visualize time-based data across multiple layers.
- *
- * Features demonstrated:
- * - Timeline visualization with groups and items
- * - Select range type configuration
- * - Range selection enabled/disabled configuration
+ * This example demonstrates the `selectionDuration` property, which allows defining the
+ * default selection duration (if no item is clicked).
+ * It strictly supports native dayjs duration formats (e.g., `{ months: 1 }`, `"P1M"`, or `100` for milliseconds).
  */
-export const TimelineWithRangeConfiguration =
-  TimelineWithRangeConfigurationStory;
+export const TimelineSelectionDuration = TimelineSelectionDurationStory;
+
+/**
+ * Timeline visualization with non-resizable selection
+ *
+ * This example demonstrates the `selectionResizable` property. If enabled, the selected
+ * range can be modified by the user. If false (as shown here), then the user can **not**
+ * modify the range.
+ */
+export const TimelineSelectionResizable = TimelineSelectionResizableStory;
 
 /**
  * External map rendering mode for timelapse export with custom map rendering logic
