@@ -26,6 +26,7 @@
 - [FilterConfig](../../../elements/timecontrol/type-aliases/FilterConfig.md)
 - [SelectedDateRange](../../../elements/timecontrol/type-aliases/SelectedDateRange.md)
 - [SelectedDates](../../../elements/timecontrol/type-aliases/SelectedDates.md)
+- [selectionDuration](../../../elements/timecontrol/type-aliases/selectionDuration.md)
 - [SliderValue](../../../elements/timecontrol/type-aliases/SliderValue.md)
 - [TimeControlConfig](../../../elements/timecontrol/type-aliases/TimeControlConfig.md)
 - [TimeControlDateOptions](../../../elements/timecontrol/type-aliases/TimeControlDateOptions.md)

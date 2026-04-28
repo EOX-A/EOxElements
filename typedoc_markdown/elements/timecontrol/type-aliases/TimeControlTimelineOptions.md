@@ -8,16 +8,34 @@
 
 > **TimeControlTimelineOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:154](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L154)
+Defined in: [elements/timecontrol/src/types.ts:163](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L163)
 
 Configuration options for the time control timeline component.
 
 ## Properties
 
+### selectionDuration?
+
+> `optional` **selectionDuration?**: [`selectionDuration`](selectionDuration.md)
+
+Defined in: [elements/timecontrol/src/types.ts:177](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L177)
+
+The selected range of the timeline.
+
+***
+
+### selectionResizable?
+
+> `optional` **selectionResizable?**: `boolean`
+
+Defined in: [elements/timecontrol/src/types.ts:172](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L172)
+
+***
+
 ### unstyled?
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:158](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L158)
+Defined in: [elements/timecontrol/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L167)
 
 Whether to disable default styling.

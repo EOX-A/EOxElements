@@ -8,7 +8,7 @@
 
 > **TimeControlDateOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:96](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L96)
+Defined in: [elements/timecontrol/src/types.ts:96](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L96)
 
 Configuration options for the time control date component.
 
@@ -18,7 +18,7 @@ Configuration options for the time control date component.
 
 > `optional` **format?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:100](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L100)
+Defined in: [elements/timecontrol/src/types.ts:100](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L100)
 
 Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
@@ -28,7 +28,7 @@ Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
 > `optional` **navigation?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:104](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L104)
+Defined in: [elements/timecontrol/src/types.ts:104](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L104)
 
 Whether to show navigation buttons (previous/next).
 
@@ -38,6 +38,6 @@ Whether to show navigation buttons (previous/next).
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:108](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L108)
+Defined in: [elements/timecontrol/src/types.ts:108](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L108)
 
 Whether to disable default styling.

@@ -8,7 +8,7 @@
 
 > **FilterConfig** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:221](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L221)
+Defined in: [elements/timecontrol/src/types.ts:240](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L240)
 
 Configuration for filter options in time control.
 
@@ -18,7 +18,7 @@ Configuration for filter options in time control.
 
 > `optional` **expanded?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:237](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L237)
+Defined in: [elements/timecontrol/src/types.ts:256](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L256)
 
 Whether the filter is expanded by default.
 
@@ -28,7 +28,7 @@ Whether the filter is expanded by default.
 
 > **key**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:225](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L225)
+Defined in: [elements/timecontrol/src/types.ts:244](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L244)
 
 Filter key/property name.
 
@@ -38,7 +38,7 @@ Filter key/property name.
 
 > `optional` **max?**: `number`
 
-Defined in: [elements/timecontrol/src/types.ts:245](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L245)
+Defined in: [elements/timecontrol/src/types.ts:264](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L264)
 
 Maximum value for range filters.
 
@@ -48,7 +48,7 @@ Maximum value for range filters.
 
 > `optional` **min?**: `number`
 
-Defined in: [elements/timecontrol/src/types.ts:241](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L241)
+Defined in: [elements/timecontrol/src/types.ts:260](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L260)
 
 Minimum value for range filters.
 
@@ -58,7 +58,7 @@ Minimum value for range filters.
 
 > `optional` **state?**: `object`
 
-Defined in: [elements/timecontrol/src/types.ts:253](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L253)
+Defined in: [elements/timecontrol/src/types.ts:272](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L272)
 
 Current filter state.
 
@@ -80,7 +80,7 @@ Current filter state.
 
 > `optional` **step?**: `number`
 
-Defined in: [elements/timecontrol/src/types.ts:249](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L249)
+Defined in: [elements/timecontrol/src/types.ts:268](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L268)
 
 Step value for range filters.
 
@@ -90,7 +90,7 @@ Step value for range filters.
 
 > **title**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:229](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L229)
+Defined in: [elements/timecontrol/src/types.ts:248](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L248)
 
 Display title for the filter.
 
@@ -100,6 +100,6 @@ Display title for the filter.
 
 > **type**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:233](https://github.com/EOX-A/EOxElements/blob/f9d90a1cbcec6885ffa557ec455be0c1e1bed2c4/elements/timecontrol/src/types.ts#L233)
+Defined in: [elements/timecontrol/src/types.ts:252](https://github.com/EOX-A/EOxElements/blob/f50a27a1e7e6e8476a772c12ed8950e1cdf5f4c2/elements/timecontrol/src/types.ts#L252)
 
 Filter type (e.g., "range").

@@ -21,6 +21,7 @@
 - [FilterConfig](type-aliases/FilterConfig.md)
 - [SelectedDateRange](type-aliases/SelectedDateRange.md)
 - [SelectedDates](type-aliases/SelectedDates.md)
+- [selectionDuration](type-aliases/selectionDuration.md)
 - [SliderValue](type-aliases/SliderValue.md)
 - [TimeControlConfig](type-aliases/TimeControlConfig.md)
 - [TimeControlDateOptions](type-aliases/TimeControlDateOptions.md)
