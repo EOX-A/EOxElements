@@ -146,9 +146,11 @@ export const createGlobusLayer = (olLayer, mapPool) => {
   }
 
   if (source instanceof XYZ_ol) {
+    // @ts-expect-error TODO
+    const url = source._updatedUrl || source.getUrls()[0];
     return new XYZ(id, {
       isBaseLayer: olLayer.get("base"),
-      url: source.getUrls()[0],
+      url: url,
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
     });
