@@ -25,7 +25,7 @@ jobs:
       - name: Set up NPM 🔧
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: 20
+          node-version: 24
           registry-url: "https://registry.npmjs.org"
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       # Ensure npm 11.5.1 or later is installed
