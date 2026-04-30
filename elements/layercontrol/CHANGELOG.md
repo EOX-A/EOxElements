@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.4.2...layercontrol-v1.5.0) (2026-04-30)
+
+
+### Features
+
+* Auto-expand tools ([#2273](https://github.com/EOX-A/EOxElements/issues/2273)) ([fe4d24c](https://github.com/EOX-A/EOxElements/commit/fe4d24c15692115b1da8161463a94b94d53e5e8d))
+* Support for UTC datetime in `eox-layercontrol-layer-datetime` ([#2265](https://github.com/EOX-A/EOxElements/issues/2265)) ([35f7c68](https://github.com/EOX-A/EOxElements/commit/35f7c6811b8dae3d46eeadc0cad9d76490835617))
+
+
+### Bug Fixes
+
+* Increase version of color-legend-element to 1.4.0 ([#2289](https://github.com/EOX-A/EOxElements/issues/2289)) ([6a49d66](https://github.com/EOX-A/EOxElements/commit/6a49d66ca5af71e79a0d5fd22f820fffab801adb))
+* **style:** Layer type visibility css var ([#2286](https://github.com/EOX-A/EOxElements/issues/2286)) ([0a1b53b](https://github.com/EOX-A/EOxElements/commit/0a1b53b214df5302b1c0d9aeb6330d2afcbab48d))
+* **style:** Rotate layercontrol tools button ([#2272](https://github.com/EOX-A/EOxElements/issues/2272)) ([1c17ddd](https://github.com/EOX-A/EOxElements/commit/1c17ddd2fb369a6894d942cb20fc4cdddd23d99b))
+* **style:** Vertical padding for list items and tools ([#2271](https://github.com/EOX-A/EOxElements/issues/2271)) ([34d6fe2](https://github.com/EOX-A/EOxElements/commit/34d6fe2a57422dd86dec49e9feb975568c6b7ae4))
+* Update 3D (XYZ) layers url's when params changed in layerConfig ([#2215](https://github.com/EOX-A/EOxElements/issues/2215)) ([d5e771b](https://github.com/EOX-A/EOxElements/commit/d5e771b6bc1a6dbd4ad6026b5f4374e7d0e9a140))
+
 ## [1.4.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.4.1...layercontrol-v1.4.2) (2026-04-13)
 
 

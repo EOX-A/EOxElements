@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.3.0...drawtools-v1.4.0) (2026-04-30)
+
+
+### Features
+
+* Add removeFeature and removeFeatureByIndex methods ([#2302](https://github.com/EOX-A/EOxElements/issues/2302)) ([f94170f](https://github.com/EOX-A/EOxElements/commit/f94170fbb7705ff9528bbd4813defd297872251a))
+
+
+### Bug Fixes
+
+* Prevent keydown listener accumulation ([#2300](https://github.com/EOX-A/EOxElements/issues/2300)) ([0ca6f22](https://github.com/EOX-A/EOxElements/commit/0ca6f2220760f38e59ae5437ae8412f90e97a01f))
+
 ## [1.3.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.2.0...drawtools-v1.3.0) (2026-04-13)
 
 
