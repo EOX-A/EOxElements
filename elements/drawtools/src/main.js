@@ -9,6 +9,7 @@ import {
   emitDrawnFeaturesMethod,
   createSelectHandler,
   handleLayerId,
+  onKeyDownMethod,
 } from "./methods/draw";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
@@ -99,6 +100,11 @@ export class EOxDrawTools extends LitElement {
    * @type Array<import("ol").Feature>
    */
   #drawnFeatures = [];
+
+  /**
+   * @type {(e: KeyboardEvent) => void}
+   */
+  #onKeyDownListener = (e) => onKeyDownMethod(e, this);
 
   constructor() {
     super();
@@ -450,6 +456,7 @@ export class EOxDrawTools extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    document.addEventListener("keydown", this.#onKeyDownListener);
     if (this.drawLayer && this.eoxMap) {
       const { reset } = initLayerMethod(this, this.multipleFeatures);
       this.resetLayer = reset;
@@ -458,6 +465,7 @@ export class EOxDrawTools extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    document.removeEventListener("keydown", this.#onKeyDownListener);
     this.resetLayer?.(this);
   }
   // Render method for UI display
