@@ -453,6 +453,14 @@
             },
             {
               "kind": "field",
+              "name": "#onKeyDownListener",
+              "privacy": "private",
+              "type": {
+                "text": "(e: KeyboardEvent) => void"
+              }
+            },
+            {
+              "kind": "field",
               "name": "continuous",
               "privacy": "public",
               "type": {

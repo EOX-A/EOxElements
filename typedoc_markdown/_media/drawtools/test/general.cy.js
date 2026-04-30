@@ -12,6 +12,7 @@ import {
   measureTest,
   layerIdWithMeasure,
   drawUpdateEventTest,
+  abortDrawingWithEscapeTest,
 } from "./cases";
 
 import { TEST_SELECTORS } from "../src/enums";
@@ -61,4 +62,7 @@ describe("Drawtools", () => {
   // Test case to ensure drawupdate event is fired exactly once
   it("ensures drawupdate event is fired exactly once", () =>
     drawUpdateEventTest());
+
+  // Test case to ensure drawing is aborted on Escape key
+  it("aborts drawing on Escape key", () => abortDrawingWithEscapeTest());
 });
