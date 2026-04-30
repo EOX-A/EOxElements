@@ -13,6 +13,7 @@ import {
   layerIdWithMeasure,
   drawUpdateEventTest,
   abortDrawingWithEscapeTest,
+  removeFeatureTest,
 } from "./cases";
 
 import { TEST_SELECTORS } from "../src/enums";
@@ -65,4 +66,7 @@ describe("Drawtools", () => {
 
   // Test case to ensure drawing is aborted on Escape key
   it("aborts drawing on Escape key", () => abortDrawingWithEscapeTest());
+
+  // Test case to ensure features can be removed programmatically
+  it("removes features programmatically", () => removeFeatureTest());
 });
