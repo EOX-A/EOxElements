@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-jRWAZmH_.js";import{i as t,r as n}from"./iframe-CUA5ekX4.js";import{n as r,t as i}from"./pako.esm-MSTD-XMi.js";var a;e((()=>{r(),t(),a=class extends n{decodeBlock(e){return i(new Uint8Array(e)).buffer}}}))();export{a as default};

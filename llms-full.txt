@@ -522,6 +522,8 @@ Usage examples and visual demos are available in Storybook stories, including sc
 
 - `startDrawing`: Triggers starting the drawing interaction on the map.
 - `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
+- `removeFeature`: Removes a feature from the drawn features.
+- `removeFeatureByIndex`: Removes a feature from the drawn features by its index.
 
 Usage: `document.querySelector("eox-drawtools").startDrawing();`
 
@@ -12377,7 +12379,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-30T08:28:15.125Z",
+              default: "2026-04-30T08:37:46.887Z",
               options: {
                 hidden: true,
               },

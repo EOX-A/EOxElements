@@ -10,6 +10,8 @@ import {
   createSelectHandler,
   handleLayerId,
   onKeyDownMethod,
+  removeFeatureMethod,
+  removeFeatureByIndexMethod,
 } from "./methods/draw";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
@@ -40,6 +42,8 @@ import {
  *
  * - `startDrawing`: Triggers starting the drawing interaction on the map.
  * - `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
+ * - `removeFeature`: Removes a feature from the drawn features.
+ * - `removeFeatureByIndex`: Removes a feature from the drawn features by its index.
  *
  * Usage: `document.querySelector("eox-drawtools").startDrawing();`
  *
@@ -329,6 +333,22 @@ export class EOxDrawTools extends LitElement {
    */
   discardDrawing() {
     discardDrawingMethod(this);
+  }
+
+  /**
+   * Removes a feature from the drawn features.
+   * @param {import("ol").Feature} feature - The feature to remove.
+   */
+  removeFeature(feature) {
+    removeFeatureMethod(this, feature);
+  }
+
+  /**
+   * Removes a feature from the drawn features by its index.
+   * @param {number} index - The index of the feature to remove.
+   */
+  removeFeatureByIndex(index) {
+    removeFeatureByIndexMethod(this, index);
   }
 
   /**
