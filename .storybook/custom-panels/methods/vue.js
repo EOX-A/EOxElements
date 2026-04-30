@@ -81,7 +81,12 @@ export const render = async (data) => {
 
     const attributesTemplate = element.attributes
       .filter(([key, value]) => key !== "style")
-      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .map(([key, value]) => {
+        if (typeof value === "object") {
+          return `:${key}='${JSON.stringify(value)}'`;
+        }
+        return `${key}${value === true ? "" : `="${value}"`}`;
+      })
       .join("\n      ");
 
     let children = "";

@@ -24,11 +24,17 @@ export const parseElements = (storyData) => {
     const storySlot = !!elementArgs.storySlot;
     const storyWrap = !!elementArgs.storyWrap;
 
-    const attributes = Object.entries(elementArgs).filter(
-      ([key, value]) =>
-        ["id", "style", "class"].includes(key) ||
-        (storyData.argTypes[key]?.table?.category === "attributes" && !!value),
-    );
+    const attributes = Object.entries(elementArgs).filter(([key, value]) => {
+      const isBaseAttr = ["id", "style", "class"].includes(key);
+      const isCategoryAttr =
+        storyData.argTypes[key]?.table?.category === "attributes";
+      if (!isBaseAttr && !isCategoryAttr) return false;
+      if (!value) return false;
+      if (typeof value === "object") {
+        return JSON.stringify(value).length <= 50;
+      }
+      return true;
+    });
     const events = Object.entries(elementArgs).filter(
       ([key, value]) => storyData.argTypes[key]?.table?.category === "events",
     );
@@ -50,12 +56,14 @@ export const parseElements = (storyData) => {
       "storyWrap",
     ];
 
-    const properties = Object.entries(elementArgs).filter(
-      ([key, value]) =>
-        !internalArgs.includes(key) &&
-        !attributes.find(([aKey, aValue]) => aKey === key) &&
-        !events.find(([eKey, eValue]) => eKey === key),
-    );
+    const properties = Object.entries(elementArgs).filter(([key, value]) => {
+      if (internalArgs.includes(key)) return false;
+      const attrMatch = attributes.find(([aKey]) => aKey === key);
+      if (attrMatch) return false;
+      if (events.find(([eKey]) => eKey === key)) return false;
+
+      return true;
+    });
 
     elements.push({
       tagName: e,

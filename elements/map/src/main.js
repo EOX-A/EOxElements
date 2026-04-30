@@ -154,22 +154,22 @@ export class EOxMap extends LitElement {
   static get properties() {
     return {
       map: { attribute: false, state: true },
-      config: { attribute: false, type: Object },
-      center: { attribute: false, type: Array },
-      layers: { attribute: false, type: Array },
-      zoom: { attribute: false, type: Number },
-      animationOptions: { attribute: false, type: Object },
-      controls: { attribute: false, type: Object },
-      interactions: { attribute: false, type: Object },
-      lonLatCenter: { attribute: false, type: Array },
-      lonLatExtent: { attribute: false, type: Array },
+      config: { type: Object },
+      center: { type: Array },
+      layers: { type: Array },
+      zoom: { type: Number },
+      animationOptions: { type: Object },
+      controls: { type: Object },
+      interactions: { type: Object },
+      lonLatCenter: { type: Array },
+      lonLatExtent: { type: Array },
       mapControls: { attribute: false, state: true, type: Object },
       preventScroll: { attribute: "prevent-scroll", type: Boolean },
       projection: { attribute: "projection", type: String },
       selectInteractions: { attribute: false, state: true, type: Object },
       sync: { attribute: "sync", type: String },
-      zoomExtent: { attribute: false, type: Array },
-      globeConfig: { attribute: false, type: Object },
+      zoomExtent: { type: Array },
+      globeConfig: { type: Object },
     };
   }
 

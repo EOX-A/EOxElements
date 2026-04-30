@@ -18,7 +18,7 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
  *
  * Features:
  * - Renders forms from JSON schema, supporting complex nested structures and custom validation.
- * - All properties and event handlers are passed via args, enabling dynamic configuration and integration.
+ * - All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).
  * - Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).
  * - Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).
  * - Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.
@@ -33,11 +33,11 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
  */
 export class EOxJSONForm extends LitElement {
   static properties = {
-    schema: { attribute: false, type: Object },
-    value: { attribute: false, type: Object },
-    defaults: { attribute: false, type: Object },
-    options: { attribute: false, type: Object },
-    customEditorInterfaces: { attribute: false, type: Array },
+    schema: { type: Object },
+    value: { type: Object },
+    defaults: { type: Object },
+    options: { type: Object },
+    customEditorInterfaces: { type: Array },
     noShadow: { attribute: "no-shadow", type: Boolean },
     propertiesToggle: { attribute: "properties-toggle", type: Boolean },
     unstyled: { type: Boolean },
