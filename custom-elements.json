@@ -4840,38 +4840,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "elements/tour/node_modules/esbuild/lib/main.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "id"
-        },
-        {
-          "kind": "variable",
-          "name": "flags",
-          "type": {
-            "text": "array"
-          },
-          "default": "[]"
-        },
-        {
-          "kind": "variable",
-          "name": "warnings"
-        },
-        {
-          "kind": "variable",
-          "name": "name"
-        },
-        {
-          "kind": "variable",
-          "name": "sharedBuffer",
-          "default": "new SharedArrayBuffer(8)"
-        }
-      ],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
       "path": "elements/timecontrol/node_modules/@eox/map/src/main.js",
       "declarations": [
         {
