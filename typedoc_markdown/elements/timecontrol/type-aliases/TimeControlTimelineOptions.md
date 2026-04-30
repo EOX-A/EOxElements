@@ -8,7 +8,7 @@
 
 > **TimeControlTimelineOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:163](https://github.com/EOX-A/EOxElements/blob/bb049ca7188a24447cf162588dcf3872e085675b/elements/timecontrol/src/types.ts#L163)
+Defined in: [elements/timecontrol/src/types.ts:163](https://github.com/EOX-A/EOxElements/blob/d5e771b6bc1a6dbd4ad6026b5f4374e7d0e9a140/elements/timecontrol/src/types.ts#L163)
 
 Configuration options for the time control timeline component.
 
@@ -18,7 +18,7 @@ Configuration options for the time control timeline component.
 
 > `optional` **selectionDuration?**: [`selectionDuration`](selectionDuration.md)
 
-Defined in: [elements/timecontrol/src/types.ts:177](https://github.com/EOX-A/EOxElements/blob/bb049ca7188a24447cf162588dcf3872e085675b/elements/timecontrol/src/types.ts#L177)
+Defined in: [elements/timecontrol/src/types.ts:177](https://github.com/EOX-A/EOxElements/blob/d5e771b6bc1a6dbd4ad6026b5f4374e7d0e9a140/elements/timecontrol/src/types.ts#L177)
 
 The selected range of the timeline.
 
@@ -28,7 +28,7 @@ The selected range of the timeline.
 
 > `optional` **selectionResizable?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:172](https://github.com/EOX-A/EOxElements/blob/bb049ca7188a24447cf162588dcf3872e085675b/elements/timecontrol/src/types.ts#L172)
+Defined in: [elements/timecontrol/src/types.ts:172](https://github.com/EOX-A/EOxElements/blob/d5e771b6bc1a6dbd4ad6026b5f4374e7d0e9a140/elements/timecontrol/src/types.ts#L172)
 
 ***
 
@@ -36,6 +36,6 @@ Defined in: [elements/timecontrol/src/types.ts:172](https://github.com/EOX-A/EOx
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/bb049ca7188a24447cf162588dcf3872e085675b/elements/timecontrol/src/types.ts#L167)
+Defined in: [elements/timecontrol/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/d5e771b6bc1a6dbd4ad6026b5f4374e7d0e9a140/elements/timecontrol/src/types.ts#L167)
 
 Whether to disable default styling.
