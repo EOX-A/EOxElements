@@ -7,10 +7,10 @@ import { base64EncodeSpec } from "./methods/encode";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
- * Pass a valid Vega spec as `spec` property in order to render a chart.
+ * Pass a valid Vega spec as `spec` property or attribute in order to render a chart.
  * Optionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.
  *
- * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
+ * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property/attribute) and helper functionalities on top of Vega-Lite.
  *
  * Default `spec` settings (see the file `src/enums/default-spec.js`):
  * - `width`: "container" (make the chart width responsive to the parent)
@@ -19,8 +19,8 @@ import { base64EncodeSpec } from "./methods/encode";
  * - `resize`: true (autosize layout is re-calculated on every view update)
  * - `padding`: 16 (the padding in pixels to add around the visualization)
  *
- * These default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default
- * Vega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.
+ * These default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property/attribute passed to `eox-chart`. Also, there are default
+ * Vega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property/attribute.
  *
  * Helper functionalities:
  *
@@ -31,9 +31,9 @@ import { base64EncodeSpec } from "./methods/encode";
  */
 export class EOxChart extends LitElement {
   static properties = {
-    dataValues: { attribute: false },
-    spec: { attribute: false },
-    opt: { attribute: false, type: Object },
+    dataValues: { type: String },
+    spec: { type: String },
+    opt: { type: Object },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
   };

@@ -184,7 +184,6 @@ class EOxGeoSearch extends LitElement {
        */
       params: {
         type: Object,
-        attribute: "false",
       },
     };
   }
