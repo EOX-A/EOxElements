@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.4.0](https://github.com/EOX-A/EOxElements/compare/map-v2.3.0...map-v2.4.0) (2026-04-30)
+
+
+### Features
+
+* Controls layout and resize handling ([#2267](https://github.com/EOX-A/EOxElements/issues/2267)) ([c1b563c](https://github.com/EOX-A/EOxElements/commit/c1b563c0545f58b91b4204777509342099a5fac9))
+
+
+### Bug Fixes
+
+* Allow tooltip to appear outside the map container ([#2244](https://github.com/EOX-A/EOxElements/issues/2244)) ([138423d](https://github.com/EOX-A/EOxElements/commit/138423d5ae4cb6d93572c8abd0a7bbbb46bd255b))
+* Fetch the XYZ layer's url from _updatedUrl if existing ([#2268](https://github.com/EOX-A/EOxElements/issues/2268)) ([fc9b6a5](https://github.com/EOX-A/EOxElements/commit/fc9b6a5e216bd184cff7688d2417346f6cfdb404))
+* **style:** Css variable for comparison slider background ([#2287](https://github.com/EOX-A/EOxElements/issues/2287)) ([6bbf194](https://github.com/EOX-A/EOxElements/commit/6bbf194bda36f81ef70cb0f1105d3b81222a2fd1))
+* Use animationOptions config for fitting drawn features ([#2291](https://github.com/EOX-A/EOxElements/issues/2291)) ([3168c7d](https://github.com/EOX-A/EOxElements/commit/3168c7d4ebead6f8bf00c164a4df83acc31842e8))
+* ZoomExtent and sync race condition ([#2285](https://github.com/EOX-A/EOxElements/issues/2285)) ([f845e22](https://github.com/EOX-A/EOxElements/commit/f845e22fbcc0e80ad378cac0433bc5d494d6fcbc))
+
 ## [2.3.0](https://github.com/EOX-A/EOxElements/compare/map-v2.2.0...map-v2.3.0) (2026-03-10)
 
 
