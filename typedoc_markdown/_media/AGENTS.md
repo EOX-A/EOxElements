@@ -26,7 +26,7 @@ If any answer is "I don't know," stop. Ask a clarifying question. Do not guess.
 
 - **Package name:** `@eox/elements` (private, not published)
 - **Module system:** ESM (`"type": "module"`)
-- **Node requirement:** `>=20.19.0` (enforced via `engine-strict=true` in `.npmrc`)
+- **Node requirement:** `>=24.0.0` (enforced via `engine-strict=true` in `.npmrc`)
 - **Component framework:** [Lit](https://lit.dev/) (v3.2+)
 - **Language:** JavaScript with JSDoc type annotations (NOT TypeScript source files)
 
