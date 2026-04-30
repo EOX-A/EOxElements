@@ -518,6 +518,13 @@ Key features:
 
 Usage examples and visual demos are available in Storybook stories, including scenarios for multi-feature drawing, feature modification, selection, import/export, continuous drawing, format and projection control, and style customization.
 
+## Methods
+
+- `startDrawing`: Triggers starting the drawing interaction on the map.
+- `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
+
+Usage: `document.querySelector("eox-drawtools").startDrawing();`
+
 ### Attributes
 
 - `allow-modify` (boolean): Allow modifying the drawn feature(s)
@@ -579,8 +586,7 @@ This measurement is also displayed as a text label on the map using OpenLayers f
 
 ### Events
 
-- `drawupdate`: Fires whenever features are added, modified or discarded, where the event detail
-is the `drawnFeatures` array
+- `drawupdate`: Fires whenever features are added, modified or discarded
 
 ### Examples
 
@@ -12371,7 +12377,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-30T08:24:40.479Z",
+              default: "2026-04-30T08:28:15.125Z",
               options: {
                 hidden: true,
               },

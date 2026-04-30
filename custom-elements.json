@@ -390,7 +390,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-drawtools` element provides a comprehensive set of drawing, editing, selection, and import tools for vector features on an `eox-map`. It supports drawing multiple feature types (Polygon, Box, Point, Circle, LineString), continuous drawing, feature modification, selection from existing layers, and import/export in various formats (GeoJSON, WKT, native OL feature).\n\nKey features:\n- Draw polygons, boxes, points, circles, and lines on the map\n- Draw multiple features at once (set `multiple-features`)\n- Continuous drawing mode (set `continuous`)\n- Modify drawn features (set `allow-modify`)\n- Select features from a specified layer (`layer-id`)\n- Display a list of drawn/selected features (`show-list`)\n- Edit features as GeoJSON in a text editor (`show-editor`)\n- Import features via drag-and-drop or file upload (`import-features`)\n- Emit drawn features in different formats (`format`: `feature`, `geojson`, `wkt`)\n- Emit features in a specified projection (`projection`)\n- Customizable feature styles (`featureStyles`)\n- Unstyled and no-shadow variants for easy integration\n\nUsage examples and visual demos are available in Storybook stories, including scenarios for multi-feature drawing, feature modification, selection, import/export, continuous drawing, format and projection control, and style customization.",
+          "description": "The `eox-drawtools` element provides a comprehensive set of drawing, editing, selection, and import tools for vector features on an `eox-map`. It supports drawing multiple feature types (Polygon, Box, Point, Circle, LineString), continuous drawing, feature modification, selection from existing layers, and import/export in various formats (GeoJSON, WKT, native OL feature).\n\nKey features:\n- Draw polygons, boxes, points, circles, and lines on the map\n- Draw multiple features at once (set `multiple-features`)\n- Continuous drawing mode (set `continuous`)\n- Modify drawn features (set `allow-modify`)\n- Select features from a specified layer (`layer-id`)\n- Display a list of drawn/selected features (`show-list`)\n- Edit features as GeoJSON in a text editor (`show-editor`)\n- Import features via drag-and-drop or file upload (`import-features`)\n- Emit drawn features in different formats (`format`: `feature`, `geojson`, `wkt`)\n- Emit features in a specified projection (`projection`)\n- Customizable feature styles (`featureStyles`)\n- Unstyled and no-shadow variants for easy integration\n\nUsage examples and visual demos are available in Storybook stories, including scenarios for multi-feature drawing, feature modification, selection, import/export, continuous drawing, format and projection control, and style customization.\n\n## Methods\n\n- `startDrawing`: Triggers starting the drawing interaction on the map.\n- `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.\n\nUsage: `document.querySelector(\"eox-drawtools\").startDrawing();`",
           "name": "EOxDrawTools",
           "members": [
             {
@@ -470,19 +470,6 @@
               "attribute": "continuous"
             },
             {
-              "kind": "method",
-              "name": "setDrawnFeaturesInternal",
-              "parameters": [
-                {
-                  "name": "features",
-                  "type": {
-                    "text": "Array<Feature>"
-                  }
-                }
-              ],
-              "description": "Used internally to update the drawnFeatures state without overwriting the map layer source."
-            },
-            {
               "kind": "field",
               "name": "drawnFeatures",
               "privacy": "public",
@@ -504,72 +491,13 @@
             },
             {
               "kind": "method",
-              "name": "startDrawing"
+              "name": "startDrawing",
+              "description": "Triggers starting the drawing interaction on the map."
             },
             {
               "kind": "method",
-              "name": "discardDrawing"
-            },
-            {
-              "kind": "method",
-              "name": "handleFeatureChange",
-              "parameters": [
-                {
-                  "name": "text",
-                  "description": "The string representation of the features to be parsed.",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "replaceFeatures",
-                  "default": "false",
-                  "description": "A boolean flag indicating whether to replace the existing features.",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "animate",
-                  "default": "true",
-                  "description": "A boolean flag indicating whether to animate the map on feature change.",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleFilesChange",
-              "parameters": [
-                {
-                  "name": "evt",
-                  "description": "The event object from the file input interaction.",
-                  "type": {
-                    "text": "DragEvent | InputEvent & { target: HTMLInputElement }"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onModifyEnd"
-            },
-            {
-              "kind": "method",
-              "name": "updateGeoJSON",
-              "description": "Update #geoJSON with stringify feature."
-            },
-            {
-              "kind": "method",
-              "name": "emitDrawnFeatures",
-              "description": "Triggers different events when the drawing of a shape is completed."
-            },
-            {
-              "kind": "method",
-              "name": "updateLayer",
-              "description": "initializes the EOxMap and OlMap instances\nAnd stores them in the private properties #eoxMap and #olMap, respectively."
+              "name": "discardDrawing",
+              "description": "Triggers discarding/stopping the drawing interaction and deleting the drawn shapes."
             },
             {
               "kind": "field",
@@ -796,9 +724,9 @@
             {
               "name": "drawupdate",
               "type": {
-                "text": "Array<Feature>"
+                "text": "CustomEvent"
               },
-              "description": "Fires whenever features are added, modified or discarded, where the event detail\nis the `drawnFeatures` array"
+              "description": "Fires whenever features are added, modified or discarded"
             }
           ],
           "attributes": [
