@@ -43,7 +43,7 @@
     "@json-editor/json-editor": "^2.16.0",
     "@turf/bbox-polygon": "^7.3.5",
     "ace-builds": "^1.37.5",
-    "easymde": "^2.18.0",
+    "easymde": "^2.21.0",
     "isomorphic-dompurify": "^3.10.0",
     "lit": "^3.2.0",
     "lodash.isequal": "^4.5.0",
