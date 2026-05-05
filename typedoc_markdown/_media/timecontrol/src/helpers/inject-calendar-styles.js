@@ -99,11 +99,20 @@ export const calendarStyle = `
     color: var(--on-surface) !important;
   }
   button:hover {
-    background-color: color-mix(in srgb, var(--primary) 10%, transparent)!important
+    background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important;
   }
-  .vc-date[data-vc-date-selected] .vc-date__btn {
+  .vc-date[data-vc-date-selected="first"] .vc-date__btn,
+  .vc-date[data-vc-date-selected="last"] .vc-date__btn,
+  .vc-date[data-vc-date-hover="first"] .vc-date__btn {
     background-color: var(--primary) !important;
     color: var(--on-primary) !important;
+  }
+  .vc-date[data-vc-date-selected="middle"] .vc-date__btn {
+    background-color: color-mix(in srgb, var(--primary) 60%, transparent) !important;
+    color: var(--on-primary) !important;
+  }
+  .vc-date[data-vc-date-hover]:not([data-vc-date-hover="first"]) .vc-date__btn {
+    background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important;
   }
   .vc-date[data-vc-date-month="prev"] button,
   .vc-date[data-vc-date-month="next"] button,
