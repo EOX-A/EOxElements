@@ -62,3 +62,25 @@
     border-width: 0 0 1px 1px;
   }
 </style>
+
+<script>
+  /**
+   * Redirects old "markdown-with-editor" story links
+   * to the new "markdown-showcase" story in the static build.
+   */
+  (function () {
+    const url = new URL(window.location.href);
+    const path = url.searchParams.get("path");
+    const id = url.searchParams.get("id");
+
+    if (path && path.includes("markdown-with-editor")) {
+      const newPath = path.replace("markdown-with-editor", "markdown-showcase");
+      url.searchParams.set("path", newPath);
+      window.location.replace(url.href);
+    } else if (id && id.includes("markdown-with-editor")) {
+      const newId = id.replace("markdown-with-editor", "markdown-showcase");
+      url.searchParams.set("id", newId);
+      window.location.replace(url.href);
+    }
+  })();
+</script>

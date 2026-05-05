@@ -55,6 +55,10 @@ export class EOxLayerControl extends LitElement {
       attribute: "globally-exclusive-layers",
       type: Boolean,
     },
+    toolsAutoExpand: {
+      attribute: "tools-auto-expand",
+      type: Boolean,
+    },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -147,6 +151,13 @@ export class EOxLayerControl extends LitElement {
      * @type {Boolean}
      */
     this.globallyExclusiveLayers = false;
+
+    /**
+     * If enabled, toggling the layer visibility will also open/close the layer tools.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAutoExpand = false;
 
     /**
      * List of custom editor interfaces for layer config eox-jsonforms
@@ -252,6 +263,7 @@ export class EOxLayerControl extends LitElement {
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
             .globallyExclusiveLayers=${this.globallyExclusiveLayers}
+            .toolsAutoExpand=${this.toolsAutoExpand}
             .customEditorInterfaces=${this.customEditorInterfaces}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this)}

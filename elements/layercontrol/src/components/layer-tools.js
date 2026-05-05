@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -33,6 +33,11 @@ export class EOxLayerControlLayerTools extends LitElement {
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
+    open: { type: Boolean, reflect: true },
+    toolsAutoExpand: {
+      attribute: "tools-auto-expand",
+      type: Boolean,
+    },
     embedded: { state: true },
     customEditorInterfaces: { attribute: false, type: Array },
   };
@@ -77,12 +82,40 @@ export class EOxLayerControlLayerTools extends LitElement {
     this.toolsAsList = false;
 
     /**
+     * If enabled, the tools section will be opened.
+     *
+     * @type {Boolean}
+     */
+    this.open = false;
+
+    /**
+     * If enabled, toggling the layer visibility will also open/close the layer tools.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAutoExpand = false;
+
+    /**
      * Determine if tools are embedded in layercontrol or stand-alone
      *
      * @type {Boolean}
      */
     setTimeout(() => {
-      this.embedded = this.parentElement?.tagName === "EOX-LAYERCONTROL-LAYER";
+      const parent =
+        this.parentElement ||
+        /** @type {ShadowRoot} */ (this.getRootNode())?.host;
+      this.embedded = parent?.tagName === "EOX-LAYERCONTROL-LAYER";
+      if (
+        typeof this.open === "undefined" ||
+        this.open === false ||
+        this.open === null
+      ) {
+        this.open = this.toolsAutoExpand
+          ? !!this.layer?.getVisible()
+          : this.embedded === false
+            ? true
+            : !!this.layer?.get("layerControlToolsExpand");
+      }
     });
 
     /**
@@ -100,6 +133,16 @@ export class EOxLayerControlLayerTools extends LitElement {
    */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
+  }
+
+  updated(changedProperties) {
+    if (
+      this.toolsAutoExpand &&
+      (changedProperties.has("toolsAutoExpand") ||
+        changedProperties.has("layer"))
+    ) {
+      this.open = !!this.layer?.getVisible();
+    }
   }
 
   /**
@@ -242,9 +285,12 @@ export class EOxLayerControlLayerTools extends LitElement {
             () => html`
               <details
                 class="tools"
-                open=${this.embedded === false
-                  ? true
-                  : this.layer.get("layerControlToolsExpand") || nothing}
+                .open=${live(this.open)}
+                @toggle=${(
+                  /** @type {{ target: { open: boolean; }; }} */ evt,
+                ) => {
+                  this.open = evt.target.open;
+                }}
               >
                 <summary></summary>
                 <eox-layercontrol-tools-items
@@ -324,6 +370,13 @@ export class EOxLayerControlLayerTools extends LitElement {
       padding: .5rem !important;
       display: block;
     }*/
+    :host {
+      display: block;
+      margin-block: var(--padding-vertical) !important;
+    }
+    details[open] eox-layercontrol-tools-items {
+      display: block;
+    }
   `;
 }
 

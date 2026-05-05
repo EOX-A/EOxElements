@@ -17,11 +17,7 @@ const checkLayerRemovedFromRoot = () => {
       cy.get(`[data-layer=${layerToDelete}] eox-layercontrol-layer-tools`)
         .shadow()
         .within(() => {
-          cy.get(".tools > summary").click({
-            force: true,
-          });
-          // Click on the 'remove' icon to delete the layer
-          cy.get("button.remove-icon:visible").first().click();
+          cy.get("button.remove-icon").first().click({ force: true });
         });
 
       // Check if the layer UI element is removed from the layer control

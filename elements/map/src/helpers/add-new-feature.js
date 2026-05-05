@@ -68,9 +68,12 @@ export default function addNewFeature(
   if (!isDraw && features.length) {
     vectorLayer.getSource().addFeatures(features);
 
-    EOxMap.map.getView().fit(vectorLayer.getSource().getExtent(), {
-      duration: animate ? 750 : 0,
-    });
+    EOxMap.map.getView().fit(
+      vectorLayer.getSource().getExtent(),
+      EOxMap.animationOptions || {
+        duration: animate ? 750 : 0,
+      },
+    );
   }
 
   // Convert features to GeoJSON and dispatch custom events for drawing end or feature addition.

@@ -396,7 +396,7 @@ export class EOxTimeControl extends LitElement {
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
-      <main>
+      <main class="no-padding">
         <slot></slot>
       </main>
     `;

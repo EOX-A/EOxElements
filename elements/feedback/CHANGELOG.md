@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/feedback-v1.1.1...feedback-v1.2.0) (2026-04-13)
+
+
+### Features
+
+* Add screenResolution to created feedback request ([#2240](https://github.com/EOX-A/EOxElements/issues/2240)) ([618084a](https://github.com/EOX-A/EOxElements/commit/618084acaa54213924340bd52de5ee7a39015883))
+
+
+### Bug Fixes
+
+* Hide feedback panel when taking screenshot ([#2242](https://github.com/EOX-A/EOxElements/issues/2242)) ([da63704](https://github.com/EOX-A/EOxElements/commit/da63704d447ff253b7d10623ebf38665417cf58d))
+* **style:** Remove important from margin and position of feedback button ([#2239](https://github.com/EOX-A/EOxElements/issues/2239)) ([d41d587](https://github.com/EOX-A/EOxElements/commit/d41d587d2bc3ebbc3dbe5856981def965c699939))
+
 ## [1.1.1](https://github.com/EOX-A/EOxElements/compare/feedback-v1.1.0...feedback-v1.1.1) (2025-12-23)
 
 

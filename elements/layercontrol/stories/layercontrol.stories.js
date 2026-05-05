@@ -8,6 +8,7 @@ import {
   OptionalLayersStory,
   PrimaryStory,
   ToolsStory,
+  toolsAutoExpandStory,
   addExternalLayerStory,
   layerDatetimeStory,
   layerZoomStateStory,
@@ -98,6 +99,11 @@ export const LayerZoomState = layerZoomStateStory;
  * Shows tools rendered as a list instead of tabs. By enabling the `toolsAsList` property, the tools section is displayed as a vertical list, which can be useful for compact or mobile layouts.
  */
 export const ToolsAsList = toolsAsListStory;
+
+/**
+ * Demonstrates the `toolsAutoExpand` property. When enabled, toggling a layer's visibility automatically expands or collapses its tools section. Additionally, the manual tools toggle button is hidden, as the visibility checkbox takes over its role.
+ */
+export const ToolsAutoExpand = toolsAutoExpandStory;
 
 /**
  * Demonstrates color swatches for layers. Shows how to define and display custom colors for layers, useful for thematic mapping and visual differentiation of datasets.

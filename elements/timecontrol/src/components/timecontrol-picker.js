@@ -310,9 +310,9 @@ export class EOxTimeControlPicker extends LitElement {
           dateMin: options.min,
           dateMax: options.max,
           displayDateMin: options.min,
-          disableToday: true,
+          disableToday: false,
           displayDateMax: options.max,
-          displayDatesOutside: false,
+          displayDatesOutside: true,
           type: "default",
           selectionDatesMode: this.range ? "multiple-ranged" : "single",
           ...(selectedDates

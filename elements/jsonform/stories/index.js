@@ -25,3 +25,4 @@ export { default as GridStory } from "./grid"; // Grid layout story
 export { default as GridStrictStory } from "./grid-strict"; // Grid strict layout story
 
 export { default as FlexLayoutStory } from "./flex-layout"; // Flex layout story
+export { default as StepsEditorStory } from "./steps-editor"; // Steps editor wizard story

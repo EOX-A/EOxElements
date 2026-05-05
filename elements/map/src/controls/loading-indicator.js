@@ -45,7 +45,7 @@ export default class LoadingIndicatorControl extends Control {
     }
 
     // Call the superclass constructor to set up the control
-    super({ element: element });
+    super({ element: element, target: options.target });
   }
 
   /**

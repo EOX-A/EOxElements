@@ -12,7 +12,6 @@ import {
   LoadCustomElementTest,
   loadMapSectionTest,
   loadMapTourTest,
-  loadMarkdownEditorTest,
   loadHeroSectionTest,
   loadMarkdownLightBoxTest,
   loadMarkdownErrorStory,
@@ -51,9 +50,6 @@ describe("Storytelling", () => {
 
   // Test case to load map tour with sections and step sections
   it("Load map tour sections and step sections", () => loadMapTourTest());
-
-  // Test case to load markdown editor
-  it("Load markdown editor", () => loadMarkdownEditorTest());
 
   // Test case to ensure hero section loaded with content
   it("Load hero section", () => loadHeroSectionTest());

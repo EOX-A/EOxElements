@@ -102,6 +102,12 @@ export const styleTimeline = `
 .vis-custom-time.multi-select-end div {
   cursor: e-resize;
 }
+.range-selection-disabled .vis-custom-time.multi-select-start,
+.range-selection-disabled .vis-custom-time.multi-select-end,
+.range-selection-disabled .vis-custom-time.multi-select-start div,
+.range-selection-disabled .vis-custom-time.multi-select-end div {
+  cursor: default;
+}
 .vis-custom-time.multi-select-start tag, 
 .vis-custom-time.multi-select-end tag {
   position: absolute;

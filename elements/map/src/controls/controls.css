@@ -1,39 +1,179 @@
-.geolocation {
-  top: 85px;
-  left: 0.5em;
+.eox-map-controls-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: 1fr min-content 1fr;
+  grid-template-rows: 1fr min-content 1fr;
+  grid-template-areas:
+    "top-left top-center top-right"
+    "center-left . center-right"
+    "bottom-left bottom-center bottom-right";
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.eox-map-controls-region {
+  pointer-events: none;
+  display: flex;
+  gap: 8px;
+}
+
+.eox-map-controls-region ::slotted(*) {
+  pointer-events: auto;
+}
+
+.eox-map-controls-region.top-left {
+  grid-area: top-left;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.eox-map-controls-region.top-center {
+  grid-area: top-center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.eox-map-controls-region.top-right {
+  grid-area: top-right;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.eox-map-controls-region.center-left {
+  grid-area: center-left;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.eox-map-controls-region.center-right {
+  grid-area: center-right;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.eox-map-controls-region.bottom-left {
+  grid-area: bottom-left;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.eox-map-controls-region.bottom-center {
+  grid-area: bottom-center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.eox-map-controls-region.bottom-right {
+  grid-area: bottom-right;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.ol-mouse-position {
+  top: auto;
+  right: auto;
+  position: static;
+  margin: 0;
+  background: var(--map-controls-bg-surface, var(--surface-container-lowest));
+  color: var(--map-controls-color-surface, var(--on-surface));
+  backdrop-filter: var(--map-controls-backdrop-filter, none);
+  -webkit-backdrop-filter: var(--map-controls-backdrop-filter, none);
+  box-shadow: var(--map-controls-box-shadow, none);
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-size: 10px;
+  white-space: nowrap;
+  width: max-content;
+}
+
+.eox-map-controls-group {
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.eox-map-controls-group.horizontal {
+  flex-direction: row;
+}
+
+.eox-map-controls-group.vertical {
+  flex-direction: column;
+}
+
+.eox-map-controls-group > .ol-control {
+  position: static;
+  margin: 0;
+  pointer-events: auto;
+}
+
+.eox-map-controls-region > .ol-control {
+  position: static;
+  margin: 0;
+  pointer-events: auto;
+}
+
+/* Horizontal Zoom Control overrides */
+.eox-map-controls-group.horizontal .ol-zoom {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.eox-map-controls-group.horizontal button.ol-zoom-in,
+.eox-map-controls-group.horizontal button.ol-zoom-in:hover {
+  border-radius: 0.5rem var(--_round) var(--_round) 0.5rem;
+  margin-bottom: 0;
+  margin-right: 0.125rem;
+}
+
+.eox-map-controls-group.horizontal button.ol-zoom-out,
+.eox-map-controls-group.horizontal button.ol-zoom-out:hover {
+  border-radius: var(--_round) 0.5rem 0.5rem var(--_round);
 }
 .geolocation button {
-  background: var(--primary);
-  color: var(--on-primary);
+  background: var(--map-controls-bg, var(--primary));
+  color: var(--map-controls-color, var(--on-primary));
 }
 .geolocation button > svg {
-  fill: var(--on-primary);
+  fill: var(--map-controls-color, var(--on-primary));
   min-inline-size: 1.25rem !important;
   max-inline-size: 1.25rem !important;
   min-block-size: 1.25rem !important;
   max-block-size: 1.25rem !important;
 }
-.ol-touch.geolocation {
-  top: 100px;
-}
-
 .loading-indicator {
-  position: absolute;
   pointer-events: none !important;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0);
 }
 
 .loading-indicator.small {
-  bottom: 0.5em;
-  left: 0.5em;
-  width: 30px;
-  height: 30px;
+  width: var(--map-control-size, 32px);
+  height: var(--map-control-size, 32px);
+}
+.loading-indicator.small svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .loading-indicator.fullscreen {
+  position: absolute;
   width: 100%;
   height: 100%;
 }
@@ -53,18 +193,21 @@
 .ol-control button,
 .ol-control button:hover,
 .ol-control button:focus {
-  --_round: 32px;
+  --_round: var(--map-control-size, 32px);
   border-radius: var(--_round);
-  background: var(--primary);
-  color: var(--on-primary);
-  width: 32px;
-  height: 32px;
+  background: var(--map-controls-bg, var(--primary));
+  color: var(--map-controls-color, var(--on-primary));
+  backdrop-filter: var(--map-controls-backdrop-filter, none);
+  -webkit-backdrop-filter: var(--map-controls-backdrop-filter, none);
+  box-shadow: var(--map-controls-box-shadow, none);
+  width: var(--map-control-size, 32px);
+  height: var(--map-control-size, 32px);
   cursor: pointer;
   border: none;
   outline: none;
   pointer-events: all;
   position: relative;
-  font-size: 1rem;
+  font-size: var(--map-control-font-size, 1rem);
 }
 .ol-control button:hover:after {
   background-size: 15000%;
@@ -99,6 +242,85 @@
   border-bottom-right-radius: var(--_round);
 }
 
+.ol-scale-line {
+  background: var(--map-controls-bg-surface, var(--surface-container-lowest));
+  backdrop-filter: var(--map-controls-backdrop-filter, none);
+  -webkit-backdrop-filter: var(--map-controls-backdrop-filter, none);
+  box-shadow: var(--map-controls-box-shadow, none);
+  border-radius: 0.5rem;
+  position: static;
+  margin: 0;
+  padding: 0.5rem;
+  width: max-content;
+}
+.ol-scale-line-inner {
+  border: 1px solid var(--map-controls-color-surface, var(--on-surface));
+  border-top: none;
+  border-radius: 0;
+  height: 6px;
+  color: var(--map-controls-color-surface, var(--on-surface));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5px;
+  transform: translatey(3px);
+}
+
+.ol-attribution {
+  background: none !important;
+  border-radius: 0.5rem;
+  position: static;
+  margin: 0;
+  max-width: min(300px, 50vw);
+  height: var(--map-control-size, 32px);
+  display: flex !important;
+  align-items: center;
+}
+.ol-attribution button {
+  margin: 0;
+}
+.ol-attribution ul {
+  font-size: 10px;
+  color: var(--map-controls-color-surface, var(--on-surface));
+  background: var(--map-controls-bg-surface, var(--surface-container-lowest));
+  backdrop-filter: var(--map-controls-backdrop-filter, none);
+  -webkit-backdrop-filter: var(--map-controls-backdrop-filter, none);
+  border-radius: 0.5rem;
+  padding: 0 12px;
+  height: 100%;
+  margin: 0 4px 0 12px;
+  margin-block-start: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow-x: auto;
+  pointer-events: auto;
+  text-shadow: none;
+}
+.ol-attribution ul::-webkit-scrollbar {
+  inline-size: 0.4rem;
+  block-size: 0.4rem;
+}
+.ol-attribution ul::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--_round);
+  margin: 0 12px;
+}
+.ol-attribution ul::-webkit-scrollbar-thumb {
+  background: lightgrey;
+  border-radius: var(--_round);
+  cursor: default;
+}
+.ol-attribution ul:is(:hover, :focus)::-webkit-scrollbar-thumb {
+  background: var(--outline, #ccc);
+}
+
+.ol-attribution ul a {
+  color: unset;
+  font-weight: bold;
+}
+
 .globe-switcher-container {
   --fs-offset: 0em;
   --rotate-offset: 0em;
@@ -124,4 +346,114 @@
 
 :has(.ol-hidden) .globe-switcher-container {
   --rotate-offset: 0em;
+}
+
+.ol-overviewmap {
+  position: relative !important;
+  left: unset;
+  bottom: unset;
+}
+
+.ol-overviewmap-map {
+  width: 150px;
+  height: 150px;
+  border: none !important;
+  border-radius: 0.5rem;
+  background: var(--map-controls-bg-surface, var(--surface));
+  box-sizing: border-box;
+}
+
+.ol-overviewmap.ol-collapsed .ol-overviewmap-map {
+  display: none;
+}
+
+.ol-overviewmap:not(.ol-collapsed) button {
+  position: absolute;
+  z-index: 2;
+}
+
+/* Default position for the button overlay when open */
+.ol-overviewmap:not(.ol-collapsed) button {
+  bottom: 0;
+  left: 0;
+}
+
+/* Position based on region */
+.top-left .ol-overviewmap:not(.ol-collapsed) button {
+  top: 0;
+  left: 0;
+  bottom: auto;
+  right: auto;
+  margin: 2px;
+}
+.top-right .ol-overviewmap:not(.ol-collapsed) button {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  margin: 2px;
+}
+.bottom-left .ol-overviewmap:not(.ol-collapsed) button {
+  bottom: 0;
+  left: 0;
+  top: auto;
+  right: auto;
+  margin: 2px;
+}
+.bottom-right .ol-overviewmap:not(.ol-collapsed) button {
+  bottom: 0;
+  right: 0;
+  top: auto;
+  left: auto;
+  margin: 2px;
+}
+
+/* OverviewMap box for current view */
+.ol-overviewmap .ol-overlay-container.ol-selectable,
+.ol-overviewmap .ol-overviewmap-box {
+  border-radius: 0;
+}
+
+.ol-zoomslider {
+  background-color: var(--surface-container-lowest, rgba(255, 255, 255, 0.4));
+  border-radius: var(--_round);
+  width: var(--map-control-size, 32px);
+  margin-top: 4px;
+  height: 150px;
+  position: relative;
+}
+.ol-zoomslider button.ol-zoomslider-thumb,
+.ol-zoomslider button.ol-zoomslider-thumb:hover,
+.ol-zoomslider button.ol-zoomslider-thumb:focus {
+  position: absolute;
+  left: 4px;
+  width: 24px;
+  height: 8px;
+  border-radius: 0.5rem;
+  background: var(--map-controls-bg, var(--primary));
+  color: var(--map-controls-color, var(--on-primary));
+  cursor: pointer;
+  border: none;
+  outline: none;
+  pointer-events: auto;
+  margin: 0;
+}
+.eox-map-controls-group.horizontal .ol-zoomslider {
+  width: 150px;
+  height: var(--map-control-size, 32px);
+  padding: 0;
+  margin-top: 0;
+  margin-left: 4px;
+}
+.eox-map-controls-group.horizontal .ol-zoomslider button.ol-zoomslider-thumb,
+.eox-map-controls-group.horizontal
+  .ol-zoomslider
+  button.ol-zoomslider-thumb:hover,
+.eox-map-controls-group.horizontal
+  .ol-zoomslider
+  button.ol-zoomslider-thumb:focus {
+  left: auto;
+  top: 4px;
+  width: 8px;
+  height: 24px;
 }

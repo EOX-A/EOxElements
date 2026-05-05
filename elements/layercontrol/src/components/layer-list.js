@@ -24,6 +24,10 @@ export class EOxLayerControlLayerList extends LitElement {
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
     globallyExclusiveLayers: { type: Boolean },
+    toolsAutoExpand: {
+      attribute: "tools-auto-expand",
+      type: Boolean,
+    },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -96,6 +100,13 @@ export class EOxLayerControlLayerList extends LitElement {
     this.toolsAsList = false;
 
     /**
+     * If enabled, toggling the layer visibility will also open/close the layer tools.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAutoExpand = false;
+
+    /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
      *
      * @type {Boolean}
@@ -159,7 +170,7 @@ export class EOxLayerControlLayerList extends LitElement {
                     /** @type {import("ol/layer").Group} */ (layer).getLayers
                       ? html`
                           <eox-layercontrol-layer-group
-                            .noShadow=${true}
+                            .noShadow=${this.noShadow}
                             .group=${layer}
                             .idProperty=${this.idProperty}
                             .map=${this.map}
@@ -170,6 +181,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .toolsAsList=${this.toolsAsList}
                             .globallyExclusiveLayers=${this
                               .globallyExclusiveLayers}
+                            .toolsAutoExpand=${this.toolsAutoExpand}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
                             @changed=${() => this.requestUpdate()}
@@ -178,17 +190,18 @@ export class EOxLayerControlLayerList extends LitElement {
                         `
                       : html`
                           <eox-layercontrol-layer
-                            .noShadow=${true}
+                            .noShadow=${this.noShadow}
                             .layer=${layer}
+                            .layerType=${getLayerType(layer, this.map)}
                             .map=${this.map}
                             .titleProperty=${this.titleProperty}
                             .showLayerZoomState=${this.showLayerZoomState}
-                            .layerType=${getLayerType(layer, this.map)}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
                             .toolsAsList=${this.toolsAsList}
                             .globallyExclusiveLayers=${this
                               .globallyExclusiveLayers}
+                            .toolsAutoExpand=${this.toolsAutoExpand}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
                             @changed=${() => this.requestUpdate()}
@@ -232,8 +245,8 @@ export class EOxLayerControlLayerList extends LitElement {
     .list li ul.list li ul.list > li eox-layercontrol-layer {
       padding-left: calc(var(--list-padding) * 2 - .5rem);
     }
-    .list li ul.list > li:has(details[open]) eox-layercontrol-tools-items {
-      display: block;
+    .list.no-space {
+      margin-block: var(--padding-inline) !important;
     }
     .list.no-space li.square {
       padding: 0;

@@ -40,7 +40,6 @@ const ABCompareStory = {
         storyWrap: true,
       },
     },
-    storyTemplateWrap: `<eox-map-compare>{{content}}</eox-map-compare>`,
     storyStyle: `
       eox-map-compare,
       eox-map {

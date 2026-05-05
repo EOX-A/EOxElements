@@ -71,6 +71,93 @@ export function addControl(EOxMap, type, options) {
   // Create a shallow copy of the control options to avoid modifying the original object
   const controlOptions = Object.assign({}, options);
 
+  if (type === "MousePosition") {
+    controlOptions.projection = controlOptions.projection || "EPSG:4326";
+    // format as lat/lng with 4 decimals instead of default long string in meters
+    controlOptions.coordinateFormat =
+      controlOptions.coordinateFormat ||
+      function (coord) {
+        const lat = coord[1];
+        const lon = coord[0];
+        const latDir = lat >= 0 ? "N" : "S";
+        const lonDir = lon >= 0 ? "E" : "W";
+        return `${Math.abs(lat).toFixed(4)}° ${latDir}, ${Math.abs(lon).toFixed(4)}° ${lonDir}`;
+      };
+    controlOptions.placeholder =
+      controlOptions.placeholder || "No coordinates computed";
+  }
+
+  // Apply default positioning if not explicitly provided
+  if (!controlOptions.position) {
+    if (type === "Zoom" || type === "ZoomSlider" || type === "Geolocation") {
+      controlOptions.position = "top-left";
+      controlOptions.orientation = controlOptions.orientation || "vertical";
+    } else if (
+      type === "OverviewMap" ||
+      type === "ScaleLine" ||
+      type === "MousePosition" ||
+      type === "LoadingIndicator"
+    ) {
+      controlOptions.position = "bottom-left";
+    } else if (type === "FullScreen" || type === "GlobeSwitcher") {
+      controlOptions.position = "top-right";
+      controlOptions.orientation = controlOptions.orientation || "vertical";
+    } else if (type === "Attribution") {
+      controlOptions.position = "bottom-right";
+    }
+  }
+
+  // Handle position, target, and orientation from the new controls layout API
+  if (controlOptions && controlOptions.position) {
+    const regionClass = controlOptions.position;
+
+    let targetElement;
+    if (controlOptions.target) {
+      if (typeof controlOptions.target === "string") {
+        const controlsTargets = EOxMap.getControlsTargets();
+        targetElement =
+          controlsTargets[controlOptions.target] ||
+          EOxMap.shadowRoot?.querySelector(`#${controlOptions.target}`);
+
+        if (!targetElement) {
+          targetElement = document.createElement("div");
+          targetElement.id = controlOptions.target;
+          controlsTargets[controlOptions.target] = targetElement;
+        }
+      } else {
+        targetElement = controlOptions.target;
+      }
+    } else {
+      const uniqueId = `eox-target-${regionClass}`;
+      const controlsTargets = EOxMap.getControlsTargets();
+      targetElement = controlsTargets[uniqueId];
+      if (!targetElement) {
+        targetElement = document.createElement("div");
+        targetElement.id = uniqueId;
+        controlsTargets[uniqueId] = targetElement;
+      }
+    }
+
+    // Assign orientation class (fallback to vertical)
+    targetElement.className = `eox-map-controls-group ${
+      controlOptions.orientation === "horizontal" ? "horizontal" : "vertical"
+    }`;
+
+    controlOptions.target = targetElement;
+
+    // Wait until Lit rendered shadow DOM before mounting our groups into it
+    EOxMap.updateComplete.then(() => {
+      const regionContainer = EOxMap.shadowRoot.querySelector(
+        `.eox-map-controls-region.${regionClass}`,
+      );
+      if (regionContainer && targetElement.parentElement !== regionContainer) {
+        regionContainer.appendChild(targetElement);
+        // Map render is needed after mounting to trigger internal OpenLayers control size calculations (like ZoomSlider thumb size)
+        setTimeout(() => EOxMap.map.render(), 0);
+      }
+    });
+  }
+
   // If the control has layers (e.g., for OverviewMap), generate them
   if (options && options.layers) {
     controlOptions.layers = generateLayers(EOxMap, options.layers); // Parse layers (e.g., for OverviewMap)

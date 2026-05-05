@@ -64,13 +64,17 @@ export function setZoomExtentMethod(extent, EOxMap) {
   // If the extent is not provided or is empty, exit the function
   if (!extent || !extent.length) return undefined;
 
-  const view = EOxMap.map.getView();
-
-  // Cancel any ongoing animations on the map view to ensure a smooth transition
-  cancelAnimation(view);
+  // @ts-expect-error - _requestedZoomExtent is a custom property for internal state management
+  EOxMap._requestedZoomExtent = extent;
 
   // Fit the map view to the extent asynchronously
-  setTimeout(() => view.fit(extent, EOxMap.animationOptions), 0);
+  setTimeout(() => {
+    const view = EOxMap.map.getView();
+
+    // Cancel any ongoing animations on the map view to ensure a smooth transition
+    cancelAnimation(view);
+    view.fit(extent, EOxMap.animationOptions);
+  }, 0);
 
   // Return the extent that was fitted
   return extent;
@@ -435,6 +439,11 @@ export function setSyncMethod(sync, EOxMap) {
           originMap.map.setView(EOxMap.map.getView());
         } else {
           EOxMap.map.setView(originMap.map.getView());
+        }
+        // @ts-expect-error - _requestedZoomExtent is a custom property for internal state management
+        if (EOxMap._requestedZoomExtent) {
+          // @ts-expect-error - _requestedZoomExtent is a custom property for internal state management
+          setZoomExtentMethod(EOxMap._requestedZoomExtent, EOxMap);
         }
       }
     });

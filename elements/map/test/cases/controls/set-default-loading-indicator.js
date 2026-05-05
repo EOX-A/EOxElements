@@ -15,9 +15,8 @@ const setDefaultLoadingIndicator = () => {
   cy.get("eox-map").and(async ($el) => {
     const eoxMap = $el[0];
     expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
-    const loadingIndicatorElement = eoxMap.map
-      .getTargetElement()
-      .querySelector(".loading-indicator");
+    const loadingIndicatorElement =
+      eoxMap.shadowRoot.querySelector(".loading-indicator");
     expect(loadingIndicatorElement).to.exist;
   });
 };

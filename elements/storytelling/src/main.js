@@ -34,7 +34,7 @@ const md = /** @type {import("./types").CustomMarkdownIt} */ (
 md.use(markdownItDecorateImproved).use(markdownItConfig);
 md.use(markdownitFootnote);
 /**
- * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, live editing with a built-in editor, and custom initialization logic via events.
+ * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, and custom initialization logic via events.
  *
  * ## Usage
  * Place `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.
@@ -43,9 +43,8 @@ md.use(markdownitFootnote);
  * - **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.
  * - **Slot Content:** Accepts Markdown via slot for flexible content injection.
  * - **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.
- * - **Live Editor:** Built-in editor for live editing and preview, including image upload and section creation.
  * - **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.
- * - **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup), and `upload:file` for handling file uploads.
+ * - **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup).
  *
  * ## Custom Markdown Extensions
  * In order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key="value" }-->`. Here are some of the supported extensions:
@@ -54,7 +53,7 @@ md.use(markdownitFootnote);
  * - **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.
  * - **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.
  *
- * Read the [Markdown with Editor story](./?path=/story/elements-eox-storytelling--markdown-with-editor) for a comprehensive guide on using the editor and Markdown extensions.
+ * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
  *
  * @element eox-storytelling
  */
@@ -129,6 +128,7 @@ export class EOxStoryTelling extends LitElement {
     /**
      * Disable auto save
      *
+     * @deprecated Will be removed in the next major version
      * @type {Boolean}
      */
     this.disableAutosave = false;
@@ -136,6 +136,7 @@ export class EOxStoryTelling extends LitElement {
     /**
      * Enable or disable editor
      *
+     * @deprecated Will be removed in the next major version
      * @type {String | "closed" | undefined}
      */
     this.showEditor = undefined;
@@ -201,6 +202,7 @@ export class EOxStoryTelling extends LitElement {
     /**
      * Fires when a file is uploaded via the built-in editor. The event detail contains the uploaded file as well
      * as a callback function that can be used to update the file url end handle errors.
+     * @deprecated Will be removed in the next major version
      */
     this.dispatchEvent(
       new CustomEvent("upload:file", {
@@ -310,6 +312,12 @@ export class EOxStoryTelling extends LitElement {
   }
 
   async firstUpdated() {
+    if (this.showEditor !== undefined) {
+      console.info(
+        "The built-in editor and the `show-editor` property are deprecated and will be removed in the next major version.",
+      );
+    }
+
     this.#debounceUpdateMarkdown = _debounce((e) => {
       if (e.detail) {
         this.markdown = e.detail.Story;

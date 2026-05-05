@@ -36,6 +36,8 @@ export default defineConfig({
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
+    experimentalMemoryManagement: true,
+    numTestsKeptInMemory: 1,
   },
   component: {
     supportFile: "cypress/support/component.js",

@@ -31,6 +31,10 @@ export class EOxLayerControlLayer extends LitElement {
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
     globallyExclusiveLayers: { type: Boolean },
+    toolsAutoExpand: {
+      attribute: "tools-auto-expand",
+      type: Boolean,
+    },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -108,6 +112,13 @@ export class EOxLayerControlLayer extends LitElement {
      * @type {Boolean}
      */
     this.toolsAsList = false;
+
+    /**
+     * If enabled, toggling the layer visibility will also open/close the layer tools.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAutoExpand = false;
 
     /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
@@ -207,7 +218,14 @@ export class EOxLayerControlLayer extends LitElement {
     return html`
       <style>
         ${this.#styleBasic}
-        ${!this.unstyled && this.#styleEOX}
+        ${!this.unstyled &&
+        this
+          .#styleEOX}
+        
+        /* Make sure the CSS variable is applied to the layer type icon */
+        .small.grey-text {
+          display: var(--layer-type-visibility);
+        }
       </style>
       ${when(
         this.layer,
@@ -288,7 +306,7 @@ export class EOxLayerControlLayer extends LitElement {
             </div>
 
             ${when(
-              isToolsAvail,
+              isToolsAvail && !this.toolsAutoExpand,
               () => html`
                 <button
                   class="transparent square primary-text small action tools ${this
@@ -296,15 +314,11 @@ export class EOxLayerControlLayer extends LitElement {
                     ? this.tools[0]
                     : "dots"}"
                   @click=${() => {
-                    const toolsDetails =
-                      this.renderRoot
-                        .querySelector("eox-layercontrol-layer-tools")
-                        ?.shadowRoot?.querySelector("details") ||
-                      this.renderRoot
-                        .querySelector("eox-layercontrol-layer-tools")
-                        ?.querySelector("details");
-                    // Toggle tools details open/close
-                    toolsDetails.open = !toolsDetails.open;
+                    /** @type {import("./layer-tools").EOxLayerControlLayerTools} */
+                    const layerTools = this.renderRoot.querySelector(
+                      "eox-layercontrol-layer-tools",
+                    );
+                    layerTools.open = !layerTools.open;
                   }}
                 >
                   <i class="small">
@@ -368,6 +382,7 @@ export class EOxLayerControlLayer extends LitElement {
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
+            .toolsAutoExpand=${this.toolsAutoExpand}
             .customEditorInterfaces=${this.customEditorInterfaces}
           ></eox-layercontrol-layer-tools>
         `,
@@ -391,7 +406,7 @@ export class EOxLayerControlLayer extends LitElement {
     eox-layercontrol-layer .action.tools.dots {
       transition: rotate 0s;
     }
-    eox-layercontrol-layer:has(eox-layercontrol-layer-tools > details[open]) .action.tools.dots {
+    eox-layercontrol-layer:has(eox-layercontrol-layer-tools[open]) .action.tools.dots {
       transform: rotate(180deg);
     }
     eox-layercontrol-layer > nav > .action.visibility {

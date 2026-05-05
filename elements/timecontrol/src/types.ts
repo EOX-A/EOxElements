@@ -149,6 +149,15 @@ export type TimeControlSliderOptions = {
 };
 
 /**
+ * Defines the possible time ranges for selection in the time control components.
+ * Strictly supports what dayjs.duration() supports:
+ * - ISO 8601 duration string: 'P1M', 'PT0S', etc.
+ * - Milliseconds: 100
+ * - Dayjs duration object: { months: 1, days: 2 }
+ */
+export type selectionDuration = string | number | Record<string, number>;
+
+/**
  * Configuration options for the time control timeline component.
  */
 export type TimeControlTimelineOptions = {
@@ -156,6 +165,16 @@ export type TimeControlTimelineOptions = {
    * Whether to disable default styling.
    */
   unstyled?: boolean;
+
+  /**
+   *
+   */
+  selectionResizable?: boolean;
+
+  /**
+   * The selected range of the timeline.
+   */
+  selectionDuration?: selectionDuration;
 };
 
 /**

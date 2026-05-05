@@ -124,6 +124,12 @@ export const render = async (data) => {
     `;
   }
 
+  htmlOutput = `
+    ${data.args.storyTemplateBefore ? `\n${data.args.storyTemplateBefore}\n` : ""}
+    ${htmlOutput}
+    ${data.args.storyTemplateAfter ? `\n${data.args.storyTemplateAfter}\n` : ""}
+  `;
+
   return await prettier.format(
     `
 ${data.args.storyStyle ? `<style>\n${data.args.storyStyle}\n</style>\n` : ""}

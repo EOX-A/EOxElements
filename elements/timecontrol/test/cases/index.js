@@ -16,3 +16,4 @@ export { default as loadDateWithFilter } from "./load-date-with-filter.js";
 export { default as loadNoMapSynchronization } from "./load-no-map-synchronization.js";
 export { default as loadExpertModeExport } from "./load-expert-mode-export.js";
 export { default as loadDateInUTC } from "./load-date-in-utc.js";
+export { default as loadTimelineWithRangeConfiguration } from "./load-timeline-with-range-configuration.js";

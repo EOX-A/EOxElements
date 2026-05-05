@@ -102,7 +102,7 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
                 );
                 return {
                   ...value,
-                  date: dayjs(date).format(),
+                  date: dayjs(date).format().split("T")[0],
                   utc: dayjs(date).utc().format(),
                   local: dayjs(date).format(),
                   originalDate: value.date,
