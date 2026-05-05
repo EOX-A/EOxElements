@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.16.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.15.0...itemfilter-v1.16.0) (2026-05-05)
+
+
+### Features
+
+* Support stringified JSON for attributes ([#2304](https://github.com/EOX-A/EOxElements/issues/2304)) ([f30e5b0](https://github.com/EOX-A/EOxElements/commit/f30e5b07730ba10acb1b07237856e9675c2faf67))
+
+
+### Bug Fixes
+
+* **style:** Sizing of spatial filter radio buttons ([#2315](https://github.com/EOX-A/EOxElements/issues/2315)) ([219558b](https://github.com/EOX-A/EOxElements/commit/219558b5a9590513626aa4a184588d11981dffc3))
+* **style:** Use internal CSS vars in order to not break child element shadow roots ([#2314](https://github.com/EOX-A/EOxElements/issues/2314)) ([1bccc65](https://github.com/EOX-A/EOxElements/commit/1bccc65c3dc070c7ccee7dfbef1e4e65ca5ed9b5))
+
 ## [1.15.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.14.0...itemfilter-v1.15.0) (2026-03-24)
 
 
