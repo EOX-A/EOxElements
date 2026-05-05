@@ -64,7 +64,7 @@ export class EOxDrawTools extends LitElement {
       featureName: { attribute: "feature-name", type: String },
       featureNameKey: { attribute: "feature-name-key", type: String },
       layerId: { attribute: "layer-id", type: String },
-      featureStyles: { attribute: false },
+      featureStyles: { type: Object },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       measure: { type: Boolean },

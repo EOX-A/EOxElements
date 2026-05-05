@@ -35,13 +35,13 @@ import {
  * - Supports `text`, `select`, `multiselect`, `range` (including date), and `spatial` filters
  * - Aggregates results by a property key (e.g. themes)
  * - Inline mode for compact UI
- * - Pre-set filter state via `state` in `filterProperties`
+ * - Pre-set filter state via `state` in `filterProperties` property/attribute
  * - Nested property filtering using dot notation
- * - External search API endpoint support via `externalFilter`
+ * - External search API endpoint support via `externalFilter` property
  * - Auto-spreading of single-item aggregations to root level
  * - Card display mode for results (`result-type="cards"`)
  * - Secondary result action button with custom icon and event handler (`click:result-action`)
- * - Custom result sorting via `resultSorting` property
+ * - Custom result sorting via `resultSorting` property/attribute
  * - Customizable layout and styling via CSS variables
  *
  * Usage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.
@@ -58,15 +58,15 @@ export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
   static get properties() {
     return {
-      items: { attribute: false, type: Object },
+      items: { type: Array },
       results: { state: true, attribute: false, type: Object },
       filters: { state: true, attribute: false, type: Object },
-      selectedResult: { attribute: false, type: Object },
+      selectedResult: { type: Object },
       aggregateResults: { attribute: "aggregate-results", type: String },
       autoSpreadSingle: { attribute: "auto-spread-single", type: Boolean },
       enableHighlighting: { attribute: "enable-highlighting", type: Boolean },
-      filterProperties: { attribute: false, type: Array },
-      fuseConfig: { attribute: false, type: Object },
+      filterProperties: { type: Array },
+      fuseConfig: { type: Object },
       inlineMode: { attribute: "inline-mode", type: Boolean },
       matchAllWhenEmpty: { attribute: "match-all-when-empty", type: Boolean },
       showResults: { attribute: "show-result", type: Boolean },
@@ -74,7 +74,7 @@ export class EOxItemFilter extends LitElement {
       titleProperty: { attribute: "title-property", type: String },
       subTitleProperty: { attribute: "sub-title-property", type: String },
       imageProperty: { attribute: "image-property", type: String },
-      resultSorting: { attribute: false, type: Object },
+      resultSorting: { type: Object },
       expandMultipleFilters: {
         attribute: "enable-multiple-filter",
         type: Boolean,
@@ -86,8 +86,8 @@ export class EOxItemFilter extends LitElement {
       },
       externalFilter: { attribute: false, type: Function },
       resultType: { attribute: "result-type", type: String },
-      enableResultAction: { attribute: false, type: Boolean },
-      resultActionIcon: { attribute: false, type: String },
+      enableResultAction: { type: Boolean },
+      resultActionIcon: { type: String },
       styleOverride: { type: String },
       unstyled: { type: Boolean },
     };
@@ -111,7 +111,7 @@ export class EOxItemFilter extends LitElement {
   constructor() {
     super();
 
-    /** The items to be filtered
+    /** The items to be filtered. Can be passed as a property or stringified JSON attribute.
      * @type Array<Object>
      */
     this.items = null;
@@ -170,13 +170,14 @@ export class EOxItemFilter extends LitElement {
      * The function can return a URL string, or an object containing a `url,
      * an optional `fetchFn` to handle the request, or/and an optional `key` to
      * return a specific property from the fetched data.
+     * This is a property-only field as it expects a function.
      *
      * @type {() => string| (() => {url:string;key?:string;fetchFn?:string})}
      */
     this.externalFilter = null;
 
     /**
-     * The filter properties.
+     * The filter properties. Can be passed as a property or stringified JSON attribute.
      * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>
      */
     this.filterProperties = [];

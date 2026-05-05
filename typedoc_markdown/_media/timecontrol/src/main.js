@@ -95,9 +95,9 @@ export class EOxTimeControl extends LitElement {
         type: Boolean,
         attribute: "external-map-rendering",
       },
-      selectedDateRange: { type: Array, attribute: undefined },
-      controlValues: { type: Array, attribute: false },
-      initDate: { type: Array, attribute: false },
+      selectedDateRange: { type: Array },
+      controlValues: { type: Array },
+      initDate: { type: Array },
     };
   }
 

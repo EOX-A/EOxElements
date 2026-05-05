@@ -1329,10 +1329,7 @@ function dt(e) {
 var ft = class extends B {
 	static get properties() {
 		return {
-			config: {
-				attribute: !1,
-				type: Object
-			},
+			config: { type: Object },
 			showEveryTime: {
 				attribute: "show-every-time",
 				type: Boolean

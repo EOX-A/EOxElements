@@ -165,10 +165,10 @@ The main branch of this project contains the v2 version of EOxElements. For the 
 ## eox-chart
 
 Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
-Pass a valid Vega spec as `spec` property in order to render a chart.
+Pass a valid Vega spec as `spec` property or attribute in order to render a chart.
 Optionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.
 
-The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
+The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property/attribute) and helper functionalities on top of Vega-Lite.
 
 Default `spec` settings (see the file `src/enums/default-spec.js`):
 - `width`: "container" (make the chart width responsive to the parent)
@@ -177,8 +177,8 @@ Default `spec` settings (see the file `src/enums/default-spec.js`):
 - `resize`: true (autosize layout is re-calculated on every view update)
 - `padding`: 16 (the padding in pixels to add around the visualization)
 
-These default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default
-Vega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.
+These default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property/attribute passed to `eox-chart`. Also, there are default
+Vega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property/attribute.
 
 Helper functionalities:
 
@@ -187,6 +187,9 @@ For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` e
 
 ### Attributes
 
+- `dataValues` ({[dataSourceName: string]: InlineData} | string): Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.
+- `spec` (VisualizationSpec | string): [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.
+- `opt` (EmbedOptions): [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)
 - `no-shadow` (Boolean): Renders the element without a shadow root
 - `unstyled` (Boolean): Render the element without additional styles
 
@@ -212,17 +215,15 @@ contains both single quote and double quote which can not be passed as HTML attr
 EOxChart exports util function `base64EncodeSpec` so that parent application can create the base64 encoded spec.
 
 ```html
-<eox-chart style="width: 100%; height: 400px"></eox-chart>
+<eox-chart
+  style="width: 100%; height: 400px"
+  spec="eyIkc2NoZW1hIjoiaHR0cHM6Ly92ZWdhLmdpdGh1Yi5pby9zY2hlbWEvdmVnYS1saXRlL3Y1Lmpzb24iLCJkZXNjcmlwdGlvbiI6IlZlcnRpY2FsIGRlZmxlY3Rpb24gb3ZlciB0aW1lIiwiZGF0YSI6eyJuYW1lIjoidGltZXNlcmllcyIsInVybCI6Imh0dHBzOi8vd29ya3NwYWNlLXVpLXB1YmxpYy5ndGlmLWF1c3RyaWEuaHViLW90Yy5lb3guYXQvYXBpL3B1YmxpYy9zaGFyZS9wdWJsaWMtNHdhemVpM3ktMDIvV1ItMTAtVHJhbnNwb3J0LUluZnJhc3RydWN0dXJlLVByZWRpY3RpdmUtTWFpbnRlbmFuY2UvdjIvY3N2X3NpbmdsZS96b25lXzc1NDsga20gMjMuNTUuY3N2In0sInRyYW5zZm9ybSI6W3siY2FsY3VsYXRlIjoieWVhcihkYXR1bS5kYXRlKSIsImFzIjoieWVhciJ9XSwibGF5ZXIiOlt7Im1hcmsiOnsidHlwZSI6ImxpbmUiLCJzdHJva2UiOiIjMWY3N2I0In0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIiwiYXhpcyI6eyJ0aXRsZSI6IlllYXIiLCJmb3JtYXQiOiIlWSIsInRpY2tDb3VudCI6eyJpbnRlcnZhbCI6InllYXIiLCJzdGVwIjoxfX19LCJ5Ijp7InRpdGxlIjoiVmVydGljYWwgZGVmbGVjdGlvbiBbbW1dIiwiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9fX0seyJtYXJrIjp7InR5cGUiOiJsaW5lIiwic3Ryb2tlIjoiI2U3NGMzYyIsInN0cm9rZURhc2giOls1LDVdLCJzdHJva2VXaWR0aCI6Mn0sInRyYW5zZm9ybSI6W3sicmVncmVzc2lvbiI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJvbiI6ImRhdGUiLCJtZXRob2QiOiJsaW5lYXIifV0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIn0sInkiOnsiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9fX0seyJ0cmFuc2Zvcm0iOlt7InJlZ3Jlc3Npb24iOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwib24iOiJkYXRlIiwibWV0aG9kIjoibGluZWFyIiwicGFyYW1zIjp0cnVlfSx7ImNhbGN1bGF0ZSI6IidUcmVuZDogJyArIGZvcm1hdChkYXR1bS5jb2VmWzFdICogMzY1LjI1ICogMjQgKiA2MCAqIDYwICogMTAwMCwgJy4zZicpICsgJyBtbS95ZWFyJyIsImFzIjoiZXF1YXRpb24ifSx7ImNhbGN1bGF0ZSI6IidSwrIgPSAnICsgZm9ybWF0KGRhdHVtLnJTcXVhcmVkLCAnLjRmJykiLCJhcyI6InIyIn1dLCJtYXJrIjp7InR5cGUiOiJ0ZXh0IiwiYWxpZ24iOiJyaWdodCIsImJhc2VsaW5lIjoidG9wIiwiZHgiOi01LCJkeSI6NSwiZm9udFNpemUiOjExLCJmb250V2VpZ2h0Ijoibm9ybWFsIn0sImVuY29kaW5nIjp7IngiOnsidmFsdWUiOiJ3aWR0aCJ9LCJ5Ijp7InZhbHVlIjoxMH0sInRleHQiOnsiZmllbGQiOiJlcXVhdGlvbiIsInR5cGUiOiJub21pbmFsIn19fSx7InRyYW5zZm9ybSI6W3sicmVncmVzc2lvbiI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJvbiI6ImRhdGUiLCJtZXRob2QiOiJsaW5lYXIiLCJwYXJhbXMiOnRydWV9LHsiY2FsY3VsYXRlIjoiJ1LCsiA9ICcgKyBmb3JtYXQoZGF0dW0uclNxdWFyZWQsICcuNGYnKSIsImFzIjoicjIifV0sIm1hcmsiOnsidHlwZSI6InRleHQiLCJhbGlnbiI6InJpZ2h0IiwiYmFzZWxpbmUiOiJ0b3AiLCJkeCI6LTUsImR5IjoyMCwiZm9udFNpemUiOjExLCJmb250V2VpZ2h0Ijoibm9ybWFsIn0sImVuY29kaW5nIjp7IngiOnsidmFsdWUiOiJ3aWR0aCJ9LCJ5Ijp7InZhbHVlIjoxMH0sInRleHQiOnsiZmllbGQiOiJyMiIsInR5cGUiOiJub21pbmFsIn19fSx7InBhcmFtcyI6W3sibmFtZSI6ImhvdmVyIiwic2VsZWN0Ijp7InR5cGUiOiJwb2ludCIsImZpZWxkcyI6WyJkYXRlIl0sIm5lYXJlc3QiOnRydWUsIm9uIjoibW91c2VvdmVyIiwiY2xlYXIiOiJtb3VzZW91dCJ9fV0sInRyYW5zZm9ybSI6W10sIm1hcmsiOnsidHlwZSI6InJ1bGUiLCJjb2xvciI6ImdyZXkifSwiZW5jb2RpbmciOnsieCI6eyJmaWVsZCI6ImRhdGUiLCJ0eXBlIjoidGVtcG9yYWwifSwib3BhY2l0eSI6eyJjb25kaXRpb24iOnsicGFyYW0iOiJob3ZlciIsInZhbHVlIjowLjUsImVtcHR5IjpmYWxzZX0sInZhbHVlIjowfSwidG9vbHRpcCI6W3siZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIiwidGl0bGUiOiJEYXRlIn0seyJmaWVsZCI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJ0eXBlIjoicXVhbnRpdGF0aXZlIiwidGl0bGUiOiJWYWx1ZSIsImZvcm1hdCI6IiJ9XX19LHsidHJhbnNmb3JtIjpbeyJmaWx0ZXIiOnsicGFyYW0iOiJob3ZlciJ9fV0sIm1hcmsiOnsidHlwZSI6InBvaW50IiwiZmlsbGVkIjp0cnVlLCJzaXplIjo5MH0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIn0sInkiOnsiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9LCJvcGFjaXR5Ijp7ImNvbmRpdGlvbiI6eyJwYXJhbSI6ImhvdmVyIiwidmFsdWUiOjAuNSwiZW1wdHkiOmZhbHNlfSwidmFsdWUiOjB9fX1dLCJiYWNrZ3JvdW5kIjoidHJhbnNwYXJlbnQifQ=="
+></eox-chart>
 
 <script type="module">
   import "@eox/chart/dist/eox-chart.js";
 
   const eoxChart = document.querySelector("eox-chart");
-
-  // Assign properties
-  Object.assign(eoxChart, {
-    spec: "eyIkc2NoZW1hIjoiaHR0cHM6Ly92ZWdhLmdpdGh1Yi5pby9zY2hlbWEvdmVnYS1saXRlL3Y1Lmpzb24iLCJkZXNjcmlwdGlvbiI6IlZlcnRpY2FsIGRlZmxlY3Rpb24gb3ZlciB0aW1lIiwiZGF0YSI6eyJuYW1lIjoidGltZXNlcmllcyIsInVybCI6Imh0dHBzOi8vd29ya3NwYWNlLXVpLXB1YmxpYy5ndGlmLWF1c3RyaWEuaHViLW90Yy5lb3guYXQvYXBpL3B1YmxpYy9zaGFyZS9wdWJsaWMtNHdhemVpM3ktMDIvV1ItMTAtVHJhbnNwb3J0LUluZnJhc3RydWN0dXJlLVByZWRpY3RpdmUtTWFpbnRlbmFuY2UvdjIvY3N2X3NpbmdsZS96b25lXzc1NDsga20gMjMuNTUuY3N2In0sInRyYW5zZm9ybSI6W3siY2FsY3VsYXRlIjoieWVhcihkYXR1bS5kYXRlKSIsImFzIjoieWVhciJ9XSwibGF5ZXIiOlt7Im1hcmsiOnsidHlwZSI6ImxpbmUiLCJzdHJva2UiOiIjMWY3N2I0In0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIiwiYXhpcyI6eyJ0aXRsZSI6IlllYXIiLCJmb3JtYXQiOiIlWSIsInRpY2tDb3VudCI6eyJpbnRlcnZhbCI6InllYXIiLCJzdGVwIjoxfX19LCJ5Ijp7InRpdGxlIjoiVmVydGljYWwgZGVmbGVjdGlvbiBbbW1dIiwiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9fX0seyJtYXJrIjp7InR5cGUiOiJsaW5lIiwic3Ryb2tlIjoiI2U3NGMzYyIsInN0cm9rZURhc2giOls1LDVdLCJzdHJva2VXaWR0aCI6Mn0sInRyYW5zZm9ybSI6W3sicmVncmVzc2lvbiI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJvbiI6ImRhdGUiLCJtZXRob2QiOiJsaW5lYXIifV0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIn0sInkiOnsiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9fX0seyJ0cmFuc2Zvcm0iOlt7InJlZ3Jlc3Npb24iOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwib24iOiJkYXRlIiwibWV0aG9kIjoibGluZWFyIiwicGFyYW1zIjp0cnVlfSx7ImNhbGN1bGF0ZSI6IidUcmVuZDogJyArIGZvcm1hdChkYXR1bS5jb2VmWzFdICogMzY1LjI1ICogMjQgKiA2MCAqIDYwICogMTAwMCwgJy4zZicpICsgJyBtbS95ZWFyJyIsImFzIjoiZXF1YXRpb24ifSx7ImNhbGN1bGF0ZSI6IidSwrIgPSAnICsgZm9ybWF0KGRhdHVtLnJTcXVhcmVkLCAnLjRmJykiLCJhcyI6InIyIn1dLCJtYXJrIjp7InR5cGUiOiJ0ZXh0IiwiYWxpZ24iOiJyaWdodCIsImJhc2VsaW5lIjoidG9wIiwiZHgiOi01LCJkeSI6NSwiZm9udFNpemUiOjExLCJmb250V2VpZ2h0Ijoibm9ybWFsIn0sImVuY29kaW5nIjp7IngiOnsidmFsdWUiOiJ3aWR0aCJ9LCJ5Ijp7InZhbHVlIjoxMH0sInRleHQiOnsiZmllbGQiOiJlcXVhdGlvbiIsInR5cGUiOiJub21pbmFsIn19fSx7InRyYW5zZm9ybSI6W3sicmVncmVzc2lvbiI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJvbiI6ImRhdGUiLCJtZXRob2QiOiJsaW5lYXIiLCJwYXJhbXMiOnRydWV9LHsiY2FsY3VsYXRlIjoiJ1LCsiA9ICcgKyBmb3JtYXQoZGF0dW0uclNxdWFyZWQsICcuNGYnKSIsImFzIjoicjIifV0sIm1hcmsiOnsidHlwZSI6InRleHQiLCJhbGlnbiI6InJpZ2h0IiwiYmFzZWxpbmUiOiJ0b3AiLCJkeCI6LTUsImR5IjoyMCwiZm9udFNpemUiOjExLCJmb250V2VpZ2h0Ijoibm9ybWFsIn0sImVuY29kaW5nIjp7IngiOnsidmFsdWUiOiJ3aWR0aCJ9LCJ5Ijp7InZhbHVlIjoxMH0sInRleHQiOnsiZmllbGQiOiJyMiIsInR5cGUiOiJub21pbmFsIn19fSx7InBhcmFtcyI6W3sibmFtZSI6ImhvdmVyIiwic2VsZWN0Ijp7InR5cGUiOiJwb2ludCIsImZpZWxkcyI6WyJkYXRlIl0sIm5lYXJlc3QiOnRydWUsIm9uIjoibW91c2VvdmVyIiwiY2xlYXIiOiJtb3VzZW91dCJ9fV0sInRyYW5zZm9ybSI6W10sIm1hcmsiOnsidHlwZSI6InJ1bGUiLCJjb2xvciI6ImdyZXkifSwiZW5jb2RpbmciOnsieCI6eyJmaWVsZCI6ImRhdGUiLCJ0eXBlIjoidGVtcG9yYWwifSwib3BhY2l0eSI6eyJjb25kaXRpb24iOnsicGFyYW0iOiJob3ZlciIsInZhbHVlIjowLjUsImVtcHR5IjpmYWxzZX0sInZhbHVlIjowfSwidG9vbHRpcCI6W3siZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIiwidGl0bGUiOiJEYXRlIn0seyJmaWVsZCI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJ0eXBlIjoicXVhbnRpdGF0aXZlIiwidGl0bGUiOiJWYWx1ZSIsImZvcm1hdCI6IiJ9XX19LHsidHJhbnNmb3JtIjpbeyJmaWx0ZXIiOnsicGFyYW0iOiJob3ZlciJ9fV0sIm1hcmsiOnsidHlwZSI6InBvaW50IiwiZmlsbGVkIjp0cnVlLCJzaXplIjo5MH0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIn0sInkiOnsiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9LCJvcGFjaXR5Ijp7ImNvbmRpdGlvbiI6eyJwYXJhbSI6ImhvdmVyIiwidmFsdWUiOjAuNSwiZW1wdHkiOmZhbHNlfSwidmFsdWUiOjB9fX1dLCJiYWNrZ3JvdW5kIjoidHJhbnNwYXJlbnQifQ==",
-  });
 </script>
 
 ```
@@ -537,6 +538,11 @@ without having to discard previous ones manually
 - `feature-name` (string): The display name of drawn features, shown e.g. in the feature list.
 - `feature-name-key` (null): The key of the property to display in the feature list.
 - `layer-id` (string): The ID of the Vector/Vector Tile Layer that contains features to be selected
+- `featureStyles` ({
+     * layer?: FlatStyleLike
+     * hover?: FlatStyleLike
+     * click?: FlatStyleLike
+     * } | null): Flat styles for the drawn/selected features
 - `multiple-features` (boolean): Allow adding more than one feature at a time
 - `measure` (boolean): Display area/line measurement for the drawn features.
 When enabled, a "measure" property is added to each drawn feature's properties,
@@ -1447,7 +1453,7 @@ Example: "-0.563160,51.280430,0.278970,51.683979"
 - `tooltip-direction` (string): Direction of the tooltip relative to the button.
 Options: "top", "bottom", "left", "right"
 Default: "left"
-- `false` (object): Additional parameters to add to the query string as key-value pairs.
+- `params` (object): Additional parameters to add to the query string as key-value pairs.
 Example: { language: "en", limit: 10, countrycode: "us" }
 
 ### Properties
@@ -1502,6 +1508,7 @@ In order to use a real geocoding service, replace the endpoint with a valid Open
   endpoint="/opencage-mock-data.json"
   label="Search"
   style="position: absolute; top: 36px; left: 32px; z-index: 12"
+  params='{"language":"en","limit":5,"countrycode":"us"}'
 ></eox-geosearch>
 <eox-map
   id="geosearch-map-primary"
@@ -1514,15 +1521,6 @@ In order to use a real geocoding service, replace the endpoint with a valid Open
 
   const eoxGeosearch = document.querySelector("eox-geosearch");
   const eoxMap = document.querySelector("eox-map");
-
-  // Assign properties
-  Object.assign(eoxGeosearch, {
-    params: {
-      language: "en",
-      limit: 5,
-      countrycode: "us",
-    },
-  });
 
   Object.assign(eoxMap, {
     animationOptions: {
@@ -1820,23 +1818,27 @@ Features:
 - Supports `text`, `select`, `multiselect`, `range` (including date), and `spatial` filters
 - Aggregates results by a property key (e.g. themes)
 - Inline mode for compact UI
-- Pre-set filter state via `state` in `filterProperties`
+- Pre-set filter state via `state` in `filterProperties` property/attribute
 - Nested property filtering using dot notation
-- External search API endpoint support via `externalFilter`
+- External search API endpoint support via `externalFilter` property
 - Auto-spreading of single-item aggregations to root level
 - Card display mode for results (`result-type="cards"`)
 - Secondary result action button with custom icon and event handler (`click:result-action`)
-- Custom result sorting via `resultSorting` property
+- Custom result sorting via `resultSorting` property/attribute
 - Customizable layout and styling via CSS variables
 
 Usage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.
 
 ### Attributes
 
+- `items` (Array<Object>): The items to be filtered. Can be passed as a property or stringified JSON attribute.
+- `selectedResult` (Object): The currently selected result
 - `aggregate-results` (String): Aggregate results by a property key
 - `auto-spread-single` (Boolean): Automatically spread single item summaries
 removing the summary header
 - `enable-highlighting` (Boolean): Highlighting of search result character matches
+- `filterProperties` (Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>): The filter properties. Can be passed as a property or stringified JSON attribute.
+- `fuseConfig` (Object): Native fuse.js config override
 - `inline-mode` (Boolean): Inline mode, for rendering the itemfilter in a very condensed space.
 Expects showResults to be false
 - `match-all-when-empty` (Boolean): Show all result items if nothing is input by the user
@@ -1848,16 +1850,24 @@ Supports passing a function which recieves the current item as parameter and is 
 Supports passing a function which recieves the current item as parameter and is expected to return a string
 - `image-property` (String|Function): The property of the result items used for an image
 Supports passing a function which recieves the current item as parameter and is expected to return a string
+- `resultSorting` (false|string|Function|{key:string, order?:'asc'|'desc'}): Sorting behavior for the results. Can be:
+- undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)
+- false: no sorting
+- string: property key to sort by (ascending)
+- function: custom comparator function (a, b) => number
+- object: { key: string, order?: 'asc' | 'desc' }
 - `enable-multiple-filter` (Boolean): Allow opening multiple filter accordions in parallel
 - `expand-result` (Boolean): Initialize result accordions expanded
 - `expand-multiple-results` (Boolean): Allow opening multiple result accordions in parallel
 - `result-type` (String): Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element)
+- `enableResultAction` (Boolean): Enable result action button (a secondary action besides the normal result selection)
+- `resultActionIcon` (String): Icon for result action. Supports html
 - `styleOverride` (String): Overrides elements current CSS.
 - `unstyled` (boolean): Render the element without additional styles
 
 ### Properties
 
-- `items` (Array<Object>): The items to be filtered (Default: `null`)
+- `items` (Array<Object>): The items to be filtered. Can be passed as a property or stringified JSON attribute. (Default: `null`)
 - `filters` (Object): The state object containing the applied filters. (Default: `{}`)
 - `results` (Array<Object>): The state object containing the filtered results. (Default: `[]`)
 - `selectedResult` (Object): The currently selected result (Default: `null`)
@@ -1869,8 +1879,9 @@ removing the summary header (Default: `false`)
 Passed properties: input string, filters object.
 The function can return a URL string, or an object containing a `url,
 an optional `fetchFn` to handle the request, or/and an optional `key` to
-return a specific property from the fetched data. (Default: `null`)
-- `filterProperties` (Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>): The filter properties. (Default: `[]`)
+return a specific property from the fetched data.
+This is a property-only field as it expects a function. (Default: `null`)
+- `filterProperties` (Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>): The filter properties. Can be passed as a property or stringified JSON attribute. (Default: `[]`)
 - `fuseConfig` (Object): Native fuse.js config override (Default: `{}`)
 - `inlineMode` (Boolean): Inline mode, for rendering the itemfilter in a very condensed space.
 Expects showResults to be false (Default: `false`)
@@ -1913,7 +1924,7 @@ Supports passing a function which recieves the current item as parameter and is 
 Use `autoSpreadSingle` to automatically spread single-item aggregations to the root level, simplifying the result view when only one item matches a filter.
 
 ```html
-<eox-itemfilter style=""></eox-itemfilter>
+<eox-itemfilter></eox-itemfilter>
 
 <script type="module">
   import "@eox/itemfilter/dist/eox-itemfilter.js";
@@ -7089,7 +7100,10 @@ The `click:result-action` event is triggered when a result action is clicked. Yo
 The icon can be configered with the `resultActionIcon` property. Useful for additional actions on results, such as opening details or triggering workflows.
 
 ```html
-<eox-itemfilter></eox-itemfilter>
+<eox-itemfilter
+  enableResultAction="true"
+  resultActionIcon='<svg style="width: 24px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>click me!</title><path fill="#004170" d="M11.5,11L17.88,16.37L17,16.55L16.36,16.67C15.73,16.8 15.37,17.5 15.65,18.07L15.92,18.65L17.28,21.59L15.86,22.25L14.5,19.32L14.24,18.74C13.97,18.15 13.22,17.97 12.72,18.38L12.21,18.78L11.5,19.35V11M10.76,8.69A0.76,0.76 0 0,0 10,9.45V20.9C10,21.32 10.34,21.66 10.76,21.66C10.95,21.66 11.11,21.6 11.24,21.5L13.15,19.95L14.81,23.57C14.94,23.84 15.21,24 15.5,24C15.61,24 15.72,24 15.83,23.92L18.59,22.64C18.97,22.46 19.15,22 18.95,21.63L17.28,18L19.69,17.55C19.85,17.5 20,17.43 20.12,17.29C20.39,16.97 20.35,16.5 20,16.21L11.26,8.86L11.25,8.87C11.12,8.76 10.95,8.69 10.76,8.69M15,10V8H20V10H15M13.83,4.76L16.66,1.93L18.07,3.34L15.24,6.17L13.83,4.76M10,0H12V5H10V0M3.93,14.66L6.76,11.83L8.17,13.24L5.34,16.07L3.93,14.66M3.93,3.34L5.34,1.93L8.17,4.76L6.76,6.17L3.93,3.34M7,10H2V8H7V10" /></svg>'
+></eox-itemfilter>
 
 <script type="module">
   import "@eox/itemfilter/dist/eox-itemfilter.js";
@@ -7102,11 +7116,8 @@ The icon can be configered with the `resultActionIcon` property. Useful for addi
     titleProperty: "title",
     aggregateResults: "themes",
     subTitleProperty: "description",
-    enableResultAction: "true",
     imageProperty: "assets.thumbnail.href",
     resultType: "list",
-    resultActionIcon:
-      '<svg style="width: 24px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>click me!</title><path fill="#004170" d="M11.5,11L17.88,16.37L17,16.55L16.36,16.67C15.73,16.8 15.37,17.5 15.65,18.07L15.92,18.65L17.28,21.59L15.86,22.25L14.5,19.32L14.24,18.74C13.97,18.15 13.22,17.97 12.72,18.38L12.21,18.78L11.5,19.35V11M10.76,8.69A0.76,0.76 0 0,0 10,9.45V20.9C10,21.32 10.34,21.66 10.76,21.66C10.95,21.66 11.11,21.6 11.24,21.5L13.15,19.95L14.81,23.57C14.94,23.84 15.21,24 15.5,24C15.61,24 15.72,24 15.83,23.92L18.59,22.64C18.97,22.46 19.15,22 18.95,21.63L17.28,18L19.69,17.55C19.85,17.5 20,17.43 20.12,17.29C20.39,16.97 20.35,16.5 20,16.21L11.26,8.86L11.25,8.87C11.12,8.76 10.95,8.69 10.76,8.69M15,10V8H20V10H15M13.83,4.76L16.66,1.93L18.07,3.34L15.24,6.17L13.83,4.76M10,0H12V5H10V0M3.93,14.66L6.76,11.83L8.17,13.24L5.34,16.07L3.93,14.66M3.93,3.34L5.34,1.93L8.17,4.76L6.76,6.17L3.93,3.34M7,10H2V8H7V10" /></svg>',
     filterProperties: [
       {
         keys: ["title", "themes"],
@@ -7801,7 +7812,9 @@ The `resultSorting` property allows you to customize the sorting behavior of res
 - `object`: `{ key: string, order?: 'asc' | 'desc' }` for property sorting with direction (this example)
 
 ```html
-<eox-itemfilter></eox-itemfilter>
+<eox-itemfilter
+  resultSorting='{"key":"themes","order":"desc"}'
+></eox-itemfilter>
 
 <script type="module">
   import "@eox/itemfilter/dist/eox-itemfilter.js";
@@ -8441,10 +8454,6 @@ The `resultSorting` property allows you to customize the sorting behavior of res
         },
       },
     ],
-    resultSorting: {
-      key: "themes",
-      order: "desc",
-    },
   });
 </script>
 
@@ -8460,7 +8469,7 @@ Also check out the [JSON Editor documentation](https://github.com/json-editor/js
 
 Features:
 - Renders forms from JSON schema, supporting complex nested structures and custom validation.
-- All properties and event handlers are passed via args, enabling dynamic configuration and integration.
+- All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).
 - Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).
 - Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).
 - Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.
@@ -8472,6 +8481,13 @@ See the stories for usage examples covering validation, custom editors, spatial 
 
 ### Attributes
 
+- `schema` (JsonSchema): Schema for the form editor
+- `value` (JsonSchema): JSON value of the form editor
+- `defaults` (object): Default values for the JSONEditor instance
+- `options` (object): Options for the form editor
+- `customEditorInterfaces` (Array): List of custom editor interface
+Read more about the implementation of custom editor interfaces here:
+https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
 - `no-shadow` (Boolean): Renders the element without a shadow root
 - `properties-toggle` (Boolean): Shows a toggle for showing/hiding object properties editing buttons
 To be used in combination with `options.disable_properties = false`
@@ -10584,7 +10600,10 @@ Custom Editor Interfaces example. Shows how to create custom form inputs for jso
 Demonstrates extensibility via custom editor interfaces based on the JSONEditor.AbstractEditor.
 
 ```html
-<eox-jsonform></eox-jsonform>
+<eox-jsonform
+  value='{"test":true,"test2":true}'
+  customEditorInterfaces='[{"type":"boolean","format":"custom"}]'
+></eox-jsonform>
 
 <script type="module">
   import "@eox/jsonform/dist/eox-jsonform.js";
@@ -10608,81 +10627,6 @@ Demonstrates extensibility via custom editor interfaces based on the JSONEditor.
         },
       },
     },
-    value: {
-      test: true,
-      test2: true,
-    },
-    customEditorInterfaces: [
-      {
-        type: "boolean",
-        format: "custom",
-        func: class extends JSONEditor.AbstractEditor {
-          build() {
-            super.build();
-
-            // control
-            this.control = document.createElement("div");
-            this.control.classList.add("form-control");
-
-            // Create a select element
-            this.input = document.createElement("select");
-            this.input.setAttribute("id", this.path + "test");
-            this.input.classList.add("form-select");
-
-            const options = [
-              {
-                value: "true",
-                label: "True",
-                data: true,
-                color: "green",
-              },
-              {
-                value: "false",
-                label: "False",
-                data: false,
-                color: "red",
-              },
-            ];
-
-            // build options
-            options.forEach((option) => {
-              const optionElement = document.createElement("option");
-              optionElement.setAttribute("value", option.value);
-              optionElement.textContent = option.label;
-              optionElement.style.background = option.color;
-              optionElement.style.color = "white";
-              if (this.defaults.startVals[this.key] === option.data) {
-                optionElement.selected = true;
-              }
-              this.input.appendChild(optionElement);
-            });
-
-            // label
-            this.label = document.createElement("label");
-            this.label.setAttribute("for", this.path + "test");
-            this.label.classList.add("form-check-label");
-            this.label.textContent = this.schema.title;
-            this.label.style.fontStyle = "italic";
-
-            // appends
-            this.container.appendChild(this.control);
-            this.control.appendChild(this.label);
-            this.control.appendChild(this.input);
-          }
-
-          postBuild() {
-            super.postBuild();
-
-            this.input.addEventListener("change", (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              this.value = e.currentTarget.checked;
-              this.onChange(true);
-            });
-          }
-        },
-      },
-    ],
   });
 </script>
 
@@ -10694,7 +10638,7 @@ Defaults example. Demonstrates how to configure JSONEditor defaults.
 Shows how to implement a custom upload handler using the `defaults` property.
 
 ```html
-<eox-jsonform></eox-jsonform>
+<eox-jsonform defaults='{"callbacks":{"upload":{}}}'></eox-jsonform>
 
 <script type="module">
   import "@eox/jsonform/dist/eox-jsonform.js";
@@ -10767,35 +10711,6 @@ Shows how to implement a custom upload handler using the `defaults` property.
         },
       },
     },
-    defaults: {
-      callbacks: {
-        upload: {
-          testUploadHandler: function (jseditor, type, file, cbs) {
-            if (type === "root.upload_fail") cbs.failure("Upload failed");
-            else {
-              var tick = 0;
-
-              var tickFunction = function () {
-                tick += 1;
-                console.log("progress: " + tick);
-
-                if (tick < 100) {
-                  cbs.updateProgress(tick);
-                  window.setTimeout(tickFunction, 50);
-                } else if (tick == 100) {
-                  cbs.updateProgress();
-                  window.setTimeout(tickFunction, 500);
-                } else {
-                  cbs.success("http://www.example.com/images/" + file.name);
-                }
-              };
-
-              window.setTimeout(tickFunction);
-            }
-          },
-        },
-      },
-    },
   });
 
   // Listen for events
@@ -10811,18 +10726,15 @@ Demonstrates async loading and ready event handling. Once the `eox-jsonform` has
 it logs to the console that it is ready ("Schema loading finished, editor ready!").
 
 ```html
-<eox-jsonform></eox-jsonform>
+<eox-jsonform
+  schema="/catalogSchema.json"
+  value="/catalogValue.json"
+></eox-jsonform>
 
 <script type="module">
   import "@eox/jsonform/dist/eox-jsonform.js";
 
   const eoxJsonform = document.querySelector("eox-jsonform");
-
-  // Assign properties
-  Object.assign(eoxJsonform, {
-    schema: "/catalogSchema.json",
-    value: "/catalogValue.json",
-  });
 
   // Listen for events
   eoxJsonform.addEventListener("ready", () =>
@@ -11249,7 +11161,7 @@ Demonstrates hiding and showing optional fields based on schema and value. Also 
 the "edit properties" button to toggle inclusion or addition of optional properties.
 
 ```html
-<eox-jsonform></eox-jsonform>
+<eox-jsonform options='{"disable_properties":false}'></eox-jsonform>
 
 <script type="module">
   import "@eox/jsonform/dist/eox-jsonform.js";
@@ -11278,9 +11190,6 @@ the "edit properties" button to toggle inclusion or addition of optional propert
     },
     value: {
       bar: "I am optional and shown via the starting value!",
-    },
-    options: {
-      disable_properties: false,
     },
   });
 </script>
@@ -11407,7 +11316,10 @@ Required values are always displayed, whereas optional properties are only shown
 when they have a value or have been opted-in by the user.
 
 ```html
-<eox-jsonform></eox-jsonform>
+<eox-jsonform
+  value='{"bar":"Value set at start"}'
+  options='{"show_opt_in":true}'
+></eox-jsonform>
 
 <script type="module">
   import "@eox/jsonform/dist/eox-jsonform.js";
@@ -11439,12 +11351,6 @@ when they have a value or have been opted-in by the user.
           },
         },
       },
-    },
-    value: {
-      bar: "Value set at start",
-    },
-    options: {
-      show_opt_in: true,
     },
   });
 
@@ -12379,7 +12285,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-30T08:42:44.165Z",
+              default: "2026-05-05T11:31:01.065Z",
               options: {
                 hidden: true,
               },
@@ -12497,11 +12403,16 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `id-property` (String): Layer id property
 - `title-property` (String): Layer title property
 - `show-layer-zoom-state` (Boolean): Show layer state based on zoom level or not
+- `tools` (Array<String>): Layer tools
+- `add-external-layers` (Boolean): Enable-disable external layer
 - `unstyled` (Boolean): Render the element without additional styles
 - `styleOverride` (String): Overrides elements current CSS.
 - `toolsAsList` (Boolean): If enabled, the tools section will be rendered as list.
 - `globally-exclusive-layers` (Boolean): If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
 - `tools-auto-expand` (Boolean): If enabled, toggling the layer visibility will also open/close the layer tools.
+- `customEditorInterfaces` (Array): List of custom editor interfaces for layer config eox-jsonforms
+Read more about the implementation of custom editor interfaces here:
+https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
 
 ### Properties
 
@@ -12990,7 +12901,11 @@ Shows how to hide layers from the control. By setting the `layerControlHide` pro
 Shows the config tool in action. The "config" tool reads settings from the `layerConfig` property and renders a form based on a provided JSON schema, allowing users to update source URL parameters and other settings. Requires the `@eox/jsonform` package for form rendering.
 
 ```html
-<eox-layercontrol for="eox-map#config" style="width: 240px"></eox-layercontrol>
+<eox-layercontrol
+  tools='["config"]'
+  for="eox-map#config"
+  style="width: 240px"
+></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
   id="config"
@@ -13004,11 +12919,6 @@ Shows the config tool in action. The "config" tool reads settings from the `laye
 
   const eoxLayercontrol = document.querySelector("eox-layercontrol");
   const eoxMap = document.querySelector("eox-map");
-
-  // Assign properties
-  Object.assign(eoxLayercontrol, {
-    tools: ["config"],
-  });
 
   Object.assign(eoxMap, {
     center: [-7000000, -500000],
@@ -13080,6 +12990,7 @@ Shows how to modify layer time properties. By adding the "datetime" tool, users 
 <eox-layercontrol
   for="eox-map#datetime"
   style="width: 240px"
+  tools='["datetime"]'
 ></eox-layercontrol>
 
 <script type="module">
@@ -13231,10 +13142,7 @@ Shows how to modify layer time properties. By adding the "datetime" tool, users 
       ],
       "id": "datetime"
     }
-  },
-      tools: [
-    "datetime"
-  ]
+  }
   });
 </script>
 
@@ -13245,7 +13153,11 @@ Shows how to modify layer time properties. By adding the "datetime" tool, users 
 Demonstrates dynamic color legends for layers. The "legend" tool reads configuration from the `layerLegend` property and creates a color legend based on value ranges and domains. Supports partial configuration of the color-legend-element. Useful for visualizing data ranges and categories.
 
 ```html
-<eox-layercontrol style="width: 240px" for="eox-map#legend"></eox-layercontrol>
+<eox-layercontrol
+  style="width: 240px"
+  tools='["legend"]'
+  for="eox-map#legend"
+></eox-layercontrol>
 
 <script type="module">
   import "@eox/layercontrol/dist/eox-layercontrol.js";
@@ -13379,7 +13291,6 @@ Demonstrates dynamic color legends for layers. The "legend" tool reads configura
         id: "legend",
       },
     },
-    tools: ["legend"],
   });
 </script>
 
@@ -13391,6 +13302,7 @@ Demonstrates layer style configuration. The "styles" tool allows users to modify
 
 ```html
 <eox-layercontrol
+  tools='["config"]'
   for="eox-map#config-styles"
   style="width: 240px"
 ></eox-layercontrol>
@@ -13405,11 +13317,6 @@ Demonstrates layer style configuration. The "styles" tool allows users to modify
 
   const eoxLayercontrol = document.querySelector("eox-layercontrol");
   const eoxMap = document.querySelector("eox-map");
-
-  // Assign properties
-  Object.assign(eoxLayercontrol, {
-    tools: ["config"],
-  });
 
   Object.assign(eoxMap, {
     center: [-1856051, 8501749],
@@ -14252,7 +14159,11 @@ Demonstrates the use of layer tools. The layer control accepts a `tools` array, 
 In the Controls panel, try toggling different combinations of tools to see how the layer control adapts.
 
 ```html
-<eox-layercontrol for="eox-map#tools" style="width: 240px"></eox-layercontrol>
+<eox-layercontrol
+  for="eox-map#tools"
+  tools='["info"]'
+  style="width: 240px"
+></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
   id="tools"
@@ -14264,11 +14175,6 @@ In the Controls panel, try toggling different combinations of tools to see how t
 
   const eoxLayercontrol = document.querySelector("eox-layercontrol");
   const eoxMap = document.querySelector("eox-map");
-
-  // Assign properties
-  Object.assign(eoxLayercontrol, {
-    tools: ["info"],
-  });
 
   Object.assign(eoxMap, {
     layers: [
@@ -14618,6 +14524,7 @@ Demonstrates the `toolsAutoExpand` property. When enabled, toggling a layer's vi
 ```html
 <eox-layercontrol
   for="eox-map#tools-auto-expand"
+  tools='["info","opacity"]'
   style="width: 240px"
 ></eox-layercontrol>
 <eox-map
@@ -14634,7 +14541,6 @@ Demonstrates the `toolsAutoExpand` property. When enabled, toggling a layer's vi
 
   // Assign properties
   Object.assign(eoxLayercontrol, {
-    tools: ["info", "opacity"],
     toolsAutoExpand: true,
   });
 
@@ -15242,9 +15148,20 @@ Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
 
 ### Attributes
 
+- `config` (ConfigObject): Gets the current configuration of the map.
+- `center` (Array<number>): Gets the current center coordinates of the map.
+- `layers` (array): Gets the current layers of the map
+- `zoom` (number): Gets the current zoom level of the map.
+- `animationOptions` (EOxAnimationOptions): Gets the current animation options.
+- `controls` (ControlDictionary): Gets the current map controls.
+- `interactions` (Object.<string, default>): Object to store various map interactions (e.g., drag, zoom).
+- `lonLatCenter` (Array<number>): Gets the current center of the map in longitude and latitude.
+- `lonLatExtent` (Array<number>): Gets the current extent of the map in longitude and latitude.
 - `prevent-scroll` (boolean): Gets the current scroll interaction state.
 - `projection` (ProjectionLike): Gets the current map projection.
 - `sync` (string): Gets the current sync state of the map.
+- `zoomExtent` (Array<number>): Gets the current extent of the map.
+- `globeConfig` (object): Gets the current globe configuration properties.
 
 ### Properties
 
@@ -15306,7 +15223,10 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
 </style>
 
 <eox-map-compare>
-  <eox-map id="compareA"></eox-map>
+  <eox-map
+    layers='[{"type":"Tile","source":{"type":"OSM"}}]'
+    id="compareA"
+  ></eox-map>
   <eox-map id="compareB" sync="eox-map#compareA"></eox-map>
 </eox-map-compare>
 
@@ -15319,14 +15239,6 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
 
   // Assign properties
   Object.assign(eoxMap1, {
-    layers: [
-      {
-        type: "Tile",
-        source: {
-          type: "OSM",
-        },
-      },
-    ],
     slot: "first",
   });
 
@@ -15362,7 +15274,11 @@ animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/modu
 In the Controls panel, try changing the `zoom` or `center` properties and see how the map animates to the new view.
 
 ```html
-<eox-map></eox-map>
+<eox-map
+  animationOptions='{"duration":500}'
+  center="[16.8,48.2]"
+  zoom="7"
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -15383,11 +15299,6 @@ In the Controls panel, try changing the `zoom` or `center` properties and see ho
         },
       },
     ],
-    animationOptions: {
-      duration: 500,
-    },
-    center: [16.8, 48.2],
-    zoom: 7,
   });
 </script>
 
@@ -15450,7 +15361,7 @@ Renders `eox-map` with `Click` interaction
 Renders `eox-map` with `Cluster-Explode` interaction
 
 ```html
-<eox-map></eox-map>
+<eox-map controls='{"Attribution":{}}'></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -15461,9 +15372,6 @@ Renders `eox-map` with `Cluster-Explode` interaction
 
   // Assign properties
   Object.assign(eoxMap, {
-    controls: {
-      Attribution: {},
-    },
     layers: [
       {
         type: "Tile",
@@ -15746,7 +15654,7 @@ and adjust CSS sizing properties (like \`--map-control-size\`) on the fly to sup
   }
 </style>
 
-<eox-map>
+<eox-map zoom="4" center="[10,50]">
   <button
     class="custom-btn"
     slot="top-right"
@@ -15856,8 +15764,6 @@ and adjust CSS sizing properties (like \`--map-control-size\`) on the fly to sup
         },
       },
     ],
-    zoom: 4,
-    center: [10, 50],
   });
 
   const map = document.querySelector("eox-map#customized-controls");
@@ -15940,7 +15846,7 @@ The coordinates can be transformed to any other projection by setting the `proje
 The displayed coordinates decimal places can be set via the `precision` property.
 
 ```html
-<eox-map>
+<eox-map center="[3735055,1886786]" zoom="8">
   <custom-coordinates-tooltip is="eox-map-tooltip"></custom-coordinates-tooltip>
 </eox-map>
 
@@ -16089,8 +15995,6 @@ The displayed coordinates decimal places can be set via the `precision` property
         ],
       },
     ],
-    center: [3735055, 1886786],
-    zoom: 8,
   });
 </script>
 
@@ -16101,7 +16005,7 @@ The displayed coordinates decimal places can be set via the `precision` property
 Loading Indicators can also be centered over the entire map by setting the option `type` to `'fullscreen'`, adapting the opacity is adviced when doing so.
 
 ```html
-<eox-map></eox-map>
+<eox-map zoom="9" center="[0,51.5]"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16110,8 +16014,6 @@ Loading Indicators can also be centered over the entire map by setting the optio
 
   // Assign properties
   Object.assign(eoxMap, {
-    zoom: 9,
-    center: [0, 51.5],
     controls: {
       LoadingIndicator: {
         type: "fullscreen",
@@ -16148,7 +16050,7 @@ Instead of the built-in `eox-map-tooltip`, it is possible to use any other (cust
 This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
 
 ```html
-<eox-map>
+<eox-map center="[15,48]" zoom="4">
   <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
 </eox-map>
 
@@ -16208,8 +16110,6 @@ This custom tooltip is updated each time a feature is selected by setting its `f
         ],
       },
     ],
-    center: [15, 48],
-    zoom: 4,
   });
 </script>
 
@@ -16220,7 +16120,7 @@ This custom tooltip is updated each time a feature is selected by setting its `f
 Renders `FlatGeoBuf` layer
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[16.346,48.182]" zoom="12.5"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16231,8 +16131,6 @@ Renders `FlatGeoBuf` layer
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [16.346, 48.182],
-    zoom: 12.5,
     layers: [
       {
         type: "Tile",
@@ -16265,7 +16163,7 @@ Renders `FlatGeoBuf` layer
 Renders `FlatGeoBuf` layer
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-30,64]" zoom="3"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16276,8 +16174,6 @@ Renders `FlatGeoBuf` layer
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-30, 64],
-    zoom: 3,
     layers: [
       {
         type: "Tile",
@@ -16312,7 +16208,7 @@ Renders `FlatGeoBuf` layer
 Renders `GeoTIFF` layer as `WebGLTile`
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[3737055,1886786]" zoom="8"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16323,7 +16219,6 @@ Renders `GeoTIFF` layer as `WebGLTile`
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [3737055, 1886786],
     layers: [
       {
         type: "Tile",
@@ -16349,7 +16244,6 @@ Renders `GeoTIFF` layer as `WebGLTile`
         },
       },
     ],
-    zoom: 8,
   });
 </script>
 
@@ -16360,7 +16254,7 @@ Renders `GeoTIFF` layer as `WebGLTile`
 Renders `GeoZarr` layer as `WebGLTile`
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[1407372,5701616]" zoom="9"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16371,7 +16265,6 @@ Renders `GeoZarr` layer as `WebGLTile`
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [1407372, 5701616],
     layers: [
       {
         type: "Tile",
@@ -16410,7 +16303,6 @@ Renders `GeoZarr` layer as `WebGLTile`
         },
       },
     ],
-    zoom: 9,
   });
 </script>
 
@@ -16421,7 +16313,7 @@ Renders `GeoZarr` layer as `WebGLTile`
 Renders Geolocation Control in `eox-map`
 
 ```html
-<eox-map></eox-map>
+<eox-map zoom="7"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16430,7 +16322,6 @@ Renders Geolocation Control in `eox-map`
 
   // Assign properties
   Object.assign(eoxMap, {
-    zoom: 7,
     controls: {
       Geolocation: {
         tracking: true,
@@ -16467,7 +16358,7 @@ Renders Geolocation Control in `eox-map`
 The `eox-map` tooltip can also be used to display information about a feature in a (wms) Tile layers on click
 
 ```html
-<eox-map>
+<eox-map center="[-10997148,4569099]" zoom="4">
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -16516,8 +16407,6 @@ The `eox-map` tooltip can also be used to display information about a feature in
         ],
       },
     ],
-    center: [-10997148, 4569099],
-    zoom: 4,
   });
 </script>
 
@@ -16532,7 +16421,12 @@ This example renders a globe centered on Austria, with 2 layers: an XYZ tile lay
 The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
 
 ```html
-<eox-map projection="globe"></eox-map>
+<eox-map
+  center="[15,48]"
+  projection="globe"
+  globeConfig='{"terrain":true,"useHighLOD":true}'
+  zoom="4"
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16541,11 +16435,6 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [15, 48],
-    globeConfig: {
-      terrain: true,
-      useHighLOD: true,
-    },
     layers: [
       {
         type: "Tile",
@@ -16683,7 +16572,6 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
         },
       },
     ],
-    zoom: 4,
   });
 </script>
 
@@ -17040,7 +16928,7 @@ The `mapboxStyle` property and the `applyOptions` property of the EOxLayer are m
 (compare https://openlayers.org/ol-mapbox-style/functions/apply.html)
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[0,0]"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17051,7 +16939,6 @@ The `mapboxStyle` property and the `applyOptions` property of the EOxLayer are m
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [0, 0],
     layers: [
       {
         type: "MapboxStyle",
@@ -17187,26 +17074,16 @@ The `properties` passed in this object are passed along to the OpenLayers layer,
 Notice that the `eox-map` DOM element has a property `map` which stores a reference to the actual OpenLayers map instance, so one could do e.g. `eoxMap.map.getView().getCenter()`, and other native OpenLayers things.
 
 ```html
-<eox-map></eox-map>
+<eox-map
+  center="[15,48]"
+  layers='[{"type":"Tile","source":{"type":"OSM"}}]'
+  zoom="7"
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
 
   const eoxMap = document.querySelector("eox-map");
-
-  // Assign properties
-  Object.assign(eoxMap, {
-    center: [15, 48],
-    layers: [
-      {
-        type: "Tile",
-        source: {
-          type: "OSM",
-        },
-      },
-    ],
-    zoom: 7,
-  });
 </script>
 
 ```
@@ -17221,7 +17098,7 @@ In the Controls panel, try changing the projection from the default `EPSG:3857` 
 how the map instantly updates.
 
 ```html
-<eox-map projection="EPSG:3857"></eox-map>
+<eox-map center="[16.8,48.2]" zoom="7" projection="EPSG:3857"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17250,8 +17127,6 @@ how the map instantly updates.
         },
       },
     ],
-    center: [16.8, 48.2],
-    zoom: 7,
   });
 </script>
 
@@ -17262,7 +17137,7 @@ how the map instantly updates.
 Renders STAC Layer using STAC url json.
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-122.38,46.1]" zoom="7"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17273,7 +17148,6 @@ Renders STAC Layer using STAC url json.
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-122.38, 46.1],
     layers: [
       {
         type: "Tile",
@@ -17292,7 +17166,6 @@ Renders STAC Layer using STAC url json.
         url: "https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json",
       },
     ],
-    zoom: 7,
   });
 </script>
 
@@ -17303,7 +17176,11 @@ Renders STAC Layer using STAC url json.
 A simple, unobtrusive loading indicator in the bottom left that appears any time when the map is loading.
 
 ```html
-<eox-map></eox-map>
+<eox-map
+  zoom="9"
+  center="[0,51.5]"
+  controls='{"LoadingIndicator":{},"Zoom":{}}'
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17312,12 +17189,6 @@ A simple, unobtrusive loading indicator in the bottom left that appears any time
 
   // Assign properties
   Object.assign(eoxMap, {
-    zoom: 9,
-    center: [0, 51.5],
-    controls: {
-      LoadingIndicator: {},
-      Zoom: {},
-    },
     layers: [
       {
         type: "Tile",
@@ -17339,7 +17210,7 @@ A simple, unobtrusive loading indicator in the bottom left that appears any time
 Renders a static image layer
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-10997148,4569099]"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17348,7 +17219,6 @@ Renders a static image layer
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-10997148, 4569099],
     layers: [
       {
         type: "Image",
@@ -17386,7 +17256,7 @@ Note that if multiple interactions are registered (e.g. `pointermove` and `singl
 the `pointermove` interaction will have higher priority for the tooltip.
 
 ```html
-<eox-map>
+<eox-map center="[15,48]" zoom="4">
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -17420,8 +17290,6 @@ the `pointermove` interaction will have higher priority for the tooltip.
         ],
       },
     ],
-    center: [15, 48],
-    zoom: 4,
   });
 </script>
 
@@ -17444,7 +17312,7 @@ Additionally, the entire feature is passed as a second argument, for cases of mo
 transformation in which needs access to the entire feature.
 
 ```html
-<eox-map>
+<eox-map center="[15,48]" zoom="4">
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -17479,8 +17347,6 @@ transformation in which needs access to the entire feature.
         ],
       },
     ],
-    center: [15, 48],
-    zoom: 4,
   });
 
   Object.assign(eoxMapTooltip, {
@@ -17581,7 +17447,7 @@ Basic vector layer map rendered using `MVT` tiles
 Renders WMS layer using geo-server
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-10997148,4569099]" zoom="3"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17590,7 +17456,6 @@ Renders WMS layer using geo-server
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-10997148, 4569099],
     layers: [
       {
         type: "Tile",
@@ -17609,7 +17474,6 @@ Renders WMS layer using geo-server
         },
       },
     ],
-    zoom: 3,
   });
 </script>
 
@@ -17620,7 +17484,7 @@ Renders WMS layer using geo-server
 Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[20,40]" zoom="5"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17631,7 +17495,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [20, 40],
     layers: [
       {
         type: "Tile",
@@ -17645,7 +17508,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
         },
       },
     ],
-    zoom: 5,
   });
 </script>
 
@@ -17656,7 +17518,7 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[20,40]" zoom="5"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17665,7 +17527,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [20, 40],
     layers: [
       {
         type: "Tile",
@@ -17684,7 +17545,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
         },
       },
     ],
-    zoom: 5,
   });
 </script>
 
@@ -17812,7 +17672,10 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
 </style>
 
 <eox-map-compare>
-  <eox-map id="compareA"></eox-map>
+  <eox-map
+    layers='[{"type":"Tile","source":{"type":"OSM"}}]'
+    id="compareA"
+  ></eox-map>
   <eox-map id="compareB" sync="eox-map#compareA"></eox-map>
 </eox-map-compare>
 
@@ -17825,14 +17688,6 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
 
   // Assign properties
   Object.assign(eoxMap1, {
-    layers: [
-      {
-        type: "Tile",
-        source: {
-          type: "OSM",
-        },
-      },
-    ],
     slot: "first",
   });
 
@@ -17868,7 +17723,11 @@ animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/modu
 In the Controls panel, try changing the `zoom` or `center` properties and see how the map animates to the new view.
 
 ```html
-<eox-map></eox-map>
+<eox-map
+  animationOptions='{"duration":500}'
+  center="[16.8,48.2]"
+  zoom="7"
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17889,11 +17748,6 @@ In the Controls panel, try changing the `zoom` or `center` properties and see ho
         },
       },
     ],
-    animationOptions: {
-      duration: 500,
-    },
-    center: [16.8, 48.2],
-    zoom: 7,
   });
 </script>
 
@@ -17956,7 +17810,7 @@ Renders `eox-map` with `Click` interaction
 Renders `eox-map` with `Cluster-Explode` interaction
 
 ```html
-<eox-map></eox-map>
+<eox-map controls='{"Attribution":{}}'></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17967,9 +17821,6 @@ Renders `eox-map` with `Cluster-Explode` interaction
 
   // Assign properties
   Object.assign(eoxMap, {
-    controls: {
-      Attribution: {},
-    },
     layers: [
       {
         type: "Tile",
@@ -18252,7 +18103,7 @@ and adjust CSS sizing properties (like \`--map-control-size\`) on the fly to sup
   }
 </style>
 
-<eox-map>
+<eox-map zoom="4" center="[10,50]">
   <button
     class="custom-btn"
     slot="top-right"
@@ -18362,8 +18213,6 @@ and adjust CSS sizing properties (like \`--map-control-size\`) on the fly to sup
         },
       },
     ],
-    zoom: 4,
-    center: [10, 50],
   });
 
   const map = document.querySelector("eox-map#customized-controls");
@@ -18446,7 +18295,7 @@ The coordinates can be transformed to any other projection by setting the `proje
 The displayed coordinates decimal places can be set via the `precision` property.
 
 ```html
-<eox-map>
+<eox-map center="[3735055,1886786]" zoom="8">
   <custom-coordinates-tooltip is="eox-map-tooltip"></custom-coordinates-tooltip>
 </eox-map>
 
@@ -18595,8 +18444,6 @@ The displayed coordinates decimal places can be set via the `precision` property
         ],
       },
     ],
-    center: [3735055, 1886786],
-    zoom: 8,
   });
 </script>
 
@@ -18607,7 +18454,7 @@ The displayed coordinates decimal places can be set via the `precision` property
 Loading Indicators can also be centered over the entire map by setting the option `type` to `'fullscreen'`, adapting the opacity is adviced when doing so.
 
 ```html
-<eox-map></eox-map>
+<eox-map zoom="9" center="[0,51.5]"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -18616,8 +18463,6 @@ Loading Indicators can also be centered over the entire map by setting the optio
 
   // Assign properties
   Object.assign(eoxMap, {
-    zoom: 9,
-    center: [0, 51.5],
     controls: {
       LoadingIndicator: {
         type: "fullscreen",
@@ -18654,7 +18499,7 @@ Instead of the built-in `eox-map-tooltip`, it is possible to use any other (cust
 This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
 
 ```html
-<eox-map>
+<eox-map center="[15,48]" zoom="4">
   <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
 </eox-map>
 
@@ -18714,8 +18559,6 @@ This custom tooltip is updated each time a feature is selected by setting its `f
         ],
       },
     ],
-    center: [15, 48],
-    zoom: 4,
   });
 </script>
 
@@ -18726,7 +18569,7 @@ This custom tooltip is updated each time a feature is selected by setting its `f
 Renders `FlatGeoBuf` layer
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[16.346,48.182]" zoom="12.5"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -18737,8 +18580,6 @@ Renders `FlatGeoBuf` layer
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [16.346, 48.182],
-    zoom: 12.5,
     layers: [
       {
         type: "Tile",
@@ -18771,7 +18612,7 @@ Renders `FlatGeoBuf` layer
 Renders `FlatGeoBuf` layer
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-30,64]" zoom="3"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -18782,8 +18623,6 @@ Renders `FlatGeoBuf` layer
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-30, 64],
-    zoom: 3,
     layers: [
       {
         type: "Tile",
@@ -18818,7 +18657,7 @@ Renders `FlatGeoBuf` layer
 Renders `GeoTIFF` layer as `WebGLTile`
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[3737055,1886786]" zoom="8"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -18829,7 +18668,6 @@ Renders `GeoTIFF` layer as `WebGLTile`
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [3737055, 1886786],
     layers: [
       {
         type: "Tile",
@@ -18855,7 +18693,6 @@ Renders `GeoTIFF` layer as `WebGLTile`
         },
       },
     ],
-    zoom: 8,
   });
 </script>
 
@@ -18866,7 +18703,7 @@ Renders `GeoTIFF` layer as `WebGLTile`
 Renders `GeoZarr` layer as `WebGLTile`
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[1407372,5701616]" zoom="9"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -18877,7 +18714,6 @@ Renders `GeoZarr` layer as `WebGLTile`
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [1407372, 5701616],
     layers: [
       {
         type: "Tile",
@@ -18916,7 +18752,6 @@ Renders `GeoZarr` layer as `WebGLTile`
         },
       },
     ],
-    zoom: 9,
   });
 </script>
 
@@ -18927,7 +18762,7 @@ Renders `GeoZarr` layer as `WebGLTile`
 Renders Geolocation Control in `eox-map`
 
 ```html
-<eox-map></eox-map>
+<eox-map zoom="7"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -18936,7 +18771,6 @@ Renders Geolocation Control in `eox-map`
 
   // Assign properties
   Object.assign(eoxMap, {
-    zoom: 7,
     controls: {
       Geolocation: {
         tracking: true,
@@ -18973,7 +18807,7 @@ Renders Geolocation Control in `eox-map`
 The `eox-map` tooltip can also be used to display information about a feature in a (wms) Tile layers on click
 
 ```html
-<eox-map>
+<eox-map center="[-10997148,4569099]" zoom="4">
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -19022,8 +18856,6 @@ The `eox-map` tooltip can also be used to display information about a feature in
         ],
       },
     ],
-    center: [-10997148, 4569099],
-    zoom: 4,
   });
 </script>
 
@@ -19038,7 +18870,12 @@ This example renders a globe centered on Austria, with 2 layers: an XYZ tile lay
 The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
 
 ```html
-<eox-map projection="globe"></eox-map>
+<eox-map
+  center="[15,48]"
+  projection="globe"
+  globeConfig='{"terrain":true,"useHighLOD":true}'
+  zoom="4"
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -19047,11 +18884,6 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [15, 48],
-    globeConfig: {
-      terrain: true,
-      useHighLOD: true,
-    },
     layers: [
       {
         type: "Tile",
@@ -19189,7 +19021,6 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
         },
       },
     ],
-    zoom: 4,
   });
 </script>
 
@@ -19546,7 +19377,7 @@ The `mapboxStyle` property and the `applyOptions` property of the EOxLayer are m
 (compare https://openlayers.org/ol-mapbox-style/functions/apply.html)
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[0,0]"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -19557,7 +19388,6 @@ The `mapboxStyle` property and the `applyOptions` property of the EOxLayer are m
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [0, 0],
     layers: [
       {
         type: "MapboxStyle",
@@ -19693,26 +19523,16 @@ The `properties` passed in this object are passed along to the OpenLayers layer,
 Notice that the `eox-map` DOM element has a property `map` which stores a reference to the actual OpenLayers map instance, so one could do e.g. `eoxMap.map.getView().getCenter()`, and other native OpenLayers things.
 
 ```html
-<eox-map></eox-map>
+<eox-map
+  center="[15,48]"
+  layers='[{"type":"Tile","source":{"type":"OSM"}}]'
+  zoom="7"
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
 
   const eoxMap = document.querySelector("eox-map");
-
-  // Assign properties
-  Object.assign(eoxMap, {
-    center: [15, 48],
-    layers: [
-      {
-        type: "Tile",
-        source: {
-          type: "OSM",
-        },
-      },
-    ],
-    zoom: 7,
-  });
 </script>
 
 ```
@@ -19727,7 +19547,7 @@ In the Controls panel, try changing the projection from the default `EPSG:3857` 
 how the map instantly updates.
 
 ```html
-<eox-map projection="EPSG:3857"></eox-map>
+<eox-map center="[16.8,48.2]" zoom="7" projection="EPSG:3857"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -19756,8 +19576,6 @@ how the map instantly updates.
         },
       },
     ],
-    center: [16.8, 48.2],
-    zoom: 7,
   });
 </script>
 
@@ -19768,7 +19586,7 @@ how the map instantly updates.
 Renders STAC Layer using STAC url json.
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-122.38,46.1]" zoom="7"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -19779,7 +19597,6 @@ Renders STAC Layer using STAC url json.
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-122.38, 46.1],
     layers: [
       {
         type: "Tile",
@@ -19798,7 +19615,6 @@ Renders STAC Layer using STAC url json.
         url: "https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json",
       },
     ],
-    zoom: 7,
   });
 </script>
 
@@ -19809,7 +19625,11 @@ Renders STAC Layer using STAC url json.
 A simple, unobtrusive loading indicator in the bottom left that appears any time when the map is loading.
 
 ```html
-<eox-map></eox-map>
+<eox-map
+  zoom="9"
+  center="[0,51.5]"
+  controls='{"LoadingIndicator":{},"Zoom":{}}'
+></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -19818,12 +19638,6 @@ A simple, unobtrusive loading indicator in the bottom left that appears any time
 
   // Assign properties
   Object.assign(eoxMap, {
-    zoom: 9,
-    center: [0, 51.5],
-    controls: {
-      LoadingIndicator: {},
-      Zoom: {},
-    },
     layers: [
       {
         type: "Tile",
@@ -19845,7 +19659,7 @@ A simple, unobtrusive loading indicator in the bottom left that appears any time
 Renders a static image layer
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-10997148,4569099]"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -19854,7 +19668,6 @@ Renders a static image layer
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-10997148, 4569099],
     layers: [
       {
         type: "Image",
@@ -19892,7 +19705,7 @@ Note that if multiple interactions are registered (e.g. `pointermove` and `singl
 the `pointermove` interaction will have higher priority for the tooltip.
 
 ```html
-<eox-map>
+<eox-map center="[15,48]" zoom="4">
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -19926,8 +19739,6 @@ the `pointermove` interaction will have higher priority for the tooltip.
         ],
       },
     ],
-    center: [15, 48],
-    zoom: 4,
   });
 </script>
 
@@ -19950,7 +19761,7 @@ Additionally, the entire feature is passed as a second argument, for cases of mo
 transformation in which needs access to the entire feature.
 
 ```html
-<eox-map>
+<eox-map center="[15,48]" zoom="4">
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -19985,8 +19796,6 @@ transformation in which needs access to the entire feature.
         ],
       },
     ],
-    center: [15, 48],
-    zoom: 4,
   });
 
   Object.assign(eoxMapTooltip, {
@@ -20087,7 +19896,7 @@ Basic vector layer map rendered using `MVT` tiles
 Renders WMS layer using geo-server
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[-10997148,4569099]" zoom="3"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -20096,7 +19905,6 @@ Renders WMS layer using geo-server
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [-10997148, 4569099],
     layers: [
       {
         type: "Tile",
@@ -20115,7 +19923,6 @@ Renders WMS layer using geo-server
         },
       },
     ],
-    zoom: 3,
   });
 </script>
 
@@ -20126,7 +19933,7 @@ Renders WMS layer using geo-server
 Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[20,40]" zoom="5"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -20137,7 +19944,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [20, 40],
     layers: [
       {
         type: "Tile",
@@ -20151,7 +19957,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
         },
       },
     ],
-    zoom: 5,
   });
 </script>
 
@@ -20162,7 +19967,7 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
 ```html
-<eox-map></eox-map>
+<eox-map center="[20,40]" zoom="5"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -20171,7 +19976,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
 
   // Assign properties
   Object.assign(eoxMap, {
-    center: [20, 40],
     layers: [
       {
         type: "Tile",
@@ -20190,7 +19994,6 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
         },
       },
     ],
-    zoom: 5,
   });
 </script>
 
@@ -20220,7 +20023,7 @@ Under the hood, this element uses [stac-fields](https://github.com/stac-utils/st
 #### Usage
 Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
 
-Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects.
+Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.
 
 A `Filter` object has the following structure:
 ```javascript
@@ -20249,6 +20052,11 @@ Sections:
 - `allow-html` (boolean): Whether to allow HTML in the property display
 - `unstyled` (boolean): Whether to use unstyled mode
 - `for` (string): The identifier for the STAC resource to fetch
+- `header` (Array<string | Filter>): Keys of properties to display in the header
+- `tags` (Array<string | Filter>): Keys of properties to display to display as tags
+- `body` (Array<string | Filter>): Keys of properties to display to display in the main body
+- `featured` (Array<string | Filter>): Keys of properties to display in the featured section
+- `footer` (Array<string | Filter>): Keys of properties to display in the footer
 
 ### Properties
 
@@ -20270,7 +20078,15 @@ Sections:
 Demonstrates custom slot rendering for properties. Slots can be used to override the default rendering of any property, enabling advanced customization and integration with application-specific UI.
 
 ```html
-<eox-stacinfo for="/collection.json" id="slot">
+<eox-stacinfo
+  for="/collection.json"
+  header='["title"]'
+  tags='["tags"]'
+  body='["satellite","sensor","agency","extent"]'
+  featured='["description","providers","assets","links"]'
+  footer='["sci:citation"]'
+  id="slot"
+>
   <div
     slot="agency"
     style="
@@ -20289,15 +20105,6 @@ Demonstrates custom slot rendering for properties. Slots can be used to override
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
 
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    header: ["title"],
-    tags: ["tags"],
-    body: ["satellite", "sensor", "agency", "extent"],
-    featured: ["description", "providers", "assets", "links"],
-    footer: ["sci:citation"],
-  });
-
   globalThis.stacInfo = document.querySelector("eox-stacinfo#slot");
   stacInfo.addEventListener("loaded", () => {
     setTimeout(() => {
@@ -20314,17 +20121,15 @@ Demonstrates custom slot rendering for properties. Slots can be used to override
 Highlights important STAC properties in a prominent featured section using the `featured` attribute/property. This section is ideal for drawing attention to key dataset attributes.
 
 ```html
-<eox-stacinfo for="/collection.json"></eox-stacinfo>
+<eox-stacinfo
+  for="/collection.json"
+  featured='["description","extent"]'
+></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
-
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    featured: ["description", "extent"],
-  });
 </script>
 
 ```
@@ -20334,7 +20139,13 @@ Highlights important STAC properties in a prominent featured section using the `
 Shows a STAC Item properties. By setting the `for` attribute/property to an item URL, the element will display the item's properties.
 
 ```html
-<eox-stacinfo for="/ports_cars_aq/2020/Genoa.json"></eox-stacinfo>
+<eox-stacinfo
+  for="/ports_cars_aq/2020/Genoa.json"
+  header='["id","title"]'
+  tags='["platform","instruments","constellation"]'
+  featured='[{"key":"assets"},{"key":"links"}]'
+  footer='["start_datetime","end_datetime"]'
+></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
@@ -20343,8 +20154,6 @@ Shows a STAC Item properties. By setting the `for` attribute/property to an item
 
   // Assign properties
   Object.assign(eoxStacinfo, {
-    header: ["id", "title"],
-    tags: ["platform", "instruments", "constellation"],
     body: [
       "description",
       "sci:citation",
@@ -20353,17 +20162,6 @@ Shows a STAC Item properties. By setting the `for` attribute/property to an item
       "eo:cloud_cover",
       "view:sun_elevation",
     ],
-    featured: [
-      {
-        key: "assets",
-        filter: (val) => val.type?.includes("image/tiff"),
-      },
-      {
-        key: "links",
-        filter: (val) => val.type?.includes("text/html"),
-      },
-    ],
-    footer: ["start_datetime", "end_datetime"],
   });
 </script>
 
@@ -20374,17 +20172,12 @@ Shows a STAC Item properties. By setting the `for` attribute/property to an item
 Displays one or more STAC properties in a dedicated footer section using the `footer` attribute/property. Useful for citations or additional metadata at the bottom of the info panel.
 
 ```html
-<eox-stacinfo for="/collection.json"></eox-stacinfo>
+<eox-stacinfo for="/collection.json" footer='["sci:citation"]'></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
-
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    footer: ["sci:citation"],
-  });
 </script>
 
 ```
@@ -20394,17 +20187,12 @@ Displays one or more STAC properties in a dedicated footer section using the `fo
 Displays selected STAC properties in the header section using the `header` attribute/property. Useful for highlighting key metadata at the top of the info panel.
 
 ```html
-<eox-stacinfo for="/collection.json"></eox-stacinfo>
+<eox-stacinfo for="/collection.json" header='["title"]'></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
-
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    header: ["title"],
-  });
 </script>
 
 ```
@@ -20415,21 +20203,19 @@ Basic usage of eox-stacinfo. Automatically fetches a STAC file and displays its 
 The `for` attribute/property should point to a valid STAC resource URL.
 
 ```html
-<eox-stacinfo for="/collection.json"></eox-stacinfo>
+<eox-stacinfo
+  for="/collection.json"
+  header='["title"]'
+  tags='["tags"]'
+  body='["satellite","sensor","agency","extent"]'
+  featured='["description","providers","assets","links"]'
+  footer='["sci:citation"]'
+></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
-
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    header: ["title"],
-    tags: ["tags"],
-    body: ["satellite", "sensor", "agency", "extent"],
-    featured: ["description", "providers", "assets", "links"],
-    footer: ["sci:citation"],
-  });
 </script>
 
 ```
@@ -20439,17 +20225,12 @@ The `for` attribute/property should point to a valid STAC resource URL.
 Renders only a single body property. When only one property is whitelisted in the body, the content is shown full-width and without a key label, for a cleaner look.
 
 ```html
-<eox-stacinfo for="/collection.json"></eox-stacinfo>
+<eox-stacinfo for="/collection.json" body='["description"]'></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
-
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    body: ["description"],
-  });
 </script>
 
 ```
@@ -20459,17 +20240,12 @@ Renders only a single body property. When only one property is whitelisted in th
 Renders selected STAC properties as tags using the `tags` attribute/property. This is useful for visualizing categorical or thematic metadata as compact tags.
 
 ```html
-<eox-stacinfo for="/collection.json"></eox-stacinfo>
+<eox-stacinfo for="/collection.json" tags='["themes"]'></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
-
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    tags: ["themes"],
-  });
 </script>
 
 ```
@@ -20479,21 +20255,20 @@ Renders selected STAC properties as tags using the `tags` attribute/property. Th
 Shows the unstyled version of the element. By setting the `unstyled` attribute/property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
 
 ```html
-<eox-stacinfo for="/collection.json" unstyled></eox-stacinfo>
+<eox-stacinfo
+  for="/collection.json"
+  header='["title"]'
+  tags='["tags"]'
+  body='["satellite","sensor","agency","extent"]'
+  featured='["description","providers","assets","links"]'
+  footer='["sci:citation"]'
+  unstyled
+></eox-stacinfo>
 
 <script type="module">
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
-
-  // Assign properties
-  Object.assign(eoxStacinfo, {
-    header: ["title"],
-    tags: ["tags"],
-    body: ["satellite", "sensor", "agency", "extent"],
-    featured: ["description", "providers", "assets", "links"],
-    footer: ["sci:citation"],
-  });
 </script>
 
 ```
@@ -21059,6 +20834,8 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `show-utc` (boolean): Whether to show UTC dates in the timecontrol (default: false).
 - `external-map-rendering` (boolean): Whether external map rendering is enabled for timelapse export.
 - `selectedDateRange` (SelectedDateRange): The currently selected date range as [startDate, endDate] in ISO format.
+- `controlValues` (Array<Object>): Array of control values.
+- `initDate` (DateRange): The initial date range as [startDate, endDate] in ISO/UTC format.
 
 ### Properties
 
@@ -23134,7 +22911,7 @@ This example shows the `<eox-timecontrol-date>` component with the `initDate` pr
 which sets the initial date range. Also, it uses the date `format` of `D. MMMM YYYY`.
 
 ```html
-<eox-timecontrol for="eox-map#date-with-init-date">
+<eox-timecontrol for="eox-map#date-with-init-date" initDate='["2021-02-28"]'>
   <eox-timecontrol-date></eox-timecontrol-date>
 </eox-timecontrol>
 <eox-map id="date-with-init-date"></eox-map>
@@ -23149,7 +22926,6 @@ which sets the initial date range. Also, it uses the date `format` of `D. MMMM Y
 
   // Assign properties
   Object.assign(eoxTimecontrol, {
-    initDate: ["2021-02-28"],
     select: (e) => {
       console.log(e.detail);
     },
@@ -27318,6 +27094,7 @@ it is strictly mandated for iframe handoff scenarios to correctly route `postMes
 
 ### Attributes
 
+- `config` (object): The driver.js configuration object. See the [driver.js docs](https://driverjs.com/docs/configuration) for available options.
 - `show-every-time` (boolean): Whether to show the tour every time the component is mounted,
 bypassing the `localStorage` check.
 - `prevent-auto-start` (boolean): Whether to prevent the tour from starting automatically on mount.

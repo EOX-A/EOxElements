@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
+          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property or attribute in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property/attribute) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property/attribute passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property/attribute.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
           "name": "EOxChart",
           "members": [
             {
@@ -35,11 +35,12 @@
               "kind": "field",
               "name": "spec",
               "privacy": "public",
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
               "type": {
                 "text": "VisualizationSpec | string"
               },
-              "default": "undefined"
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "default": "undefined",
+              "attribute": "spec"
             },
             {
               "kind": "field",
@@ -49,17 +50,19 @@
                 "text": "EmbedOptions"
               },
               "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "default": "undefined"
+              "default": "undefined",
+              "attribute": "opt"
             },
             {
               "kind": "field",
               "name": "dataValues",
               "privacy": "public",
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
               "type": {
                 "text": "{[dataSourceName: string]: InlineData} | string"
               },
-              "default": "undefined"
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "default": "undefined",
+              "attribute": "dataValues"
             },
             {
               "kind": "field",
@@ -101,6 +104,33 @@
             }
           ],
           "attributes": [
+            {
+              "name": "dataValues",
+              "type": {
+                "text": "{[dataSourceName: string]: InlineData} | string"
+              },
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "default": "undefined",
+              "fieldName": "dataValues"
+            },
+            {
+              "name": "spec",
+              "type": {
+                "text": "VisualizationSpec | string"
+              },
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "default": "undefined",
+              "fieldName": "spec"
+            },
+            {
+              "name": "opt",
+              "type": {
+                "text": "EmbedOptions"
+              },
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "default": "undefined",
+              "fieldName": "opt"
+            },
             {
               "name": "no-shadow",
               "type": {
@@ -617,7 +647,8 @@
                 "text": "{\n     * layer?: FlatStyleLike\n     * hover?: FlatStyleLike\n     * click?: FlatStyleLike\n     * } | null"
               },
               "description": "Flat styles for the drawn/selected features",
-              "default": "null"
+              "default": "null",
+              "attribute": "featureStyles"
             },
             {
               "kind": "field",
@@ -810,6 +841,15 @@
               "description": "The ID of the Vector/Vector Tile Layer that contains features to be selected",
               "default": "\"\"",
               "fieldName": "layerId"
+            },
+            {
+              "name": "featureStyles",
+              "type": {
+                "text": "{\n     * layer?: FlatStyleLike\n     * hover?: FlatStyleLike\n     * click?: FlatStyleLike\n     * } | null"
+              },
+              "description": "Flat styles for the drawn/selected features",
+              "default": "null",
+              "fieldName": "featureStyles"
             },
             {
               "name": "multiple-features",
@@ -1189,7 +1229,7 @@
               },
               "description": "Additional parameters to add to the query string as key-value pairs.\nExample: { language: \"en\", limit: 10, countrycode: \"us\" }",
               "default": "undefined",
-              "attribute": "false"
+              "attribute": "params"
             },
             {
               "kind": "field",
@@ -1334,7 +1374,7 @@
               "fieldName": "tooltipDirection"
             },
             {
-              "name": "false",
+              "name": "params",
               "type": {
                 "text": "object"
               },
@@ -1376,7 +1416,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.\n\nFeatures:\n- Supports `text`, `select`, `multiselect`, `range` (including date), and `spatial` filters\n- Aggregates results by a property key (e.g. themes)\n- Inline mode for compact UI\n- Pre-set filter state via `state` in `filterProperties`\n- Nested property filtering using dot notation\n- External search API endpoint support via `externalFilter`\n- Auto-spreading of single-item aggregations to root level\n- Card display mode for results (`result-type=\"cards\"`)\n- Secondary result action button with custom icon and event handler (`click:result-action`)\n- Custom result sorting via `resultSorting` property\n- Customizable layout and styling via CSS variables\n\nUsage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.",
+          "description": "The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.\n\nFeatures:\n- Supports `text`, `select`, `multiselect`, `range` (including date), and `spatial` filters\n- Aggregates results by a property key (e.g. themes)\n- Inline mode for compact UI\n- Pre-set filter state via `state` in `filterProperties` property/attribute\n- Nested property filtering using dot notation\n- External search API endpoint support via `externalFilter` property\n- Auto-spreading of single-item aggregations to root level\n- Card display mode for results (`result-type=\"cards\"`)\n- Secondary result action button with custom icon and event handler (`click:result-action`)\n- Custom result sorting via `resultSorting` property/attribute\n- Customizable layout and styling via CSS variables\n\nUsage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.",
           "name": "EOxItemFilter",
           "members": [
             {
@@ -1565,8 +1605,9 @@
               "type": {
                 "text": "Array<Object>"
               },
-              "description": "The items to be filtered",
-              "default": "null"
+              "description": "The items to be filtered. Can be passed as a property or stringified JSON attribute.",
+              "default": "null",
+              "attribute": "items"
             },
             {
               "kind": "field",
@@ -1596,7 +1637,8 @@
                 "text": "Object"
               },
               "description": "The currently selected result",
-              "default": "null"
+              "default": "null",
+              "attribute": "selectedResult"
             },
             {
               "kind": "field",
@@ -1646,7 +1688,7 @@
               "type": {
                 "text": "() => string| (() => {url:string;key?:string;fetchFn?:string})"
               },
-              "description": "Use an external search endpoint instead of fuse search.\nPassed properties: input string, filters object.\nThe function can return a URL string, or an object containing a `url,\nan optional `fetchFn` to handle the request, or/and an optional `key` to\nreturn a specific property from the fetched data.",
+              "description": "Use an external search endpoint instead of fuse search.\nPassed properties: input string, filters object.\nThe function can return a URL string, or an object containing a `url,\nan optional `fetchFn` to handle the request, or/and an optional `key` to\nreturn a specific property from the fetched data.\nThis is a property-only field as it expects a function.",
               "default": "null"
             },
             {
@@ -1656,8 +1698,9 @@
               "type": {
                 "text": "Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>"
               },
-              "description": "The filter properties.",
-              "default": "[]"
+              "description": "The filter properties. Can be passed as a property or stringified JSON attribute.",
+              "default": "[]",
+              "attribute": "filterProperties"
             },
             {
               "kind": "field",
@@ -1667,7 +1710,8 @@
                 "text": "Object"
               },
               "description": "Native fuse.js config override",
-              "default": "{}"
+              "default": "{}",
+              "attribute": "fuseConfig"
             },
             {
               "kind": "field",
@@ -1743,7 +1787,8 @@
                 "text": "false|string|Function|{key:string, order?:'asc'|'desc'}"
               },
               "description": "Sorting behavior for the results. Can be:\n- undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)\n- false: no sorting\n- string: property key to sort by (ascending)\n- function: custom comparator function (a, b) => number\n- object: { key: string, order?: 'asc' | 'desc' }",
-              "default": "undefined"
+              "default": "undefined",
+              "attribute": "resultSorting"
             },
             {
               "kind": "field",
@@ -1808,7 +1853,8 @@
                 "text": "Boolean"
               },
               "description": "Enable result action button (a secondary action besides the normal result selection)",
-              "default": "false"
+              "default": "false",
+              "attribute": "enableResultAction"
             },
             {
               "kind": "field",
@@ -1818,7 +1864,8 @@
                 "text": "String"
               },
               "description": "Icon for result action. Supports html",
-              "default": "'<svg style=\"width: 24px;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><title>click me!</title><path fill=\"currentColor\" d=\"M11.5,11L17.88,16.37L17,16.55L16.36,16.67C15.73,16.8 15.37,17.5 15.65,18.07L15.92,18.65L17.28,21.59L15.86,22.25L14.5,19.32L14.24,18.74C13.97,18.15 13.22,17.97 12.72,18.38L12.21,18.78L11.5,19.35V11M10.76,8.69A0.76,0.76 0 0,0 10,9.45V20.9C10,21.32 10.34,21.66 10.76,21.66C10.95,21.66 11.11,21.6 11.24,21.5L13.15,19.95L14.81,23.57C14.94,23.84 15.21,24 15.5,24C15.61,24 15.72,24 15.83,23.92L18.59,22.64C18.97,22.46 19.15,22 18.95,21.63L17.28,18L19.69,17.55C19.85,17.5 20,17.43 20.12,17.29C20.39,16.97 20.35,16.5 20,16.21L11.26,8.86L11.25,8.87C11.12,8.76 10.95,8.69 10.76,8.69M15,10V8H20V10H15M13.83,4.76L16.66,1.93L18.07,3.34L15.24,6.17L13.83,4.76M10,0H12V5H10V0M3.93,14.66L6.76,11.83L8.17,13.24L5.34,16.07L3.93,14.66M3.93,3.34L5.34,1.93L8.17,4.76L6.76,6.17L3.93,3.34M7,10H2V8H7V10\" /></svg>'"
+              "default": "'<svg style=\"width: 24px;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><title>click me!</title><path fill=\"currentColor\" d=\"M11.5,11L17.88,16.37L17,16.55L16.36,16.67C15.73,16.8 15.37,17.5 15.65,18.07L15.92,18.65L17.28,21.59L15.86,22.25L14.5,19.32L14.24,18.74C13.97,18.15 13.22,17.97 12.72,18.38L12.21,18.78L11.5,19.35V11M10.76,8.69A0.76,0.76 0 0,0 10,9.45V20.9C10,21.32 10.34,21.66 10.76,21.66C10.95,21.66 11.11,21.6 11.24,21.5L13.15,19.95L14.81,23.57C14.94,23.84 15.21,24 15.5,24C15.61,24 15.72,24 15.83,23.92L18.59,22.64C18.97,22.46 19.15,22 18.95,21.63L17.28,18L19.69,17.55C19.85,17.5 20,17.43 20.12,17.29C20.39,16.97 20.35,16.5 20,16.21L11.26,8.86L11.25,8.87C11.12,8.76 10.95,8.69 10.76,8.69M15,10V8H20V10H15M13.83,4.76L16.66,1.93L18.07,3.34L15.24,6.17L13.83,4.76M10,0H12V5H10V0M3.93,14.66L6.76,11.83L8.17,13.24L5.34,16.07L3.93,14.66M3.93,3.34L5.34,1.93L8.17,4.76L6.76,6.17L3.93,3.34M7,10H2V8H7V10\" /></svg>'",
+              "attribute": "resultActionIcon"
             },
             {
               "kind": "field",
@@ -1882,6 +1929,24 @@
           ],
           "attributes": [
             {
+              "name": "items",
+              "type": {
+                "text": "Array<Object>"
+              },
+              "description": "The items to be filtered. Can be passed as a property or stringified JSON attribute.",
+              "default": "null",
+              "fieldName": "items"
+            },
+            {
+              "name": "selectedResult",
+              "type": {
+                "text": "Object"
+              },
+              "description": "The currently selected result",
+              "default": "null",
+              "fieldName": "selectedResult"
+            },
+            {
               "name": "aggregate-results",
               "type": {
                 "text": "String"
@@ -1907,6 +1972,24 @@
               "description": "Highlighting of search result character matches",
               "default": "false",
               "fieldName": "enableHighlighting"
+            },
+            {
+              "name": "filterProperties",
+              "type": {
+                "text": "Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>"
+              },
+              "description": "The filter properties. Can be passed as a property or stringified JSON attribute.",
+              "default": "[]",
+              "fieldName": "filterProperties"
+            },
+            {
+              "name": "fuseConfig",
+              "type": {
+                "text": "Object"
+              },
+              "description": "Native fuse.js config override",
+              "default": "{}",
+              "fieldName": "fuseConfig"
             },
             {
               "name": "inline-mode",
@@ -1972,6 +2055,15 @@
               "fieldName": "imageProperty"
             },
             {
+              "name": "resultSorting",
+              "type": {
+                "text": "false|string|Function|{key:string, order?:'asc'|'desc'}"
+              },
+              "description": "Sorting behavior for the results. Can be:\n- undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)\n- false: no sorting\n- string: property key to sort by (ascending)\n- function: custom comparator function (a, b) => number\n- object: { key: string, order?: 'asc' | 'desc' }",
+              "default": "undefined",
+              "fieldName": "resultSorting"
+            },
+            {
               "name": "enable-multiple-filter",
               "type": {
                 "text": "Boolean"
@@ -2006,6 +2098,24 @@
               "description": "Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element)",
               "default": "\"list\"",
               "fieldName": "resultType"
+            },
+            {
+              "name": "enableResultAction",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Enable result action button (a secondary action besides the normal result selection)",
+              "default": "false",
+              "fieldName": "enableResultAction"
+            },
+            {
+              "name": "resultActionIcon",
+              "type": {
+                "text": "String"
+              },
+              "description": "Icon for result action. Supports html",
+              "default": "'<svg style=\"width: 24px;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><title>click me!</title><path fill=\"currentColor\" d=\"M11.5,11L17.88,16.37L17,16.55L16.36,16.67C15.73,16.8 15.37,17.5 15.65,18.07L15.92,18.65L17.28,21.59L15.86,22.25L14.5,19.32L14.24,18.74C13.97,18.15 13.22,17.97 12.72,18.38L12.21,18.78L11.5,19.35V11M10.76,8.69A0.76,0.76 0 0,0 10,9.45V20.9C10,21.32 10.34,21.66 10.76,21.66C10.95,21.66 11.11,21.6 11.24,21.5L13.15,19.95L14.81,23.57C14.94,23.84 15.21,24 15.5,24C15.61,24 15.72,24 15.83,23.92L18.59,22.64C18.97,22.46 19.15,22 18.95,21.63L17.28,18L19.69,17.55C19.85,17.5 20,17.43 20.12,17.29C20.39,16.97 20.35,16.5 20,16.21L11.26,8.86L11.25,8.87C11.12,8.76 10.95,8.69 10.76,8.69M15,10V8H20V10H15M13.83,4.76L16.66,1.93L18.07,3.34L15.24,6.17L13.83,4.76M10,0H12V5H10V0M3.93,14.66L6.76,11.83L8.17,13.24L5.34,16.07L3.93,14.66M3.93,3.34L5.34,1.93L8.17,4.76L6.76,6.17L3.93,3.34M7,10H2V8H7V10\" /></svg>'",
+              "fieldName": "resultActionIcon"
             },
             {
               "name": "styleOverride",
@@ -2059,7 +2169,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.\nIt is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.\nAlso check out the [JSON Editor documentation](https://github.com/json-editor/json-editor?tab=readme-ov-file#options) for more details on the available options and configurations.\n\nFeatures:\n- Renders forms from JSON schema, supporting complex nested structures and custom validation.\n- All properties and event handlers are passed via args, enabling dynamic configuration and integration.\n- Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).\n- Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).\n- Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.\n- Can load schema and values from external URLs, supporting async loading and ready events.\n- Integrates with `eox-map` for spatial feature selection when required.\n- Supports unstyled rendering for custom design integration.\n\nSee the stories for usage examples covering validation, custom editors, spatial inputs, opt-in/optional properties, external loading, and more.",
+          "description": "`eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.\nIt is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.\nAlso check out the [JSON Editor documentation](https://github.com/json-editor/json-editor?tab=readme-ov-file#options) for more details on the available options and configurations.\n\nFeatures:\n- Renders forms from JSON schema, supporting complex nested structures and custom validation.\n- All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).\n- Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).\n- Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).\n- Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.\n- Can load schema and values from external URLs, supporting async loading and ready events.\n- Integrates with `eox-map` for spatial feature selection when required.\n- Supports unstyled rendering for custom design integration.\n\nSee the stories for usage examples covering validation, custom editors, spatial inputs, opt-in/optional properties, external loading, and more.",
           "name": "EOxJSONForm",
           "members": [
             {
@@ -2099,7 +2209,8 @@
                   }
                 }
               ],
-              "default": "null"
+              "default": "null",
+              "attribute": "schema"
             },
             {
               "kind": "field",
@@ -2117,7 +2228,8 @@
                   }
                 }
               ],
-              "default": "null"
+              "default": "null",
+              "attribute": "value"
             },
             {
               "kind": "method",
@@ -2150,7 +2262,8 @@
                 "text": "object"
               },
               "description": "Default values for the JSONEditor instance",
-              "default": "{}"
+              "default": "{}",
+              "attribute": "defaults"
             },
             {
               "kind": "field",
@@ -2160,7 +2273,8 @@
                 "text": "object"
               },
               "description": "Options for the form editor",
-              "default": "{}"
+              "default": "{}",
+              "attribute": "options"
             },
             {
               "kind": "field",
@@ -2203,7 +2317,8 @@
                 "text": "Array"
               },
               "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "customEditorInterfaces"
             }
           ],
           "events": [
@@ -2230,6 +2345,72 @@
             }
           ],
           "attributes": [
+            {
+              "name": "schema",
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "Schema for the form editor",
+              "return": {
+                "type": {
+                  "text": "JsonSchema | String"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema"
+                  }
+                }
+              ],
+              "default": "null",
+              "fieldName": "schema"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "JSON value of the form editor",
+              "parameters": [
+                {
+                  "name": "newVal",
+                  "type": {
+                    "text": "JsonSchema"
+                  }
+                }
+              ],
+              "default": "null",
+              "fieldName": "value"
+            },
+            {
+              "name": "defaults",
+              "type": {
+                "text": "object"
+              },
+              "description": "Default values for the JSONEditor instance",
+              "default": "{}",
+              "fieldName": "defaults"
+            },
+            {
+              "name": "options",
+              "type": {
+                "text": "object"
+              },
+              "description": "Options for the form editor",
+              "default": "{}",
+              "fieldName": "options"
+            },
+            {
+              "name": "customEditorInterfaces",
+              "type": {
+                "text": "Array"
+              },
+              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "default": "[]",
+              "fieldName": "customEditorInterfaces"
+            },
             {
               "name": "no-shadow",
               "type": {
@@ -2403,7 +2584,8 @@
                 "text": "Array<String>"
               },
               "description": "Layer tools",
-              "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]"
+              "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
+              "attribute": "tools"
             },
             {
               "kind": "field",
@@ -2413,7 +2595,8 @@
                 "text": "Boolean"
               },
               "description": "Enable-disable external layer",
-              "default": "false"
+              "default": "false",
+              "attribute": "add-external-layers"
             },
             {
               "kind": "field",
@@ -2478,7 +2661,8 @@
                 "text": "Array"
               },
               "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "customEditorInterfaces"
             }
           ],
           "events": [
@@ -2534,6 +2718,24 @@
               "fieldName": "showLayerZoomState"
             },
             {
+              "name": "tools",
+              "type": {
+                "text": "Array<String>"
+              },
+              "description": "Layer tools",
+              "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
+              "fieldName": "tools"
+            },
+            {
+              "name": "add-external-layers",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Enable-disable external layer",
+              "default": "false",
+              "fieldName": "addExternalLayers"
+            },
+            {
               "name": "unstyled",
               "type": {
                 "text": "Boolean"
@@ -2577,6 +2779,15 @@
               "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
               "default": "false",
               "fieldName": "toolsAutoExpand"
+            },
+            {
+              "name": "customEditorInterfaces",
+              "type": {
+                "text": "Array"
+              },
+              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "default": "[]",
+              "fieldName": "customEditorInterfaces"
             }
           ],
           "superclass": {
@@ -2940,7 +3151,8 @@
                 "type": {
                   "text": "Array<number>"
                 }
-              }
+              },
+              "attribute": "center"
             },
             {
               "kind": "field",
@@ -2963,7 +3175,8 @@
                 "type": {
                   "text": "ConfigObject"
                 }
-              }
+              },
+              "attribute": "config"
             },
             {
               "kind": "field",
@@ -2978,7 +3191,8 @@
                   "text": "Array<number>"
                 }
               },
-              "readonly": true
+              "readonly": true,
+              "attribute": "lonLatCenter"
             },
             {
               "kind": "field",
@@ -2993,7 +3207,8 @@
                   "text": "Array<number>"
                 }
               },
-              "readonly": true
+              "readonly": true,
+              "attribute": "lonLatExtent"
             },
             {
               "kind": "field",
@@ -3016,7 +3231,8 @@
                 "type": {
                   "text": "number"
                 }
-              }
+              },
+              "attribute": "zoom"
             },
             {
               "kind": "field",
@@ -3039,7 +3255,8 @@
                 "type": {
                   "text": "Array<number>"
                 }
-              }
+              },
+              "attribute": "zoomExtent"
             },
             {
               "kind": "field",
@@ -3062,7 +3279,8 @@
                 "type": {
                   "text": "ControlDictionary"
                 }
-              }
+              },
+              "attribute": "controls"
             },
             {
               "kind": "field",
@@ -3085,7 +3303,8 @@
                 "type": {
                   "text": "Array<EoxLayer>"
                 }
-              }
+              },
+              "attribute": "layers"
             },
             {
               "kind": "field",
@@ -3132,7 +3351,8 @@
                 "type": {
                   "text": "EOxAnimationOptions"
                 }
-              }
+              },
+              "attribute": "animationOptions"
             },
             {
               "kind": "field",
@@ -3230,7 +3450,8 @@
                 "type": {
                   "text": "GlobeConfig"
                 }
-              }
+              },
+              "attribute": "globeConfig"
             },
             {
               "kind": "method",
@@ -3501,7 +3722,8 @@
                 "text": "Object.<string, default>"
               },
               "description": "Object to store various map interactions (e.g., drag, zoom).",
-              "default": "{}"
+              "default": "{}",
+              "attribute": "interactions"
             },
             {
               "kind": "field",
@@ -3579,6 +3801,175 @@
           ],
           "attributes": [
             {
+              "name": "config",
+              "type": {
+                "text": "ConfigObject"
+              },
+              "description": "Gets the current configuration of the map.",
+              "parameters": [
+                {
+                  "description": "The configuration object.",
+                  "name": "config",
+                  "type": {
+                    "text": "ConfigObject"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "ConfigObject"
+                }
+              },
+              "fieldName": "config"
+            },
+            {
+              "name": "center",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current center coordinates of the map.",
+              "parameters": [
+                {
+                  "description": "The new center coordinates [x, y].",
+                  "name": "center",
+                  "type": {
+                    "text": "Array<number>"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              },
+              "fieldName": "center"
+            },
+            {
+              "name": "layers",
+              "type": {
+                "text": "array"
+              },
+              "description": "Gets the current layers of the map",
+              "parameters": [
+                {
+                  "description": "An array of layer configurations.",
+                  "name": "layers",
+                  "type": {
+                    "text": "Array<EoxLayer>"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "Array<EoxLayer>"
+                }
+              },
+              "fieldName": "layers"
+            },
+            {
+              "name": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "Gets the current zoom level of the map.",
+              "parameters": [
+                {
+                  "description": "The new zoom level.",
+                  "name": "zoom",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "fieldName": "zoom"
+            },
+            {
+              "name": "animationOptions",
+              "type": {
+                "text": "EOxAnimationOptions"
+              },
+              "description": "Gets the current animation options.",
+              "parameters": [
+                {
+                  "description": "The animation options.",
+                  "name": "animationOptions",
+                  "type": {
+                    "text": "EOxAnimationOptions"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "EOxAnimationOptions"
+                }
+              },
+              "fieldName": "animationOptions"
+            },
+            {
+              "name": "controls",
+              "type": {
+                "text": "ControlDictionary"
+              },
+              "description": "Gets the current map controls.",
+              "parameters": [
+                {
+                  "description": "A dictionary object of control configurations.",
+                  "name": "controls",
+                  "type": {
+                    "text": "ControlDictionary"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "ControlDictionary"
+                }
+              },
+              "fieldName": "controls"
+            },
+            {
+              "name": "interactions",
+              "type": {
+                "text": "Object.<string, default>"
+              },
+              "description": "Object to store various map interactions (e.g., drag, zoom).",
+              "default": "{}",
+              "fieldName": "interactions"
+            },
+            {
+              "name": "lonLatCenter",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current center of the map in longitude and latitude.",
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              },
+              "readonly": true,
+              "fieldName": "lonLatCenter"
+            },
+            {
+              "name": "lonLatExtent",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current extent of the map in longitude and latitude.",
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              },
+              "readonly": true,
+              "fieldName": "lonLatExtent"
+            },
+            {
               "name": "prevent-scroll",
               "type": {
                 "text": "boolean"
@@ -3643,6 +4034,50 @@
                 }
               },
               "fieldName": "sync"
+            },
+            {
+              "name": "zoomExtent",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current extent of the map.",
+              "parameters": [
+                {
+                  "description": "The new zoom extent.",
+                  "name": "extent",
+                  "type": {
+                    "text": "Extent"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              },
+              "fieldName": "zoomExtent"
+            },
+            {
+              "name": "globeConfig",
+              "type": {
+                "text": "object"
+              },
+              "description": "Gets the current globe configuration properties.",
+              "parameters": [
+                {
+                  "description": "The globe configuration which contains the terrain boolean.",
+                  "name": "globeConfig",
+                  "type": {
+                    "text": "GlobeConfig"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "GlobeConfig"
+                }
+              },
+              "fieldName": "globeConfig"
             }
           ],
           "superclass": {
@@ -3702,7 +4137,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "### Introduction\nWorking with STAC catalogs, collections and items often times requires\nto fetch a JSON file, parse its contents and display some of its fields\nin some formatted way. To make these steps reusable, the `eox-stacinfo`\nelement offers a set of functionalities:\n- **automatically fetch a STAC file** as soon as the element loads\n- offer a **property whitelist** functionality to choose which properties to display\n- display the properties in **configurable sections** (header, body, featured, footer)\n- allow to **override** any property display for application-specific custom needs\n\nThe use case for this element is alongside a map which displays STAC files\nor in a catalog browsing scenario where a quick look at the most important properties\nis needed.\n\n#### Technology\nUnder the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.\n\n#### Usage\nPlace `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.\n\nEach section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects.\n\nA `Filter` object has the following structure:\n```javascript\n{\n  key: \"links\",\n  filter: (link) => {\n    // Return true/false to include/exclude items from a list (e.g. assets, links)\n    return link.rel === \"example\";\n  }\n}\n```\n\nSections:\n- `header`: Array of property keys or Filters to display at the top\n- `tags`: Array of property keys or Filters to display as tags\n- `body`: Array of property keys or Filters for the main content\n- `featured`: Array of property keys or Filters for prominent display\n- `footer`: Array of property keys or Filters for the bottom section\n\n#### Customization\n- **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.\n- **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.",
+          "description": "### Introduction\nWorking with STAC catalogs, collections and items often times requires\nto fetch a JSON file, parse its contents and display some of its fields\nin some formatted way. To make these steps reusable, the `eox-stacinfo`\nelement offers a set of functionalities:\n- **automatically fetch a STAC file** as soon as the element loads\n- offer a **property whitelist** functionality to choose which properties to display\n- display the properties in **configurable sections** (header, body, featured, footer)\n- allow to **override** any property display for application-specific custom needs\n\nThe use case for this element is alongside a map which displays STAC files\nor in a catalog browsing scenario where a quick look at the most important properties\nis needed.\n\n#### Technology\nUnder the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.\n\n#### Usage\nPlace `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.\n\nEach section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.\n\nA `Filter` object has the following structure:\n```javascript\n{\n  key: \"links\",\n  filter: (link) => {\n    // Return true/false to include/exclude items from a list (e.g. assets, links)\n    return link.rel === \"example\";\n  }\n}\n```\n\nSections:\n- `header`: Array of property keys or Filters to display at the top\n- `tags`: Array of property keys or Filters to display as tags\n- `body`: Array of property keys or Filters for the main content\n- `featured`: Array of property keys or Filters for prominent display\n- `footer`: Array of property keys or Filters for the bottom section\n\n#### Customization\n- **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.\n- **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.",
           "name": "EOxStacInfo",
           "members": [
             {
@@ -3746,7 +4181,8 @@
                 "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display in the header",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "header"
             },
             {
               "kind": "field",
@@ -3756,7 +4192,8 @@
                 "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display to display as tags",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "tags"
             },
             {
               "kind": "field",
@@ -3766,7 +4203,8 @@
                 "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display to display in the main body",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "body"
             },
             {
               "kind": "field",
@@ -3776,7 +4214,8 @@
                 "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display in the featured section",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "featured"
             },
             {
               "kind": "field",
@@ -3786,7 +4225,8 @@
                 "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display in the footer",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "footer"
             },
             {
               "kind": "field",
@@ -3836,6 +4276,51 @@
               "description": "The identifier for the STAC resource to fetch",
               "default": "\"\"",
               "fieldName": "for"
+            },
+            {
+              "name": "header",
+              "type": {
+                "text": "Array<string | Filter>"
+              },
+              "description": "Keys of properties to display in the header",
+              "default": "[]",
+              "fieldName": "header"
+            },
+            {
+              "name": "tags",
+              "type": {
+                "text": "Array<string | Filter>"
+              },
+              "description": "Keys of properties to display to display as tags",
+              "default": "[]",
+              "fieldName": "tags"
+            },
+            {
+              "name": "body",
+              "type": {
+                "text": "Array<string | Filter>"
+              },
+              "description": "Keys of properties to display to display in the main body",
+              "default": "[]",
+              "fieldName": "body"
+            },
+            {
+              "name": "featured",
+              "type": {
+                "text": "Array<string | Filter>"
+              },
+              "description": "Keys of properties to display in the featured section",
+              "default": "[]",
+              "fieldName": "featured"
+            },
+            {
+              "name": "footer",
+              "type": {
+                "text": "Array<string | Filter>"
+              },
+              "description": "Keys of properties to display in the footer",
+              "default": "[]",
+              "fieldName": "footer"
             }
           ],
           "superclass": {
@@ -4542,7 +5027,8 @@
                 "text": "Array<Object>"
               },
               "description": "Array of control values.",
-              "default": "[]"
+              "default": "[]",
+              "attribute": "controlValues"
             },
             {
               "kind": "field",
@@ -4552,7 +5038,8 @@
                 "text": "DateRange"
               },
               "description": "The initial date range as [startDate, endDate] in ISO/UTC format.",
-              "default": "null"
+              "default": "null",
+              "attribute": "initDate"
             }
           ],
           "attributes": [
@@ -4618,6 +5105,24 @@
               "description": "The currently selected date range as [startDate, endDate] in ISO format.",
               "default": "null",
               "fieldName": "selectedDateRange"
+            },
+            {
+              "name": "controlValues",
+              "type": {
+                "text": "Array<Object>"
+              },
+              "description": "Array of control values.",
+              "default": "[]",
+              "fieldName": "controlValues"
+            },
+            {
+              "name": "initDate",
+              "type": {
+                "text": "DateRange"
+              },
+              "description": "The initial date range as [startDate, endDate] in ISO/UTC format.",
+              "default": "null",
+              "fieldName": "initDate"
             }
           ],
           "superclass": {
@@ -4680,7 +5185,8 @@
                 "text": "object"
               },
               "description": "The driver.js configuration object. See the [driver.js docs](https://driverjs.com/docs/configuration) for available options.",
-              "default": "{}"
+              "default": "{}",
+              "attribute": "config"
             },
             {
               "kind": "field",
@@ -4747,6 +5253,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "config",
+              "type": {
+                "text": "object"
+              },
+              "description": "The driver.js configuration object. See the [driver.js docs](https://driverjs.com/docs/configuration) for available options.",
+              "default": "{}",
+              "fieldName": "config"
+            },
             {
               "name": "show-every-time",
               "type": {
