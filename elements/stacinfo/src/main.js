@@ -36,7 +36,7 @@ import "./components/shadow";
  * #### Usage
  * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
  *
- * Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects.
+ * Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.
  *
  * A `Filter` object has the following structure:
  * ```javascript
@@ -68,11 +68,11 @@ export class EOxStacInfo extends LitElement {
       allowHtml: { attribute: "allow-html", type: Boolean },
       unstyled: { attribute: "unstyled", type: Boolean },
       for: { attribute: "for", type: String },
-      header: { attribute: false, type: Array },
-      tags: { attribute: false, type: Array },
-      body: { attribute: false, type: Array },
-      featured: { attribute: false, type: Array },
-      footer: { attribute: false, type: Array },
+      header: { type: Array },
+      tags: { type: Array },
+      body: { type: Array },
+      featured: { type: Array },
+      footer: { type: Array },
       stacInfo: { attribute: false, state: true, type: Array },
       stacProperties: { attribute: false, state: true, type: Array },
     };

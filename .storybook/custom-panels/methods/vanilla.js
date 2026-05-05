@@ -67,12 +67,13 @@ export const render = async (data) => {
   const renderElementHTML = (element) => {
     const attributesHTML = [
       element.elIdToRender ? `id="${element.elIdToRender}"` : null,
-      ...element.attributes.map(
-        ([key, value]) =>
-          `${key}${
-            value === true ? "" : `="${String(value).replace(/"/g, "&quot;")}"`
-          }`,
-      ),
+      ...element.attributes.map(([key, value]) => {
+        const renderedValue =
+          typeof value === "object" ? JSON.stringify(value) : String(value);
+        return `${key}${
+          value === true ? "" : `='${renderedValue.replace(/'/g, "&apos;")}'`
+        }`;
+      }),
     ]
       .filter(Boolean)
       .join("\n        ");

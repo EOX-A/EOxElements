@@ -46,8 +46,8 @@ export class EOxLayerControl extends LitElement {
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
     showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
-    tools: { attribute: false },
-    addExternalLayers: { attribute: false },
+    tools: { type: Array },
+    addExternalLayers: { attribute: "add-external-layers", type: Boolean },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
     toolsAsList: { type: Boolean },
@@ -59,7 +59,7 @@ export class EOxLayerControl extends LitElement {
       attribute: "tools-auto-expand",
       type: Boolean,
     },
-    customEditorInterfaces: { attribute: false, type: Array },
+    customEditorInterfaces: { type: Array },
   };
 
   /**
