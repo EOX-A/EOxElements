@@ -39,19 +39,19 @@ ${eoxStyle}
     #000000 20%,
     transparent
   );
-  --background-color: var(--eox-background-color, transparent);
-  --padding: 0.5rem;
-  --padding-vertical: 0.25rem;
-  --list-padding: 2rem;
-  --text-transform: capitalize;
-  --form-flex-direction: column;
-  --filter-display: block;
-  background-color: var(--background-color);
+  --_background-color: var(--background-color, var(--eox-background-color, transparent));
+  --_padding: var(--padding, 0.5rem);
+  --_padding-vertical: var(--padding-vertical, 0.25rem);
+  --_list-padding: var(--list-padding, 2rem);
+  --_text-transform: var(--text-transform, capitalize);
+  --_form-flex-direction: var(--form-flex-direction, column);
+  --_filter-display: var(--filter-display, block);
+  background-color: var(--_background-color);
   display: flex;
   flex-direction: column;
 }
 form#itemfilter {
-  flex-direction: var(--form-flex-direction);
+  flex-direction: var(--_form-flex-direction);
   margin-top: 0;
 }
 eox-itemfilter-container {
@@ -72,7 +72,7 @@ eox-itemfilter-results button.chip {
   pointer-events: none;
 }
 .list li {
-  padding: 0 var(--padding) !important;
+  padding: 0 var(--_padding) !important;
 }
 .list.no-padding > li {
   padding: 0 !important;
@@ -82,7 +82,7 @@ li label {
   align-items: center;
 }
 .title {
-  text-transform: var(--text-transform);
+  text-transform: var(--_text-transform);
 }
 .title.highlight-enabled {
   text-transform: inherit;
@@ -111,14 +111,14 @@ eox-itemfilter-expandcontainer > [data-type=filter] {
 }
 [data-type=filter] .title,
 details summary {
-  text-transform: var(--text-transform);
+  text-transform: var(--_text-transform);
 }
 details summary nav {
   height: 32px;
 }
 details > summary {
   min-block-size: 0rem;
-  padding: 0 var(--padding);
+  padding: 0 var(--_padding);
   user-select: none;
 }
 details > summary i {
@@ -133,7 +133,7 @@ summary > * {
 ul.multiselect.list > li,
 ul.select.list > li,
 details > div > ul#results.list > li {
-  padding-left: var(--list-padding) !important;
+  padding-left: var(--_list-padding) !important;
 }
 section:not(section:last-of-type) {
   margin-bottom: 1rem;
@@ -149,14 +149,14 @@ section:not(section:last-of-type) {
   border-radius: none;
 }
 .no-results {
-  padding-left: var(--padding);
-  padding-right: var(--padding);
+  padding-left: var(--_padding);
+  padding-right: var(--_padding);
 }
 ul#results li:not(:hover) .result-action {
   display: none;
 }
 eox-layout {
-  padding: var(--padding-vertical) var(--padding);
+  padding: var(--_padding-vertical) var(--_padding);
   gap: var(--card-gap, 16px);
   --column-width: var(--card-width, 300px);
   --row-height: var(--card-height, 200px);
@@ -220,30 +220,30 @@ ul#results eox-layout-item.highlighted .result-action > * {
 }
 section {
   position: relative;
-  background-color: var(--background-color);
+  background-color: var(--_background-color);
 }
 nav.title-nav {
-  padding-left: var(--padding);
-  padding-right: var(--padding);
+  padding-left: var(--_padding);
+  padding-right: var(--_padding);
 }
-eox-itemfilter-range,
-tc-range-slider {
-  align-items: center;
+eox-itemfilter-range {
   display: block;
 }
+.range-wrapper {
+  margin-left: var(--_list-padding);
+  padding-right: var(--_padding);
+}
 tc-range-slider {
-  width: calc(100% - 32px);
-  margin-left: 8px;
-  margin-right: 8px;
+  width: 100%;
   --width: 100%;
 }
-.range-before,
-.range-after {
-  font-size: small;
+.range-labels {
+  display: flex;
+  justify-content: space-between;
 }
 .range-before,
 .range-after {
-  margin: 1rem 0px;
+  font-size: x-small;
 }
 
 .inline-content {
@@ -478,12 +478,17 @@ mark.highlight {
   color: #ba1a1a !important;
   font-size: x-small;
 }
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
 @media (prefers-color-scheme: dark) {
   .error-validation {
     color: #ffb4ab !important;
   }
 }
 input {
-  background-color: var(--background-color);
+  background-color: var(--_background-color);
 }
 `;
