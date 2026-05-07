@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.1.0...stacinfo-v1.2.0) (2026-05-05)
+
+
+### Features
+
+* Support stringified JSON for attributes ([#2304](https://github.com/EOX-A/EOxElements/issues/2304)) ([f30e5b0](https://github.com/EOX-A/EOxElements/commit/f30e5b07730ba10acb1b07237856e9675c2faf67))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.0.2...stacinfo-v1.1.0) (2026-02-27)
 
 

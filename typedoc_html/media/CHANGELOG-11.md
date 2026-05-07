@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.3.0...timecontrol-v2.4.0) (2026-05-05)
+
+
+### Features
+
+* Support stringified JSON for attributes ([#2304](https://github.com/EOX-A/EOxElements/issues/2304)) ([f30e5b0](https://github.com/EOX-A/EOxElements/commit/f30e5b07730ba10acb1b07237856e9675c2faf67))
+
+
+### Bug Fixes
+
+* **style:** Styling for date range selection ([#2316](https://github.com/EOX-A/EOxElements/issues/2316)) ([ed78648](https://github.com/EOX-A/EOxElements/commit/ed78648d93570809cdf1eb22715dc983adb89748))
+
 ## [2.3.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.2.0...timecontrol-v2.3.0) (2026-04-30)
 
 
