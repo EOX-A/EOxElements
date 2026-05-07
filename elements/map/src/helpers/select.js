@@ -63,7 +63,7 @@ export class EOxSelectInteraction {
             // @ts-expect-error - Type 'Element' is missing the following properties from type 'HTMLElement'
             element: this.tooltipElement,
             position: undefined,
-            offset: [0, 0],
+            offset: [-5, -5],
             positioning: "top-left",
             className: "eox-map-tooltip",
             id: "eox-map-tooltip",
