@@ -72,9 +72,12 @@ export const styleTimeline = `
   background: var(--primary-container) !important;
   /*opacity: 0.4;*/
 }
-.vis-item.milestone.vis-point:hover {
+.vis-item.milestone.vis-point:hover:not(.vis-overlap-item) {
   background: #ffc200 !important;
   cursor: pointer;
+}
+.vis-item.milestone.vis-point.vis-overlap-item {
+  border-radius: 0px !important;
 }
 .vis-group.vis-group-hide .vis-item.milestone.vis-point,
 .vis-group.vis-group-hide .vis-item.milestone.vis-point:hover {

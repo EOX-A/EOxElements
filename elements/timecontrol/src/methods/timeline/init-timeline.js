@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import duration from "dayjs/plugin/duration";
+import groupBy from "lodash.groupby";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -208,15 +209,20 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
         : dayjs(props.time).add(duration).utc().format();
       EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
     } else {
-      // TODO: This needs to be made dynamic based on bin selection size
-      const rangeType = "day";
+      const duration = dayjs.duration({
+        seconds: 1,
+      });
+      const selectedItem = props.item
+        ? groupBy(EOxTimeControl.items.get(), "id")[props.item]
+        : null;
+      const selectedDateTime = selectedItem ? selectedItem[0].utc : props.time;
 
       const startDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().startOf(rangeType).format()
-        : dayjs(props.time).startOf(rangeType).utc().format();
+        ? dayjs(selectedDateTime).utc().format()
+        : dayjs(selectedDateTime).utc().format();
       const endDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().endOf(rangeType).format()
-        : dayjs(props.time).endOf(rangeType).utc().format();
+        ? dayjs(selectedDateTime).utc().add(duration).format()
+        : dayjs(selectedDateTime).add(duration).utc().format();
       EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
     }
   }
@@ -246,6 +252,59 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
       composed: true,
     }),
   );
+}
+
+/**
+ * Generates the class overlaps for the timeline items.
+ *
+ * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
+ */
+function generateClassOverlaps(EOxTimeControlTimeline) {
+  const timeline = EOxTimeControlTimeline.visTimeline;
+  const dotDiameterPx = 14;
+  const minOverlapPx = 2;
+  const sameTimeTolerancePx = 1;
+  const rowTolerancePx = null;
+  const yTolerance = rowTolerancePx || dotDiameterPx;
+  const xDistanceLimit = dotDiameterPx - minOverlapPx;
+  const pointItems = [];
+  const overlaps = [];
+
+  const markClass = "vis-overlap-item";
+  const dom = /** @type {any} */ (timeline).dom;
+
+  for (const el of dom.root.querySelectorAll(".vis-item.vis-point")) {
+    el.classList.remove(markClass);
+    const rect = el.getBoundingClientRect();
+    if (rect.width) {
+      pointItems.push({
+        el,
+        centerX: rect.left + rect.width / 2,
+        centerY: rect.top + rect.height / 2,
+      });
+    }
+  }
+  pointItems.sort((a, b) => a.centerX - b.centerX);
+
+  for (let i = 1; i < pointItems.length; i++) {
+    const current = pointItems[i];
+    for (let j = i - 1; j >= 0; j--) {
+      const previous = pointItems[j];
+      const xDistance = current.centerX - previous.centerX;
+
+      if (xDistance >= xDistanceLimit) break;
+      if (xDistance <= sameTimeTolerancePx) continue;
+      if (Math.abs(current.centerY - previous.centerY) >= yTolerance) continue;
+
+      overlaps.push({
+        a: previous.el,
+        b: current.el,
+        overlapPx: +(dotDiameterPx - xDistance).toFixed(2),
+      });
+      current.el.classList.add(markClass);
+      previous.el.classList.add(markClass);
+    }
+  }
 }
 
 /**
@@ -330,6 +389,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       }, 50);
 
     visTimeline.on("changed", () => {
+      generateClassOverlaps(EOxTimeControlTimeline);
       updateRangeElements(EOxTimeControlTimeline);
       handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl, options);
     });
