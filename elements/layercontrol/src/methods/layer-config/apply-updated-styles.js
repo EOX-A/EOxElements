@@ -69,7 +69,7 @@ export const flattenObject = (obj) => {
  * @param {Record<string,any>} styles
  * @returns
  */
-function updateVectorLayerStyle(styles) {
+export function updateVectorLayerStyle(styles) {
   // pass back flat style if contained in config
   let returnStyle = styles;
   // Check if variables are defined and need to be "burned in" first
