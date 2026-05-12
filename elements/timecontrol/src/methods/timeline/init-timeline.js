@@ -13,6 +13,8 @@ import timezone from "dayjs/plugin/timezone.js";
 import duration from "dayjs/plugin/duration";
 import groupBy from "lodash.groupby";
 
+const CLUSTER_ITEM_CLASSNAME = "vis-cluster-item";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(duration);
@@ -24,6 +26,7 @@ dayjs.extend(duration);
 
 let drag = false;
 let drawInterval = null;
+let click = false;
 
 const labelDateFormat = "DD MMM YYYY HH:mm:ss";
 
@@ -192,10 +195,20 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !drag &&
     !props.event.shiftKey
   ) {
+    click = true;
+    generateClusterItems(EOxTimeControlTimeline);
+    const dom = /** @type {any} */ (EOxTimeControlTimeline.visTimeline).dom
+      .root;
     const isBackgroundClick = Boolean(props.what == "background");
+    const isClusterItem =
+      !isBackgroundClick && props.item
+        ? dom
+            .querySelector(`.item-${props.item}`)
+            .classList.contains(CLUSTER_ITEM_CLASSNAME)
+        : false;
 
     const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
-    if (isBackgroundClick) {
+    if (isBackgroundClick || isClusterItem) {
       const selection = /** @type {any} */ (
         EOxTimeControlTimeline.selectionDuration
       );
@@ -255,11 +268,11 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
 }
 
 /**
- * Generates the class overlaps for the timeline items.
+ * Generates the cluster items for the timeline items.
  *
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
-function generateClassOverlaps(EOxTimeControlTimeline) {
+function generateClusterItems(EOxTimeControlTimeline) {
   const timeline = EOxTimeControlTimeline.visTimeline;
   const dotDiameterPx = 14;
   const minOverlapPx = 2;
@@ -268,13 +281,11 @@ function generateClassOverlaps(EOxTimeControlTimeline) {
   const yTolerance = rowTolerancePx || dotDiameterPx;
   const xDistanceLimit = dotDiameterPx - minOverlapPx;
   const pointItems = [];
-  const overlaps = [];
-
-  const markClass = "vis-overlap-item";
+  const clusterItems = [];
   const dom = /** @type {any} */ (timeline).dom;
 
   for (const el of dom.root.querySelectorAll(".vis-item.vis-point")) {
-    el.classList.remove(markClass);
+    el.classList.remove(CLUSTER_ITEM_CLASSNAME);
     const rect = el.getBoundingClientRect();
     if (rect.width) {
       pointItems.push({
@@ -296,13 +307,13 @@ function generateClassOverlaps(EOxTimeControlTimeline) {
       if (xDistance <= sameTimeTolerancePx) continue;
       if (Math.abs(current.centerY - previous.centerY) >= yTolerance) continue;
 
-      overlaps.push({
+      clusterItems.push({
         a: previous.el,
         b: current.el,
         overlapPx: +(dotDiameterPx - xDistance).toFixed(2),
       });
-      current.el.classList.add(markClass);
-      previous.el.classList.add(markClass);
+      current.el.classList.add(CLUSTER_ITEM_CLASSNAME);
+      previous.el.classList.add(CLUSTER_ITEM_CLASSNAME);
     }
   }
 }
@@ -327,6 +338,8 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
 
+    const groupByOriginalDate = groupBy(items, "originalDate");
+
     const options = {
       ...DEFAULT_VIS_TIMELINE_OPTIONS,
       start: min,
@@ -334,6 +347,21 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
+      tooltip: {
+        delay: 300,
+        template: function (originalItemData) {
+          const dom = /** @type {any} */ (EOxTimeControlTimeline.visTimeline)
+            .dom.root;
+          const isClusterItem = dom
+            .querySelector(`.item-${originalItemData.id}`)
+            .classList.contains(CLUSTER_ITEM_CLASSNAME);
+          const items =
+            groupByOriginalDate[originalItemData.originalDate] || [];
+          return isClusterItem || items.length === 1
+            ? false
+            : `<span>${items.length} item${items.length > 1 ? "s" : ""}</span>`;
+        },
+      },
       moment: function (date) {
         if (EOxTimeControl.showUTC) {
           // @ts-expect-error type not returned
@@ -389,9 +417,10 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       }, 50);
 
     visTimeline.on("changed", () => {
-      generateClassOverlaps(EOxTimeControlTimeline);
+      if (!click) generateClusterItems(EOxTimeControlTimeline);
       updateRangeElements(EOxTimeControlTimeline);
       handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl, options);
+      click = false;
     });
     visTimeline.on("timechange", () => {
       if (EOxTimeControlTimeline.selectionResizable)

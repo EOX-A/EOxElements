@@ -65,18 +65,18 @@ export const styleTimeline = `
   height: 14px;
   border-radius: 100px !important;
 }
-.vis-item.milestone.vis-point.vis-selected-item {
+.vis-item.milestone.vis-point.vis-selected-item:not(.vis-cluster-item) {
   background: #ffc200 !important;
 }
 .vis-item.milestone.vis-point.vis-not-filtered {
   background: var(--primary-container) !important;
   /*opacity: 0.4;*/
 }
-.vis-item.milestone.vis-point:hover:not(.vis-overlap-item) {
+.vis-item.milestone.vis-point:hover:not(.vis-cluster-item) {
   background: #ffc200 !important;
   cursor: pointer;
 }
-.vis-item.milestone.vis-point.vis-overlap-item {
+.vis-item.milestone.vis-point.vis-cluster-item {
   border-radius: 0px !important;
 }
 .vis-group.vis-group-hide .vis-item.milestone.vis-point,
