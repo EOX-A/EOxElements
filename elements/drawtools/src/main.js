@@ -9,6 +9,9 @@ import {
   emitDrawnFeaturesMethod,
   createSelectHandler,
   handleLayerId,
+  onKeyDownMethod,
+  removeFeatureMethod,
+  removeFeatureByIndexMethod,
 } from "./methods/draw";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
@@ -35,7 +38,17 @@ import {
  *
  * Usage examples and visual demos are available in Storybook stories, including scenarios for multi-feature drawing, feature modification, selection, import/export, continuous drawing, format and projection control, and style customization.
  *
+ * ## Methods
+ *
+ * - `startDrawing`: Triggers starting the drawing interaction on the map.
+ * - `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
+ * - `removeFeature`: Removes a feature from the drawn features.
+ * - `removeFeatureByIndex`: Removes a feature from the drawn features by its index.
+ *
+ * Usage: `document.querySelector("eox-drawtools").startDrawing();`
+ *
  * @element eox-drawtools
+ * @fires {CustomEvent} drawupdate - Fires whenever features are added, modified or discarded
  */
 export class EOxDrawTools extends LitElement {
   // Define properties with defaults and types
@@ -51,7 +64,7 @@ export class EOxDrawTools extends LitElement {
       featureName: { attribute: "feature-name", type: String },
       featureNameKey: { attribute: "feature-name-key", type: String },
       layerId: { attribute: "layer-id", type: String },
-      featureStyles: { attribute: false },
+      featureStyles: { type: Object },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       measure: { type: Boolean },
@@ -99,6 +112,11 @@ export class EOxDrawTools extends LitElement {
    * @type Array<import("ol").Feature>
    */
   #drawnFeatures = [];
+
+  /**
+   * @type {(e: KeyboardEvent) => void}
+   */
+  #onKeyDownListener = (e) => onKeyDownMethod(e, this);
 
   constructor() {
     super();
@@ -246,6 +264,7 @@ export class EOxDrawTools extends LitElement {
   /**
    * Used internally to update the drawnFeatures state without overwriting the map layer source.
    * @param {Array<import("ol").Feature>} features
+   * @ignore
    */
   setDrawnFeaturesInternal(features) {
     this.#internalUpdate = true;
@@ -303,24 +322,40 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * @onClick Event handler triggered to start drawing on the map.
+   * Triggers starting the drawing interaction on the map.
    */
   startDrawing() {
     startDrawingMethod(this);
   }
 
   /**
-   * @onClick Event handler triggered to discard/stop drawing
-   * on the map and delete the drawn shapes.
+   * Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
    */
   discardDrawing() {
     discardDrawingMethod(this);
   }
 
   /**
+   * Removes a feature from the drawn features.
+   * @param {import("ol").Feature} feature - The feature to remove.
+   */
+  removeFeature(feature) {
+    removeFeatureMethod(this, feature);
+  }
+
+  /**
+   * Removes a feature from the drawn features by its index.
+   * @param {number} index - The index of the feature to remove.
+   */
+  removeFeatureByIndex(index) {
+    removeFeatureByIndexMethod(this, index);
+  }
+
+  /**
    * @param {string} text - The string representation of the features to be parsed.
    * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
    * @param {boolean} animate - A boolean flag indicating whether to animate the map on feature change.
+   * @ignore
    */
   handleFeatureChange(text, replaceFeatures = false, animate = true) {
     this.eoxMap.parseTextToFeature(
@@ -334,6 +369,7 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * @param {DragEvent | InputEvent & { target: HTMLInputElement }} evt - The event object from the file input interaction.
+   * @ignore
    */
   handleFilesChange(evt) {
     handleFiles(evt, this);
@@ -341,6 +377,7 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * @event onModifyEnd triggered when the modification of a shape is completed.
+   * @ignore
    */
   onModifyEnd() {
     this.emitDrawnFeatures();
@@ -348,6 +385,7 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * Update #geoJSON with stringify feature.
+   * @ignore
    */
   updateGeoJSON() {
     this.#geoJSON = JSON.stringify(
@@ -359,6 +397,7 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * Triggers different events when the drawing of a shape is completed.
+   * @ignore
    */
   emitDrawnFeatures() {
     /**
@@ -377,6 +416,7 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   * @ignore
    */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
@@ -385,6 +425,7 @@ export class EOxDrawTools extends LitElement {
   /**
    * initializes the EOxMap and OlMap instances
    * And stores them in the private properties #eoxMap and #olMap, respectively.
+   * @ignore
    */
   updateLayer() {
     if (this.resetLayer) {
@@ -403,6 +444,7 @@ export class EOxDrawTools extends LitElement {
    * initializes the EOxMap and OlMap instances
    * And stores them in the private properties #eoxMap and #olMap, respectively.
    * It then calls requestUpdate to trigger a re-render.
+   * @ignore
    */
   firstUpdated() {
     this.updateLayer();
@@ -418,6 +460,7 @@ export class EOxDrawTools extends LitElement {
     this.requestUpdate();
   }
 
+  /** @ignore */
   updated(changedProperties) {
     const hasOldValue = (prop) =>
       changedProperties.has(prop) && changedProperties.get(prop) !== undefined;
@@ -448,16 +491,20 @@ export class EOxDrawTools extends LitElement {
     this.requestUpdate("eoxMap", oldValue);
   }
 
+  /** @ignore */
   connectedCallback() {
     super.connectedCallback();
+    document.addEventListener("keydown", this.#onKeyDownListener);
     if (this.drawLayer && this.eoxMap) {
       const { reset } = initLayerMethod(this, this.multipleFeatures);
       this.resetLayer = reset;
     }
   }
 
+  /** @ignore */
   disconnectedCallback() {
     super.disconnectedCallback();
+    document.removeEventListener("keydown", this.#onKeyDownListener);
     this.resetLayer?.(this);
   }
   // Render method for UI display

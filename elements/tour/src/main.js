@@ -34,7 +34,7 @@ export class EOxTour extends LitElement {
       /**
        * The driver.js configuration object. See the [driver.js docs](https://driverjs.com/docs/configuration) for available options.
        */
-      config: { attribute: false, type: Object },
+      config: { type: Object },
       /**
        * Whether to show the tour every time the component is mounted,
        * bypassing the `localStorage` check.

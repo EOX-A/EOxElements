@@ -1,6 +1,6 @@
 {
   "name": "@eox/itemfilter",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "type": "module",
   "repository": {
     "type": "git",
@@ -9,11 +9,11 @@
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
     "@types/lodash.debounce": "^4.0.7",
-    "vite": "^7.1.12"
+    "vite": "^8.0.12"
   },
   "engines": {
     "npm": ">=8.0.0",
-    "node": ">=18.0.0"
+    "node": ">=24.0.0"
   },
   "files": [
     "types",

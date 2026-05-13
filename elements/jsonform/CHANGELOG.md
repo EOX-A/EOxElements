@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.11.0...jsonform-v1.12.0) (2026-05-05)
+
+
+### Features
+
+* Support stringified JSON for attributes ([#2304](https://github.com/EOX-A/EOxElements/issues/2304)) ([f30e5b0](https://github.com/EOX-A/EOxElements/commit/f30e5b07730ba10acb1b07237856e9675c2faf67))
+
 ## [1.11.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.10.0...jsonform-v1.11.0) (2026-04-16)
 
 

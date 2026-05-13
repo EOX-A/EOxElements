@@ -87,8 +87,10 @@ class EOxItemFilterSpatial extends LitElement {
     return when(
       this.filterObject,
       () => html`
-        <div style="margin-left: var(--list-padding)">
-          <nav class="vertical-margin small-margin wrap">
+        <div
+          style="margin-left: var(--list-padding); padding-right: var(--padding)"
+        >
+          <nav class="no-margin wrap">
             ${map(
               ["intersects", "within"],
               (mode) => html`
@@ -102,7 +104,7 @@ class EOxItemFilterSpatial extends LitElement {
                     value="${mode}"
                     @click=${() => this.#handleClick(mode)}
                   />
-                  <span>${mode} filter geometry</span>
+                  <span style="font-size: x-small">${mode} geometry</span>
                 </label>
               `,
             )}
@@ -116,7 +118,7 @@ class EOxItemFilterSpatial extends LitElement {
               this.filterObject.stringifiedState = "Polygon";
               this.dispatchEvent(new CustomEvent("filter"));
             }}"
-          ></eox-itemfilter-spatial>
+          ></eox-itemfilter-spatial-filter>
         </div>
       `,
     );
