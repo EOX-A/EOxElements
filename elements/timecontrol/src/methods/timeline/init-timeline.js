@@ -12,6 +12,7 @@ import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import duration from "dayjs/plugin/duration";
 import groupBy from "lodash.groupby";
+import filter from "lodash.filter";
 
 const CLUSTER_ITEM_CLASSNAME = "vis-cluster-item";
 
@@ -317,8 +318,6 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
 
-    const groupByOriginalDate = groupBy(items, "originalDate");
-
     const options = {
       ...DEFAULT_VIS_TIMELINE_OPTIONS,
       start: min,
@@ -334,11 +333,13 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
           const isClusterItem = dom
             .querySelector(`.item-${originalItemData.id}`)
             .classList.contains(CLUSTER_ITEM_CLASSNAME);
-          const items =
-            groupByOriginalDate[originalItemData.originalDate] || [];
-          return isClusterItem || items.length === 1
+          const filteredItems = filter(items, {
+            originalDate: originalItemData.originalDate,
+            group: originalItemData.group,
+          });
+          return isClusterItem || filteredItems.length === 1
             ? false
-            : `<span>${items.length} item${items.length > 1 ? "s" : ""}</span>`;
+            : `<span>${filteredItems.length} item${filteredItems.length > 1 ? "s" : ""}</span>`;
         },
       },
       moment: function (date) {
