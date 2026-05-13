@@ -8,7 +8,7 @@
 
 > **ExportConfig** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:201](https://github.com/EOX-A/EOxElements/blob/7038707cee49c2be8d51b255b1be4b9c73ca70e1/elements/timecontrol/src/types.ts#L201)
+Defined in: [elements/timecontrol/src/types.ts:201](https://github.com/EOX-A/EOxElements/blob/b66a41f929fdd9d1cca7b6310afda86b06b57be4/elements/timecontrol/src/types.ts#L201)
 
 Configuration for export functionality in timelapse component.
 
@@ -18,7 +18,7 @@ Configuration for export functionality in timelapse component.
 
 > **mapLayers**: `object`[]
 
-Defined in: [elements/timecontrol/src/types.ts:205](https://github.com/EOX-A/EOxElements/blob/7038707cee49c2be8d51b255b1be4b9c73ca70e1/elements/timecontrol/src/types.ts#L205)
+Defined in: [elements/timecontrol/src/types.ts:205](https://github.com/EOX-A/EOxElements/blob/b66a41f929fdd9d1cca7b6310afda86b06b57be4/elements/timecontrol/src/types.ts#L205)
 
 Array of map layer configurations for export.
 
@@ -58,7 +58,7 @@ Map zoom level.
 
 > `optional` **play?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:234](https://github.com/EOX-A/EOxElements/blob/7038707cee49c2be8d51b255b1be4b9c73ca70e1/elements/timecontrol/src/types.ts#L234)
+Defined in: [elements/timecontrol/src/types.ts:234](https://github.com/EOX-A/EOxElements/blob/b66a41f929fdd9d1cca7b6310afda86b06b57be4/elements/timecontrol/src/types.ts#L234)
 
 Whether the animation is currently playing.
 
@@ -68,6 +68,6 @@ Whether the animation is currently playing.
 
 > `optional` **selectedPreview?**: `number`
 
-Defined in: [elements/timecontrol/src/types.ts:230](https://github.com/EOX-A/EOxElements/blob/7038707cee49c2be8d51b255b1be4b9c73ca70e1/elements/timecontrol/src/types.ts#L230)
+Defined in: [elements/timecontrol/src/types.ts:230](https://github.com/EOX-A/EOxElements/blob/b66a41f929fdd9d1cca7b6310afda86b06b57be4/elements/timecontrol/src/types.ts#L230)
 
 Index of the selected preview.
