@@ -116,34 +116,10 @@ export function updateRangeElements(EOxTimeControlTimeline) {
  *
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
- * @param {Object} options - The timeline options.
  */
-function handleTimelineChanged(
-  EOxTimeControlTimeline,
-  EOxTimeControl,
-  options,
-) {
-  // console.log(EOxTimeControlTimeline.visTimeline.timeAxis.step)
-  // const container = EOxTimeControlTimeline.getContainer();
+function handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl) {
   const EOxItemFilter = EOxTimeControl.querySelector("eox-itemfilter");
 
-  // const textElement = /** @type {HTMLElement} */ (
-  //   container.querySelector(".vis-text.vis-minor.vis-even")
-  // );
-  // const width = Number(textElement.style.width.replace("px", ""));
-  // const cellWidth = width / options.timeAxis.step + 0.1;
-  console.log(options);
-
-  // const milestoneElements = /** @type {NodeListOf<HTMLElement>} */ (
-  //   container.querySelectorAll(".vis-item.milestone")
-  // );
-
-  // if (EOxTimeControlTimeline.visTimeline.timeAxis.step.scale === "month") {
-  //   milestoneElements.forEach((milestone) => {
-  //     console.log(milestone)
-  //     milestone.style.width = `${width}px`;
-  //   });
-  // }
   for (let i = 0; i < EOxTimeControl.sliderValues.length; i++) {
     updateVisibility(
       EOxTimeControlTimeline,
@@ -422,7 +398,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     visTimeline.on("changed", () => {
       if (!click) generateClusterItems(EOxTimeControlTimeline);
       updateRangeElements(EOxTimeControlTimeline);
-      handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl, options);
+      handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl);
       click = false;
     });
     visTimeline.on("timechange", () => {
