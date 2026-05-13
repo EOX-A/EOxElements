@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-jRWAZmH_.js";import{i as t,r as n}from"./iframe-B2QQZgr7.js";var r;e((()=>{t(),r=class extends n{decodeBlock(e){return e}}}))();export{r as default};
