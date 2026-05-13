@@ -45,7 +45,7 @@ const basicOlFormats = {
 };
 
 const basicOlLayers = {
-  ,
+  Group,
   Image,
   Tile: TileLayer,
   Vector: VectorLayer,
