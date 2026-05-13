@@ -165,7 +165,7 @@ function handleTimeChanged(props, EOxTimeControl) {
   if (props.id == "multi-select-start" || props.id == "multi-select-end") {
     const isStart = props.id.includes("start");
     const newDate = EOxTimeControl.showUTC
-      ? getWrongLocalFormatToUTCFormat(props.time)
+      ? getWrongLocalFormatToUTCFormat(props.time, EOxTimeControl.showUTC)
       : dayjs.utc(props.time).format();
     const newDateRange = isStart
       ? [newDate, EOxTimeControl.selectedDateRange[1]]
@@ -207,7 +207,10 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
             .classList.contains(CLUSTER_ITEM_CLASSNAME)
         : false;
 
-    const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
+    const utcFormattedDate = getWrongLocalFormatToUTCFormat(
+      props.time,
+      EOxTimeControl.showUTC,
+    );
     if (isBackgroundClick || isClusterItem) {
       const selection = /** @type {any} */ (
         EOxTimeControlTimeline.selectionDuration
@@ -274,7 +277,7 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
  */
 function generateClusterItems(EOxTimeControlTimeline) {
   const timeline = EOxTimeControlTimeline.visTimeline;
-  const dotDiameterPx = 14;
+  const dotDiameterPx = 15;
   const minOverlapPx = 2;
   const sameTimeTolerancePx = 1;
   const rowTolerancePx = null;

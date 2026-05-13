@@ -80,8 +80,9 @@ export default function updateTimelineItems(
         data: slider.layer + value.date,
       });
       const id = /** @type {string} */ (uuidv4(options));
-      const start = getUTCLocalDateTime(value.date, showUTC, true);
-      const end = getUTCLocalDateTime(value.date, showUTC, false);
+      const date = showUTC ? value.utc : value.local;
+      const start = getUTCLocalDateTime(date, showUTC, true);
+      const end = getUTCLocalDateTime(date, showUTC, false);
       items.add({
         ...value,
         id: id,

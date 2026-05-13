@@ -61,8 +61,9 @@ export const styleTimeline = `
 .vis-item.milestone.vis-point {
   background: var(--primary) !important;
   border: none;
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 14.5px;
+  margin-left: -6px;
   border-radius: 100px !important;
 }
 .vis-item.milestone.vis-point.vis-selected-item:not(.vis-cluster-item) {
