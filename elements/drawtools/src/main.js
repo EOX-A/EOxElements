@@ -4,6 +4,7 @@ import "./components/controller";
 import { styleEOX } from "./style.eox";
 import {
   startDrawingMethod,
+  stopDrawingMethod,
   initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
@@ -41,6 +42,7 @@ import {
  * ## Methods
  *
  * - `startDrawing`: Triggers starting the drawing interaction on the map.
+ * - `stopDrawing`: Triggers stopping the drawing interaction on the map (same as pressing the Escape key).
  * - `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
  * - `removeFeature`: Removes a feature from the drawn features.
  * - `removeFeatureByIndex`: Removes a feature from the drawn features by its index.
@@ -326,6 +328,13 @@ export class EOxDrawTools extends LitElement {
    */
   startDrawing() {
     startDrawingMethod(this);
+  }
+
+  /**
+   * Triggers stopping the drawing interaction on the map (same as pressing the Escape key).
+   */
+  stopDrawing() {
+    stopDrawingMethod(this);
   }
 
   /**
