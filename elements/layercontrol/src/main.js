@@ -38,7 +38,7 @@ addCommonStylesheet();
  *
  * ## Additional Helper Methods
  *
- * - `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `["var", "<key>"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`. 
+ * - `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `["var", "<key>"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`.
  *
  * Usage: `import { updateVectorLayerStyle } from "@eox/layercontrol";`
  *
