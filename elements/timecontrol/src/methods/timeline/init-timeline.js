@@ -264,8 +264,15 @@ function generateClusterItems(EOxTimeControlTimeline) {
   const clusterItems = [];
   const dom = /** @type {any} */ (timeline).dom;
 
+  const CLUSTER_ITEM_START_CLASSNAME = "vis-cluster-item-start";
+  const CLUSTER_ITEM_END_CLASSNAME = "vis-cluster-item-end";
+
   for (const el of dom.root.querySelectorAll(".vis-item.vis-point")) {
-    el.classList.remove(CLUSTER_ITEM_CLASSNAME);
+    el.classList.remove(
+      CLUSTER_ITEM_CLASSNAME,
+      CLUSTER_ITEM_START_CLASSNAME,
+      CLUSTER_ITEM_END_CLASSNAME,
+    );
     const rect = el.getBoundingClientRect();
     if (rect.width) {
       pointItems.push({
@@ -276,6 +283,12 @@ function generateClusterItems(EOxTimeControlTimeline) {
     }
   }
   pointItems.sort((a, b) => a.centerX - b.centerX);
+
+  const parent = pointItems.map((_, i) => i);
+  const find = (i) => (parent[i] === i ? i : (parent[i] = find(parent[i])));
+  const union = (a, b) => {
+    parent[find(a)] = find(b);
+  };
 
   for (let i = 1; i < pointItems.length; i++) {
     const current = pointItems[i];
@@ -294,7 +307,21 @@ function generateClusterItems(EOxTimeControlTimeline) {
       });
       current.el.classList.add(CLUSTER_ITEM_CLASSNAME);
       previous.el.classList.add(CLUSTER_ITEM_CLASSNAME);
+      union(i, j);
     }
+  }
+
+  const clusters = new Map();
+  for (let i = 0; i < pointItems.length; i++) {
+    const root = find(i);
+    const cluster = clusters.get(root);
+    if (cluster) cluster.last = i;
+    else clusters.set(root, { first: i, last: i });
+  }
+  for (const { first, last } of clusters.values()) {
+    if (first === last) continue;
+    pointItems[first].el.classList.add(CLUSTER_ITEM_START_CLASSNAME);
+    pointItems[last].el.classList.add(CLUSTER_ITEM_END_CLASSNAME);
   }
 }
 

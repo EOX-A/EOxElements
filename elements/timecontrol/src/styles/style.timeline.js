@@ -80,6 +80,14 @@ export const styleTimeline = `
 .vis-item.milestone.vis-point.vis-cluster-item {
   border-radius: 0px !important;
 }
+.vis-item.milestone.vis-point.vis-cluster-item-start {
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+}
+.vis-item.milestone.vis-point.vis-cluster-item-end {
+  border-bottom-right-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+}
 .vis-group.vis-group-hide .vis-item.milestone.vis-point,
 .vis-group.vis-group-hide .vis-item.milestone.vis-point:hover {
   background: var(--primary) !important;
