@@ -1,5 +1,6 @@
 // Importing test cases and necessary modules
 import "../src/main"; // Importing main module
+import { updateVectorLayerStyle } from "../src/main";
 import "./_mockMap";
 import {
   checkLayerSize,
@@ -69,6 +70,11 @@ describe("LayerControl", () => {
 
   // Test to verify the toolsAutoExpand property
   it("supports toolsAutoExpand", () => toolsAutoExpand());
+
+  // Test to verify that updateVectorLayerStyle helper is exported
+  it("exports updateVectorLayerStyle as a function", () => {
+    expect(updateVectorLayerStyle).to.be.a("function");
+  });
   // TODO: Fix this test
   // it("emit 'datetime:updated' correctly when moving the slider", () => {
   //   checkLayerDatetime();

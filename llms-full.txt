@@ -12285,7 +12285,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-05-18T17:38:44.805Z",
+              default: "2026-05-18T17:41:37.704Z",
               options: {
                 hidden: true,
               },
@@ -12395,6 +12395,12 @@ To be displayed and managed correctly, the map layers should have custom propert
 - `layerLegend?: object` — Configuration for the "legend" tool, supporting dynamic color legends.
 
 For `eox-map` attributes/properties and emitted events, see below.
+
+## Additional Helper Methods
+
+- `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `["var", "<key>"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`.
+
+Usage: `import { updateVectorLayerStyle } from "@eox/layercontrol";`
 
 ### Attributes
 
