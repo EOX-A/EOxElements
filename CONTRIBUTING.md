@@ -24,6 +24,8 @@ npm install
 npx cypress install
 ```
 
+Additionally, we enforce a **7-day quarantine for fresh packages** (`min-release-age=7` in `.npmrc`). Avoid updating to versions released less than 7 days ago unless there is an urgent security fix.
+
 ### 2. Monorepo Structure
 
 - Each package (element) is located in the `/elements` directory.
