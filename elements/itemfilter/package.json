@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
+    "@eox/timecontrol": "2.4.0",
     "@eox/ui": "^1.1.0",
     "@floating-ui/dom": "^1.6.8",
     "@turf/boolean-intersects": "^7.3.5",

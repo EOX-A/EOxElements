@@ -228,6 +228,8 @@ nav.title-nav {
 }
 eox-itemfilter-range {
   display: block;
+  margin-left: var(--_list-padding);
+  padding-right: var(--_padding);
 }
 .range-wrapper {
   margin-left: var(--_list-padding);

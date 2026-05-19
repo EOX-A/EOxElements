@@ -1,1 +1,1 @@
-export { ELEMENT_CONFIG, ELEMENT_PROPERTIES } from "./config";
+export { ELEMENT_CONFIG, ELEMENT_PROPERTIES, DATE_TIME_FORMAT } from "./config";

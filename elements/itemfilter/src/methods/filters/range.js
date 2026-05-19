@@ -1,8 +1,7 @@
-import { resetFilter } from "../../helpers/index.js";
+import { resetFilter, isDate } from "../../helpers/index.js";
 import dayjs from "dayjs";
 import { html } from "lit";
-
-const DATE_TIME_FORMAT = "ddd, D MMM YYYY HH:mm:ss";
+import { DATE_TIME_FORMAT } from "../../enums/index.js";
 
 /**
  * Resets the range filter to its default state and requests an update.
@@ -14,15 +13,29 @@ export function resetRangeMethod(EOxItemFilterRange) {
     EOxItemFilterRange.filterObject,
   );
   if (EOxItemFilterRange.filterObject) {
+    const min = EOxItemFilterRange.filterObject.min;
+    const max = EOxItemFilterRange.filterObject.max;
+
+    /**
+     * @type {import("@eox/timecontrol").EOxTimeControl}
+     */
+    const eleTimeControl = EOxItemFilterRange.querySelector("eox-timecontrol");
+    if (eleTimeControl) {
+      eleTimeControl.dateChange(
+        [dayjs.unix(min), dayjs.unix(max)],
+        eleTimeControl,
+      );
+    }
+
     /**
      * @type {import("toolcool-range-slider").RangeSlider}
      */
     const eleTCRangeSlider =
       EOxItemFilterRange.querySelector("tc-range-slider");
-    const min = EOxItemFilterRange.filterObject.min;
-    const max = EOxItemFilterRange.filterObject.max;
-    if (eleTCRangeSlider.value1 !== min) eleTCRangeSlider.value1 = min;
-    if (eleTCRangeSlider.value2 !== max) eleTCRangeSlider.value2 = max;
+    if (eleTCRangeSlider) {
+      if (eleTCRangeSlider.value1 !== min) eleTCRangeSlider.value1 = min;
+      if (eleTCRangeSlider.value2 !== max) eleTCRangeSlider.value2 = max;
+    }
   }
   EOxItemFilterRange.requestUpdate();
 }
@@ -76,9 +89,8 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
  * @returns {import("lit").HTMLTemplateResult}
  */
 export function rangeLabelMethod(val, pos, EOxItemFilterRange) {
-  const isDate = Boolean(EOxItemFilterRange.filterObject.format === "date");
   const filteredVal = EOxItemFilterRange.filterObject.state[val];
-  const label = isDate
+  const label = isDate(EOxItemFilterRange.filterObject)
     ? dayjs.unix(filteredVal).format(DATE_TIME_FORMAT)
     : filteredVal;
   return html`<div class="range-${pos}">${label}</div>`;
