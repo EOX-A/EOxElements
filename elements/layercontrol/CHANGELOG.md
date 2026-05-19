@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.6.0...layercontrol-v1.7.0) (2026-05-19)
+
+
+### Features
+
+* Export updateVectorLayerStyle function ([#2327](https://github.com/EOX-A/EOxElements/issues/2327)) ([e1b91d0](https://github.com/EOX-A/EOxElements/commit/e1b91d0042a776dcac7ebce3d791aaf6fc8ad882))
+
 ## [1.6.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.5.0...layercontrol-v1.6.0) (2026-05-05)
 
 
