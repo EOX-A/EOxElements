@@ -102,7 +102,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   olLayer.set("_jsonDefinition", layer, true);
   // Handle group layers by recursively creating their sublayers
   if (layer.type === "Group") {
-    const groupLayers = layer.layers.map((l) => createLayer(EOxMap, l));
+    const groupLayers = layer.layers.map((l) =>
+      createLayer(EOxMap, l, createInteractions),
+    );
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
     /** @type {import("ol/layer/Group").default} **/ (olLayer).setLayers(
       new Collection(groupLayers),

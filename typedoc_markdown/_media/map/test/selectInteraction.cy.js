@@ -7,6 +7,7 @@ import {
   highlightByIdVectorTileLayer,
   removeSelectInteractionLayer,
   removeSelectInteraction,
+  noDuplicateVectorLoad,
 } from "./cases/select/index.js";
 
 const vectorTileInteraction = [
@@ -75,4 +76,10 @@ describe("select interaction on click", () => {
    * Test case to remove interaction
    */
   it("remove interaction", () => removeSelectInteraction());
+
+  /**
+   * Adding a select interaction must not duplicate the vector source XHR
+   */
+  it("does not duplicate vector source XHR with select interaction", () =>
+    noDuplicateVectorLoad());
 });
