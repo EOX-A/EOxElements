@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/EOX-A/EOxElements/compare/map-v2.5.0...map-v2.5.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* Avoid duplicate vector source loads from `EOxSelectInteraction` ([#2328](https://github.com/EOX-A/EOxElements/issues/2328)) ([64daece](https://github.com/EOX-A/EOxElements/commit/64daececf93af200571065e64cf26d683478cfda))
+
 ## [2.5.0](https://github.com/EOX-A/EOxElements/compare/map-v2.4.0...map-v2.5.0) (2026-05-05)
 
 
