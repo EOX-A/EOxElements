@@ -74,14 +74,9 @@ export function translateOLStyleExpressions(olStyle, properties) {
 export const setupGlobeSync = (EOxMap, globus) => {
   const planet = globus.planet;
   const map = EOxMap.map;
-
-  const updateOLView = () => {
-    if (EOxMap._isSyncing) {
-      return;
-    }
+  const onGlobeMove = () => {
+    // Do not sync from globe to OL if a programmatic move is in progress.
     const cam = planet.camera;
-    const canvas = planet.renderer.handler.canvas;
-    const fovy = (cam.viewAngle || 30) * (Math.PI / 180);
 
     const centerCartesian = planet.getCartesianFromPixelTerrain(
       planet.renderer.handler.getCenter(),
@@ -91,27 +86,21 @@ export const setupGlobeSync = (EOxMap, globus) => {
     }
 
     const lonLat = planet.ellipsoid.cartesianToLonLat(centerCartesian);
-    const distance = cam.eye.distance(centerCartesian);
-    const metersPerUnit = map.getView().getProjection().getMetersPerUnit();
-    const relativeCircumference = Math.cos(lonLat.lat * (Math.PI / 180));
-    const visibleMeters = distance * 2 * Math.tan(fovy / 2);
-    const resolution =
-      visibleMeters / (canvas.clientHeight * metersPerUnit * relativeCircumference);
-    const zoom = map.getView().getZoomForResolution(resolution);
-
+    let zoomFactor = map.globeConfig?.useHighLOD ? 1 : 2;
+    const zoom = Math.log2(21050000 / cam.getLonLat().height) + zoomFactor;
     const center = transform(
       [lonLat.lon, lonLat.lat],
       "EPSG:4326",
       map.getView().getProjection().getCode(),
     );
-    const rotation = -cam.getYaw() * (Math.PI / 180);
-    const pitch = cam.getPitch();
-
+    const rotation = -1 * cam.getHeading() * (Math.PI / 180);
     EOxMap._isSyncing = true;
     map.getView().setCenter(center);
     map.getView().setZoom(zoom);
-    map.getView().setRotation(rotation);
-    map.getView().set("pitch", pitch);
+    if (!Number.isNaN(rotation) && rotation !== map.getView().getRotation()) {
+      map.getView().setRotation(rotation);
+    }
+
     EOxMap._isSyncing = false;
   };
 
@@ -122,8 +111,8 @@ export const setupGlobeSync = (EOxMap, globus) => {
     const view = map.getView();
     const center = view.getCenter();
     const resolution = view.getResolution();
-    const rotation = view.getRotation();
-    const pitch = view.get("pitch") || -90;
+    // const rotation = view.getRotation();
+    // const pitch = view.get("pitch") || -90;
 
     if (!center || resolution === undefined) {
       return;
@@ -135,42 +124,80 @@ export const setupGlobeSync = (EOxMap, globus) => {
       "EPSG:4326",
     );
 
-    const canvas = planet.renderer.handler.canvas;
-    const fovy = (planet.camera.viewAngle || 30) * (Math.PI / 180);
-    const metersPerUnit = view.getProjection().getMetersPerUnit();
-    const visibleMapUnits = resolution * canvas.clientHeight;
-    const relativeCircumference = Math.cos(lonLatCenter[1] * (Math.PI / 180));
-    const visibleMeters =
-      visibleMapUnits * metersPerUnit * relativeCircumference;
-    const distance = visibleMeters / 2 / Math.tan(fovy / 2);
+    let currZoom = EOxMap.map.getView().getZoom() - 1;
+    if (!EOxMap.globeConfig?.useHighLOD) {
+      globus.planet.quadTreeStrategy.setLodSize(512);
+      currZoom = currZoom - 1;
+    }
+
+    const groundHeight = 21050000 / Math.pow(2, currZoom);
 
     EOxMap._isSyncing = true;
-      let currZoom = EOxMap.map.getView().getZoom() - 1;
-  if (!EOxMap.globeConfig?.useHighLOD) {
-    globus.planet.quadTreeStrategy.setLodSize(512);
-    currZoom = currZoom - 1;
-  }
-
-  const groundHeight = 21050000 / Math.pow(2, currZoom);
-
-    planet.camera.setLonLat(
+    globus.planet.camera.setLonLat(
       new LonLat(lonLatCenter[0], lonLatCenter[1], groundHeight),
+      new LonLat(lonLatCenter[0], lonLatCenter[1], 0),
+      Vec3.NORTH,
     );
-    planet.camera.setYaw(-rotation * (180 / Math.PI));
-    planet.camera.setPitch(pitch);
-    planet.camera.slide(0, 0, -distance);
-    planet.camera.update();
+
     EOxMap._isSyncing = false;
   };
 
-  planet.events.on("draw", updateOLView);
+  const startMove = () => {
+    // Only attach the listener if we are not in the middle of a programmatic update
+    if (!EOxMap._isSyncing) {
+      planet.renderer.events.on("draw", onGlobeMove);
+    }
+  };
+
+  const endMove = () => {
+    planet.renderer.events.off("draw", onGlobeMove);
+    // Once movement is finished, we can stop listening for the 'moveend' event.
+    planet.camera.events.off("moveend", endMove);
+  };
+
+  // Debounced function to detach the move listener after mouse wheel scrolling stops.
+  const debouncedEndMove = debounce(endMove, 250);
+
+  const onMouseWheel = () => {
+    if (!EOxMap._isSyncing) {
+      // Attach the listener for immediate feedback during scroll
+      startMove();
+      // Reset the timer to detach the listener when scrolling stops
+      debouncedEndMove();
+    }
+  };
+
+  const onMouseUp = () => {
+    // When the mouse is released, we don't stop the sync immediately.
+    // Instead, we wait for the camera to completely stop moving (including inertia).
+    planet.camera.events.on("moveend", endMove);
+    if (!EOxMap._isSyncing) {
+      console.log("Mouse up detected, waiting for camera to stop moving...");
+      debounce(endMove, 0);
+    }
+    onMouseWheel();
+  };
+
+  // Attach listeners for events that signify the start of a user interaction
+  planet.renderer.events.on("ldown", startMove);
+  planet.renderer.events.on("rdown", startMove);
+  planet.renderer.events.on("mdown", startMove);
+  planet.renderer.events.on("touchstart", startMove);
+
+  // Attach listeners for events that signify the end of a user interaction
+  planet.renderer.events.on("lup", onMouseUp);
+  planet.renderer.events.on("rup", onMouseUp);
+  planet.renderer.events.on("mup", onMouseUp);
+  planet.renderer.events.on("touchend", onMouseUp);
+
+  // Handle mouse wheel separately to use debouncing
+  planet.renderer.events.on("mousewheel", onMouseWheel);
+
   const viewListeners = [
     "change:center",
     "change:resolution",
     "change:rotation",
-    "change:pitch",
   ];
-
   let currentView = map.getView();
   const attachViewListeners = (view) => {
     view.on(viewListeners, updateGlobeCamera);
@@ -185,13 +212,15 @@ export const setupGlobeSync = (EOxMap, globus) => {
     currentView = map.getView();
     attachViewListeners(currentView);
   };
-  map.on("change:view", viewChangeHandler);
+  //map.on("change:view", viewChangeHandler);
 
   // Store for cleanup
-  globus._updateOLView = updateOLView;
+  globus.onMouseUp = onMouseUp;
+  globus._onGlobeMove = onGlobeMove;
   globus._updateGlobeCamera = updateGlobeCamera;
   globus._viewChangeHandler = viewChangeHandler;
   globus._detachViewListeners = detachViewListeners;
+  globus._onMouseWheel = onMouseWheel; // Store for cleanup
 };
 
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
@@ -681,7 +710,19 @@ export const disableGlobe = (map) => {
           }
         }
         // Sync cleanup
-        planet.events.off("draw", globe._updateOLView);
+        planet.renderer.events.off("draw", globe._onGlobeMove);
+        planet.renderer.events.off("ldown");
+        planet.renderer.events.off("rdown");
+        planet.renderer.events.off("mdown");
+        planet.renderer.events.off("touchstart");
+        planet.renderer.events.off("lup", globus._onMouseUp);
+        planet.renderer.events.off("rup", globus._onMouseUp);
+        planet.renderer.events.off("rup", globus._onMouseUp);
+        planet.renderer.events.off("mup", globus._onMouseUp);
+        planet.renderer.events.off("touchend", globus._onMouseUp);
+        planet.renderer.events.off("mousewheel", globe._onMouseWheel);
+        // Also ensure the moveend listener is cleaned up
+        planet.camera.events.off("moveend");
         globe._detachViewListeners(map.map.getView());
         map.map.un("change:view", globe._viewChangeHandler);
 
