@@ -161,9 +161,26 @@ export class EOxSelectInteraction {
         /** @type {VectorLayer<import("ol/source").Vector>|VectorTile<import("ol/source").VectorTile>} */ (
           createLayer(eoxMap, layerDefinition)
         );
+      const selectLayerSource = this.selectLayer.getSource();
       //@ts-expect-error - TODO
-      this.selectStyleLayer.setSource(this.selectLayer.getSource());
-      this.selectStyleLayer.setMap(this.eoxMap.map);
+      this.selectStyleLayer.setSource(selectLayerSource);
+      const attachToMap = () => this.selectStyleLayer.setMap(this.eoxMap.map);
+
+      // Defer attach for in-flight Vector sources to avoid a duplicate requests.
+      if (this.selectLayer instanceof VectorLayer) {
+        const vectorSource = /** @type {import("ol/source/Vector").default} */ (
+          selectLayerSource
+        );
+        const hasFeatures = !!vectorSource.getFeatures().length;
+        if (hasFeatures) {
+          attachToMap();
+        } else {
+          vectorSource.once("featuresloadend", attachToMap);
+          vectorSource.once("featuresloaderror", attachToMap);
+        }
+      } else {
+        attachToMap();
+      }
 
       // Set up the initial style for the selection layer
       const initialStyle = this.selectStyleLayer.getStyleFunction();
