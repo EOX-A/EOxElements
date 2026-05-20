@@ -420,13 +420,39 @@ export class EOxItemFilter extends LitElement {
    * @param {Map} changedProperties - The properties that have changed.
    */
   updated(changedProperties) {
-    ELEMENT_PROPERTIES.map((property) => {
+    let shouldReapply = false;
+    let shouldSearch = false;
+
+    ELEMENT_PROPERTIES.forEach((property) => {
       if (changedProperties.has(property)) {
-        this.firstUpdated(undefined);
-        return true;
+        this.#config[property] = this[property];
+        if (
+          [
+            "items",
+            "filterProperties",
+            "idProperty",
+            "aggregateResults",
+            "fuseConfig",
+            "matchAllWhenEmpty",
+            "externalFilter",
+          ].includes(property)
+        ) {
+          shouldReapply = true;
+        } else if (property === "resultSorting") {
+          shouldSearch = true;
+        }
       }
-      return false;
     });
+
+    if (shouldReapply) {
+      this.#items =
+        this.items?.map((i, index) =>
+          Object.assign({ id: i[this.idProperty] || `item-${index}` }, i),
+        ) || [];
+      this.apply();
+    } else if (shouldSearch) {
+      this.search();
+    }
   }
 
   /**
