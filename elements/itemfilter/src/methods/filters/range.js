@@ -9,9 +9,7 @@ import { DATE_TIME_FORMAT } from "../../enums/index.js";
  * @param {import("../../components/filters/range.js").EOxItemFilterRange} EOxItemFilterRange - The EOxItemFilterRange component instance.
  */
 export function resetRangeMethod(EOxItemFilterRange) {
-  EOxItemFilterRange.filterObject = resetFilter(
-    EOxItemFilterRange.filterObject,
-  );
+  resetFilter(EOxItemFilterRange.filterObject);
   if (EOxItemFilterRange.filterObject) {
     const min = EOxItemFilterRange.filterObject.min;
     const max = EOxItemFilterRange.filterObject.max;
@@ -44,18 +42,51 @@ export function resetRangeMethod(EOxItemFilterRange) {
  * @param {Object} EOxItemFilterRange - The EOxItemFilterRange component instance.
  */
 export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
-  const [min, max] = evt.detail.values;
+  const parseVal = (val) => {
+    return isDate(EOxItemFilterRange.filterObject)
+      ? dayjs(val).valueOf()
+      : parseFloat(val);
+  };
 
-  // Check if the new min and max values are different from the current state
-  if (
-    min !== EOxItemFilterRange.filterObject.state.min ||
-    max !== EOxItemFilterRange.filterObject.state.max
-  ) {
-    // Update the state with the new min and max values
-    [
-      EOxItemFilterRange.filterObject.state.min,
-      EOxItemFilterRange.filterObject.state.max,
-    ] = [min, max];
+  const min = parseVal(evt.detail.values[0]);
+  const max = parseVal(evt.detail.values[1]);
+
+  const currentMin = parseVal(EOxItemFilterRange.filterObject.state.min);
+  const currentMax = parseVal(EOxItemFilterRange.filterObject.state.max);
+
+  const filterMin = parseVal(EOxItemFilterRange.filterObject.min);
+  const filterMax = parseVal(EOxItemFilterRange.filterObject.max);
+
+  let isEqualMin, isEqualMax;
+  let isEqualCurrentMin, isEqualCurrentMax;
+
+  if (isDate(EOxItemFilterRange.filterObject)) {
+    isEqualMin = dayjs(min).isSame(dayjs(filterMin), "day");
+    isEqualMax = dayjs(max).isSame(dayjs(filterMax), "day");
+    isEqualCurrentMin = dayjs(min).isSame(dayjs(currentMin), "day");
+    isEqualCurrentMax = dayjs(max).isSame(dayjs(currentMax), "day");
+  } else {
+    isEqualMin = min === filterMin;
+    isEqualMax = max === filterMax;
+    isEqualCurrentMin = min === currentMin;
+    isEqualCurrentMax = max === currentMax;
+  }
+
+  // If the new values are the same as the current state, do nothing
+  if (isEqualCurrentMin && isEqualCurrentMax) {
+    return;
+  }
+
+  // Update the state with the new min and max values
+  [
+    EOxItemFilterRange.filterObject.state.min,
+    EOxItemFilterRange.filterObject.state.max,
+  ] = [min, max];
+
+  if (isEqualMin && isEqualMax) {
+    delete EOxItemFilterRange.filterObject.dirty;
+    delete EOxItemFilterRange.filterObject.stringifiedState;
+  } else {
     EOxItemFilterRange.filterObject.dirty = true;
   }
 
@@ -69,12 +100,11 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
   EOxItemFilterRange.dispatchEvent(new CustomEvent("filter"));
 
   // Reset the component if the state matches the original min and max values, otherwise request an update
-  if (
-    min === EOxItemFilterRange.filterObject.min &&
-    max === EOxItemFilterRange.filterObject.max
-  )
+  if (isEqualMin && isEqualMax) {
     EOxItemFilterRange.reset();
-  else EOxItemFilterRange.requestUpdate();
+  } else {
+    EOxItemFilterRange.requestUpdate();
+  }
 }
 
 /**

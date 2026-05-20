@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { getValue, indexItems } from "../../helpers";
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
+import { DATE_TIME_FORMAT } from "../../enums/index.js";
 
 /**
  * Applies filters to the provided items based on the given configuration and updates the EOxItemFilter instance.
@@ -77,12 +78,39 @@ function filterApplyMethod(config, items, EOxItemFilter) {
 
       // Combine filter properties into the filter object
       const filterKey = filterProperty.key || filterProperty.keys.join("|");
+      let isDirty = undefined;
+      if (filterProperty.state) {
+        if (filterProperty.type === "range") {
+          const parseVal = (val) => {
+            return filterProperty.format === "date"
+              ? dayjs(val).valueOf()
+              : parseFloat(val);
+          };
+          const stateMin = parseVal(filterProperty.state.min);
+          const stateMax = parseVal(filterProperty.state.max);
+          const filterMin = parseVal(filterProperty.min ?? filterKeys.min);
+          const filterMax = parseVal(filterProperty.max ?? filterKeys.max);
+
+          if (filterProperty.format === "date") {
+            isDirty =
+              !dayjs(stateMin).isSame(dayjs(filterMin), "day") ||
+              !dayjs(stateMax).isSame(dayjs(filterMax), "day") ||
+              undefined;
+          } else {
+            isDirty =
+              stateMin !== filterMin || stateMax !== filterMax || undefined;
+          }
+        } else {
+          isDirty =
+            Object.values(filterProperty.state).some((value) => value) ||
+            undefined;
+        }
+      }
+
       EOxItemFilter.filters[filterKey] = Object.assign(
         {
           type: filterProperty.type || "multiselect",
-          dirty: filterProperty.state
-            ? Object.values(filterProperty.state).some((value) => value)
-            : undefined,
+          dirty: isDirty,
           key: filterKey,
         },
         filterProperty.type === "range"
@@ -94,6 +122,22 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           : {},
         filterProperty,
       );
+      if (
+        filterProperty.type === "range" &&
+        EOxItemFilter.filters[filterKey].dirty
+      ) {
+        const parseVal = (val) => {
+          return filterProperty.format === "date"
+            ? dayjs(val).valueOf()
+            : parseFloat(val);
+        };
+        const min = parseVal(filterProperty.state.min);
+        const max = parseVal(filterProperty.state.max);
+        EOxItemFilter.filters[filterKey].stringifiedState =
+          filterProperty.format === "date"
+            ? `${dayjs(min).format(DATE_TIME_FORMAT)} - ${dayjs(max).format(DATE_TIME_FORMAT)}`
+            : `${min} - ${max}`;
+      }
       EOxItemFilter.filters[filterKey].state = Object.assign(
         {},
         filterKeys,
