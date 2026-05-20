@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.4.0...timecontrol-v2.5.0) (2026-05-20)
+
+
+### Features
+
+* Picker UI for date range filter ([#2338](https://github.com/EOX-A/EOxElements/issues/2338)) ([dfd9921](https://github.com/EOX-A/EOxElements/commit/dfd99216525e8760e6f887ed3f3e97231c84ed9f))
+
+
+### Bug Fixes
+
+* Populate all intermediate dates for range highlighting ([#2337](https://github.com/EOX-A/EOxElements/issues/2337)) ([ee36651](https://github.com/EOX-A/EOxElements/commit/ee366519e80242a25b2afc829549b8082ea617d2))
+
 ## [2.4.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.3.0...timecontrol-v2.4.0) (2026-05-05)
 
 
