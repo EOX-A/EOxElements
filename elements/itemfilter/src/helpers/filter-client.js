@@ -100,7 +100,7 @@ export const filter = async (items, filters, config) => {
       for (const [key, value] of Object.entries(rangeFilters)) {
         // Function to parse value based on format
         const parseValue = (input) => {
-          return value.format === "date" ? dayjs(input).unix() : input;
+          return value.format === "date" ? dayjs(input).valueOf() : input;
         };
         const rangeValue = getValue(key, results[i]);
         if (rangeValue) {

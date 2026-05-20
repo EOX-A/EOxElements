@@ -22,7 +22,7 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       // Function to parse values based on their format
       const parseValue = (value) => {
         return filterProperty.format === "date"
-          ? dayjs(value).unix()
+          ? dayjs(value).valueOf()
           : parseFloat(value);
       };
 

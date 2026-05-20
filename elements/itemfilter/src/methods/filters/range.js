@@ -21,10 +21,7 @@ export function resetRangeMethod(EOxItemFilterRange) {
      */
     const eleTimeControl = EOxItemFilterRange.querySelector("eox-timecontrol");
     if (eleTimeControl) {
-      eleTimeControl.dateChange(
-        [dayjs.unix(min), dayjs.unix(max)],
-        eleTimeControl,
-      );
+      eleTimeControl.dateChange([dayjs(min), dayjs(max)], eleTimeControl);
     }
 
     /**
@@ -65,7 +62,7 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
   if (EOxItemFilterRange.filterObject.dirty) {
     EOxItemFilterRange.filterObject.stringifiedState =
       EOxItemFilterRange.filterObject.format === "date"
-        ? `${dayjs.unix(min).format(DATE_TIME_FORMAT)} - ${dayjs.unix(max).format(DATE_TIME_FORMAT)}`
+        ? `${dayjs(min).format(DATE_TIME_FORMAT)} - ${dayjs(max).format(DATE_TIME_FORMAT)}`
         : `${min} - ${max}`;
   }
 
@@ -91,7 +88,7 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
 export function rangeLabelMethod(val, pos, EOxItemFilterRange) {
   const filteredVal = EOxItemFilterRange.filterObject.state[val];
   const label = isDate(EOxItemFilterRange.filterObject)
-    ? dayjs.unix(filteredVal).format(DATE_TIME_FORMAT)
+    ? dayjs(filteredVal).format(DATE_TIME_FORMAT)
     : filteredVal;
   return html`<div class="range-${pos}">${label}</div>`;
 }

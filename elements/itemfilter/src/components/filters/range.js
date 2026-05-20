@@ -122,20 +122,16 @@ export class EOxItemFilterRange extends LitElement {
                 },
               ]}
               .initDate=${[
-                dayjs.unix(
-                  this.filterObject.state.min || this.filterObject.min,
-                ),
-                dayjs.unix(
-                  this.filterObject.state.max || this.filterObject.max,
-                ),
+                dayjs(this.filterObject.state.min || this.filterObject.min),
+                dayjs(this.filterObject.state.max || this.filterObject.max),
               ]}
               @select=${(e) =>
                 rangeInputHandlerMethod(
                   new CustomEvent("values", {
                     detail: {
                       values: [
-                        dayjs(e.detail.date[0]).unix(),
-                        dayjs(e.detail.date[1]).unix(),
+                        dayjs(e.detail.date[0]).valueOf(),
+                        dayjs(e.detail.date[1]).valueOf(),
                       ],
                     },
                   }),
