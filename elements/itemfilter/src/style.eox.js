@@ -109,6 +109,13 @@ eox-itemfilter-expandcontainer > [data-type=filter] {
   overflow-x: hidden;
   max-width: 100%;
 }
+form#itemfilter.inline eox-itemfilter-expandcontainer {
+  max-height: none;
+}
+form#itemfilter.inline eox-itemfilter-expandcontainer > [data-type=filter] {
+  height: auto;
+  overflow: visible;
+}
 [data-type=filter] .title,
 details summary {
   text-transform: var(--_text-transform);
