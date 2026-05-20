@@ -108,11 +108,19 @@ export class EOxItemFilterRange extends LitElement {
           isDate(this.filterObject),
           () => html`
             <eox-timecontrol
-              .controlValues=${(
-                this.filterObject.filterKeys ||
-                this.suggestions ||
-                []
-              ).map((item) => ({ timeControlValues: [item] }))}
+              .controlValues=${[
+                {
+                  id: this.filterObject.key,
+                  title: this.filterObject.title || "Filter",
+                  timeControlValues: (
+                    this.filterObject.filterKeys ||
+                    this.suggestions ||
+                    []
+                  ).map((item) =>
+                    typeof item === "object" ? item : { date: item },
+                  ),
+                },
+              ]}
               .initDate=${[
                 dayjs.unix(
                   this.filterObject.state.min || this.filterObject.min,
@@ -140,6 +148,7 @@ export class EOxItemFilterRange extends LitElement {
               <eox-timecontrol-picker
                 popup
                 range
+                show-dots
                 .position=${["bottom", "left"]}
               ></eox-timecontrol-picker>
             </eox-timecontrol>

@@ -10,9 +10,9 @@ import { html } from "lit";
 function DateRangeFilterStory() {
   const items = [
     { title: "Item 1", timestamp: "2021-01-01" },
-    { title: "Item 2", timestamp: "2021-02-01" },
-    { title: "Item 3", timestamp: "2021-03-01" },
-    { title: "Item 4", timestamp: "2021-04-01" },
+    { title: "Item 2", timestamp: "2021-01-10" },
+    { title: "Item 3", timestamp: "2021-01-20" },
+    { title: "Item 4", timestamp: "2021-01-30" },
   ];
 
   return {
