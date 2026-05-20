@@ -4253,6 +4253,68 @@ Requires to also import `@eox/layout` for card styling.
 
 ```
 
+#### DateRangeFilter
+
+Demonstrates the date range filter, which uses `eox-timecontrol` to provide a calendar-based interface for filtering items by date.
+To use this, set the filter `type` to `"range"` and `format` to `"date"`.
+Note: You also need to import `@eox/timecontrol` in your application to use this feature.**
+```html
+<eox-itemfilter
+.items=${[ ... ]}
+.filterProperties=${[
+{
+key: "timestamp",
+type: "range",
+format: "date",
+}
+]}
+></eox-itemfilter>
+```
+
+```html
+<eox-itemfilter></eox-itemfilter>
+
+<script type="module">
+  import "@eox/itemfilter/dist/eox-itemfilter.js";
+
+  import "@eox/timecontrol/dist/eox-timecontrol.js";
+
+  const eoxItemfilter = document.querySelector("eox-itemfilter");
+
+  // Assign properties
+  Object.assign(eoxItemfilter, {
+    filterProperties: [
+      {
+        key: "timestamp",
+        title: "Date Range",
+        type: "range",
+        format: "date",
+        expanded: true,
+      },
+    ],
+    items: [
+      {
+        title: "Item 1",
+        timestamp: "2021-01-01",
+      },
+      {
+        title: "Item 2",
+        timestamp: "2021-01-10",
+      },
+      {
+        title: "Item 3",
+        timestamp: "2021-01-20",
+      },
+      {
+        title: "Item 4",
+        timestamp: "2021-01-30",
+      },
+    ],
+  });
+</script>
+
+```
+
 #### External
 
 Example of using an external API endpoint for filtering, with a custom `externalFilter` function. Allows integration with remote data sources and custom search logic.
@@ -12286,7 +12348,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-05-20T07:17:43.670Z",
+              default: "2026-05-20T15:06:29.406Z",
               options: {
                 hidden: true,
               },
