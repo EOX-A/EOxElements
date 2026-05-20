@@ -109,6 +109,11 @@ export class EOxSelector extends LitElement {
    * @param {Map} changedProperties - The properties that have changed.
    */
   updated(changedProperties) {
+    if (changedProperties.has("filterObject") && this.filterObject.state) {
+      this.selectedItems = Object.keys(this.filterObject.state)
+        .map((item) => (this.filterObject.state[item] ? item : null))
+        .filter((item) => Boolean(item));
+    }
     updatedSelectorMethod(changedProperties, this);
   }
 
