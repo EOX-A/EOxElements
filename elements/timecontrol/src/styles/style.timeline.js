@@ -83,10 +83,16 @@ export const styleTimeline = `
 .vis-item.milestone.vis-point.vis-cluster-item-start {
   border-top-left-radius: 6px !important;
   border-bottom-left-radius: 6px !important;
+  padding: 0 10px;
 }
 .vis-item.milestone.vis-point.vis-cluster-item-end {
   border-bottom-right-radius: 6px !important;
   border-top-right-radius: 6px !important;
+  padding: 0 10px;
+}
+.vis-item.milestone.vis-point.vis-cluster-item.vis-cluster-item-same-stack:not(.vis-cluster-item-start),
+.vis-item.milestone.vis-point.vis-cluster-item.vis-cluster-item-same-stack:not(.vis-cluster-item-end) {
+  // display: none;
 }
 .vis-group.vis-group-hide .vis-item.milestone.vis-point,
 .vis-group.vis-group-hide .vis-item.milestone.vis-point:hover {

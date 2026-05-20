@@ -177,10 +177,10 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
                 EOxTimeControlTimeline.visTimeline.setOptions({
                   ...EOxTimeControlTimeline.visTimeline.setOptions,
                   start: dayjs(dateRange[0])
-                    .subtract(10, "day")
+                    .subtract(30, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                   end: dayjs(dateRange[0])
-                    .add(10, "day")
+                    .add(30, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                 });
               }

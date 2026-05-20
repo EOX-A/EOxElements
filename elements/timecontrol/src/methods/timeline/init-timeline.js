@@ -266,6 +266,7 @@ function generateClusterItems(EOxTimeControlTimeline) {
 
   const CLUSTER_ITEM_START_CLASSNAME = "vis-cluster-item-start";
   const CLUSTER_ITEM_END_CLASSNAME = "vis-cluster-item-end";
+  const CLUSTER_ITEM_SAME_STACK_CLASSNAME = "vis-cluster-item-same-stack";
 
   for (const el of dom.root.querySelectorAll(".vis-item.vis-point")) {
     el.classList.remove(
@@ -322,6 +323,15 @@ function generateClusterItems(EOxTimeControlTimeline) {
     if (first === last) continue;
     pointItems[first].el.classList.add(CLUSTER_ITEM_START_CLASSNAME);
     pointItems[last].el.classList.add(CLUSTER_ITEM_END_CLASSNAME);
+
+    const firstDateClass = `.${pointItems[first].el.classList[4]}`;
+    const lastDateClass = `.${pointItems[last].el.classList[4]}`;
+    dom.root.querySelectorAll(firstDateClass).forEach((el) => {
+      el.classList.add(CLUSTER_ITEM_SAME_STACK_CLASSNAME);
+    });
+    dom.root.querySelectorAll(lastDateClass).forEach((el) => {
+      el.classList.add(CLUSTER_ITEM_SAME_STACK_CLASSNAME);
+    });
   }
 }
 

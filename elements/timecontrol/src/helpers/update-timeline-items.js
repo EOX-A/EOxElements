@@ -87,7 +87,7 @@ export default function updateTimelineItems(
         ...value,
         id: id,
         group: slider.layer,
-        className: `milestone item-${id}`,
+        className: `milestone item-${id} ${value.originalDate}`,
         start: start,
         end: end,
         originalDate: value.originalDate,
