@@ -1,5 +1,8 @@
 import "../src/main";
-import { dateRangeFilterTest } from "./cases/filters/";
+import {
+  dateRangeFilterTest,
+  externalDateRangeFilterTest,
+} from "./cases/filters/";
 
 describe("Item Filter Date Range", () => {
   beforeEach(() => {
@@ -15,4 +18,7 @@ describe("Item Filter Date Range", () => {
 
   it("should filter items using the date range picker", () =>
     dateRangeFilterTest());
+
+  it("should filter items using the date range picker with external search", () =>
+    externalDateRangeFilterTest());
 });
