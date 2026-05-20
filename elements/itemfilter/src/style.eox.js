@@ -359,6 +359,13 @@ form#itemfilter > div::-webkit-scrollbar-thumb {
   justify-content: space-between;
   cursor: text;
 }
+.autocomplete-container .field input,
+.text-container .field input {
+  background: none !important;
+  border-block-end-color: var(--outline);
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
 .autocomplete-container-wrapper,
 .text-container-wrapper {
   position: relative;
