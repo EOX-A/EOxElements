@@ -18,6 +18,14 @@ Install all root and all element dependencies:
 npm install
 ```
 
+**Note:** Due to security hardening (`ignore-scripts=true` in `.npmrc`), some binaries (like Cypress) are not automatically downloaded. After `npm install`, you must manually install the Cypress binary:
+
+```bash
+npx cypress install
+```
+
+Additionally, we enforce a **7-day quarantine for fresh packages** (`min-release-age=7` in `.npmrc`). Avoid updating to versions released less than 7 days ago unless there is an urgent security fix.
+
 ### 2. Monorepo Structure
 
 - Each package (element) is located in the `/elements` directory.
@@ -51,6 +59,8 @@ This opens the storybook server on localhost (port 6006). Edit the corresponding
 #### Testing
 
 We use [Cypress](https://github.com/cypress-io/cypress) for both component and E2E testing. No other test frameworks (Jest, Vitest) are used.
+
+**Important:** If you haven't done so yet, ensure the Cypress binary is installed by running `npx cypress install` (necessary due to `ignore-scripts=true`).
 
 **Component Tests:**
 

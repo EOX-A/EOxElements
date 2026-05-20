@@ -10,6 +10,7 @@ export { default as initSelection } from "./init-selection"; // Initializes sele
 export { default as handleLayerId } from "./handle-layer-id"; // handle switching between selection and drawing
 export { default as initMeasuring, updateMeasure } from "./init-measuring"; // Initializes measuring logic
 export { default as onKeyDownMethod } from "./on-key-down.js"; // Handles keydown events
+export { default as stopDrawingMethod } from "./stop-drawing.js"; // Stops the drawing process
 export {
   removeFeatureMethod,
   removeFeatureByIndexMethod,
