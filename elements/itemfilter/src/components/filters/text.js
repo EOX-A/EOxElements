@@ -114,7 +114,7 @@ export class EOxItemFilterText extends LitElement {
         <div class="text-container">
           <div
             class="text-container-wrapper field small"
-            style="margin-left: var(--list-padding)"
+            style="margin-left: var(--_list-padding)"
           >
             <input
               type="text"
@@ -131,7 +131,9 @@ export class EOxItemFilterText extends LitElement {
             />
           </div>
         </div>
-        <small class="error-validation" style="margin-left: var(--list-padding)"
+        <small
+          class="error-validation"
+          style="margin-left: var(--_list-padding)"
           >${this.filterObject.validation && this.isValid === false
             ? this.filterObject.validation.message
             : ""}</small

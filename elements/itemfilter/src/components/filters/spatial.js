@@ -88,7 +88,7 @@ class EOxItemFilterSpatial extends LitElement {
       this.filterObject,
       () => html`
         <div
-          style="margin-left: var(--list-padding); padding-right: var(--padding)"
+          style="margin-left: var(--_list-padding); padding-right: var(--_padding)"
         >
           <nav class="no-margin wrap">
             ${map(
