@@ -3,7 +3,6 @@ import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
 import "toolcool-range-slider";
 import dayjs from "dayjs";
-import "@eox/timecontrol";
 import { DATE_TIME_FORMAT } from "../../enums/index.js";
 import {
   rangeInputHandlerMethod,
