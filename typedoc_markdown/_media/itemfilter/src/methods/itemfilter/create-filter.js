@@ -54,6 +54,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
       // Return a range filter element
       return html`
         <eox-itemfilter-range
+          .inlineMode=${EOxItemFilter.inlineMode || false}
           id="${filterId}"
           data-type="filter"
           .tabIndex=${tabIndex}

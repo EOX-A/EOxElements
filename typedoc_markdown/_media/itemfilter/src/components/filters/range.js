@@ -28,6 +28,7 @@ export class EOxItemFilterRange extends LitElement {
     filterObject: { attribute: false, type: Object },
     suggestions: { attribute: false, type: Array },
     tabIndex: { attribute: false, type: Number },
+    inlineMode: { attribute: "inline-mode", type: Boolean },
   };
 
   constructor() {
@@ -47,6 +48,11 @@ export class EOxItemFilterRange extends LitElement {
      * @type Boolean
      */
     this.tabIndex = 0;
+
+    /**
+     * @type Boolean
+     */
+    this.inlineMode = false;
 
     /**
      * @type {(evt: CustomEvent<any>) => void}
@@ -142,7 +148,10 @@ export class EOxItemFilterRange extends LitElement {
                 .format=${DATE_TIME_FORMAT}
               ></eox-timecontrol-date>
               <eox-timecontrol-picker
-                popup
+                style="${this.inlineMode
+                  ? "margin-bottom: 1rem; display: block;"
+                  : ""}"
+                ?popup=${!this.inlineMode}
                 range
                 show-dots
                 .position=${["bottom", "left"]}
