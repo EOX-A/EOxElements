@@ -8,4 +8,4 @@
 
 > **EOxTimeControlChild** = `EOxTimeControlDate` \| `EOxTimeControlSlider` \| `EOxTimeControlTimeline` \| `EOxTimeControlTimelapse` \| `EOxTimeControlPicker`
 
-Defined in: [elements/timecontrol/src/types.ts:15](https://github.com/EOX-A/EOxElements/blob/dfd99216525e8760e6f887ed3f3e97231c84ed9f/elements/timecontrol/src/types.ts#L15)
+Defined in: [elements/timecontrol/src/types.ts:15](https://github.com/EOX-A/EOxElements/blob/f5c2c0361ae195f43d17b8057f9b6a18a98847c0/elements/timecontrol/src/types.ts#L15)
