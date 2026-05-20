@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.16.0...itemfilter-v1.17.0) (2026-05-20)
+
+
+### Features
+
+* Picker UI for date range filter ([#2338](https://github.com/EOX-A/EOxElements/issues/2338)) ([dfd9921](https://github.com/EOX-A/EOxElements/commit/dfd99216525e8760e6f887ed3f3e97231c84ed9f))
+
 ## [1.16.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.15.0...itemfilter-v1.16.0) (2026-05-05)
 
 
