@@ -201,7 +201,7 @@ export class EOxSelector extends LitElement {
           html`<div class="autocomplete-container">
             <div
               class="autocomplete-container-wrapper field small no-round"
-              style="margin-left: var(--list-padding)"
+              style="margin-left: var(--_list-padding)"
             >
               <input
                 autocomplete="off"
