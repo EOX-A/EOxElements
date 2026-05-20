@@ -54,6 +54,7 @@
   },
   "peerDependencies": {
     "@eox/layout": "*",
-    "@eox/map": ">=2.0.0 || >=2.1.0-dev.1"
+    "@eox/map": ">=2.0.0 || >=2.1.0-dev.1",
+    "@eox/timecontrol": ">=2.0.0"
   }
 }
