@@ -19,7 +19,10 @@ export function resetRangeMethod(EOxItemFilterRange) {
      */
     const eleTimeControl = EOxItemFilterRange.querySelector("eox-timecontrol");
     if (eleTimeControl) {
-      eleTimeControl.dateChange([dayjs(min), dayjs(max)], eleTimeControl);
+      eleTimeControl.dateChange(
+        [dayjs(min).format(), dayjs(max).format()],
+        eleTimeControl,
+      );
     }
 
     /**

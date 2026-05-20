@@ -67,3 +67,85 @@ export function dateRangeFilterTest() {
       cy.contains("Old").should("not.exist");
     });
 }
+
+/**
+ * Test case for date range filter integration with external search
+ */
+export function externalDateRangeFilterTest() {
+  cy.get("eox-itemfilter").then(($el) => {
+    const eoxItemFilter = $el[0];
+    eoxItemFilter.items = [];
+    eoxItemFilter.externalFilter = (items, filters) => {
+      const dummyItems = [
+        { title: "Old", timestamp: "2021-01-01" },
+        { title: "New", timestamp: "2023-01-01" },
+      ];
+      return {
+        url: "fake-endpoint",
+        fetchFn: () => {
+          const dateFilter = filters.timestamp;
+          if (
+            dateFilter &&
+            dateFilter.state &&
+            (dateFilter.state.min || dateFilter.state.max)
+          ) {
+            const minVal = dateFilter.state.min
+              ? new Date(dateFilter.state.min).getTime()
+              : -Infinity;
+            const maxVal = dateFilter.state.max
+              ? new Date(dateFilter.state.max).getTime()
+              : Infinity;
+            return dummyItems.filter((item) => {
+              const itemTime = new Date(item.timestamp).getTime();
+              return itemTime >= minVal && itemTime <= maxVal;
+            });
+          }
+          return dummyItems;
+        },
+      };
+    };
+    eoxItemFilter.filterProperties = [
+      {
+        key: "timestamp",
+        type: "range",
+        format: "date",
+        expanded: true,
+        min: "2020-01-01",
+        max: "2024-12-31",
+      },
+    ];
+  });
+
+  cy.get("eox-itemfilter", { includeShadowDom: true })
+    .find("eox-itemfilter-range", { includeShadowDom: true })
+    .find("eox-timecontrol", { includeShadowDom: true })
+    .should("exist");
+
+  // Manually trigger a change from the timecontrol to simulate a user selection
+  cy.get("eox-itemfilter", { includeShadowDom: true })
+    .find("eox-itemfilter-range", { includeShadowDom: true })
+    .find("eox-timecontrol", { includeShadowDom: true })
+    .then(($timecontrol) => {
+      const startDate = new Date("2022-01-01T00:00:00Z");
+      const endDate = new Date("2024-01-01T00:00:00Z");
+
+      $timecontrol[0].dispatchEvent(
+        new CustomEvent("select", {
+          detail: {
+            date: [startDate, endDate],
+          },
+        }),
+      );
+    });
+
+  // Check results after filtering: only "New" (2023-01-01) should exist, not "Old" (2021-01-01)
+  cy.get("eox-itemfilter")
+    .shadow()
+    .find("eox-itemfilter-results")
+    .find("ul#results")
+    .within(() => {
+      cy.get("li").should("have.length", 1);
+      cy.contains("New");
+      cy.contains("Old").should("not.exist");
+    });
+}

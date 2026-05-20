@@ -128,8 +128,12 @@ export class EOxItemFilterRange extends LitElement {
                 },
               ]}
               .initDate=${[
-                dayjs(this.filterObject.state.min || this.filterObject.min),
-                dayjs(this.filterObject.state.max || this.filterObject.max),
+                dayjs(
+                  this.filterObject.state.min || this.filterObject.min,
+                ).format(),
+                dayjs(
+                  this.filterObject.state.max || this.filterObject.max,
+                ).format(),
               ]}
               @select=${(e) =>
                 rangeInputHandlerMethod(
