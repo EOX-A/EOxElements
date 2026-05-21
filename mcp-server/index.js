@@ -2,6 +2,7 @@
 import { z } from "zod";
 import { randomUUID } from "crypto";
 import express from "express";
+import cors from "cors";
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
@@ -338,6 +339,12 @@ async function main() {
 
   // Create the express app from scratch
   const app = express();
+  app.use(
+    cors({
+      origin: "*",
+      exposedHeaders: ["mcp-session-id"],
+    }),
+  );
   app.use(express.json()); // IMPORTANT: To parse JSON request bodies
 
   app.get("/health", (req, res) => {
