@@ -12348,7 +12348,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-05-21T09:46:21.594Z",
+              default: "2026-05-21T11:28:36.798Z",
               options: {
                 hidden: true,
               },
@@ -17471,6 +17471,65 @@ Notice that no zoom or center are set; they default to center `[0, 0]` and `zoom
 
 ```
 
+#### VectorLayerInlineGeojson
+
+Vector layer with inline GeoJSON features.
+This demonstrates the convenience of passing GeoJSON features directly in the source definition,
+which are automatically parsed and transformed into the map projection.
+
+```html
+<eox-map center="[16.37,48.2]" zoom="12"></eox-map>
+
+<script type="module">
+  import "@eox/map/dist/eox-map.js";
+
+  const eoxMap = document.querySelector("eox-map");
+
+  // Assign properties
+  Object.assign(eoxMap, {
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "osm",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
+        type: "Vector",
+        properties: {
+          id: "inlineGeojson",
+        },
+        source: {
+          type: "Vector",
+          features: [
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [16.37, 48.2],
+              },
+              properties: {
+                name: "Vienna",
+              },
+            },
+          ],
+        },
+        style: {
+          "circle-radius": 10,
+          "circle-fill-color": "red",
+          "circle-stroke-color": "white",
+          "circle-stroke-width": 2,
+        },
+      },
+    ],
+  });
+</script>
+
+```
+
 #### VectorTileLayer
 
 Basic vector layer map rendered using `MVT` tiles
@@ -19912,6 +19971,65 @@ Notice that no zoom or center are set; they default to center `[0, 0]` and `zoom
           "stroke-color": "#232323",
           "stroke-width": 1,
           "fill-color": ["string", ["get", "COLOR"], "#eee"],
+        },
+      },
+    ],
+  });
+</script>
+
+```
+
+#### VectorLayerInlineGeojson
+
+Vector layer with inline GeoJSON features.
+This demonstrates the convenience of passing GeoJSON features directly in the source definition,
+which are automatically parsed and transformed into the map projection.
+
+```html
+<eox-map center="[16.37,48.2]" zoom="12"></eox-map>
+
+<script type="module">
+  import "@eox/map/dist/eox-map.js";
+
+  const eoxMap = document.querySelector("eox-map");
+
+  // Assign properties
+  Object.assign(eoxMap, {
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "osm",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
+        type: "Vector",
+        properties: {
+          id: "inlineGeojson",
+        },
+        source: {
+          type: "Vector",
+          features: [
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [16.37, 48.2],
+              },
+              properties: {
+                name: "Vienna",
+              },
+            },
+          ],
+        },
+        style: {
+          "circle-radius": 10,
+          "circle-fill-color": "red",
+          "circle-stroke-color": "white",
+          "circle-stroke-width": 2,
         },
       },
     ],

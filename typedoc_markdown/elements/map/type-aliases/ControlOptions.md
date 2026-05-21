@@ -8,4 +8,4 @@
 
 > **ControlOptions** = `Options`
 
-Defined in: [elements/map/src/types.ts:99](https://github.com/EOX-A/EOxElements/blob/fc9e5828dd029d51d6c0a07bc5583c11ddbb267e/elements/map/src/types.ts#L99)
+Defined in: [elements/map/src/types.ts:99](https://github.com/EOX-A/EOxElements/blob/b08e7013640d2194003f44a918a70382978a265a/elements/map/src/types.ts#L99)
