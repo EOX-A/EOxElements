@@ -3,6 +3,7 @@ import { html } from "lit";
 import {
   PrimaryStory,
   VectorLayerStory,
+  VectorLayerInlineGeojsonStory,
   VectorTileLayerStory,
   WMSLayerStory,
   WMTSCapabilitiesLayerStory,
@@ -147,6 +148,13 @@ export const ConfigObject = ConfigObjectStory;
  * Notice that no zoom or center are set; they default to center `[0, 0]` and `zoom`of `0`.
  */
 export const VectorLayer = VectorLayerStory;
+
+/**
+ * Vector layer with inline GeoJSON features.
+ * This demonstrates the convenience of passing GeoJSON features directly in the source definition,
+ * which are automatically parsed and transformed into the map projection.
+ */
+export const VectorLayerInlineGeojson = VectorLayerInlineGeojsonStory;
 
 /**
  * Basic vector layer map rendered using `MVT` tiles
