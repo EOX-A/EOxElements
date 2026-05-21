@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/EOX-A/EOxElements/compare/map-v2.5.1...map-v2.6.0) (2026-05-21)
+
+
+### Features
+
+* Support inline GeoJSON features in Vector sources ([#2350](https://github.com/EOX-A/EOxElements/issues/2350)) ([b08e701](https://github.com/EOX-A/EOxElements/commit/b08e7013640d2194003f44a918a70382978a265a))
+
 ## [2.5.1](https://github.com/EOX-A/EOxElements/compare/map-v2.5.0...map-v2.5.1) (2026-05-19)
 
 
