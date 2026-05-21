@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.1.0...elements-mcp-server-v1.2.0) (2026-05-21)
+
+
+### Features
+
+* **mcp-server:** Enable CORS support for frontend integration ([#2348](https://github.com/EOX-A/EOxElements/issues/2348)) ([891459d](https://github.com/EOX-A/EOxElements/commit/891459da6e7360672b5a575b3576b2f3e24c6098))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.0.1...elements-mcp-server-v1.1.0) (2026-01-21)
 
 

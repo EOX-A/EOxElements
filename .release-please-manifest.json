@@ -12,6 +12,6 @@
   "elements/chart": "1.2.0",
   "elements/feedback": "1.2.0",
   "utils": "1.1.2",
-  "mcp-server": "1.1.0",
+  "mcp-server": "1.2.0",
   "elements/tour": "1.1.0"
 }
