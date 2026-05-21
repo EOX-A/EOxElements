@@ -1,5 +1,6 @@
 export { default as PrimaryStory } from "./primary";
 export { default as VectorLayerStory } from "./vector-layer";
+export { default as VectorLayerInlineGeojsonStory } from "./vector-layer-inline-geojson";
 export { default as VectorTileLayerStory } from "./vector-tile-layer";
 export { default as WMSLayerStory } from "./wms-layer";
 export { default as WMTSCapabilitiesLayerStory } from "./wmts-capabilities-layer";

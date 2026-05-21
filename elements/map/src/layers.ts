@@ -133,6 +133,7 @@ export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
       : OlSourceOption<S>) & {
   type: S;
   projection?: import("ol/proj").ProjectionLike;
+  features?: any;
 };
 
 type SourceProperties<S extends keyof OLSources> = {
