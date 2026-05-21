@@ -9,6 +9,10 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import fs from "fs";
 
+const pkg = JSON.parse(
+  fs.readFileSync(new URL("./package.json", import.meta.url), "utf8"),
+);
+
 const port = 3000;
 
 async function main() {
@@ -107,8 +111,8 @@ async function main() {
   const createMcpServer = () => {
     const server = new McpServer(
       {
-        name: "eox-elements-mcp-server",
-        version: "1.0.0",
+        name: pkg.name || "eox-elements-mcp-server",
+        version: pkg.version || "1.0.0",
         instructions:
           "These tools provide information about EOxElements custom elements. You can list all elements, get details about a specific element, and more.",
       },
