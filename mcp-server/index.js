@@ -103,246 +103,255 @@ async function main() {
     return null;
   };
 
-  // Create an MCP server and register tools
-  const server = new McpServer(
-    {
-      name: "eox-elements-mcp-server",
-      version: "1.0.0",
-      instructions:
-        "These tools provide information about EOxElements custom elements. You can list all elements, get details about a specific element, and more.",
-    },
-    {
-      capabilities: {
-        tools: {
-          call: {},
+  // Create an MCP server factory and register tools
+  const createMcpServer = () => {
+    const server = new McpServer(
+      {
+        name: "eox-elements-mcp-server",
+        version: "1.0.0",
+        instructions:
+          "These tools provide information about EOxElements custom elements. You can list all elements, get details about a specific element, and more.",
+      },
+      {
+        capabilities: {
+          tools: {
+            call: {},
+          },
         },
       },
-    },
-  );
+    );
 
-  server.registerTool(
-    "list_elements",
-    {
-      description: "List all available EOxElements custom elements.",
-      inputSchema: z.object({}),
-    },
-    async () => ({
-      content: [
-        {
-          type: "text",
-          text: elementsData.modules
-            .flatMap((m) => m.declarations)
-            .map((d) => d.tagName)
-            .filter(Boolean)
-            .join("\n"),
-        },
-      ],
-    }),
-  );
-
-  server.registerTool(
-    "get_element_details",
-    {
-      description:
-        "Get the full details for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
-      }),
-    },
-    async ({ tagName }) => ({
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(getElementData(tagName), null, 2),
-        },
-      ],
-    }),
-  );
-
-  server.registerTool(
-    "get_element_stories",
-    {
-      description:
-        "Get the stories (examples/snippets) for a specific EOxElements custom element. This includes descriptions and vanilla JS code snippets.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
-      }),
-    },
-    async ({ tagName }) => {
-      const stories = snippetsData.filter((s) => s.element === tagName);
-      return {
+    server.registerTool(
+      "list_elements",
+      {
+        description: "List all available EOxElements custom elements.",
+        inputSchema: z.object({}),
+      },
+      async () => ({
         content: [
           {
             type: "text",
-            text: JSON.stringify(stories, null, 2),
+            text: elementsData.modules
+              .flatMap((m) => m.declarations)
+              .map((d) => d.tagName)
+              .filter(Boolean)
+              .join("\n"),
           },
         ],
-      };
-    },
-  );
-
-  server.registerTool(
-    "get_element_attributes",
-    {
-      description:
-        "Get the attributes for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
       }),
-    },
-    async ({ tagName }) => {
-      const element = getElementData(tagName);
-      return {
+    );
+
+    server.registerTool(
+      "get_element_details",
+      {
+        description:
+          "Get the full details for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => ({
         content: [
           {
             type: "text",
-            text: JSON.stringify(element?.attributes || [], null, 2),
+            text: JSON.stringify(getElementData(tagName), null, 2),
           },
         ],
-      };
-    },
-  );
-
-  server.registerTool(
-    "get_element_properties",
-    {
-      description:
-        "Get the properties for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
       }),
-    },
-    async ({ tagName }) => {
-      const element = getElementData(tagName);
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(
-              element?.members?.filter((m) => m.kind === "field") || [],
-              null,
-              2,
-            ),
-          },
-        ],
-      };
-    },
-  );
+    );
 
-  server.registerTool(
-    "get_element_events",
-    {
-      description: "Get the events for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
-      }),
-    },
-    async ({ tagName }) => {
-      const element = getElementData(tagName);
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(element?.events || [], null, 2),
-          },
-        ],
-      };
-    },
-  );
+    server.registerTool(
+      "get_element_stories",
+      {
+        description:
+          "Get the stories (examples/snippets) for a specific EOxElements custom element. This includes descriptions and vanilla JS code snippets.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const stories = snippetsData.filter((s) => s.element === tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(stories, null, 2),
+            },
+          ],
+        };
+      },
+    );
 
-  server.registerTool(
-    "get_element_methods",
-    {
-      description: "Get the methods for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
-      }),
-    },
-    async ({ tagName }) => {
-      const element = getElementData(tagName);
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(
-              element?.members?.filter((m) => m.kind === "method") || [],
-              null,
-              2,
-            ),
-          },
-        ],
-      };
-    },
-  );
+    server.registerTool(
+      "get_element_attributes",
+      {
+        description:
+          "Get the attributes for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const element = getElementData(tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(element?.attributes || [], null, 2),
+            },
+          ],
+        };
+      },
+    );
 
-  server.registerTool(
-    "get_element_slots",
-    {
-      description: "Get the slots for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
-      }),
-    },
-    async ({ tagName }) => {
-      const element = getElementData(tagName);
-      return {
-        content: [
-          { type: "text", text: JSON.stringify(element?.slots || [], null, 2) },
-        ],
-      };
-    },
-  );
+    server.registerTool(
+      "get_element_properties",
+      {
+        description:
+          "Get the properties for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const element = getElementData(tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(
+                element?.members?.filter((m) => m.kind === "field") || [],
+                null,
+                2,
+              ),
+            },
+          ],
+        };
+      },
+    );
 
-  server.registerTool(
-    "get_element_css_properties",
-    {
-      description:
-        "Get the CSS custom properties for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
-      }),
-    },
-    async ({ tagName }) => {
-      const element = getElementData(tagName);
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(element?.cssProperties || [], null, 2),
-          },
-        ],
-      };
-    },
-  );
+    server.registerTool(
+      "get_element_events",
+      {
+        description:
+          "Get the events for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const element = getElementData(tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(element?.events || [], null, 2),
+            },
+          ],
+        };
+      },
+    );
 
-  server.registerTool(
-    "get_element_css_parts",
-    {
-      description:
-        "Get the CSS shadow parts for a specific EOxElements custom element.",
-      inputSchema: z.object({
-        tagName: z.string().describe("The tag name of the element."),
-      }),
-    },
-    async ({ tagName }) => {
-      const element = getElementData(tagName);
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(element?.cssParts || [], null, 2),
-          },
-        ],
-      };
-    },
-  );
+    server.registerTool(
+      "get_element_methods",
+      {
+        description:
+          "Get the methods for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const element = getElementData(tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(
+                element?.members?.filter((m) => m.kind === "method") || [],
+                null,
+                2,
+              ),
+            },
+          ],
+        };
+      },
+    );
+
+    server.registerTool(
+      "get_element_slots",
+      {
+        description: "Get the slots for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const element = getElementData(tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(element?.slots || [], null, 2),
+            },
+          ],
+        };
+      },
+    );
+
+    server.registerTool(
+      "get_element_css_properties",
+      {
+        description:
+          "Get the CSS custom properties for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const element = getElementData(tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(element?.cssProperties || [], null, 2),
+            },
+          ],
+        };
+      },
+    );
+
+    server.registerTool(
+      "get_element_css_parts",
+      {
+        description:
+          "Get the CSS shadow parts for a specific EOxElements custom element.",
+        inputSchema: z.object({
+          tagName: z.string().describe("The tag name of the element."),
+        }),
+      },
+      async ({ tagName }) => {
+        const element = getElementData(tagName);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(element?.cssParts || [], null, 2),
+            },
+          ],
+        };
+      },
+    );
+
+    return server;
+  };
 
   // Create the express app from scratch
   const app = express();
   app.use(
     cors({
       origin: "*",
-      exposedHeaders: ["mcp-session-id"],
+      exposedHeaders: ["mcp-session-id", "Mcp-Session-Id"],
     }),
   );
   app.use(express.json()); // IMPORTANT: To parse JSON request bodies
@@ -372,6 +381,7 @@ async function main() {
             };
           },
         });
+        const server = createMcpServer();
         await server.connect(transport);
         await transport.handleRequest(req, res, req.body);
         return;
