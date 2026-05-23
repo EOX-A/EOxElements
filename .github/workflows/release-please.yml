@@ -22,30 +22,32 @@ jobs:
         # these if statements ensure that a publication only occurs when
         # a new release is created:
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
-      - name: Set up NPM 🔧
+      - name: Setup pnpm 📦
+        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
+        with:
+          version: 10
+        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
+      - name: Set up Node 🔧
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
-        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
-      # Ensure npm 11.5.1 or later is installed
-      - name: Update npm
-        run: npm install -g npm@latest
+          cache: pnpm
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Install dependencies 🔧
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Build and publish package 🚀
         env:
           ELEMENT_PATHS: ${{ steps.release.outputs.paths_released }}
         run: |
-          npm run styles && \
+          pnpm run styles && \
           for path in `echo ${ELEMENT_PATHS//,/ } | tr -d '[]"'`
           do \
           cd $path && \
-          npm run types:generate && \
-          npm run build && \
-          npm publish --access=public && \
+          pnpm run types:generate && \
+          pnpm run build && \
+          pnpm publish --access=public && \
           cd ../../
           done
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}

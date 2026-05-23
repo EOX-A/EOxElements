@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { buffer, transform, transformExtent } from "@eox/map";
+import { buffer, transform, transformExtent } from "../src/main.js";
 
 window.buffer = buffer;
 window.transform = transform;

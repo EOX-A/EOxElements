@@ -34,9 +34,9 @@
   },
   "scripts": {
     "types:generate": "tsc --project tsconfig.build.json || true",
-    "prepack": "npm run types:generate",
+    "prepack": "pnpm run types:generate",
     "build": "vite build",
-    "build:element-story-bundle": "npm run build",
+    "build:element-story-bundle": "pnpm run build",
     "watch": "vite build --watch"
   }
 }

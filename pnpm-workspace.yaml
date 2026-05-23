@@ -1,0 +1,21 @@
+packages:
+  - "elements/*"
+  - "utils"
+  - "mcp-server"
+
+# 7 days in minutes
+minimumReleaseAge: 10080
+engineStrict: true
+ignoreScripts: true
+publicHoistPattern:
+  - "*eslint*"
+  - "*prettier*"
+  - "*typescript*"
+  - "*types*"
+  - "ol"
+  - "lit"
+  - "lit-html"
+  - "lodash.isequal"
+  - "vite"
+  - "@json-editor/json-editor"
+  - "color-legend-element"

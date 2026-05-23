@@ -25,16 +25,22 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup pnpm 📦
+        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
+        with:
+          version: 10
+
       - name: Setup node env 🏗
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
+          cache: pnpm
 
       - name: Install and Build 🔧
         run: |
-          npm install
-          npm run build:docs
+          pnpm install --frozen-lockfile
+          pnpm run build:docs
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
