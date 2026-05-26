@@ -86,7 +86,9 @@ export const filter = async (items, filters, config) => {
     .filter(([, value]) => value.type === "range")
     .reduce((acc, [key, value]) => {
       const parseValue = (input) => {
-        return value.format === "date" ? dayjs(input).valueOf() : parseFloat(input);
+        return value.format === "date"
+          ? dayjs(input).valueOf()
+          : parseFloat(input);
       };
       acc[key] = {
         min: parseValue(value.state.min),
@@ -103,7 +105,9 @@ export const filter = async (items, filters, config) => {
       for (const [key, value] of Object.entries(rangeFilters)) {
         // Function to parse value based on format
         const parseValue = (input) => {
-          return value.format === "date" ? dayjs(input).valueOf() : parseFloat(input);
+          return value.format === "date"
+            ? dayjs(input).valueOf()
+            : parseFloat(input);
         };
         const rangeValue = getValue(key, results[i]);
         if (rangeValue) {
