@@ -69,6 +69,49 @@ export function dateRangeFilterTest() {
 }
 
 /**
+ * Test case for date range filter initialization with pre-set state as strings
+ */
+export function preSetDateRangeFilterTest() {
+  cy.get("eox-itemfilter").then(($el) => {
+    const eoxItemFilter = $el[0];
+    eoxItemFilter.items = [
+      { title: "Item 1", timestamp: "2021-01-01" },
+      { title: "Item 2", timestamp: "2021-01-10" },
+      { title: "Item 3", timestamp: "2021-01-20" },
+      { title: "Item 4", timestamp: "2021-01-30" },
+    ];
+    eoxItemFilter.filterProperties = [
+      {
+        key: "timestamp",
+        title: "Date Range",
+        type: "range",
+        format: "date",
+        expanded: true,
+        min: "2020-12-31",
+        max: "2021-01-10",
+        state: {
+          min: "2020-12-31",
+          max: "2021-01-10",
+        },
+      },
+    ];
+  });
+
+  // Check results: only first two items should be visible
+  cy.get("eox-itemfilter")
+    .shadow()
+    .find("eox-itemfilter-results")
+    .find("ul#results")
+    .within(() => {
+      cy.get("li").should("have.length", 2);
+      cy.contains("Item 1");
+      cy.contains("Item 2");
+      cy.contains("Item 3").should("not.exist");
+      cy.contains("Item 4").should("not.exist");
+    });
+}
+
+/**
  * Test case for date range filter integration with external search
  */
 export function externalDateRangeFilterTest() {

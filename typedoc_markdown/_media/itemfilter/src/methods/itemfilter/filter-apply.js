@@ -153,6 +153,24 @@ function filterApplyMethod(config, items, EOxItemFilter) {
         existingFilter?.state || {},
         filterProperty.state,
       );
+
+      if (filterProperty.type === "range" && filterProperty.state) {
+        const parseVal = (val) => {
+          return filterProperty.format === "date"
+            ? dayjs(val).valueOf()
+            : parseFloat(val);
+        };
+        if (filterProperty.state.min !== undefined) {
+          EOxItemFilter.filters[filterKey].state.min = parseVal(
+            filterProperty.state.min,
+          );
+        }
+        if (filterProperty.state.max !== undefined) {
+          EOxItemFilter.filters[filterKey].state.max = parseVal(
+            filterProperty.state.max,
+          );
+        }
+      }
     });
   }
 
