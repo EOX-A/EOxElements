@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.1...itemfilter-v1.17.2) (2026-05-26)
+
+
+### Bug Fixes
+
+* Date range filter state initialization ([#2364](https://github.com/EOX-A/EOxElements/issues/2364)) ([f887d6a](https://github.com/EOX-A/EOxElements/commit/f887d6a7779d80fc5f9c977f4da94c8d45eccad4))
+
 ## [1.17.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.0...itemfilter-v1.17.1) (2026-05-20)
 
 
