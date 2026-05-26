@@ -46,7 +46,7 @@
     "@turf/boolean-within": "^7.3.5",
     "dayjs": "^1.11.9",
     "fuse.js": "^7.3.0",
-    "lit": "^3.2.0",
+    "lit": "^3.3.3",
     "lodash.debounce": "^4.0.8",
     "lodash.flatmap": "^4.5.0",
     "lodash.uniq": "^4.5.0",
