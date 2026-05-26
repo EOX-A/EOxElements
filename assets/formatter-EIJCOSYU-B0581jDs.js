@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-DbRxMUml.js";import{Ct as t,Et as n,St as r,Tt as i,bt as a,xt as o}from"./iframe-CmPFndPU.js";var s;e((()=>{r(),o(),n(),s=(0,i(t(),1).default)(2)(async(e,t)=>e===!1?t:a(t))}))();export{s as formatter};

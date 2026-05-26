@@ -4,191 +4,221 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "elements/chart/src/main.js",
+      "path": "elements/feedback/src/main.js",
       "declarations": [
         {
           "kind": "class",
-          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property or attribute in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property/attribute) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property/attribute passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property/attribute.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
-          "name": "EOxChart",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
+          "name": "EOxFeedback",
           "members": [
             {
-              "kind": "method",
-              "name": "_dispatchItemPointerMoveEvent",
+              "kind": "field",
+              "name": "endpoint",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
               "parameters": [
                 {
-                  "name": "detail"
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "return": {
+                "type": {
+                  "text": "JsonSchema|null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema|null"
+                  }
+                }
+              ],
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
+            },
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
                 }
               ],
               "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "_dispatchItemClickEvent",
+              "name": "onTextareaInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onJsonFormChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
               "parameters": [
                 {
-                  "name": "detail"
+                  "name": "e"
                 }
               ],
               "privacy": "private"
             },
             {
-              "kind": "field",
-              "name": "spec",
-              "privacy": "public",
-              "type": {
-                "text": "VisualizationSpec | string"
-              },
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
-              "default": "undefined",
-              "attribute": "spec"
+              "kind": "method",
+              "name": "onSubmit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel",
+              "privacy": "private"
             },
             {
               "kind": "field",
-              "name": "opt",
-              "privacy": "public",
+              "name": "includeScreenshot",
               "type": {
-                "text": "EmbedOptions"
+                "text": "null"
               },
-              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "default": "undefined",
-              "attribute": "opt"
+              "privacy": "private",
+              "default": "null"
             },
             {
               "kind": "field",
-              "name": "dataValues",
-              "privacy": "public",
+              "name": "areaSelection",
               "type": {
-                "text": "{[dataSourceName: string]: InlineData} | string"
+                "text": "null"
               },
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
-              "default": "undefined",
-              "attribute": "dataValues"
+              "privacy": "private",
+              "default": "null"
             },
             {
               "kind": "field",
-              "name": "noShadow",
-              "privacy": "public",
+              "name": "regionScreenshot",
               "type": {
-                "text": "Boolean"
+                "text": "null"
               },
-              "description": "Renders the element without a shadow root",
-              "default": "false",
-              "attribute": "no-shadow"
+              "privacy": "private",
+              "default": "null"
             },
             {
               "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_endpoint",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_schema",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_submitted",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
               "name": "unstyled",
-              "privacy": "public",
-              "type": {
-                "text": "Boolean"
-              },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "attribute": "unstyled"
+              "kind": "field"
             }
           ],
           "events": [
             {
-              "name": "pointermove:item",
+              "name": "submit",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Chart item is hovered. Event detail includes `event` (pointermove event) and `item` (the hovered item on the chart)"
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
             },
             {
-              "name": "click:item",
+              "name": "close",
               "type": {
-                "text": "CustomEvent"
+                "text": "Event"
               },
-              "description": "Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)"
+              "description": "The modal was closed."
             }
           ],
           "attributes": [
             {
-              "name": "dataValues",
+              "name": "endpoint",
               "type": {
-                "text": "{[dataSourceName: string]: InlineData} | string"
+                "text": "string"
               },
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
-              "default": "undefined",
-              "fieldName": "dataValues"
-            },
-            {
-              "name": "spec",
-              "type": {
-                "text": "VisualizationSpec | string"
-              },
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
-              "default": "undefined",
-              "fieldName": "spec"
-            },
-            {
-              "name": "opt",
-              "type": {
-                "text": "EmbedOptions"
-              },
-              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "default": "undefined",
-              "fieldName": "opt"
-            },
-            {
-              "name": "no-shadow",
-              "type": {
-                "text": "Boolean"
-              },
-              "description": "Renders the element without a shadow root",
-              "default": "false",
-              "fieldName": "noShadow"
+              "description": "The endpoint to send the feedback to as POST message."
             },
             {
               "name": "unstyled",
               "type": {
-                "text": "Boolean"
+                "text": "string"
               },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "fieldName": "unstyled"
+              "description": "If provided, the element will not be styled with EOX styles."
             }
           ],
           "superclass": {
-            "name": "LitElement",
-            "package": "lit"
+            "name": "HTMLElement"
           },
-          "tagName": "eox-chart",
+          "tagName": "eox-feedback",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "EOxChart",
+          "name": "EOxFeedback",
           "declaration": {
-            "name": "EOxChart",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "base64EncodeSpec",
-          "declaration": {
-            "name": "base64EncodeSpec",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "parseSpec",
-          "declaration": {
-            "name": "parseSpec",
-            "module": "elements/chart/src/main.js"
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "eox-chart",
+          "name": "eox-feedback",
           "declaration": {
-            "name": "EOxChart",
-            "module": "elements/chart/src/main.js"
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -755,221 +785,191 @@
     },
     {
       "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
+      "path": "elements/chart/src/main.js",
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
-          "name": "EOxFeedback",
+          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property or attribute in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property/attribute) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property/attribute passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property/attribute.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
+          "name": "EOxChart",
           "members": [
             {
-              "kind": "field",
-              "name": "endpoint",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ],
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "kind": "field",
-              "name": "schema",
-              "return": {
-                "type": {
-                  "text": "JsonSchema|null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newSchema",
-                  "type": {
-                    "text": "JsonSchema|null"
-                  }
-                }
-              ],
-              "type": {
-                "text": "JsonSchema"
-              },
-              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
-            },
-            {
               "kind": "method",
-              "name": "onKeyboardInput",
+              "name": "_dispatchItemPointerMoveEvent",
               "parameters": [
                 {
-                  "name": "e"
+                  "name": "detail"
                 }
               ],
               "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "onTextareaInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onJsonFormChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
+              "name": "_dispatchItemClickEvent",
               "parameters": [
                 {
-                  "name": "e"
+                  "name": "detail"
                 }
               ],
               "privacy": "private"
             },
             {
-              "kind": "method",
-              "name": "onSubmit",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel",
-              "privacy": "private"
+              "kind": "field",
+              "name": "spec",
+              "privacy": "public",
+              "type": {
+                "text": "VisualizationSpec | string"
+              },
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "default": "undefined",
+              "attribute": "spec"
             },
             {
               "kind": "field",
-              "name": "includeScreenshot",
+              "name": "opt",
+              "privacy": "public",
               "type": {
-                "text": "null"
+                "text": "EmbedOptions"
               },
-              "privacy": "private",
-              "default": "null"
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "default": "undefined",
+              "attribute": "opt"
             },
             {
               "kind": "field",
-              "name": "areaSelection",
+              "name": "dataValues",
+              "privacy": "public",
               "type": {
-                "text": "null"
+                "text": "{[dataSourceName: string]: InlineData} | string"
               },
-              "privacy": "private",
-              "default": "null"
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "default": "undefined",
+              "attribute": "dataValues"
             },
             {
               "kind": "field",
-              "name": "regionScreenshot",
+              "name": "noShadow",
+              "privacy": "public",
               "type": {
-                "text": "null"
+                "text": "Boolean"
               },
-              "privacy": "private",
-              "default": "null"
+              "description": "Renders the element without a shadow root",
+              "default": "false",
+              "attribute": "no-shadow"
             },
             {
               "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_endpoint",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_schema",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_submitted",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
               "name": "unstyled",
-              "kind": "field"
+              "privacy": "public",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "attribute": "unstyled"
             }
           ],
           "events": [
             {
-              "name": "submit",
+              "name": "pointermove:item",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+              "description": "Chart item is hovered. Event detail includes `event` (pointermove event) and `item` (the hovered item on the chart)"
             },
             {
-              "name": "close",
+              "name": "click:item",
               "type": {
-                "text": "Event"
+                "text": "CustomEvent"
               },
-              "description": "The modal was closed."
+              "description": "Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)"
             }
           ],
           "attributes": [
             {
-              "name": "endpoint",
+              "name": "dataValues",
               "type": {
-                "text": "string"
+                "text": "{[dataSourceName: string]: InlineData} | string"
               },
-              "description": "The endpoint to send the feedback to as POST message."
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "default": "undefined",
+              "fieldName": "dataValues"
+            },
+            {
+              "name": "spec",
+              "type": {
+                "text": "VisualizationSpec | string"
+              },
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "default": "undefined",
+              "fieldName": "spec"
+            },
+            {
+              "name": "opt",
+              "type": {
+                "text": "EmbedOptions"
+              },
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "default": "undefined",
+              "fieldName": "opt"
+            },
+            {
+              "name": "no-shadow",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Renders the element without a shadow root",
+              "default": "false",
+              "fieldName": "noShadow"
             },
             {
               "name": "unstyled",
               "type": {
-                "text": "string"
+                "text": "Boolean"
               },
-              "description": "If provided, the element will not be styled with EOX styles."
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "fieldName": "unstyled"
             }
           ],
           "superclass": {
-            "name": "HTMLElement"
+            "name": "LitElement",
+            "package": "lit"
           },
-          "tagName": "eox-feedback",
+          "tagName": "eox-chart",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "EOxFeedback",
+          "name": "EOxChart",
           "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
+            "name": "EOxChart",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "base64EncodeSpec",
+          "declaration": {
+            "name": "base64EncodeSpec",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseSpec",
+          "declaration": {
+            "name": "parseSpec",
+            "module": "elements/chart/src/main.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "eox-feedback",
+          "name": "eox-chart",
           "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
+            "name": "EOxChart",
+            "module": "elements/chart/src/main.js"
           }
         }
       ]
