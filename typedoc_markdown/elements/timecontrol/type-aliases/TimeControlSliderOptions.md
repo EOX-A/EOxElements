@@ -8,7 +8,7 @@
 
 > **TimeControlSliderOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:136](https://github.com/EOX-A/EOxElements/blob/f887d6a7779d80fc5f9c977f4da94c8d45eccad4/elements/timecontrol/src/types.ts#L136)
+Defined in: [elements/timecontrol/src/types.ts:136](https://github.com/EOX-A/EOxElements/blob/2b8a9b094cd5afadf07475d4f0312e5fb9726b27/elements/timecontrol/src/types.ts#L136)
 
 Configuration options for the time control slider component.
 
@@ -18,7 +18,7 @@ Configuration options for the time control slider component.
 
 > `optional` **data?**: `any`[]
 
-Defined in: [elements/timecontrol/src/types.ts:144](https://github.com/EOX-A/EOxElements/blob/f887d6a7779d80fc5f9c977f4da94c8d45eccad4/elements/timecontrol/src/types.ts#L144)
+Defined in: [elements/timecontrol/src/types.ts:144](https://github.com/EOX-A/EOxElements/blob/2b8a9b094cd5afadf07475d4f0312e5fb9726b27/elements/timecontrol/src/types.ts#L144)
 
 Array of data items for the slider.
 
@@ -28,7 +28,7 @@ Array of data items for the slider.
 
 > `optional` **selectedDateRange?**: [`DateRange`](DateRange.md)
 
-Defined in: [elements/timecontrol/src/types.ts:148](https://github.com/EOX-A/EOxElements/blob/f887d6a7779d80fc5f9c977f4da94c8d45eccad4/elements/timecontrol/src/types.ts#L148)
+Defined in: [elements/timecontrol/src/types.ts:148](https://github.com/EOX-A/EOxElements/blob/2b8a9b094cd5afadf07475d4f0312e5fb9726b27/elements/timecontrol/src/types.ts#L148)
 
 The selected date range.
 
@@ -38,6 +38,6 @@ The selected date range.
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:140](https://github.com/EOX-A/EOxElements/blob/f887d6a7779d80fc5f9c977f4da94c8d45eccad4/elements/timecontrol/src/types.ts#L140)
+Defined in: [elements/timecontrol/src/types.ts:140](https://github.com/EOX-A/EOxElements/blob/2b8a9b094cd5afadf07475d4f0312e5fb9726b27/elements/timecontrol/src/types.ts#L140)
 
 Whether to disable default styling.
