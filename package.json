@@ -61,7 +61,7 @@
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript-json-schema": "^0.67.3",
-    "vite-plugin-istanbul": "^8.0.0"
+    "vite-plugin-istanbul": "^9.0.0"
   },
   "engines": {
     "node": ">=24.0.0"
