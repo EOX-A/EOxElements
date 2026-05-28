@@ -99,7 +99,7 @@ li label {
   flex-direction: column;
 }
 eox-itemfilter-expandcontainer {
-  max-height: 300px;
+  max-height: 400px;
   width: 100%;
 }
 eox-itemfilter-expandcontainer > [data-type=filter] {
