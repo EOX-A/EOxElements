@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-DbRxMUml.js";import{i as t,r as n}from"./iframe-pjF18MjB.js";var r;e((()=>{t(),r=class extends n{decodeBlock(e){return e}}}))();export{r as default};
