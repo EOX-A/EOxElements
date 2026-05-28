@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.2...itemfilter-v1.17.3) (2026-05-28)
+
+
+### Bug Fixes
+
+* **style:** Increase max-height of expanded filter container to 400px ([#2367](https://github.com/EOX-A/EOxElements/issues/2367)) ([50fa9d7](https://github.com/EOX-A/EOxElements/commit/50fa9d765abc069426d921dfb551c9feb57dc78e))
+
 ## [1.17.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.1...itemfilter-v1.17.2) (2026-05-26)
 
 
