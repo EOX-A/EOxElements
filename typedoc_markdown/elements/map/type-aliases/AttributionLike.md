@@ -8,4 +8,4 @@
 
 > **AttributionLike** = `AttributionLike` \| `string` \| `string`[]
 
-Defined in: [elements/map/src/types.ts:220](https://github.com/EOX-A/EOxElements/blob/4fc884a8ec9af522bfc610f62f724ade0d447e43/elements/map/src/types.ts#L220)
+Defined in: [elements/map/src/types.ts:220](https://github.com/EOX-A/EOxElements/blob/819325b1f44f94aeaa40cbac55b2e44ce8a3d21a/elements/map/src/types.ts#L220)
