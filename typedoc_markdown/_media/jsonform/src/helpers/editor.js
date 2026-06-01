@@ -83,6 +83,27 @@ export const createEditor = (element) => {
     (schema) => schema.options?.resolver && schema.options.resolver,
   );
 
+  // Bypass purification for editors containing raw code/markdown/html (like Ace Editor)
+  // to prevent DOMPurify from stripping valid HTML/markdown/code tags
+  const originalPurify = JSONEditor.AbstractEditor.prototype.purify;
+  JSONEditor.AbstractEditor.prototype.purify = function (val) {
+    const format = this.input_type || this.format || this.schema?.format;
+    const isCodeFormat = [
+      "html",
+      "markdown",
+      "javascript",
+      "json",
+      "css",
+      "yaml",
+      "xml",
+    ].includes(format);
+
+    if (this.ace_editor_instance || isCodeFormat) {
+      return val;
+    }
+    return originalPurify.call(this, val);
+  };
+
   // Custom theme modifications for EOxUI for grid layout
   JSONEditor.defaults.themes.html.prototype.setGridColumnSize = (
     el,
