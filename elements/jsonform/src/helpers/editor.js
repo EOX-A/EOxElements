@@ -87,6 +87,7 @@ export const createEditor = (element) => {
   // to prevent DOMPurify from stripping valid HTML/markdown/code tags
   const originalPurify = JSONEditor.AbstractEditor.prototype.purify;
   JSONEditor.AbstractEditor.prototype.purify = function (val) {
+    const format = this.input_type || this.format || this.schema?.format;
     const isCodeFormat = [
       "html",
       "markdown",
@@ -95,7 +96,7 @@ export const createEditor = (element) => {
       "css",
       "yaml",
       "xml",
-    ].includes(this.input_type || this.format);
+    ].includes(format);
 
     if (this.ace_editor_instance || isCodeFormat) {
       return val;
