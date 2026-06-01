@@ -16,6 +16,7 @@ import {
   loadCustomEditorInterfaceTest,
   loadSubmitButtonTest,
   loadCodeTest,
+  loadCodeHTMLTest,
   loadShowOptInPropertiesTest,
   loadButtonsEditorTest,
   loadSpatialValuesTest,
@@ -43,6 +44,7 @@ describe("Jsonform", () => {
   it("loads the code markdown toolbar", () => loadCodeMarkdownToolbarTest());
   it("loads the markdown editor", () => loadMarkdownTest());
   it("loads the code editor", () => loadCodeTest());
+  it("preserves HTML markup inside code editor", () => loadCodeHTMLTest());
   it("triggers a change event when typing", () => triggerChangeEventTest());
   it("loads values", () => loadValuesTest());
   it("loads mismatching values", () => loadMisMatchingValuesTest());
