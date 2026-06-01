@@ -32,6 +32,26 @@ const config = {
   addons: [getAbsolutePath("@storybook/addon-docs")],
   managerEntries: [join(import.meta.dirname, "./custom-panels/manager.js")],
   framework: getAbsolutePath("@storybook/web-components-vite"),
+  async viteFinal(config) {
+    config.build = config.build || {};
+    config.build.rollupOptions = config.build.rollupOptions || {};
+    config.build.rollupOptions.output = config.build.rollupOptions.output || {};
+
+    const manualChunksFn = (id) => {
+      if (id.includes("@mdx-js/react")) {
+        return "mdx-react";
+      }
+    };
+
+    if (Array.isArray(config.build.rollupOptions.output)) {
+      config.build.rollupOptions.output.forEach((opt) => {
+        opt.manualChunks = manualChunksFn;
+      });
+    } else {
+      config.build.rollupOptions.output.manualChunks = manualChunksFn;
+    }
+    return config;
+  },
   docs: {
     toc: true,
   },
