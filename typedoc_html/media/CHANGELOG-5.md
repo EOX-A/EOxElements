@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.0...jsonform-v1.12.1) (2026-06-01)
+
+
+### Bug Fixes
+
+* Bypass DOMPurify for code/markdown fields ([#2370](https://github.com/EOX-A/EOxElements/issues/2370)) ([13fc98b](https://github.com/EOX-A/EOxElements/commit/13fc98b66d6b69b51641837f8770d4282f11147b))
+
 ## [1.12.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.11.0...jsonform-v1.12.0) (2026-05-05)
 
 
