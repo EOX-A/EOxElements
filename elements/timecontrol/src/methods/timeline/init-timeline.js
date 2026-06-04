@@ -247,6 +247,21 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
   );
 }
 
+function assignClusterIntensity(arr) {
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  const range = max - min;
+
+  return arr.map((value) => {
+    if (range === 0) return "mid";
+    const ratio = (value - min) / range;
+    if (ratio < 0.25) return "low";
+    if (ratio < 0.5) return "mid";
+    if (ratio < 0.75) return "high";
+    return "max";
+  });
+}
+
 /**
  * Generates the cluster items for the timeline items.
  *
@@ -274,6 +289,7 @@ function generateClusterItems(EOxTimeControlTimeline) {
       CLUSTER_ITEM_END_CLASSNAME,
     );
     delete el.dataset.clusterCount;
+    delete el.dataset.clusterIntensity;
     const rect = el.getBoundingClientRect();
     if (rect.width) {
       pointItems.push({
@@ -321,12 +337,18 @@ function generateClusterItems(EOxTimeControlTimeline) {
       cluster.els.push(pointItems[i].el);
     } else clusters.set(root, { first: i, last: i, els: [pointItems[i].el] });
   }
+  const clustersWithIntensity = assignClusterIntensity(
+    [...clusters.values()].map((c) => c.els.length),
+  );
+  let clusterIndex = 0;
   for (const { els } of clusters.values()) {
     if (els && els.length > 1) {
       for (const el of els) {
         el.dataset.clusterCount = els.length;
+        el.dataset.clusterIntensity = clustersWithIntensity[clusterIndex];
       }
     }
+    clusterIndex++;
   }
 }
 

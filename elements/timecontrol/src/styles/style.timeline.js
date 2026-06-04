@@ -62,9 +62,26 @@ export const styleTimeline = `
   background: var(--primary) !important;
   border: none;
   width: 15px;
-  height: 14.5px;
-  margin-left: -6px;
+  height: 15px;
   border-radius: 100px !important;
+}
+.vis-group {
+  height: 55px !important;
+}
+.vis-item.milestone.vis-point[data-cluster-intensity="low"] {
+  height: 15px !important;
+}
+.vis-item.milestone.vis-point[data-cluster-intensity="mid"] {
+  height: 20px !important;
+  margin-top: -2.5px;
+}
+.vis-item.milestone.vis-point[data-cluster-intensity="high"] {
+  height: 25px !important;
+  margin-top: -5px;
+}
+.vis-item.milestone.vis-point[data-cluster-intensity="max"] {
+  height: 30px !important;
+  margin-top: -7.5px;
 }
 .vis-item.milestone.vis-point.vis-selected-item:not(.vis-cluster-item) {
   background: #ffc200 !important;
