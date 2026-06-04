@@ -266,7 +266,6 @@ function generateClusterItems(EOxTimeControlTimeline) {
 
   const CLUSTER_ITEM_START_CLASSNAME = "vis-cluster-item-start";
   const CLUSTER_ITEM_END_CLASSNAME = "vis-cluster-item-end";
-  const CLUSTER_ITEM_SAME_STACK_CLASSNAME = "vis-cluster-item-same-stack";
 
   for (const el of dom.root.querySelectorAll(".vis-item.vis-point")) {
     el.classList.remove(
@@ -274,6 +273,7 @@ function generateClusterItems(EOxTimeControlTimeline) {
       CLUSTER_ITEM_START_CLASSNAME,
       CLUSTER_ITEM_END_CLASSNAME,
     );
+    delete el.dataset.clusterCount;
     const rect = el.getBoundingClientRect();
     if (rect.width) {
       pointItems.push({
@@ -316,22 +316,17 @@ function generateClusterItems(EOxTimeControlTimeline) {
   for (let i = 0; i < pointItems.length; i++) {
     const root = find(i);
     const cluster = clusters.get(root);
-    if (cluster) cluster.last = i;
-    else clusters.set(root, { first: i, last: i });
+    if (cluster) {
+      cluster.last = i;
+      cluster.els.push(pointItems[i].el);
+    } else clusters.set(root, { first: i, last: i, els: [pointItems[i].el] });
   }
-  for (const { first, last } of clusters.values()) {
-    if (first === last) continue;
-    pointItems[first].el.classList.add(CLUSTER_ITEM_START_CLASSNAME);
-    pointItems[last].el.classList.add(CLUSTER_ITEM_END_CLASSNAME);
-
-    const firstDateClass = `.${pointItems[first].el.classList[4]}`;
-    const lastDateClass = `.${pointItems[last].el.classList[4]}`;
-    dom.root.querySelectorAll(firstDateClass).forEach((el) => {
-      el.classList.add(CLUSTER_ITEM_SAME_STACK_CLASSNAME);
-    });
-    dom.root.querySelectorAll(lastDateClass).forEach((el) => {
-      el.classList.add(CLUSTER_ITEM_SAME_STACK_CLASSNAME);
-    });
+  for (const { els } of clusters.values()) {
+    if (els && els.length > 1) {
+      for (const el of els) {
+        el.dataset.clusterCount = els.length;
+      }
+    }
   }
 }
 
@@ -367,16 +362,17 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         template: function (originalItemData) {
           const dom = /** @type {any} */ (EOxTimeControlTimeline.visTimeline)
             .dom.root;
-          const isClusterItem = dom
-            .querySelector(`.item-${originalItemData.id}`)
-            .classList.contains(CLUSTER_ITEM_CLASSNAME);
+          const el = dom.querySelector(`.item-${originalItemData.id}`);
+          const isClusterItem = el.classList.contains(CLUSTER_ITEM_CLASSNAME);
           const filteredItems = filter(items, {
             originalDate: originalItemData.originalDate,
             group: originalItemData.group,
           });
-          return isClusterItem || filteredItems.length === 1
+          return !isClusterItem && filteredItems.length === 1
             ? false
-            : `<span>${filteredItems.length} item${filteredItems.length > 1 ? "s" : ""}</span>`;
+            : isClusterItem
+              ? `<span>${el.dataset.clusterCount} cluster groups</span>`
+              : `<span>${filteredItems.length} item${filteredItems.length > 1 ? "s" : ""}</span>`;
         },
       },
       moment: function (date) {

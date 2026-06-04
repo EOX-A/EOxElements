@@ -80,20 +80,6 @@ export const styleTimeline = `
 .vis-item.milestone.vis-point.vis-cluster-item {
   border-radius: 0px !important;
 }
-.vis-item.milestone.vis-point.vis-cluster-item-start {
-  border-top-left-radius: 6px !important;
-  border-bottom-left-radius: 6px !important;
-  padding: 0 10px;
-}
-.vis-item.milestone.vis-point.vis-cluster-item-end {
-  border-bottom-right-radius: 6px !important;
-  border-top-right-radius: 6px !important;
-  padding: 0 10px;
-}
-.vis-item.milestone.vis-point.vis-cluster-item.vis-cluster-item-same-stack:not(.vis-cluster-item-start),
-.vis-item.milestone.vis-point.vis-cluster-item.vis-cluster-item-same-stack:not(.vis-cluster-item-end) {
-  // display: none;
-}
 .vis-group.vis-group-hide .vis-item.milestone.vis-point,
 .vis-group.vis-group-hide .vis-item.milestone.vis-point:hover {
   background: var(--primary) !important;
@@ -101,11 +87,8 @@ export const styleTimeline = `
 }
 .vis-custom-time.multi-select-start {
   background: rgb(var(--eox-theme-light-primary), 0.4) !important;
-  // border-left: 1px solid var(--primary) !important;
-  // border-right: 1px solid var(--primary) !important;
 }
 .vis-custom-time.multi-select-end {
-  // display: none;
   background: none;
 }
 .vis-custom-time.multi-select-start div, 
