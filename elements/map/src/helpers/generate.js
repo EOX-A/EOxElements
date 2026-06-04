@@ -92,7 +92,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
     ...layer,
     ...(layer.type !== "MapboxStyle" &&
       layer.source && {
-        source: createOlSourceFromDefinition(layer.source),
+        source: createOlSourceFromDefinition(layer.source, EOxMap),
       }),
     ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
     ...layer.properties,
@@ -139,8 +139,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
 /**
  *
  * @param {import("../layers").EoxSource<any>} eoxSource
+ * @param {import("../main").EOxMap} [EOxMap]
  */
-function createOlSourceFromDefinition(eoxSource) {
+function createOlSourceFromDefinition(eoxSource, EOxMap) {
   const availableSources = {
     ...window.eoxMapAdvancedOlSources,
     ...basicOlSources,
@@ -161,8 +162,32 @@ function createOlSourceFromDefinition(eoxSource) {
 
   const tileGrid = generateTileGrid(eoxSource);
 
+  let features;
+  if (eoxSource && eoxSource.features) {
+    if (
+      Array.isArray(eoxSource.features) &&
+      eoxSource.features.length > 0 &&
+      typeof eoxSource.features[0].getGeometry === "function"
+    ) {
+      features = eoxSource.features;
+    } else {
+      let geoJson = eoxSource.features;
+      if (Array.isArray(geoJson)) {
+        geoJson = {
+          type: "FeatureCollection",
+          features: geoJson,
+        };
+      }
+      const format = new GeoJSON();
+      features = format.readFeatures(geoJson, {
+        featureProjection: EOxMap ? EOxMap.OLprojection : "EPSG:3857",
+      });
+    }
+  }
+
   return new NewSource({
     ...eoxSource,
+    ...(features && { features }),
     ...("format" in eoxSource &&
       eoxSource.type !== "WMTS" && {
         // Set the format (e.g., GeoJSON, MVT) for the source
@@ -180,6 +205,7 @@ function createOlSourceFromDefinition(eoxSource) {
     ...("source" in eoxSource && {
       source: createOlSourceFromDefinition(
         /** @type {import("../layers").EoxSource<any>} */ (eoxSource.source),
+        EOxMap,
       ),
     }),
     // Set the format (e.g., GeoJSON, MVT) for the source

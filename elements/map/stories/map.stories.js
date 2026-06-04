@@ -3,6 +3,7 @@ import { html } from "lit";
 import {
   PrimaryStory,
   VectorLayerStory,
+  VectorLayerInlineGeojsonStory,
   VectorTileLayerStory,
   WMSLayerStory,
   WMTSCapabilitiesLayerStory,
@@ -149,6 +150,13 @@ export const ConfigObject = ConfigObjectStory;
 export const VectorLayer = VectorLayerStory;
 
 /**
+ * Vector layer with inline GeoJSON features.
+ * This demonstrates the convenience of passing GeoJSON features directly in the source definition,
+ * which are automatically parsed and transformed into the map projection.
+ */
+export const VectorLayerInlineGeojson = VectorLayerInlineGeojsonStory;
+
+/**
  * Basic vector layer map rendered using `MVT` tiles
  */
 export const VectorTileLayer = VectorTileLayerStory;
@@ -213,7 +221,37 @@ export const GeoZarrLayer = GeoZarrLayerStory;
 export const GroupLayer = GroupLayerStory;
 
 /**
- * Renders different `Controls` for the `eox-map` using control config
+ * Renders different `Controls` for the `eox-map` using control config.
+ *
+ * ### Controls Layout Grid Diagram
+ * Standard map controls are placed within a 3x3 layout grid overlaid on the map.
+ * Custom HTML elements can be cleanly slotted into any of these regions via named slots:
+ *
+ * ```
+ * +-----------------+-------------------+-----------------+
+ * |    top-left     |    top-center     |    top-right    |
+ * +-----------------+-------------------+-----------------+
+ * |   center-left   |         .         |  center-right   |
+ * +-----------------+-------------------+-----------------+
+ * |   bottom-left   |   bottom-center   |  bottom-right   |
+ * +-----------------+-------------------+-----------------+
+ * ```
+ *
+ * ### Default Positions for Built-In Controls
+ * When not explicitly configured, standard controls are placed as follows:
+ * - `Zoom`, `ZoomSlider`, `Geolocation`: **`top-left`** (vertical orientation)
+ * - `FullScreen`, `GlobeSwitcher`: **`top-right`** (vertical orientation)
+ * - `OverviewMap`, `ScaleLine`, `MousePosition`, `LoadingIndicator`: **`bottom-left`**
+ * - `Attribution`: **`bottom-right`**
+ *
+ * ### ⚠️ Overlay Collision Warning & Guidelines
+ * Standard controls are rendered in specific layout regions (such as `top-left`, `top-right`, `bottom-left`, `bottom-right`).
+ * When creating custom overlays, floating panels, legends, or sidebars, **do not use absolute-positioned elements** directly over map corners. This will overlap and obscure native controls like Zoom, Geolocation, or Attribution.
+ *
+ * **Best Practices for Developers, Agents, & Integrations:**
+ * 1. **Query Active Controls:** Query the map's current `controls` property first to identify which regions already have native controls configured.
+ * 2. **Avoid Corner Overlaying:** If a region already contains active controls, avoid placing custom absolute panels there, or move your overlays to unoccupied regions.
+ * 3. **Consistent Theme Styling:** Custom floating panels should style their buttons and containers with CSS custom variables (such as `--map-control-size`, `--map-controls-bg`, and `--map-controls-box-shadow`) to maintain uniform appearance with standard controls.
  */
 export const Controls = ControlsStory;
 
@@ -225,6 +263,28 @@ export const Controls = ControlsStory;
  * can flexibly lay out controls to match your UI needs.
  * Custom controls can also be passed directly to the map via `<slot>`s targeted
  * to specific regions (e.g. `<div slot="top-right">...</div>`).
+ *
+ * ### Controls Layout Grid Diagram
+ * Custom components can be cleanly appended into any of these regions alongside native controls:
+ *
+ * ```
+ * +-----------------+-------------------+-----------------+
+ * |    top-left     |    top-center     |    top-right    |
+ * +-----------------+-------------------+-----------------+
+ * |   center-left   |         .         |  center-right   |
+ * +-----------------+-------------------+-----------------+
+ * |   bottom-left   |   bottom-center   |  bottom-right   |
+ * +-----------------+-------------------+-----------------+
+ * ```
+ *
+ * ### ⚠️ Overlay Collision Warning & Guidelines
+ * Standard controls occupy distinct areas in the control overlay (e.g. `top-left` for `Zoom`, `top-right` for `FullScreen`, `bottom-left` for `ScaleLine`, `bottom-right` for `Attribution`).
+ * Placing absolute floating elements on top of these regions will break UI usability.
+ *
+ * **How to cleanly integrate custom tools:**
+ * 1. **Prefer Custom Slots:** Always inject custom buttons/panels directly into layout regions using slot attributes (e.g., `<button slot="top-right">...`). Custom items in slots automatically participate in the layout's flex flow, nesting nicely alongside native controls without overlapping them.
+ * 2. **Check Control Setup:** Retrieve `map.controls` first to see which native tools are active, ensuring your custom additions respect already populated areas.
+ * 3. **Follow Responsive Breakpoints:** Listen to the map's `resize` event to dynamically alter controls and adjust sizing parameters like `--map-control-size` and padding for small touch screens.
  *
  * **Mobile Support**: The \`eox-map\` component emits a \`resize\` event with the width and height
  * of its container. Developers can leverage this event to modify the controls object being passed down,

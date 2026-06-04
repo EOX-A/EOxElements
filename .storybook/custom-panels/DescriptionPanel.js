@@ -1,7 +1,13 @@
 import React from "react";
 import { useStorybookApi } from "storybook/manager-api";
 import { AddonPanel } from "storybook/internal/components";
-import { Markdown } from "@storybook/addon-docs/blocks";
+import MarkdownIt from "markdown-it";
+
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true,
+});
 
 export const DescriptionPanel = (props) => {
   const api = useStorybookApi();
@@ -9,14 +15,18 @@ export const DescriptionPanel = (props) => {
   const storyData = api.getCurrentStoryData();
 
   if (!props.active || !storyData?.prepared) {
-    return;
+    return null;
   }
+
+  const storyDescription = storyData.parameters?.docs?.description?.story || "";
+  const renderedHtml = md.render(storyDescription);
 
   return (
     <AddonPanel {...props}>
-      <div style={{ padding: "10px 20px" }}>
-        <Markdown>{storyData.parameters?.docs?.description?.story}</Markdown>
-      </div>
+      <div
+        style={{ padding: "10px 20px" }}
+        dangerouslySetInnerHTML={{ __html: renderedHtml }}
+      />
     </AddonPanel>
   );
 };

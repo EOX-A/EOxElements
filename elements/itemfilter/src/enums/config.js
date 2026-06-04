@@ -117,3 +117,5 @@ export const ELEMENT_PROPERTIES = [
   "expandMultipleResults",
   "items",
 ];
+
+export const DATE_TIME_FORMAT = "YYYY-MM-DD";

@@ -7,13 +7,13 @@
     "url": "git@github.com:EOX-A/EOxElements.git"
   },
   "devDependencies": {
-    "vite": "^8.0.12"
+    "vite": "^8.0.13"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^1.1.0",
     "driver.js": "^1.4.0",
-    "lit": "^3.2.1"
+    "lit": "^3.3.3"
   },
   "files": [
     "types",

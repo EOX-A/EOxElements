@@ -54,11 +54,15 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
       // Return a range filter element
       return html`
         <eox-itemfilter-range
+          .inlineMode=${EOxItemFilter.inlineMode || false}
           id="${filterId}"
           data-type="filter"
           .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
+          .suggestions="${uniq(
+            flatMap(EOxItemFilter.items, filterObject.key),
+          ).filter((i) => i)}"
           .unstyled=${EOxItemFilter.unstyled}
           @filter=${() => EOxItemFilter.search()}
         ></eox-itemfilter-range>

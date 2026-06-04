@@ -19,6 +19,7 @@ import {
   resultsActionTest,
   resultSortingTest,
   resultAggregationTest,
+  inlineModeToggleTest,
 } from "./cases/general/";
 
 /**
@@ -155,4 +156,10 @@ describe("Item Filter Config", () => {
    * Test case to verify result sorting.
    */
   it("should sort results based on configuration", () => resultSortingTest());
+
+  /**
+   * Test case to verify preservation of active filters when toggling inlineMode back and forth.
+   */
+  it("should preserve active filters when toggling inlineMode back and forth", () =>
+    inlineModeToggleTest());
 });

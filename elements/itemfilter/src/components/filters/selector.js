@@ -109,6 +109,11 @@ export class EOxSelector extends LitElement {
    * @param {Map} changedProperties - The properties that have changed.
    */
   updated(changedProperties) {
+    if (changedProperties.has("filterObject") && this.filterObject.state) {
+      this.selectedItems = Object.keys(this.filterObject.state)
+        .map((item) => (this.filterObject.state[item] ? item : null))
+        .filter((item) => Boolean(item));
+    }
     updatedSelectorMethod(changedProperties, this);
   }
 
@@ -201,7 +206,7 @@ export class EOxSelector extends LitElement {
           html`<div class="autocomplete-container">
             <div
               class="autocomplete-container-wrapper field small no-round"
-              style="margin-left: var(--list-padding)"
+              style="margin-left: var(--_list-padding)"
             >
               <input
                 autocomplete="off"

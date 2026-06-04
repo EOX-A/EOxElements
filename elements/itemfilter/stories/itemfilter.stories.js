@@ -4,6 +4,7 @@ import {
   AutoSpreadStory,
   CardDisplayStory,
   CSSVariablesStory,
+  DateRangeFilterStory,
   ExternalStory,
   ExternalFetchFnStory,
   InlineModeStory,
@@ -24,6 +25,27 @@ export default {
  * A basic example for an item filter configuration, demonstrating all major filter types (`text`, `select`, `multiselect`, `range`, `spatial`) and result aggregation by property.
  */
 export const Primary = PrimaryStory();
+
+/**
+ * Demonstrates the date range filter, which uses `eox-timecontrol` to provide a calendar-based interface for filtering items by date.
+ * To use this, set the filter `type` to `"range"` and `format` to `"date"`.
+ *
+ * **Note: You also need to import `@eox/timecontrol` in your application to use this feature.**
+ *
+ * ```html
+ * <eox-itemfilter
+ *   .items=${[ ... ]}
+ *   .filterProperties=${[
+ *     {
+ *       key: "timestamp",
+ *       type: "range",
+ *       format: "date",
+ *     }
+ *   ]}
+ * ></eox-itemfilter>
+ * ```
+ */
+export const DateRangeFilter = DateRangeFilterStory();
 
 /**
  * Using `inlineMode`, the itemfilter is rendered in a single input field, ideal for compact UIs or toolbars. Results are hidden until a filter is applied.

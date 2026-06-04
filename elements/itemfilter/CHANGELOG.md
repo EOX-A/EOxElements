@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.17.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.2...itemfilter-v1.17.3) (2026-05-28)
+
+
+### Bug Fixes
+
+* **style:** Increase max-height of expanded filter container to 400px ([#2367](https://github.com/EOX-A/EOxElements/issues/2367)) ([50fa9d7](https://github.com/EOX-A/EOxElements/commit/50fa9d765abc069426d921dfb551c9feb57dc78e))
+
+## [1.17.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.1...itemfilter-v1.17.2) (2026-05-26)
+
+
+### Bug Fixes
+
+* Date range filter state initialization ([#2364](https://github.com/EOX-A/EOxElements/issues/2364)) ([f887d6a](https://github.com/EOX-A/EOxElements/commit/f887d6a7779d80fc5f9c977f4da94c8d45eccad4))
+
+## [1.17.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.0...itemfilter-v1.17.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* Date range filter in external search mode ([#2344](https://github.com/EOX-A/EOxElements/issues/2344)) ([39bd690](https://github.com/EOX-A/EOxElements/commit/39bd6909d2d423df1f226a24789ad61d47982032))
+* Display date picker in inline mode within filter div ([#2342](https://github.com/EOX-A/EOxElements/issues/2342)) ([ec4b6eb](https://github.com/EOX-A/EOxElements/commit/ec4b6ebeb4d7c7fa067d740d3aa24e8bc5fd0898))
+* Filter state loss on mode toggle ([#2347](https://github.com/EOX-A/EOxElements/issues/2347)) ([965da66](https://github.com/EOX-A/EOxElements/commit/965da664ac09a5cf57c9486e9899af318cc03dae))
+* Prevent range filters from initializing as dirty ([6b9aec0](https://github.com/EOX-A/EOxElements/commit/6b9aec0fa5137c15f7d9736a53e167084479fe5c))
+* **style:** Harmonize list padding ([#2345](https://github.com/EOX-A/EOxElements/issues/2345)) ([2c08073](https://github.com/EOX-A/EOxElements/commit/2c08073990353560a5574f0f536e6f85fa93760a))
+* **style:** Harmonize text input fields ([#2346](https://github.com/EOX-A/EOxElements/issues/2346)) ([4844f03](https://github.com/EOX-A/EOxElements/commit/4844f03af57eb310c225b718a127f1726813c245))
+
+## [1.17.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.16.0...itemfilter-v1.17.0) (2026-05-20)
+
+
+### Features
+
+* Picker UI for date range filter ([#2338](https://github.com/EOX-A/EOxElements/issues/2338)) ([dfd9921](https://github.com/EOX-A/EOxElements/commit/dfd99216525e8760e6f887ed3f3e97231c84ed9f))
+
 ## [1.16.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.15.0...itemfilter-v1.16.0) (2026-05-05)
 
 

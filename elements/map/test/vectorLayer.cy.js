@@ -1,5 +1,9 @@
 import "../src/main";
-import { applyGeojsonFormat, loadVectorLayer } from "./cases/layer-type";
+import {
+  applyGeojsonFormat,
+  loadVectorLayer,
+  loadInlineGeojson,
+} from "./cases/layer-type";
 import {
   updateFlatStyleVectorLayer,
   updateStyleExpressionVectorLayer,
@@ -18,6 +22,11 @@ describe("layers", () => {
    * Test case to apply geojson format options
    */
   it("apply geojson format options", () => applyGeojsonFormat());
+
+  /**
+   * Test case to load inline GeoJSON features
+   */
+  it("loads inline GeoJSON features", () => loadInlineGeojson());
 
   /**
    * Test case to correctly update flat style on Vector Layer

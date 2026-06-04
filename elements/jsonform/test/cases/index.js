@@ -8,6 +8,7 @@ export { default as loadReRenderFormOnChangeTest } from "./re-render-form-on-cha
 export { default as loadMarkdownTest } from "./load-markdown";
 export { default as loadCodeMarkdownToolbarTest } from "./load-code-markdown-toolbar";
 export { default as loadCodeTest } from "./load-code";
+export { default as loadCodeHTMLTest } from "./load-code-html";
 export { default as triggerChangeEventTest } from "./trigger-change-event";
 export { default as loadValuesTest } from "./load-values";
 export { default as loadMisMatchingValuesTest } from "./load-mismatching-values";

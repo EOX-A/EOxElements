@@ -25,18 +25,28 @@ export default function getSelectedDatesMethod(
   range,
   showUTC,
 ) {
-  if (!selectedDateRange) return null;
+  if (!selectedDateRange || !selectedDateRange[0]) return null;
   const start = showUTC
     ? dayjs(selectedDateRange[0]).utc()
     : dayjs(selectedDateRange[0]);
-  const end = showUTC
-    ? dayjs(selectedDateRange[1]).utc()
-    : dayjs(selectedDateRange[1]);
-  const startDateFormatted = start.format(TIME_CONTROL_DATE_FORMAT);
-  const endDateFormatted = end.format(TIME_CONTROL_DATE_FORMAT);
-  const selectedDates = range
-    ? [startDateFormatted, endDateFormatted]
-    : [startDateFormatted];
+
+  const selectedDates = [];
+
+  // If a range is requested and the end date is provided, fill in all days
+  if (range && selectedDateRange[1]) {
+    const end = showUTC
+      ? dayjs(selectedDateRange[1]).utc()
+      : dayjs(selectedDateRange[1]);
+
+    let current = start;
+    while (!current.isAfter(end, "day")) {
+      selectedDates.push(current.format(TIME_CONTROL_DATE_FORMAT));
+      current = current.add(1, "day");
+    }
+  } else {
+    // Fallback if it's a single date selection or the user hasn't clicked the second date yet
+    selectedDates.push(start.format(TIME_CONTROL_DATE_FORMAT));
+  }
 
   return {
     dates: selectedDates,
