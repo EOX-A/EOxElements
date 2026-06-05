@@ -79,15 +79,44 @@ class WMTSCapabilities extends TileImage {
     // Set URLs for the tile source
     this.setUrls(capabilitiesOptions.urls);
 
+    this.updateTileUrlFunction_();
+
+    if (this.getState() !== "ready") {
+      this.setState("ready");
+    }
+  }
+
+  /**
+   * Updates the tile URL function based on current URLs and dimensions.
+   */
+  updateTileUrlFunction_() {
     if (this.urls && this.urls.length > 0) {
-      // Create the tile URL function from the provided URLs and the WMTS template
       this.tileUrlFunction = createFromTileUrlFunctions(
         this.urls.map(this.createFromWMTSTemplate.bind(this)),
       );
     }
-    if (this.getState() !== "ready") {
-      this.setState("ready");
+  }
+
+  /**
+   * Updates the source parameters (e.g. dimensions, style).
+   *
+   * @param {Object} params - The parameters to update.
+   */
+  updateParams(params) {
+    if (params.style) {
+      this.style_ = params.style;
     }
+    this.dimensions_ = {
+      ...this.dimensions_,
+      ...params,
+    };
+    // Clean dimensions of 'style' if it was passed in params
+    if (/** @type {any} */ (this.dimensions_).style) {
+      delete (/** @type {any} */ (this.dimensions_).style);
+    }
+
+    this.updateTileUrlFunction_();
+    this.setKey(new Date().toISOString());
   }
 
   /**
