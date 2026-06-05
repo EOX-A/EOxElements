@@ -78,7 +78,7 @@ describe("LayerControl: LayerConfig", () => {
     const setKeySpy = cy.spy().as("setKeySpy");
 
     const mockSource = {
-      getTileUrlFunction: () => (coord) =>
+      getTileUrlFunction: () => () =>
         `https://tiles.com/z/y/x?foo=bar&removeMe=old`,
       setTileUrlFunction: setTileUrlFunctionSpy,
       setKey: setKeySpy,
