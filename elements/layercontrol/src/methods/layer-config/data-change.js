@@ -20,7 +20,14 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     /** @type {import("ol/source").Source & { getTileUrlFunction: Function, setTileUrlFunction: Function, setKey: Function, updateParams: Function, _updatedUrl: string, getUrls: Function }} */ (
       EOxLayerControlLayerConfig.layer.getSource()
     );
-  if (source.getTileUrlFunction && source.getTileUrlFunction()) {
+  if (source.updateParams) {
+    const updatedData = { ...data };
+    const removeProperties =
+      EOxLayerControlLayerConfig.layerConfig.schema?.options
+        ?.removeProperties ?? [];
+    removeProperties.forEach((prop) => delete updatedData[prop]);
+    source.updateParams(updatedData);
+  } else if (source.getTileUrlFunction && source.getTileUrlFunction()) {
     if (!newTileUrlFunc) {
       newTileUrlFunc = source.getTileUrlFunction();
     }
@@ -50,13 +57,6 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     // TODO: It's not advisable to access protected methods directly.
     // Setting a new key for the layer source to trigger a refresh.
     source.setKey(new Date().toISOString());
-  } else if (source.updateParams) {
-    const updatedData = { ...data };
-    const removeProperties =
-      EOxLayerControlLayerConfig.layerConfig.schema?.options
-        ?.removeProperties ?? [];
-    removeProperties.forEach((prop) => delete updatedData[prop]);
-    source.updateParams(updatedData);
   }
 
   const map = /** @type {import("../../../../map/src/main").EOxMap} */ (

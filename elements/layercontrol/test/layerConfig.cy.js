@@ -10,7 +10,7 @@ describe("LayerControl: LayerConfig", () => {
           set schema(val) {}
           set value(val) {}
           set options(val) {}
-        }
+        },
       );
     }
   });
@@ -63,7 +63,7 @@ describe("LayerControl: LayerConfig", () => {
               LAYERS: "updated_layer",
               temp_slider: 42,
             },
-          })
+          }),
         );
       });
 
@@ -125,7 +125,7 @@ describe("LayerControl: LayerConfig", () => {
               foo: "new_bar",
               removeMe: "should_be_stripped",
             },
-          })
+          }),
         );
       });
 

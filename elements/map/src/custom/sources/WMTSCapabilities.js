@@ -120,6 +120,18 @@ class WMTSCapabilities extends TileImage {
   }
 
   /**
+   * Returns the current source parameters (dimensions and style).
+   *
+   * @returns {Object}
+   */
+  getParams() {
+    return {
+      ...this.dimensions_,
+      style: this.style_,
+    };
+  }
+
+  /**
    * Creates a URL function for WMTS tiles based on a template.
    *
    * @param {String} template - The WMTS URL template.
