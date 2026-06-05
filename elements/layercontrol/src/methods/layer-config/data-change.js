@@ -32,21 +32,24 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
         EOxLayerControlLayerConfig.layerConfig.schema?.options
           ?.removeProperties ?? [];
 
+      const updatedData = { ...data };
+      removeProperties.forEach((prop) => delete updatedData[prop]);
+
       // Store the updated URL on the source for other components (like the globe) to use
       if (source instanceof XYZ_ol) {
         source._updatedUrl = updateUrl(
           /** @type {XYZ_ol} */ (source).getUrls()[0],
-          data,
+          updatedData,
         );
       }
       // Remove unwanted properties from query parameters
       removeProperties.forEach((prop) => url.searchParams.delete(prop));
-      return updateUrl(url.href, data);
+      return updateUrl(url.href, updatedData);
     });
 
     // TODO: It's not advisable to access protected methods directly.
     // Setting a new key for the layer source to trigger a refresh.
-    source.setKey(new Date());
+    source.setKey(new Date().toISOString());
   } else if (source.updateParams) {
     const updatedData = { ...data };
     const removeProperties =
@@ -62,10 +65,16 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
   if (map) {
     const globe = map.globe;
     if (globe) {
+      const updatedData = { ...data };
+      const removeProperties =
+        EOxLayerControlLayerConfig.layerConfig.schema?.options
+          ?.removeProperties ?? [];
+      removeProperties.forEach((prop) => delete updatedData[prop]);
+
       const globusLayer = globe.planet.layers.filter(
         (l) => l.name == EOxLayerControlLayerConfig.layer.get("id"),
       )[0];
-      globusLayer.setUrl(updateUrl(globusLayer.url, data));
+      globusLayer.setUrl(updateUrl(globusLayer.url, updatedData));
       window.eoxMapGlobe.refresh();
     }
   }
