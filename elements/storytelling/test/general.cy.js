@@ -15,6 +15,7 @@ import {
   loadHeroSectionTest,
   loadMarkdownLightBoxTest,
   loadMarkdownErrorStory,
+  loadBlocksTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -59,4 +60,7 @@ describe("Storytelling", () => {
 
   // Test case to ensure markdown error loaded
   it("Load markdown error", () => loadMarkdownErrorStory());
+
+  // Test case to ensure blocks configuration is correctly translated and rendered
+  it("loads structured JSON blocks", () => loadBlocksTest());
 });

@@ -12,6 +12,7 @@ import {
   MarkdownImageTourStory,
   MarkdownShowcaseStory,
   MarkdownInitEventStory,
+  BlocksShowcaseStory,
 } from "./index";
 import { html } from "lit";
 
@@ -95,3 +96,10 @@ export const MarkdownInitEvent = MarkdownInitEventStory;
  * A comprehensive example combining a hero section, standard markdown with configuration, a map section, a map tour, and an image tour all in one story.
  */
 export const MarkdownShowcase = MarkdownShowcaseStory;
+
+/**
+ * Blocks-based Storytelling Showcase (A2UI).
+ * Demonstrates how to configure and render the storytelling component entirely via a structured JSON array (the `.blocks` property).
+ * This eliminates the need for the LLM or client application to generate HTML comments or raw markdown wrappers.
+ */
+export const BlocksShowcase = BlocksShowcaseStory;

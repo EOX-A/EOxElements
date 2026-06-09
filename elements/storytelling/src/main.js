@@ -13,6 +13,7 @@ import {
   addLightBoxScript,
   addCustomSection,
   initSavedMarkdown,
+  blocksToMarkdown,
 } from "./helpers";
 import DOMPurify from "isomorphic-dompurify";
 import {
@@ -63,6 +64,7 @@ export class EOxStoryTelling extends LitElement {
     return {
       markdown: { attribute: "markdown", type: String },
       markdownURL: { attribute: "markdown-url", type: String },
+      blocks: { attribute: "blocks", type: Array },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
       showEditor: { attribute: "show-editor", type: String },
@@ -110,6 +112,11 @@ export class EOxStoryTelling extends LitElement {
      * @type {String} - Markdown Content URL
      */
     this.markdownURL = null;
+
+    /**
+     * @type {Array<Object>} - Story blocks JSON
+     */
+    this.blocks = null;
 
     /**
      * Render the element without additional styles
@@ -217,6 +224,15 @@ export class EOxStoryTelling extends LitElement {
    * @param {Map} changedProperties - A map of changed properties.
    */
   async updated(changedProperties) {
+    // Compile JSON blocks to Markdown if `blocks` property changed
+    if (changedProperties.has("blocks") && this.blocks) {
+      const compiledMarkdown = blocksToMarkdown(this.blocks);
+      if (this.markdown !== compiledMarkdown) {
+        this.markdown = compiledMarkdown;
+        this.requestUpdate();
+      }
+    }
+
     // Attempt to fetch new markdown content from the URL if `markdownURL` changed
     if (changedProperties.has("markdownURL") && this.markdownURL) {
       this.markdown =
