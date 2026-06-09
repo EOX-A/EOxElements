@@ -1,5 +1,6 @@
 import { html } from "lit";
 import "color-legend-element";
+import COLORMAPS from "../src/enums/stories/assets/colormaps.json";
 import {
   STORIES_LAYER_ESDL_DYNAMIC,
   STORIES_LAYERCONTROL_STYLE,
@@ -19,6 +20,7 @@ export const layerLegendDynamicStory = {
       },
     },
     style: STORIES_LAYERCONTROL_STYLE,
+    colormapRegistry: COLORMAPS,
     tools: ["legend", "config"],
     for: "eox-map#legend-dynamic",
   },
@@ -27,6 +29,7 @@ export const layerLegendDynamicStory = {
       .tools=${args.tools}
       for=${args.for}
       .style=${args.style}
+      .colormapRegistry=${args.colormapRegistry}
     ></eox-layercontrol>
     <hr />
     <eox-map

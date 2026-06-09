@@ -60,7 +60,6 @@ const getLegendConfig = (legendConfig, data, colormapRegistry) => {
           }
         }
 
-
         if (!("domainProperties" in activeLegend) || "domain" in activeLegend) {
           return activeLegend;
         }

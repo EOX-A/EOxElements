@@ -1,6 +1,5 @@
 import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json";
 import POLARIS_STYLE from "./assets/polaris-style.json";
-import COLORMAPS from "./assets/colormaps.json";
 
 const SENTINEL_HUB_URL =
   "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54";
@@ -706,7 +705,6 @@ export const STORIES_LAYER_ESDL_DYNAMIC = {
     title: "Dynamic Legends Layer",
     layerControlExpand: true,
     layerControlToolsExpand: true,
-    colormapRegistry: COLORMAPS,
     layerConfig: {
       type: "tileUrl",
       legend: {

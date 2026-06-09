@@ -82,7 +82,7 @@ export const LayerDateTime = layerDatetimeStory;
 export const LayerLegend = layerLegendStory;
 
 /**
- * Demonstrates dynamic color legends that update when the layer configuration changes. Using `rangeProperty` and `domainProperties`, the legend reacts to slider changes and colormap selection.
+ * Demonstrates dynamic color legends that update when the layer configuration changes. Using `rangeProperty` and `domainProperties`, the legend reacts to slider changes and colormap selection. Also defines the property `colormapRegistry` on the LayerControl with externally supplied ranges for given colormap.
  */
 export const LayerLegendDynamic = layerLegendDynamicStory;
 

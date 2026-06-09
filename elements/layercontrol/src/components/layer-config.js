@@ -120,7 +120,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has("layerConfig")) {
       const throttleTime =
-        this.layerConfig.type === "style" || this.layerConfig.style
+        this.layerConfig?.type === "style" || this.layerConfig?.style
           ? 100
           : 1000;
 
@@ -209,7 +209,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
                 .layer=${this.layer}
                 .layerLegend=${getLegendConfig(
                   this.layerConfig.legend,
-                  this.#data,
+                  this.#startVals,
                   this.colormapRegistry,
                 )}
               ></eox-layercontrol-layer-legend>
