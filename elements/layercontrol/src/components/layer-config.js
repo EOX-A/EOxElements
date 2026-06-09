@@ -9,6 +9,7 @@ import "./layer-legend";
  * @typedef {Partial<import("./layer-legend").LegendConfig> & {
  *     boundTo?:{key: string;value: string|number|boolean}
  *     domainProperties: string[]
+ *     rangeProperty?: string
  *    }} layerConfigLegend
  **/
 
@@ -27,6 +28,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
     layerConfig: { attribute: false },
+    colormapRegistry: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -102,6 +104,13 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * @type {Array}
      */
     this.customEditorInterfaces = [];
+
+    /**
+     * Optional colormap registry for dynamic legend updates
+     *
+     * @type {Record<string,string[]>}
+     */
+    this.colormapRegistry = null;
   }
 
   /** Decide what type of throttling to do based on layerConfig type
@@ -201,6 +210,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
                 .layerLegend=${getLegendConfig(
                   this.layerConfig.legend,
                   this.#data,
+                  this.colormapRegistry,
                 )}
               ></eox-layercontrol-layer-legend>
             `,

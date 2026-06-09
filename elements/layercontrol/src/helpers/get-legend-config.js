@@ -4,8 +4,9 @@ import { flattenObject } from "../methods/layer-config";
  *
  * @param {import("../components/layer-config").EOxLayerControlLayerConfig["layerConfig"]["legend"]} legendConfig
  * @param {Record<string,unknown>} data
+ * @param {Record<string,string[]>} [colormapRegistry]
  */
-const getLegendConfig = (legendConfig, data) => {
+const getLegendConfig = (legendConfig, data, colormapRegistry) => {
   if (!legendConfig) {
     return undefined;
   }
@@ -48,6 +49,16 @@ const getLegendConfig = (legendConfig, data) => {
   return /** @type {import("../components/layer-legend").LegendConfig[] | null} */ (
     activeLegends?.map((activeLegend) => {
       delete activeLegend.boundTo;
+
+      // Dynamic colormap range lookup
+      if (activeLegend.rangeProperty && colormapRegistry) {
+        const colormapName = flatData[activeLegend.rangeProperty];
+        if (colormapName && colormapRegistry[colormapName]) {
+          activeLegend.range = colormapRegistry[colormapName];
+          delete activeLegend.rangeProperty;
+        }
+      }
+
       if (!("domainProperties" in activeLegend) || "domain" in activeLegend) {
         return activeLegend;
       }

@@ -28,6 +28,7 @@ export class EOxLayerControlLayerList extends LitElement {
       attribute: "tools-auto-expand",
       type: Boolean,
     },
+    colormapRegistry: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -121,6 +122,7 @@ export class EOxLayerControlLayerList extends LitElement {
      * @type {Array}
      */
     this.customEditorInterfaces = [];
+    this.colormapRegistry = null;
   }
 
   /**
@@ -182,6 +184,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .globallyExclusiveLayers=${this
                               .globallyExclusiveLayers}
                             .toolsAutoExpand=${this.toolsAutoExpand}
+                            .colormapRegistry=${this.colormapRegistry}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
                             @changed=${() => this.requestUpdate()}
@@ -202,6 +205,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .globallyExclusiveLayers=${this
                               .globallyExclusiveLayers}
                             .toolsAutoExpand=${this.toolsAutoExpand}
+                            .colormapRegistry=${this.colormapRegistry}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
                             @changed=${() => this.requestUpdate()}
