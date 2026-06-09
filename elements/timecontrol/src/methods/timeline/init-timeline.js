@@ -6,6 +6,8 @@ import * as vis from "vis-timeline/standalone";
 import {
   updateVisibility,
   getWrongLocalFormatToUTCFormat,
+  getInitDate,
+  getDateRange,
 } from "../../helpers/index.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
@@ -21,6 +23,7 @@ dayjs.extend(duration);
 /**
  * @typedef {import("../../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline
  * @typedef {import("../../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("../../types").DateRange} DateRange
  */
 
 let drag = false;
@@ -254,10 +257,13 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
 
+    const initDateRange = getInitDate(EOxTimeControl.initDate);
+    const { start, end } = getDateRange(EOxTimeControl, items, initDateRange);
+
     const options = {
       ...DEFAULT_VIS_TIMELINE_OPTIONS,
-      start: min,
-      end: max,
+      start: start,
+      end: end,
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
