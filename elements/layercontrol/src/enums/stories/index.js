@@ -17,7 +17,7 @@ const LAYER_EOX_CLOUDLESS = (year) => ({
   },
 });
 
-export const STORIES_LAYERCONTROL_STYLE = "width: 240px;";
+export const STORIES_LAYERCONTROL_STYLE = "width: 350px;";
 
 export const STORIES_MAP_STYLE =
   "width: 400px; height: 300px; margin-left: 7px;";
@@ -713,6 +713,7 @@ export const STORIES_LAYER_ESDL_DYNAMIC = {
         title: "Dynamic Legend",
         rangeProperty: "cbar",
         domainProperties: ["vmin", "vmax"],
+        tickFormat: ".2f",
       },
       schema: {
         type: "object",
