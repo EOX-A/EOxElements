@@ -25,6 +25,11 @@ import { getLayerById } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
+/**
+ * Event bus for synchronizing multiple globes.
+ * @type {EventTarget & {_isSyncing?: boolean}}
+ */
+const globeSyncBus = new EventTarget();
 let globus;
 
 /**
@@ -72,7 +77,7 @@ export function translateOLStyleExpressions(olStyle, properties) {
 }
 
 export const setupGlobeSync = (EOxMap, globus) => {
-  const planet = globus.planet;
+  const { planet } = globus;
   const map = EOxMap.map;
   const onGlobeMove = () => {
     // Do not sync from globe to OL if a programmatic move is in progress.
@@ -102,6 +107,15 @@ export const setupGlobeSync = (EOxMap, globus) => {
     }
 
     EOxMap._isSyncing = false;
+
+    // sync other globes
+    if (!globeSyncBus._isSyncing) {
+      globeSyncBus._isSyncing = true;
+      globeSyncBus.dispatchEvent(
+        new CustomEvent("move", { detail: { source: globus, EOxMap } }),
+      );
+      globeSyncBus._isSyncing = false;
+    }
   };
 
   const updateGlobeCamera = () => {
@@ -223,6 +237,20 @@ export const setupGlobeSync = (EOxMap, globus) => {
   globus._onMouseWheel = onMouseWheel; // Store for cleanup
 };
 
+const onOtherGlobeMove = (evt) => {
+  if (globeSyncBus._isSyncing) {
+    return;
+  }
+  const { source, EOxMap: sourceEOxMap } = evt.detail;
+  if (sourceEOxMap.globe) {
+    globeSyncBus._isSyncing = true;
+    sourceEOxMap.globe.planet.camera.set(source.planet.camera);
+    globeSyncBus._isSyncing = false;
+  }
+};
+
+globeSyncBus.addEventListener("move", onOtherGlobeMove);
+
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
     target,
@@ -275,7 +303,10 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
   return globus;
 };
 
-export const refreshGlobe = () => {
+/**
+ * @param {OgGlobe} globus
+ */
+export const refreshGlobe = (globus) => {
   if (globus) {
     globus.planet.layers.forEach((l) => {
       if (l instanceof CanvasTiles) {
@@ -288,7 +319,7 @@ export const refreshGlobe = () => {
   }
 };
 
-export const createGlobusLayer = (olLayer, mapPool) => {
+export const createGlobusLayer = (olLayer, mapPool, globus) => {
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
 
@@ -443,7 +474,7 @@ export const enableGlobe = (map) => {
     map.registerProjectionFromCode("EPSG:3857"); // Ensure projection is registered for OL, globe uses its own.
 
     // Store the globe instance returned by create, if any.
-    map.globe = window.eoxMapGlobe.create({
+    const globe = window.eoxMapGlobe.create({
       EOxMap: map,
       target: globeDiv,
     });
@@ -451,6 +482,7 @@ export const enableGlobe = (map) => {
     /** @type {HTMLElement} */
     (map.shadowRoot.querySelector("#map")).style.display = "none";
     map.globeEnabled = true;
+    map.globe = globe;
   }
 
   // Keep compatible controls visible, hide others
@@ -600,6 +632,7 @@ export const enableGlobe = (map) => {
       existingFullScreen.source_ = map.shadowRoot.querySelector("#globe");
     }
   }
+  return map.globe;
 };
 
 export const disableGlobe = (map) => {
@@ -725,7 +758,7 @@ export const disableGlobe = (map) => {
         planet.camera.events.off("moveend");
         globe._detachViewListeners(map.map.getView());
         map.map.un("change:view", globe._viewChangeHandler);
-
+        globeSyncBus.removeEventListener("move", onOtherGlobeMove);
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation
@@ -770,7 +803,7 @@ function debounce(func, wait) {
  */
 export const setupLayerListeners = (olLayer, globe, mapPool) => {
   const debouncedRefresh = debounce(() => {
-    refreshGlobe();
+    refreshGlobe(globe);
   }, 200);
 
   olLayer.on("change", () => {
