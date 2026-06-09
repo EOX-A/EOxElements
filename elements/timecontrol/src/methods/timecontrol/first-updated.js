@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import isequal from "lodash.isequal";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { TIME_CONTROL_DATE_FORMAT } from "../../enums";
 import { updateChildrenProp, getInitDate } from "../../helpers";
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -174,15 +173,15 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
 
             setTimeout(() => {
               if (EOxTimeControlTimeline) {
-                EOxTimeControlTimeline.visTimeline.setOptions({
-                  ...EOxTimeControlTimeline.visTimeline.setOptions,
-                  start: dayjs(dateRange[0])
-                    .subtract(30, "day")
-                    .format(TIME_CONTROL_DATE_FORMAT),
-                  end: dayjs(dateRange[0])
-                    .add(30, "day")
-                    .format(TIME_CONTROL_DATE_FORMAT),
-                });
+                // EOxTimeControlTimeline.visTimeline.setOptions({
+                //   ...EOxTimeControlTimeline.visTimeline.setOptions,
+                //   start: dayjs(dateRange[0])
+                //     .subtract(30, "day")
+                //     .toDate(),
+                //   end: dayjs(dateRange[0])
+                //     .add(30, "day")
+                //     .toDate(),
+                // });
               }
               EOxTimeControl.dateChange(dateRange, EOxTimeControl);
 

@@ -14,8 +14,6 @@ import duration from "dayjs/plugin/duration";
 import groupBy from "lodash.groupby";
 import filter from "lodash.filter";
 
-const CLUSTER_ITEM_CLASSNAME = "vis-cluster-item";
-
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(duration);
@@ -27,7 +25,6 @@ dayjs.extend(duration);
 
 let drag = false;
 let drawInterval = null;
-let click = false;
 
 const labelDateFormat = "DD MMM YYYY HH:mm:ss";
 
@@ -172,23 +169,13 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !drag &&
     !props.event.shiftKey
   ) {
-    click = true;
-    generateClusterItems(EOxTimeControlTimeline);
-    const dom = /** @type {any} */ (EOxTimeControlTimeline.visTimeline).dom
-      .root;
     const isBackgroundClick = Boolean(props.what == "background");
-    const isClusterItem =
-      !isBackgroundClick && props.item
-        ? dom
-            .querySelector(`.item-${props.item}`)
-            .classList.contains(CLUSTER_ITEM_CLASSNAME)
-        : false;
 
     const utcFormattedDate = getWrongLocalFormatToUTCFormat(
       props.time,
       EOxTimeControl.showUTC,
     );
-    if (isBackgroundClick || isClusterItem) {
+    if (isBackgroundClick) {
       const selection = /** @type {any} */ (
         EOxTimeControlTimeline.selectionDuration
       );
@@ -247,111 +234,6 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
   );
 }
 
-function assignClusterIntensity(arr) {
-  const min = Math.min(...arr);
-  const max = Math.max(...arr);
-  const range = max - min;
-
-  return arr.map((value) => {
-    if (range === 0) return "mid";
-    const ratio = (value - min) / range;
-    if (ratio < 0.25) return "low";
-    if (ratio < 0.5) return "mid";
-    if (ratio < 0.75) return "high";
-    return "max";
-  });
-}
-
-/**
- * Generates the cluster items for the timeline items.
- *
- * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
- */
-function generateClusterItems(EOxTimeControlTimeline) {
-  const timeline = EOxTimeControlTimeline.visTimeline;
-  const dotDiameterPx = 15;
-  const minOverlapPx = 2;
-  const sameTimeTolerancePx = 1;
-  const rowTolerancePx = null;
-  const yTolerance = rowTolerancePx || dotDiameterPx;
-  const xDistanceLimit = dotDiameterPx - minOverlapPx;
-  const pointItems = [];
-  const clusterItems = [];
-  const dom = /** @type {any} */ (timeline).dom;
-
-  const CLUSTER_ITEM_START_CLASSNAME = "vis-cluster-item-start";
-  const CLUSTER_ITEM_END_CLASSNAME = "vis-cluster-item-end";
-
-  for (const el of dom.root.querySelectorAll(".vis-item.vis-point")) {
-    el.classList.remove(
-      CLUSTER_ITEM_CLASSNAME,
-      CLUSTER_ITEM_START_CLASSNAME,
-      CLUSTER_ITEM_END_CLASSNAME,
-    );
-    delete el.dataset.clusterCount;
-    delete el.dataset.clusterIntensity;
-    const rect = el.getBoundingClientRect();
-    if (rect.width) {
-      pointItems.push({
-        el,
-        centerX: rect.left + rect.width / 2,
-        centerY: rect.top + rect.height / 2,
-      });
-    }
-  }
-  pointItems.sort((a, b) => a.centerX - b.centerX);
-
-  const parent = pointItems.map((_, i) => i);
-  const find = (i) => (parent[i] === i ? i : (parent[i] = find(parent[i])));
-  const union = (a, b) => {
-    parent[find(a)] = find(b);
-  };
-
-  for (let i = 1; i < pointItems.length; i++) {
-    const current = pointItems[i];
-    for (let j = i - 1; j >= 0; j--) {
-      const previous = pointItems[j];
-      const xDistance = current.centerX - previous.centerX;
-
-      if (xDistance >= xDistanceLimit) break;
-      if (xDistance <= sameTimeTolerancePx) continue;
-      if (Math.abs(current.centerY - previous.centerY) >= yTolerance) continue;
-
-      clusterItems.push({
-        a: previous.el,
-        b: current.el,
-        overlapPx: +(dotDiameterPx - xDistance).toFixed(2),
-      });
-      current.el.classList.add(CLUSTER_ITEM_CLASSNAME);
-      previous.el.classList.add(CLUSTER_ITEM_CLASSNAME);
-      union(i, j);
-    }
-  }
-
-  const clusters = new Map();
-  for (let i = 0; i < pointItems.length; i++) {
-    const root = find(i);
-    const cluster = clusters.get(root);
-    if (cluster) {
-      cluster.last = i;
-      cluster.els.push(pointItems[i].el);
-    } else clusters.set(root, { first: i, last: i, els: [pointItems[i].el] });
-  }
-  const clustersWithIntensity = assignClusterIntensity(
-    [...clusters.values()].map((c) => c.els.length),
-  );
-  let clusterIndex = 0;
-  for (const { els } of clusters.values()) {
-    if (els && els.length > 1) {
-      for (const el of els) {
-        el.dataset.clusterCount = els.length;
-        el.dataset.clusterIntensity = clustersWithIntensity[clusterIndex];
-      }
-    }
-    clusterIndex++;
-  }
-}
-
 /**
  * Initializes the vis-timeline instance with items, groups, and event handlers.
  * Sets up the timeline visualization, custom time markers for range selection, and various event listeners
@@ -366,7 +248,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const items = /** @type {Array<any>} */ (EOxTimeControl.items.get());
     const groups = EOxTimeControl.groups.get();
     const dates = items.map((item) => dayjs(item.start));
-    const min = dayjs.min(dates).subtract(50, "day").format("YYYY-MM-DD");
+    const min = dayjs.min(dates).subtract(50, "day").toDate();
     const max = dayjs.max(dates).add(50, "day").format("YYYY-MM-DD");
 
     const container = EOxTimeControlTimeline.getContainer();
@@ -379,22 +261,20 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
+      template: (y, x, data) => {
+        if (data.isCluster) return `<div>${data.items.length}</div>`;
+        else return `<div>${data.content}</div>`;
+      },
       tooltip: {
         delay: 300,
         template: function (originalItemData) {
-          const dom = /** @type {any} */ (EOxTimeControlTimeline.visTimeline)
-            .dom.root;
-          const el = dom.querySelector(`.item-${originalItemData.id}`);
-          const isClusterItem = el.classList.contains(CLUSTER_ITEM_CLASSNAME);
           const filteredItems = filter(items, {
             originalDate: originalItemData.originalDate,
             group: originalItemData.group,
           });
-          return !isClusterItem && filteredItems.length === 1
+          return filteredItems.length === 1
             ? false
-            : isClusterItem
-              ? `<span>${el.dataset.clusterCount} cluster groups</span>`
-              : `<span>${filteredItems.length} item${filteredItems.length > 1 ? "s" : ""}</span>`;
+            : `<span>${filteredItems.length} item${filteredItems.length > 1 ? "s" : ""}</span>`;
         },
       },
       moment: function (date) {
@@ -452,10 +332,8 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       }, 50);
 
     visTimeline.on("changed", () => {
-      if (!click) generateClusterItems(EOxTimeControlTimeline);
       updateRangeElements(EOxTimeControlTimeline);
       handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl);
-      click = false;
     });
     visTimeline.on("timechange", () => {
       if (EOxTimeControlTimeline.selectionResizable)

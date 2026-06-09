@@ -63,27 +63,27 @@ export const styleTimeline = `
   border: none;
   width: 15px;
   height: 15px;
+  margin-left: -6px;
   border-radius: 100px !important;
 }
 .vis-group {
   height: 55px !important;
 }
-.vis-item.milestone.vis-point[data-cluster-intensity="low"] {
+.vis-item.vis-range .vis-item-content {
+  padding: 0px; 
+}
+.vis-item.vis-range .vis-item-content,
+.vis-item.vis-cluster-line,
+.vis-item.vis-cluster-dot {
+  display: none !important;
+}
+.vis-item.vis-range {
+  border: 0;
+  background: var(--primary) !important;
+  border-radius: 4px;
   height: 15px !important;
 }
-.vis-item.milestone.vis-point[data-cluster-intensity="mid"] {
-  height: 20px !important;
-  margin-top: -2.5px;
-}
-.vis-item.milestone.vis-point[data-cluster-intensity="high"] {
-  height: 25px !important;
-  margin-top: -5px;
-}
-.vis-item.milestone.vis-point[data-cluster-intensity="max"] {
-  height: 30px !important;
-  margin-top: -7.5px;
-}
-.vis-item.milestone.vis-point.vis-selected-item:not(.vis-cluster-item) {
+.vis-item.milestone.vis-point:hover {
   background: #ffc200 !important;
 }
 .vis-item.milestone.vis-point.vis-not-filtered {
@@ -93,9 +93,6 @@ export const styleTimeline = `
 .vis-item.milestone.vis-point:hover:not(.vis-cluster-item) {
   background: #ffc200 !important;
   cursor: pointer;
-}
-.vis-item.milestone.vis-point.vis-cluster-item {
-  border-radius: 0px !important;
 }
 .vis-group.vis-group-hide .vis-item.milestone.vis-point,
 .vis-group.vis-group-hide .vis-item.milestone.vis-point:hover {

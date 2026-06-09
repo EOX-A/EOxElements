@@ -1,10 +1,5 @@
 export const TIME_CONTROL_DATE_FORMAT = "YYYY-MM-DD";
 
-function dayKey(date) {
-  const d = new Date(date);
-  return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-}
-
 /**
  * Default timeline configuration options
  */
@@ -18,11 +13,7 @@ export const DEFAULT_VIS_TIMELINE_OPTIONS = {
   showTooltips: true,
   orientation: { axis: "top" },
   cluster: {
-    maxItems: 1,
-    clusterCriteria: function (first, second) {
-      if (first.group !== second.group) return false;
-      return dayKey(first.start) === dayKey(second.start);
-    },
+    maxItems: 2,
     showStipes: true,
     fitOnDoubleClick: true,
   },
