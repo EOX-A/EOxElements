@@ -8,6 +8,11 @@ import { html } from "lit";
 const MapSyncStory = {
   args: {
     id: "a",
+    controls: {
+          GlobeSwitcher: {},
+          Zoom: {},
+          Rotate: {},
+        },
     layers: [
       {
         type: "Tile",
@@ -20,6 +25,11 @@ const MapSyncStory = {
     ],
     storyAdditionalComponents: {
       "eox-map": {
+        controls: {
+          GlobeSwitcher: {},
+          Zoom: {},
+          Rotate: {},
+        },
         id: "b",
         sync: "#a",
         layers: [
@@ -46,8 +56,9 @@ const MapSyncStory = {
       }
     </style>
     <div class="container">
-      <eox-map id=${args.id} .layers=${args.layers}></eox-map>
+      <eox-map id=${args.id} .layers=${args.layers} .controls=${args.storyAdditionalComponents["eox-map"].controls}></eox-map>
       <eox-map
+        .controls=${args.storyAdditionalComponents["eox-map"].controls}
         id=${args.storyAdditionalComponents["eox-map"].id}
         sync=${args.storyAdditionalComponents["eox-map"].sync}
         .layers=${args.storyAdditionalComponents["eox-map"].layers}
