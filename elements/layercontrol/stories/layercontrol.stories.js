@@ -14,6 +14,7 @@ import {
   layerZoomStateStory,
   toolsAsListStory,
   layerLegendStory,
+  layerLegendDynamicStory,
   layerColorStory,
 } from ".";
 
@@ -79,6 +80,11 @@ export const LayerDateTime = layerDatetimeStory;
  * Demonstrates dynamic color legends for layers. The "legend" tool reads configuration from the `layerLegend` property and creates a color legend based on value ranges and domains. Supports partial configuration of the color-legend-element. Useful for visualizing data ranges and categories.
  */
 export const LayerLegend = layerLegendStory;
+
+/**
+ * Demonstrates dynamic color legends that update when the layer configuration changes. Using `rangeProperty` and `domainProperties`, the legend reacts to slider changes and colormap selection.
+ */
+export const LayerLegendDynamic = layerLegendDynamicStory;
 
 /**
  * Shows how to hide layers from the control. By setting the `layerControlHide` property, layers are excluded from the layer control UI but may still be rendered on the map. Useful for background or technical layers that should not be user-managed.

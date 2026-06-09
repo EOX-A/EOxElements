@@ -1,5 +1,6 @@
 import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json";
 import POLARIS_STYLE from "./assets/polaris-style.json";
+import COLORMAPS from "./assets/colormaps.json";
 
 const SENTINEL_HUB_URL =
   "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54";
@@ -695,5 +696,62 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
       TILED: true,
       TIME: "2021-03-01T00:00:00Z",
     },
+  },
+};
+
+export const STORIES_LAYER_ESDL_DYNAMIC = {
+  type: "Tile",
+  properties: {
+    id: "esdl-dynamic",
+    title: "Dynamic Legends Layer",
+    layerControlExpand: true,
+    layerControlToolsExpand: true,
+    colormapRegistry: COLORMAPS,
+    layerConfig: {
+      type: "tileUrl",
+      legend: {
+        title: "Dynamic Legend",
+        rangeProperty: "cbar",
+        domainProperties: ["vmin", "vmax"],
+      },
+      schema: {
+        type: "object",
+        properties: {
+          vminmax: {
+            title: "Range",
+            type: "object",
+            properties: {
+              vmin: {
+                type: "number",
+                minimum: 0,
+                maximum: 1,
+                step: 0.01,
+                format: "range",
+                default: 0,
+              },
+              vmax: {
+                type: "number",
+                minimum: 0,
+                maximum: 1,
+                step: 0.01,
+                format: "range",
+                default: 1,
+              },
+            },
+            format: "minmax",
+          },
+          cbar: {
+            title: "Colormap",
+            type: "string",
+            enum: ["magma", "viridis", "plasma", "plasma_r"],
+            default: "plasma_r",
+          },
+        },
+      },
+    },
+  },
+  source: {
+    type: "XYZ",
+    url: "https://api.earthsystemdatalab.net/api/tiles/hydrology/SM/{z}/{y}/{x}?crs=EPSG:3857&time=2022-06-15T00:00:00Z&vmin=0&vmax=1&cbar=plasma_r",
   },
 };

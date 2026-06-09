@@ -47,30 +47,33 @@ const getLegendConfig = (legendConfig, data, colormapRegistry) => {
   }
 
   return /** @type {import("../components/layer-legend").LegendConfig[] | null} */ (
-    activeLegends?.map((activeLegend) => {
-      delete activeLegend.boundTo;
+    activeLegends
+      ?.map((activeLegend) => {
+        delete activeLegend.boundTo;
 
-      // Dynamic colormap range lookup
-      if (activeLegend.rangeProperty && colormapRegistry) {
-        const colormapName = flatData[activeLegend.rangeProperty];
-        if (colormapName && colormapRegistry[colormapName]) {
-          activeLegend.range = colormapRegistry[colormapName];
-          delete activeLegend.rangeProperty;
+        // Dynamic colormap range lookup
+        if (activeLegend.rangeProperty && colormapRegistry) {
+          const colormapName = flatData[activeLegend.rangeProperty];
+          if (colormapName && colormapRegistry[colormapName]) {
+            activeLegend.range = colormapRegistry[colormapName];
+            delete activeLegend.rangeProperty;
+          }
         }
-      }
 
-      if (!("domainProperties" in activeLegend) || "domain" in activeLegend) {
-        return activeLegend;
-      }
-      return Object.keys(activeLegend)?.reduce((legend, key) => {
-        if (key === "domainProperties") {
-          legend["domain"] = activeLegend[key].map((k) => flatData[k]);
-        } else {
-          legend[key] = activeLegend[key];
+
+        if (!("domainProperties" in activeLegend) || "domain" in activeLegend) {
+          return activeLegend;
         }
-        return legend;
-      }, /** @type {import("../components/layer-legend").LegendConfig} */ ({}));
-    })
+        return Object.keys(activeLegend)?.reduce((legend, key) => {
+          if (key === "domainProperties") {
+            legend["domain"] = activeLegend[key].map((k) => flatData[k]);
+          } else {
+            legend[key] = activeLegend[key];
+          }
+          return legend;
+        }, /** @type {import("../components/layer-legend").LegendConfig} */ ({}));
+      })
+      .filter(Boolean)
   );
 };
 
