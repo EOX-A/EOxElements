@@ -9,3 +9,4 @@ export { default as MarkdownMapTourStory } from "./markdown-map-tour"; // StoryT
 export { default as MarkdownImageTourStory } from "./markdown-image-tour"; // StoryTelling with image tour
 export { default as MarkdownShowcaseStory } from "./markdown-showcase"; // StoryTelling with complex markdown and tour
 export { default as MarkdownInitEventStory } from "./markdown-init-event"; // StoryTelling with init event
+export { default as BlocksShowcaseStory } from "./blocks-showcase"; // StoryTelling with block JSON payload

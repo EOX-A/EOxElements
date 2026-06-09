@@ -13,3 +13,4 @@ export { default as loadMapTourTest } from "./load-map-tour";
 export { default as loadHeroSectionTest } from "./load-hero-section";
 export { default as loadMarkdownLightBoxTest } from "./load-lightbox";
 export { default as loadMarkdownErrorStory } from "./load-error";
+export { default as loadBlocksTest } from "./load-blocks";
