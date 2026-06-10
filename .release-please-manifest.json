@@ -11,7 +11,7 @@
   "elements/geosearch": "1.2.0",
   "elements/chart": "1.2.0",
   "elements/feedback": "1.2.0",
-  "utils": "1.1.2",
+  "utils": "1.2.0",
   "mcp-server": "1.2.1",
   "elements/tour": "1.1.0"
 }
