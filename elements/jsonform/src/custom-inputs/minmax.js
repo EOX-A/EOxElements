@@ -30,7 +30,13 @@ export class MinMaxEditor extends AbstractEditor {
     const options = this.options;
     const description = this.schema.description;
     const theme = this.theme;
-    const startVals = this.defaults.startVals[this.key];
+
+    // Resolve initial values from the form's starting state
+    // This is required in build() so the slider can initialize its visual state (SVG/labels) correctly.
+    let startVals = this.jsoneditor.options.startval;
+    this.path.split(".").forEach((p) => {
+      if (p !== "root" && startVals) startVals = startVals[p];
+    });
 
     // Create label and description elements if not in compact mode
     if (!options.compact)
@@ -48,21 +54,22 @@ export class MinMaxEditor extends AbstractEditor {
       );
 
     // Create the range slider element
-    const range = /** @type {HTMLInputElement}*/ (
-      document.createElement("tc-range-slider")
-    );
+    const range =
+      /** @type {HTMLInputElement & {value1: number, value2: number}}*/ (
+        document.createElement("tc-range-slider")
+      );
     // TODO - better logic to find min & max properties?
-    const minKey = Object.keys(properties).find((k) => k.includes("min"));
-    const maxKey = Object.keys(properties).find((k) => k.includes("max"));
+    this.minKey = Object.keys(properties).find((k) => k.includes("min"));
+    this.maxKey = Object.keys(properties).find((k) => k.includes("max"));
 
     // Define attributes for the range slider
     const attributes = {
-      min: properties[minKey].minimum,
-      max: properties[maxKey].maximum,
+      min: properties[this.minKey].minimum,
+      max: properties[this.maxKey].maximum,
       // only positive integer supported
-      step: properties[minKey].step || properties[maxKey].step,
-      value1: startVals?.[minKey] || properties[minKey].default,
-      value2: startVals?.[maxKey] || properties[maxKey].default,
+      step: properties[this.minKey].step || properties[this.maxKey].step,
+      value1: startVals?.[this.minKey] ?? properties[this.minKey].default,
+      value2: startVals?.[this.maxKey] ?? properties[this.maxKey].default,
       "generate-labels": "true",
       "generate-labels-text-color": "currentColor",
       "slider-width": "100%",
@@ -95,8 +102,8 @@ export class MinMaxEditor extends AbstractEditor {
           e.preventDefault();
           e.stopPropagation();
           this.value = {
-            [minKey]: e.detail.value1,
-            [maxKey]: e.detail.value2,
+            [this.minKey]: e.detail.value1,
+            [this.maxKey]: e.detail.value2,
           };
           this.onChange(true);
         }

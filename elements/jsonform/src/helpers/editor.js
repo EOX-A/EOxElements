@@ -36,7 +36,7 @@ window.ace.config.set(
  */
 export const createEditor = (element) => {
   // Add custom inputs if any
-  addCustomInputs(element.value || {}, element.customEditorInterfaces || []);
+  addCustomInputs(element.customEditorInterfaces || []);
 
   // Get the form element from the shadow DOM
   const formEle = element.renderRoot.querySelector("form");
