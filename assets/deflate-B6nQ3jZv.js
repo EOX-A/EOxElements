@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-BM3Ffeng.js";import{i as t,r as n}from"./iframe-CpB-GlpP.js";import{n as r,t as i}from"./pako.esm-CJ9KIXmb.js";var a;e((()=>{r(),t(),a=class extends n{decodeBlock(e){return i(new Uint8Array(e)).buffer}}}))();export{a as default};

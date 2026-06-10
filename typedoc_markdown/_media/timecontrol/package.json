@@ -44,7 +44,7 @@
     "@eox/ui": "^1.1.0",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
-    "dayjs": "^1.11.9",
+    "dayjs": "^1.11.21",
     "gifshot": "^0.4.5",
     "lit": "^3.3.3",
     "lodash.find": "^4.6.0",
