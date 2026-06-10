@@ -41,7 +41,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^1.1.0",
+    "@eox/elements-utils": "^1.2.0",
     "@eox/ui": "^1.1.0",
     "color-legend-element": "^1.5.0",
     "lit": "^3.3.3",
