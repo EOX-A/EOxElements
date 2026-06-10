@@ -36,7 +36,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^8.0.13"
+    "vite": "^8.0.16"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
