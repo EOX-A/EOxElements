@@ -59,7 +59,7 @@ const getLegendConfig = (legendConfig, data, colormapRegistry) => {
             delete activeLegend.rangeProperty;
           } else if (colormapName) {
             // fallback in case colormap not in registry
-            activeLegend.range = ["#ffffff", "#000000"]
+            activeLegend.range = ["#ffffff", "#000000"];
           }
         }
 
