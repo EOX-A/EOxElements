@@ -267,20 +267,49 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
-      template: (y, x, data) => {
+      template: (_y, _x, data) => {
         if (data.isCluster) return `<div>${data.items.length}</div>`;
         else return `<div>${data.content}</div>`;
       },
       tooltip: {
         delay: 300,
-        template: function (originalItemData) {
-          const filteredItems = filter(items, {
-            originalDate: originalItemData.originalDate,
-            group: originalItemData.group,
+        template: (originalItemData) => {
+          const isCluster = originalItemData.isCluster;
+          const filteredItems = isCluster
+            ? originalItemData.items
+            : filter(items, {
+                originalDate: originalItemData.originalDate,
+                group: originalItemData.group,
+              });
+
+          let listHTML = "";
+          const topItems = isCluster ? [] : filteredItems.slice(0, 1);
+          const remainingCount = filteredItems.length - (isCluster ? 0 : 1);
+
+          topItems.forEach((item) => {
+            const id = item.id || "";
+            const truncatedId =
+              id.length > 30 ? id.substring(0, 30) + "..." : id;
+
+            listHTML += `
+                    <div class="vis-tooltip-item">
+                        <div class="vis-tooltip-item-dot"></div>
+                        ID: ${truncatedId}
+                    </div>
+                  `;
           });
-          return filteredItems.length === 1
-            ? false
-            : `<span>${filteredItems.length} item${filteredItems.length > 1 ? "s" : ""}</span>`;
+
+          if (remainingCount > 0) {
+            listHTML += `
+                <div class="vis-tooltip-item-more" style="opacity: 0.5;">
+                  ${isCluster ? "" : "+ "}${remainingCount}${isCluster ? "" : " more"} items
+                </div>
+              `;
+          }
+
+          const el = document.createElement("div");
+          el.innerHTML = listHTML;
+          return el;
         },
       },
       moment: function (date) {
@@ -300,12 +329,12 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
           container,
           items,
           groups,
-          /** @type {import("vis-timeline/standalone").TimelineOptions} */ (
-            options
-          ),
+          /** @ts-expect-error type not returned */
+          options,
         )
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
+    visTimeline.fit();
     EOxTimeControlTimeline.requestUpdate();
 
     if (drawInterval) {

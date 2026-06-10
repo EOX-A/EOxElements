@@ -65,6 +65,7 @@ export const styleTimeline = `
   height: 15px;
   margin-left: -6px;
   border-radius: 100px !important;
+  z-index: 2;
 }
 .vis-group {
   height: 55px !important;
@@ -213,6 +214,32 @@ export const styleTimeline = `
   width: 200px;
   height: 100px;
 }
+div.vis-tooltip {
+  background: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: inherit;
+  z-index: 99999999;
+}
+div.vis-tooltip .vis-tooltip-item,
+div.vis-tooltip .vis-tooltip-item-more {
+  display: flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+div.vis-tooltip .vis-tooltip-item-more {
+  opacity: 0.5;
+}
+div.vis-tooltip .vis-tooltip-item-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  margin-right: 6px;
+}
+div.vis-tooltip .count { font-weight: 700; }
 @keyframes loading {
   0%{
     left: -45%;
