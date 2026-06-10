@@ -8,4 +8,4 @@
 
 > **sourceType** = keyof [`OLBasicSources`](OLBasicSources.md) \| keyof [`OLAdvancedSources`](OLAdvancedSources.md)
 
-Defined in: [elements/map/src/types.ts:20](https://github.com/EOX-A/EOxElements/blob/e8f7d5673a15092adda5f8f517ddba3f0d42d74a/elements/map/src/types.ts#L20)
+Defined in: [elements/map/src/types.ts:20](https://github.com/EOX-A/EOxElements/blob/135f06343f933fb3d6a56002d8e0ac0b40afaea8/elements/map/src/types.ts#L20)
