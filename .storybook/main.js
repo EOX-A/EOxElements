@@ -20,7 +20,6 @@ const config = {
       "../*.stories.@(js|jsx|mjs|ts|tsx)", // root level stoires (kitchen sink)
       // Only include stories from elements folders
       "../elements/**/stories/*.stories.@(js|jsx|mjs|ts|tsx)",
-      "../a2ui/stories/*.stories.@(js|jsx|mjs|ts|tsx)",
     ];
     if (process.env.NODE_ENV === "development") {
       list.push("*.stories.dev.@(js|jsx|mjs|ts|tsx)");
