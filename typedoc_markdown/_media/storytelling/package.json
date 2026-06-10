@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
-    "vite": "^8.0.13"
+    "vite": "^8.0.16"
   },
   "engines": {
     "npm": ">=8.0.0",
