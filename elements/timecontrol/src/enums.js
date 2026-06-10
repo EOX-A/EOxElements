@@ -10,12 +10,13 @@ export const DEFAULT_VIS_TIMELINE_OPTIONS = {
   moveable: true,
   margin: { item: 40, axis: 20 },
   showCurrentTime: true,
-  timeAxis: {
-    scale: "day",
-    step: 5,
-  },
   showTooltips: true,
   orientation: { axis: "top" },
+  cluster: {
+    maxItems: 2,
+    showStipes: true,
+    fitOnDoubleClick: true,
+  },
 };
 
 /**
