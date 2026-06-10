@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-BM3Ffeng.js";import{i as t,r as n}from"./iframe-W03zbeZR.js";var r;e((()=>{t(),r=class extends n{decodeBlock(e){return e}}}))();export{r as default};
