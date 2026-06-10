@@ -3,6 +3,10 @@ import eoxStyle from "@eox/ui/style.css?inline";
 import "@eox/ui";
 import "color-legend-element";
 import items from "./elements/itemfilter/test/testItems.json";
+import "./a2ui/src/index.js";
+import "./elements/map/src/main.js";
+import "./elements/drawtools/src/main.js";
+import "./elements/layercontrol/src/main.js";
 
 export default {
   title: "Demo",
@@ -631,5 +635,214 @@ export const KitchenSink = {
         padding: 0.5rem;
       }
     </style>
+  `,
+};
+
+const demoStream = [
+  {
+    createSurface: {
+      surfaceId: "demo_surface",
+      catalogId:
+        "https://eox-a.github.io/EOxElements/a2ui/0_9/combined_catalog.json",
+      sendDataModel: true,
+    },
+  },
+  {
+    updateComponents: {
+      surfaceId: "demo_surface",
+      components: [
+        {
+          id: "root",
+          component: "Column",
+          children: ["header", "workspace"],
+          align: "stretch",
+          justify: "start",
+        },
+        {
+          id: "header",
+          component: "Column",
+          children: ["title", "subtitle"],
+          align: "start",
+          justify: "start",
+        },
+        {
+          id: "title",
+          component: "Text",
+          text: "EOxElements A2UI Demo",
+          variant: "h1",
+        },
+        {
+          id: "subtitle",
+          component: "Text",
+          text: "A dynamic layout rendered from an [A2UI protocol](https://a2ui.org/) JSON.",
+          variant: "body",
+        },
+        {
+          id: "workspace",
+          component: "Row",
+          children: ["left_col", "right_col"],
+          align: "stretch",
+          justify: "spaceBetween",
+        },
+        {
+          id: "left_col",
+          component: "Column",
+          children: ["my_drawtools", "my_layercontrol"],
+          align: "stretch",
+          justify: "start",
+          weight: 1,
+        },
+        {
+          id: "right_col",
+          component: "Column",
+          children: ["my_map"],
+          align: "stretch",
+          justify: "start",
+          weight: 2,
+        },
+        {
+          id: "my_drawtools",
+          component: "EOxDrawtools",
+        },
+        {
+          id: "my_layercontrol",
+          component: "EOxLayercontrol",
+        },
+        {
+          id: "my_map",
+          component: "EOxMap",
+          zoom: 6,
+          center: [16.37, 48.21],
+          style: "height: 400px",
+          layers: [
+            {
+              type: "Tile",
+              properties: {
+                id: "osm",
+                title: "OpenStreetMap",
+              },
+              source: {
+                type: "OSM",
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
+
+/**
+ * This demo renders an A2UI JSON stream as dynamic dashboard, allowing to dynamically generate UIs from LLM responses.
+ * More information: [a2ui.org](https://a2ui.org/)
+ *
+ * JSON stream:
+ *
+ * ```json
+ * [
+ *   {
+ *     "createSurface": {
+ *       "surfaceId": "demo_surface",
+ *       "catalogId": "https://eox-a.github.io/EOxElements/a2ui/0_9/combined_catalog.json",
+ *       "sendDataModel": true
+ *     }
+ *   },
+ *   {
+ *     "updateComponents": {
+ *       "surfaceId": "demo_surface",
+ *       "components": [
+ *         {
+ *           "id": "root",
+ *           "component": "Column",
+ *           "children": ["header", "workspace"],
+ *           "align": "stretch",
+ *           "justify": "start"
+ *         },
+ *         {
+ *           "id": "header",
+ *           "component": "Column",
+ *           "children": ["title", "subtitle"],
+ *           "align": "start",
+ *           "justify": "start"
+ *         },
+ *         {
+ *           "id": "title",
+ *           "component": "Text",
+ *           "text": "EOxElements A2UI Demo",
+ *           "variant": "h1"
+ *         },
+ *         {
+ *           "id": "subtitle",
+ *           "component": "Text",
+ *           "text": "A dynamic layout rendered from an [A2UI protocol](https://a2ui.org/) JSON.",
+ *           "variant": "body"
+ *         },
+ *         {
+ *           "id": "workspace",
+ *           "component": "Row",
+ *           "children": ["left_col", "right_col"],
+ *           "align": "stretch",
+ *           "justify": "spaceBetween"
+ *         },
+ *         {
+ *           "id": "left_col",
+ *           "component": "Column",
+ *           "children": ["my_drawtools", "my_layercontrol"],
+ *           "align": "stretch",
+ *           "justify": "start",
+ *           "weight": 1
+ *         },
+ *         {
+ *           "id": "right_col",
+ *           "component": "Column",
+ *           "children": ["my_map"],
+ *           "align": "stretch",
+ *           "justify": "start",
+ *           "weight": 2
+ *         },
+ *         {
+ *           "id": "my_drawtools",
+ *           "component": "EOxDrawtools"
+ *         },
+ *         {
+ *           "id": "my_layercontrol",
+ *           "component": "EOxLayercontrol"
+ *         },
+ *         {
+ *           "id": "my_map",
+ *           "component": "EOxMap",
+ *           "zoom": 6,
+ *           "center": [16.37, 48.21],
+ *           "style": "height: 400px",
+ *           "layers": [
+ *             {
+ *               "type": "Tile",
+ *               "properties": {
+ *                 "id": "osm",
+ *                 "title": "OpenStreetMap"
+ *               },
+ *               "source": {
+ *                 "type": "OSM"
+ *               }
+ *             }
+ *           ]
+ *         }
+ *       ]
+ *     }
+ *   }
+ * ]
+ * ```
+ */
+export const A2uiShowcase = {
+  component: "eox-a2ui-wrapper",
+  args: {
+    stream: demoStream,
+  },
+  render: (args) => html`
+    <div
+      style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; height: 100vh; overflow: auto;"
+    >
+      <eox-a2ui-wrapper .stream=${args.stream}></eox-a2ui-wrapper>
+    </div>
   `,
 };

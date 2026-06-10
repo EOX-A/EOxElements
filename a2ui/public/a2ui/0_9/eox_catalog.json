@@ -1,0 +1,952 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eox-a.github.io/EOxElements/a2ui/0_9/eox_catalog.json",
+  "title": "EOxElements Custom Catalog",
+  "description": "Unified catalog of EOxElements components.",
+  "catalogId": "https://eox-a.github.io/EOxElements/a2ui/0_9/eox_catalog.json",
+  "components": {
+    "EOxChart": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxChart"
+            },
+            "dataValues": {
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "type": "string"
+            },
+            "spec": {
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "type": "string"
+            },
+            "opt": {
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "type": "string"
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxDrawtools": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxDrawtools"
+            },
+            "allowModify": {
+              "description": "Allow modifying the drawn feature(s)",
+              "type": "boolean"
+            },
+            "for": {
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "type": "string"
+            },
+            "continuous": {
+              "description": "Enables the user to draw continuously one feature after another\nwithout having to discard previous ones manually",
+              "type": "boolean"
+            },
+            "featureName": {
+              "description": "The display name of drawn features, shown e.g. in the feature list.",
+              "type": "string"
+            },
+            "featureNameKey": {
+              "description": "The key of the property to display in the feature list.",
+              "type": "string"
+            },
+            "layerId": {
+              "description": "The ID of the Vector/Vector Tile Layer that contains features to be selected",
+              "type": "string"
+            },
+            "featureStyles": {
+              "description": "Flat styles for the drawn/selected features",
+              "type": "string"
+            },
+            "multipleFeatures": {
+              "description": "Allow adding more than one feature at a time",
+              "type": "boolean"
+            },
+            "measure": {
+              "description": "Display area/line measurement for the drawn features.\nWhen enabled, a \"measure\" property is added to each drawn feature's properties,\ncontaining the calculated area (for Polygons and Circles) or length (for LineStrings).\nThis measurement is also displayed as a text label on the map using OpenLayers flat styles.",
+              "type": "boolean"
+            },
+            "importFeatures": {
+              "description": "Allow import features using drag-drop and upload button",
+              "type": "boolean"
+            },
+            "showEditor": {
+              "description": "Show geo-json editor for draw tool",
+              "type": "boolean"
+            },
+            "showList": {
+              "description": "Show list of features",
+              "type": "boolean"
+            },
+            "projection": {
+              "description": "Projection of the emitted drawn features",
+              "type": "string"
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "format": {
+              "description": "The format in which the drawn features should be emitted",
+              "type": "string"
+            },
+            "type": {
+              "description": "Type of the drawn feature",
+              "type": "string"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "drawnFeatures": {
+              "description": "The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.\nPass features to be drawn on the map by setting this property. The features should be in the same projection as the map, or a projection should be specified via the `projection` property for proper transformation.",
+              "type": "array",
+              "items": {}
+            },
+            "eoxMap": {
+              "description": "The eox-map instance associated with the draw tools",
+              "type": "string"
+            },
+            "currentlyDrawing": {
+              "description": "Whether the user is currently in the process of drawing or not",
+              "type": "boolean"
+            },
+            "draw": {
+              "description": "The current native OpenLayers `draw` interaction",
+              "type": "string"
+            },
+            "drawLayer": {
+              "description": "The current native OpenLayers draw `layer` (initialized with a `zIndex` of 100)",
+              "type": "string"
+            },
+            "modify": {
+              "description": "The current native OpenLayers `modify` interaction",
+              "type": "string"
+            },
+            "selectionEvents": {
+              "description": "",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxFeedback": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxFeedback"
+            },
+            "endpoint": {
+              "description": "The endpoint to send the feedback to as POST message.",
+              "type": "string"
+            },
+            "unstyled": {
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "type": "string"
+            },
+            "schema": {
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported.",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxGeosearch": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxGeosearch"
+            },
+            "endpoint": {
+              "description": "The OpenCage API endpoint to use for the search, including the key but without the query parameter.",
+              "type": "string"
+            },
+            "for": {
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "type": "string"
+            },
+            "queryParameter": {
+              "description": "The name of the query parameter to use for the search query in the endpoint URI.",
+              "type": "string"
+            },
+            "button": {
+              "description": "Whether or not to enable button mode, which hides and shows the input field\nsimilar to how a modal works.",
+              "type": "boolean"
+            },
+            "interval": {
+              "description": "Set a custom interval for the debounce function.",
+              "type": "number"
+            },
+            "small": {
+              "description": "Enables a smaller version of the button for use in map controls.",
+              "type": "boolean"
+            },
+            "label": {
+              "description": "Which text to use for the button if it is enabled.",
+              "type": "string"
+            },
+            "direction": {
+              "description": "The direction of the search input relative to the button, with the following options:\n\n- `left`\n- `top`\n- `right`\n- `bottom`",
+              "type": "string"
+            },
+            "resultsDirection": {
+              "description": "The direction of the results box relative to the input, with the following options:\n\n- `left`\n- `top`\n- `right`\n- `bottom`",
+              "type": "string"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "loaderSvg": {
+              "description": "Svg used as loading indicator",
+              "type": "string"
+            },
+            "extent": {
+              "description": "Geographic extent to limit search results in the format \"minLon,minLat,maxLon,maxLat\".\nThis corresponds to OpenCage API's bounds parameter.\nExample: \"-0.563160,51.280430,0.278970,51.683979\"",
+              "type": "string"
+            },
+            "tooltip": {
+              "description": "Tooltip text to display on the search button/input (uses BeerCSS tooltip).",
+              "type": "string"
+            },
+            "tooltipDirection": {
+              "description": "Direction of the tooltip relative to the button.\nOptions: \"top\", \"bottom\", \"left\", \"right\"\nDefault: \"left\"",
+              "type": "string"
+            },
+            "params": {
+              "description": "Additional parameters to add to the query string as key-value pairs.\nExample: { language: \"en\", limit: 10, countrycode: \"us\" }",
+              "type": "string"
+            },
+            "eoxMap": {
+              "description": "",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxItemfilter": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxItemfilter"
+            },
+            "items": {
+              "description": "The items to be filtered. Can be passed as a property or stringified JSON attribute.",
+              "type": "array",
+              "items": {}
+            },
+            "selectedResult": {
+              "description": "The currently selected result",
+              "type": "string"
+            },
+            "aggregateResults": {
+              "description": "Aggregate results by a property key",
+              "type": "string"
+            },
+            "autoSpreadSingle": {
+              "description": "Automatically spread single item summaries\nremoving the summary header",
+              "type": "boolean"
+            },
+            "enableHighlighting": {
+              "description": "Highlighting of search result character matches",
+              "type": "boolean"
+            },
+            "filterProperties": {
+              "description": "The filter properties. Can be passed as a property or stringified JSON attribute.",
+              "type": "array",
+              "items": {}
+            },
+            "fuseConfig": {
+              "description": "Native fuse.js config override",
+              "type": "string"
+            },
+            "inlineMode": {
+              "description": "Inline mode, for rendering the itemfilter in a very condensed space.\nExpects showResults to be false",
+              "type": "boolean"
+            },
+            "matchAllWhenEmpty": {
+              "description": "Show all result items if nothing is input by the user",
+              "type": "boolean"
+            },
+            "showResults": {
+              "description": "Display results list",
+              "type": "boolean"
+            },
+            "idProperty": {
+              "description": "Unique id property of items",
+              "type": "string"
+            },
+            "titleProperty": {
+              "description": "The property of the result items used for display\nSupports passing a function which recieves the current item as parameter and is expected to return a string",
+              "type": "string"
+            },
+            "subTitleProperty": {
+              "description": "The property of the result items used for a subtitle\nSupports passing a function which recieves the current item as parameter and is expected to return a string",
+              "type": "string"
+            },
+            "imageProperty": {
+              "description": "The property of the result items used for an image\nSupports passing a function which recieves the current item as parameter and is expected to return a string",
+              "type": "string"
+            },
+            "resultSorting": {
+              "description": "Sorting behavior for the results. Can be:\n- undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)\n- false: no sorting\n- string: property key to sort by (ascending)\n- function: custom comparator function (a, b) => number\n- object: { key: string, order?: 'asc' | 'desc' }",
+              "type": "string"
+            },
+            "expandMultipleFilters": {
+              "description": "Allow opening multiple filter accordions in parallel",
+              "type": "boolean"
+            },
+            "expandResults": {
+              "description": "Initialize result accordions expanded",
+              "type": "boolean"
+            },
+            "expandMultipleResults": {
+              "description": "Allow opening multiple result accordions in parallel",
+              "type": "boolean"
+            },
+            "resultType": {
+              "description": "Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element)",
+              "type": "string"
+            },
+            "enableResultAction": {
+              "description": "Enable result action button (a secondary action besides the normal result selection)",
+              "type": "boolean"
+            },
+            "resultActionIcon": {
+              "description": "Icon for result action. Supports html",
+              "type": "string"
+            },
+            "styleOverride": {
+              "description": "Overrides elements current CSS.",
+              "type": "string"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "filters": {
+              "description": "The state object containing the applied filters.",
+              "type": "string"
+            },
+            "results": {
+              "description": "The state object containing the filtered results.",
+              "type": "array",
+              "items": {}
+            },
+            "externalFilter": {
+              "description": "Use an external search endpoint instead of fuse search.\nPassed properties: input string, filters object.\nThe function can return a URL string, or an object containing a `url,\nan optional `fetchFn` to handle the request, or/and an optional `key` to\nreturn a specific property from the fetched data.\nThis is a property-only field as it expects a function.",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxJsonform": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxJsonform"
+            },
+            "schema": {
+              "description": "Schema for the form editor",
+              "type": "string"
+            },
+            "value": {
+              "description": "JSON value of the form editor",
+              "type": "string"
+            },
+            "defaults": {
+              "description": "Default values for the JSONEditor instance",
+              "type": "string"
+            },
+            "options": {
+              "description": "Options for the form editor",
+              "type": "string"
+            },
+            "customEditorInterfaces": {
+              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "type": "array",
+              "items": {}
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "propertiesToggle": {
+              "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "editor": {
+              "description": "Getter for the JSONEditor instance",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxLayercontrol": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxLayercontrol"
+            },
+            "for": {
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "type": "string"
+            },
+            "idProperty": {
+              "description": "Layer id property",
+              "type": "string"
+            },
+            "titleProperty": {
+              "description": "Layer title property",
+              "type": "string"
+            },
+            "showLayerZoomState": {
+              "description": "Show layer state based on zoom level or not",
+              "type": "boolean"
+            },
+            "tools": {
+              "description": "Layer tools",
+              "type": "array",
+              "items": {}
+            },
+            "addExternalLayers": {
+              "description": "Enable-disable external layer",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "styleOverride": {
+              "description": "Overrides elements current CSS.",
+              "type": "string"
+            },
+            "toolsAsList": {
+              "description": "If enabled, the tools section will be rendered as list.",
+              "type": "boolean"
+            },
+            "globallyExclusiveLayers": {
+              "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
+              "type": "boolean"
+            },
+            "toolsAutoExpand": {
+              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
+              "type": "boolean"
+            },
+            "customEditorInterfaces": {
+              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "type": "array",
+              "items": {}
+            },
+            "eoxMap": {
+              "description": "",
+              "type": "string"
+            },
+            "map": {
+              "description": "The native OL map instance",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxLayout": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxLayout"
+            },
+            "column-width": {
+              "description": "Width of each grid column (e.g., \"200px\", \"1fr\").",
+              "type": "string"
+            },
+            "fill-grid": {
+              "description": "If present, the layout will automatically fill available space.",
+              "type": "boolean"
+            },
+            "gap": {
+              "description": "Gap between layout items in pixels.",
+              "type": "string"
+            },
+            "row-height": {
+              "description": "Height of each grid row (e.g., \"100px\", \"1fr\").",
+              "type": "string"
+            },
+            "mediaBreakpoints": {
+              "description": "The breakpoints for small/medium/large screens (in pixel).",
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxLayoutItem": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxLayoutItem"
+            },
+            "x": {
+              "description": "The x coordinate (zero-indexed) of the layout item.",
+              "type": "string"
+            },
+            "y": {
+              "description": "The y coordinate (zero-indexed) of the layout item.",
+              "type": "string"
+            },
+            "w": {
+              "description": "The width (in grid slots) of the layout item.",
+              "type": "string"
+            },
+            "h": {
+              "description": "The height (in grid slots) of the layout item.",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxMap": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxMap"
+            },
+            "config": {
+              "description": "Gets the current configuration of the map.",
+              "type": "string"
+            },
+            "center": {
+              "description": "Gets the current center coordinates of the map.",
+              "type": "array",
+              "items": {}
+            },
+            "layers": {
+              "description": "Gets the current layers of the map",
+              "type": "array",
+              "items": {}
+            },
+            "zoom": {
+              "description": "Gets the current zoom level of the map.",
+              "type": "number"
+            },
+            "animationOptions": {
+              "description": "Gets the current animation options.",
+              "type": "string"
+            },
+            "controls": {
+              "description": "Gets the current map controls.",
+              "type": "string"
+            },
+            "interactions": {
+              "description": "Object to store various map interactions (e.g., drag, zoom).",
+              "type": "string"
+            },
+            "lonLatCenter": {
+              "description": "Gets the current center of the map in longitude and latitude.",
+              "type": "array",
+              "items": {}
+            },
+            "lonLatExtent": {
+              "description": "Gets the current extent of the map in longitude and latitude.",
+              "type": "array",
+              "items": {}
+            },
+            "preventScroll": {
+              "description": "Gets the current scroll interaction state.",
+              "type": "boolean"
+            },
+            "projection": {
+              "description": "Gets the current map projection.",
+              "type": "string"
+            },
+            "sync": {
+              "description": "Gets the current sync state of the map.",
+              "type": "string"
+            },
+            "zoomExtent": {
+              "description": "Gets the current extent of the map.",
+              "type": "array",
+              "items": {}
+            },
+            "globeConfig": {
+              "description": "Gets the current globe configuration properties.",
+              "type": "string"
+            },
+            "last2dProjection": {
+              "description": "Stores the last 2D projection to switch back from globe view.",
+              "type": "string"
+            },
+            "OLprojection": {
+              "description": "Gets the openlayer map projection.",
+              "type": "string"
+            },
+            "globeEnabled": {
+              "description": "Sets the  Whether the globe is enabled.",
+              "type": "boolean"
+            },
+            "map": {
+              "description": "The OpenLayers map instance.",
+              "type": "string"
+            },
+            "selectInteractions": {
+              "description": "Object to store selection interactions for the map.",
+              "type": "string"
+            },
+            "mapControls": {
+              "description": "Object to store map controls (e.g., custom buttons, geolocation).",
+              "type": "string"
+            },
+            "globe": {
+              "description": "The globe instance when using globe projection.\ntodo: define proper type",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxStacinfo": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxStacinfo"
+            },
+            "allowHtml": {
+              "description": "Whether to allow HTML in the property display",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Whether to use unstyled mode",
+              "type": "boolean"
+            },
+            "for": {
+              "description": "The identifier for the STAC resource to fetch",
+              "type": "string"
+            },
+            "header": {
+              "description": "Keys of properties to display in the header",
+              "type": "array",
+              "items": {}
+            },
+            "tags": {
+              "description": "Keys of properties to display to display as tags",
+              "type": "array",
+              "items": {}
+            },
+            "body": {
+              "description": "Keys of properties to display to display in the main body",
+              "type": "array",
+              "items": {}
+            },
+            "featured": {
+              "description": "Keys of properties to display in the featured section",
+              "type": "array",
+              "items": {}
+            },
+            "footer": {
+              "description": "Keys of properties to display in the footer",
+              "type": "array",
+              "items": {}
+            },
+            "stacInfo": {
+              "description": "The state object containing the fetched STAC information",
+              "type": "array",
+              "items": {}
+            },
+            "stacProperties": {
+              "description": "The state object containing the parsed STAC properties",
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxStorytelling": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxStorytelling"
+            },
+            "markdown": {
+              "description": "Markdown Content",
+              "type": "string"
+            },
+            "markdownURL": {
+              "description": "Markdown Content URL",
+              "type": "string"
+            },
+            "showNav": {
+              "description": "Enable or disable navigation",
+              "type": "boolean"
+            },
+            "showEditor": {
+              "description": "Enable or disable editor",
+              "type": "string"
+            },
+            "showHeroScrollIndicator": {
+              "description": "Enable or disable hero scroll indicator",
+              "type": "boolean"
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "disableAutosave": {
+              "description": "Disable auto save",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "addCustomSectionIndex": {
+              "description": "custom section index",
+              "type": "number"
+            },
+            "selectedCustomElement": {
+              "description": "Selected custom element object",
+              "type": "string"
+            },
+            "nav": {
+              "description": "List of items in navigation",
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxTimecontrol": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxTimecontrol"
+            },
+            "for": {
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "type": "string"
+            },
+            "unstyled": {
+              "description": "Whether default styling is disabled.",
+              "type": "boolean"
+            },
+            "titleKey": {
+              "description": "Property key used to retrieve layer titles (default: \"name\").",
+              "type": "string"
+            },
+            "layerIdKey": {
+              "description": "Property key used to identify layers (default: \"id\").",
+              "type": "string"
+            },
+            "showUTC": {
+              "description": "Whether to show UTC dates in the timecontrol (default: false).",
+              "type": "boolean"
+            },
+            "externalMapRendering": {
+              "description": "Whether external map rendering is enabled for timelapse export.",
+              "type": "boolean"
+            },
+            "selectedDateRange": {
+              "description": "The currently selected date range as [startDate, endDate] in ISO format.",
+              "type": "string"
+            },
+            "controlValues": {
+              "description": "Array of control values.",
+              "type": "array",
+              "items": {}
+            },
+            "initDate": {
+              "description": "The initial date range as [startDate, endDate] in ISO/UTC format.",
+              "type": "string"
+            },
+            "sliderValues": {
+              "description": "Sets the array of slider values.",
+              "type": "array",
+              "items": {}
+            },
+            "eoxMap": {
+              "description": "Sets the reference to the associated eox-map element.",
+              "type": "string"
+            },
+            "groups": {
+              "description": "Sets the DataSet containing timeline groups.",
+              "type": "string"
+            },
+            "items": {
+              "description": "Sets the DataSet containing timeline items.",
+              "type": "string"
+            },
+            "dateChange": {
+              "description": "Handler for date change events. Updates the selected date range and applies it to map layers.",
+              "type": "string"
+            },
+            "filter": {
+              "description": "Handler for filter events from eox-itemfilter. Updates timeline item visibility based on filter results.",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxTour": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxTour"
+            },
+            "config": {
+              "description": "The driver.js configuration object. See the [driver.js docs](https://driverjs.com/docs/configuration) for available options.",
+              "type": "string"
+            },
+            "showEveryTime": {
+              "description": "Whether to show the tour every time the component is mounted,\nbypassing the `localStorage` check.",
+              "type": "boolean"
+            },
+            "preventAutoStart": {
+              "description": "Whether to prevent the tour from starting automatically on mount.\nIf true, the tour must be started manually via the `start()` method.",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Whether to disable the default EOx branded styling.",
+              "type": "boolean"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

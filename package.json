@@ -7,7 +7,8 @@
   "workspaces": [
     "elements/*",
     "utils",
-    "mcp-server"
+    "mcp-server",
+    "a2ui"
   ],
   "scripts": {
     "start": "npm run generate-typedoc && npm run generate-snippets && npm run generate-llms && concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
