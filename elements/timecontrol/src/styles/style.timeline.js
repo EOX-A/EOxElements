@@ -81,7 +81,7 @@ export const styleTimeline = `
 .vis-item.vis-range {
   border: 0;
   background: var(--primary) !important;
-  border-radius: 4px;
+  border-radius: 100px;
   height: 15px !important;
 }
 .vis-item.milestone.vis-point:hover {
