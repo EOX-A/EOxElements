@@ -31,6 +31,9 @@ export class EOxA2uiElement extends A2uiLitElement {
     if (element && this.controller?.props) {
       // Pass all properties to the EOxElement
       for (const [key, value] of Object.entries(this.controller.props)) {
+        if (key === "children") {
+          continue;
+        }
         if (element[key] !== value) {
           element[key] = value;
         }
@@ -46,7 +49,15 @@ export class EOxA2uiElement extends A2uiLitElement {
     }
 
     const targetTag = unsafeStatic(api.targetTagName);
-    return html`<${targetTag} id=${this.context.componentModel.id} ${ref(this._elementRef)}></${targetTag}>`;
+    const children = Array.isArray(this.controller?.props?.children)
+      ? this.controller.props.children
+      : [];
+
+    return html`
+      <${targetTag} id=${this.context.componentModel.id} ${ref(this._elementRef)}>
+        ${children.map((child) => this.renderNode(child))}
+      </${targetTag}>
+    `;
   }
 }
 

@@ -81,7 +81,7 @@ export class EOxA2uiWrapper extends LitElement {
     }
   }
 
-  _initMessageProcessor() {
+  _initMessageProcessorOnly() {
     if (this._surfaceCreatedSub) {
       this._surfaceCreatedSub.unsubscribe();
     }
@@ -98,6 +98,12 @@ export class EOxA2uiWrapper extends LitElement {
       this.requestUpdate(),
     );
 
+    this._processedMessages = [];
+  }
+
+  _initMessageProcessor() {
+    this._initMessageProcessorOnly();
+
     // Re-process any existing messages
     if (this._stream && this._stream.length > 0) {
       this._processNewMessages(this._stream);
@@ -109,7 +115,22 @@ export class EOxA2uiWrapper extends LitElement {
   _processNewMessages(msgs) {
     if (!this.messageProcessor || !msgs) return;
     try {
-      this.messageProcessor.processMessages(msgs);
+      const processedCount = this._processedMessages?.length || 0;
+      let newMsgs = msgs;
+
+      const isAppend =
+        processedCount > 0 &&
+        processedCount < msgs.length &&
+        this._processedMessages.every((msg, idx) => msg === msgs[idx]);
+
+      if (isAppend) {
+        newMsgs = msgs.slice(processedCount);
+      } else {
+        this._initMessageProcessorOnly();
+      }
+
+      this.messageProcessor.processMessages(newMsgs);
+      this._processedMessages = [...msgs];
     } catch (e) {
       console.error("Error processing messages:", e);
     }
