@@ -7,6 +7,8 @@ import {
   highlightByIdVectorTileLayer,
   removeSelectInteractionLayer,
   removeSelectInteraction,
+  removeSelectInteractionCleansUp,
+  clearHoverHighlightOnPointerLeave,
   noDuplicateVectorLoad,
 } from "./cases/select/index.js";
 
@@ -76,6 +78,20 @@ describe("select interaction on click", () => {
    * Test case to remove interaction
    */
   it("remove interaction", () => removeSelectInteraction());
+
+  /**
+   * Removing the layer must tear down the interaction's layer-group listener so
+   * re-adding a same-id layer does not re-attach the dead select style layer
+   */
+  it("cleans up listeners so a re-added layer does not restore a stale highlight", () =>
+    removeSelectInteractionCleansUp());
+
+  /**
+   * A hover (pointermove) interaction must clear its highlight when the pointer
+   * leaves the map
+   */
+  it("clears the hover highlight when the pointer leaves the map", () =>
+    clearHoverHighlightOnPointerLeave());
 
   /**
    * Adding a select interaction must not duplicate the vector source XHR

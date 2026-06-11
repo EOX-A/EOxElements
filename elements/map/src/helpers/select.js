@@ -78,8 +78,14 @@ export class EOxSelectInteraction {
     }
     // Set up event listeners to handle pointer leave events
     const pointerLeaveListener = () => {
-      if (overlay && options.condition === "pointermove") {
-        overlay.setPosition(undefined);
+      if (options.condition !== "pointermove") return;
+      overlay?.setPosition(undefined);
+      // Clear the hover highlight when the pointer leaves the map, otherwise it
+      // stays stuck (and stacks with other highlights) once the pointer moves
+      // off the map.
+      if (this.selectedFids?.length) {
+        this.selectedFids = [];
+        this.selectStyleLayer?.changed();
       }
     };
     eoxMap.map.on("change:target", (e) => {
@@ -282,7 +288,7 @@ export class EOxSelectInteraction {
       this.selectLayer.on("change:source", this.changeSourceListener);
 
       // Set up the map event listener for the specified condition (e.g., click, pointermove)
-      const changeLayerListener = () => {
+      this.changeLayerListener = () => {
         if (eoxMap.getLayerById(anyLayer.get("id"))) {
           // If a select layer exists, keep it in current activation state
           // (active/inactive) and assign it (and the overlay) to the map
@@ -295,7 +301,7 @@ export class EOxSelectInteraction {
           overlay?.setMap(null);
         }
       };
-      eoxMap.map.getLayerGroup().on("change", changeLayerListener);
+      eoxMap.map.getLayerGroup().on("change", this.changeLayerListener);
 
       /**
        * Adds a listener on pointermove
@@ -527,6 +533,9 @@ export class EOxSelectInteraction {
       this.selectLayer instanceof VectorTile
     ) {
       this.selectStyleLayer.setMap(null);
+      // Without this, the orphaned listener re-attaches this dead style layer
+      // (and its stale highlight) whenever a layer with the same id reappears.
+      this.eoxMap.map.getLayerGroup().un("change", this.changeLayerListener);
       delete this.eoxMap.selectInteractions[this.options.id];
       this.selectLayer.un("change:source", this.changeSourceListener);
       this.eoxMap.map.un("pointermove", this.pointerMoveListener);
