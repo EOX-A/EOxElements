@@ -103,7 +103,7 @@ class WMTSCapabilities extends TileImage {
    * @param {Object} params - The parameters to update.
    */
   updateParams(params) {
-    if (params.style) {
+    if ("style" in params) {
       this.style_ = params.style;
     }
     this.dimensions_ = {
