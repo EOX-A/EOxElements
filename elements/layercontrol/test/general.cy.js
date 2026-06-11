@@ -1,5 +1,6 @@
 // Importing test cases and necessary modules
 import "../src/main"; // Importing main module
+import "@eox/jsonform";
 import { updateVectorLayerStyle } from "../src/main";
 import "./_mockMap";
 import {
@@ -13,6 +14,7 @@ import {
   renderOptionalLayer,
   showCorrectLayerTitle,
   checkLayerLegend,
+  checkLayerLegendDynamic,
   colorSwatch,
   toolsAutoExpand,
   // checkLayerDatetime,
@@ -62,6 +64,10 @@ describe("LayerControl", () => {
 
   it("renders layer specific legend", () => {
     checkLayerLegend();
+  });
+
+  it("updates dynamic legend colorscale and domain", () => {
+    checkLayerLegendDynamic();
   });
 
   it("replaces icon with color swatch if color property is present on the layer", () => {

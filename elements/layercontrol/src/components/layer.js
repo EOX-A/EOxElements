@@ -35,6 +35,7 @@ export class EOxLayerControlLayer extends LitElement {
       attribute: "tools-auto-expand",
       type: Boolean,
     },
+    colormapRegistry: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -135,6 +136,13 @@ export class EOxLayerControlLayer extends LitElement {
      * @type {Array}
      */
     this.customEditorInterfaces = [];
+
+    /**
+     * Optional colormap registry for dynamic legend updates
+     *
+     * @type {Record<string,string[]>}
+     */
+    this.colormapRegistry = null;
   }
 
   /**
@@ -383,6 +391,7 @@ export class EOxLayerControlLayer extends LitElement {
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
             .toolsAutoExpand=${this.toolsAutoExpand}
+            .colormapRegistry=${this.colormapRegistry}
             .customEditorInterfaces=${this.customEditorInterfaces}
           ></eox-layercontrol-layer-tools>
         `,
