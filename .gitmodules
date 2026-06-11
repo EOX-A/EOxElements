@@ -2,3 +2,6 @@
 	path = examples
 	url = git@github.com:EOX-A/EOxElements-examples.git
 	update = none
+[submodule "ai-storytelling-demo"]
+	path = ai-storytelling-demo
+	url = git@github.com:EOX-A/ai-storytelling-demo.git
