@@ -1,4 +1,3 @@
-import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json";
 import POLARIS_STYLE from "./assets/polaris-style.json";
 
 const SENTINEL_HUB_URL =
@@ -292,10 +291,11 @@ export const STORIES_LAYER_CROPOMHUSC2 = {
   type: "Vector",
   source: {
     type: "Vector",
-    url:
-      "data:," +
-      encodeURIComponent(JSON.stringify(FEATURE_COLLECTION_LAYER_CROPOMHUSC)),
-    format: "GeoJSON",
+    url: "/cropomhusc.json",
+    format: {
+      type: "GeoJSON",
+      dataProjection: "EPSG:3035",
+    },
   },
   properties: {
     id: "id",

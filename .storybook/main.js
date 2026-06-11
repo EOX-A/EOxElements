@@ -59,6 +59,7 @@ const config = {
     "./public",
     "../elements/geosearch/stories/public/",
     "../elements/jsonform/stories/public/",
+    "../elements/layercontrol/stories/public/",
     "../elements/stacinfo/stories/public/",
     "../elements/storytelling/stories/public/",
     { from: "../elements/tour/dist", to: "/tour-dist" },

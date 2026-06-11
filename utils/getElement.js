@@ -9,32 +9,28 @@ export const getElement = (stringOrElement) => {
   let domElement;
   if (typeof stringOrElement === "string") {
     /**
-     * Get an element using querySelector from a given root
+     * Recursively searches for an element inside nested shadow roots
      *
-     * @param {Document | ShadowRoot} root the root document or shadow root to search in
-     * @returns {HTMLElement | null} the found DOM element or null if not found
+     * @param {Document | ShadowRoot} root - The root to search inside
+     * @param {string} selector - The CSS selector
+     * @returns {HTMLElement | null} - The found element or null
      */
-    const getElementViaQuerySelector = (root) => {
-      return /** @type {HTMLElement} */ (root.querySelector(stringOrElement));
-    };
+    const findElementDeep = (root, selector) => {
+      let el = root.querySelector(selector);
+      if (el) return /** @type {HTMLElement} */ (el);
 
-    // Try to get element in document
-    domElement = getElementViaQuerySelector(document);
-
-    // If the element is not found, search in shadow roots
-    // This is useful for elements that are inside shadow DOMs
-    // and not directly accessible via document.querySelector
-    if (!domElement) {
-      const allElements = document.querySelectorAll("html *");
-      for (let i = 0; i < allElements.length; i++) {
-        if (allElements[i].shadowRoot) {
-          domElement = getElementViaQuerySelector(allElements[i].shadowRoot);
-          if (domElement) {
-            break;
-          }
+      const children = root.querySelectorAll("*");
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        if (child.shadowRoot) {
+          el = findElementDeep(child.shadowRoot, selector);
+          if (el) return /** @type {HTMLElement} */ (el);
         }
       }
-    }
+      return null;
+    };
+
+    domElement = findElementDeep(document, stringOrElement) || undefined;
   } else {
     domElement = stringOrElement;
   }
