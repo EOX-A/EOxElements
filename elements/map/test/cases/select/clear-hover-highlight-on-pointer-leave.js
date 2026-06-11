@@ -24,9 +24,9 @@ const clearHoverHighlightOnPointerLeave = () => {
     },
   ];
 
-  cy.mount(
-    html`<eox-map .center=${[0, 0]} .layers=${styleJson}></eox-map>`,
-  ).as("eox-map");
+  cy.mount(html`<eox-map .center=${[0, 0]} .layers=${styleJson}></eox-map>`).as(
+    "eox-map",
+  );
 
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
