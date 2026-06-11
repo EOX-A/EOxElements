@@ -390,6 +390,7 @@ const styleEOX = `
     width: 100%;
     justify-items: start;
     display: grid;
+    grid-template-columns: 1fr;
   }
   .story-telling .hero {
     position: relative;      

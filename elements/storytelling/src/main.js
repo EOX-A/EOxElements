@@ -1,9 +1,6 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
-import markdownit from "markdown-it";
-import markdownitFootnote from "markdown-it-footnote";
 import {
-  getCustomEleHandling,
   loadMarkdownURL,
   scrollAnchorClickEvent,
   scrollIntoView,
@@ -13,26 +10,17 @@ import {
   addLightBoxScript,
   addCustomSection,
   initSavedMarkdown,
+  md,
+  renderAndSanitizeMarkdown,
 } from "./helpers";
-import DOMPurify from "isomorphic-dompurify";
-import {
-  markdownItConfig,
-  markdownItDecorateImproved,
-} from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
 import "./components/editor";
-import {
-  DEFAULT_SENSITIVE_TAGS,
-  SAMPLE_ELEMENTS,
-  CUSTOM_EDITOR_INTERFACES,
-} from "./enums";
+import "./components/text-section";
+import "./components/hero-section";
+import "./components/tour-step";
+import "./components/tour-section";
+import { SAMPLE_ELEMENTS, CUSTOM_EDITOR_INTERFACES } from "./enums";
 import _debounce from "lodash.debounce";
-const md = /** @type {import("./types").CustomMarkdownIt} */ (
-  markdownit({ html: true, linkify: true })
-);
-
-md.use(markdownItDecorateImproved).use(markdownItConfig);
-md.use(markdownitFootnote);
 /**
  * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, and custom initialization logic via events.
  *
@@ -56,6 +44,7 @@ md.use(markdownitFootnote);
  * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
  *
  * @element eox-storytelling
+ * @property {Array<any>} [children] - Slotted children flat components
  */
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
@@ -175,6 +164,11 @@ export class EOxStoryTelling extends LitElement {
      * @type {Object | null}
      */
     this.selectedCustomElement = null;
+
+    /**
+     * @type {HTMLElement | null}
+     */
+    this._slottedNavHtml = null;
   }
 
   /**
@@ -235,51 +229,50 @@ export class EOxStoryTelling extends LitElement {
             detail: this.markdown,
           }),
         );
-      }
 
-      const unsafeHTML = md.render(this.markdown);
+        const sanitizedHTML = renderAndSanitizeMarkdown(this.markdown);
 
-      validateMarkdownAttrs(md.attrs.sections, this);
+        validateMarkdownAttrs(md.attrs.sections, this);
 
-      this.#config = md.config;
+        this.#config = md.config;
 
-      if (typeof this.#config.nav === "boolean")
-        this.showNav = this.#config.nav;
+        if (typeof this.#config.nav === "boolean")
+          this.showNav = this.#config.nav;
 
-      if (this.showNav) this.nav = md.nav;
+        if (this.showNav) this.nav = md.nav;
 
-      this.#html = renderHtmlString(
-        DOMPurify.sanitize(unsafeHTML, {
-          CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
-          ADD_TAGS: DEFAULT_SENSITIVE_TAGS,
-        }),
-        md.sections,
-        this.#dispatchInitEvent.bind(this),
-        this,
-      );
+        this.#html = renderHtmlString(
+          sanitizedHTML,
+          md.sections,
+          this.#dispatchInitEvent.bind(this),
+          this,
+        );
 
-      this.#html = parseNavWithAddSection(
-        this.#html,
-        this.nav,
-        this.showNav,
-        this.showEditor,
-        this,
-      );
+        this.#html = parseNavWithAddSection(
+          this.#html,
+          this.nav,
+          this.showNav,
+          this.showEditor,
+          this,
+        );
 
-      if (this.showEditor !== undefined) {
-        const parent = this.shadowRoot || this;
-        /**
-         * @type {EOxStoryTelling}
-         */
-        const editorDOM = parent.querySelector("eox-storytelling-editor");
-        /**
-         * @type {import("@eox/jsonform").EOxJSONForm}
-         */
-        const jsonFormDOM = editorDOM.querySelector("eox-jsonform");
+        if (this.showEditor !== undefined) {
+          const parent = this.shadowRoot || this;
+          /**
+           * @type {EOxStoryTelling}
+           */
+          const editorDOM = parent.querySelector("eox-storytelling-editor");
+          /**
+           * @type {import("@eox/jsonform").EOxJSONForm}
+           */
+          const jsonFormDOM = editorDOM.querySelector("eox-jsonform");
 
-        // @ts-expect-error Story is not by default part of value, but only in this case
-        if (this.markdown !== jsonFormDOM?.value.Story)
-          editorDOM.markdown = this.markdown;
+          // @ts-expect-error Story is not by default part of value, but only in this case
+          if (this.markdown !== jsonFormDOM?.value.Story)
+            editorDOM.markdown = this.markdown;
+        }
+      } else {
+        this.#html = undefined;
       }
 
       this.requestUpdate();
@@ -288,14 +281,25 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'nav' property itself has changed and generate anchor click event
     if (changedProperties.has("nav"))
       scrollAnchorClickEvent(this, ".navigation a");
+
+    if (
+      changedProperties.has("showNav") ||
+      changedProperties.has("_isSlottedMode")
+    ) {
+      if (this._isSlottedMode) {
+        this._handleSlottedChildrenChange();
+      }
+    }
   }
 
   /**
    * Handles changes to the slot's content, updating the component's internal state.
+   *
+   * @param {HTMLSlotElement} [slotElement]
    */
-  handleSlotChange() {
+  handleSlotChange(slotElement) {
     // Query the shadow DOM for the slot element
-    const slot = this.shadowRoot.querySelector("slot");
+    const slot = slotElement || this.shadowRoot.querySelector("slot");
 
     if (slot) {
       // Retrieve all nodes assigned to the slot, flattening any nested nodes
@@ -309,6 +313,237 @@ export class EOxStoryTelling extends LitElement {
       // Request an update to re-render the component with the new content
       this.requestUpdate();
     }
+  }
+
+  /**
+   * Main slot change handler that routes based on mode
+   */
+  _handleSlotChange() {
+    /**
+     * @type {HTMLElement[]}
+     */
+    const flatElements = /** @type {HTMLElement[]} */ (
+      Array.from(this.children).filter(
+        (node) =>
+          node instanceof HTMLElement &&
+          (node.tagName.toLowerCase() === "eox-a2ui-element" ||
+            (node.tagName.toLowerCase().startsWith("eox-storytelling-") &&
+              node.tagName.toLowerCase() !== "eox-storytelling")),
+      )
+    );
+
+    if (flatElements.length > 0) {
+      this._isSlottedMode = true;
+
+      // Update slots for hero elements
+      flatElements.forEach((el, index) => {
+        const isHero =
+          el.tagName.toLowerCase() === "eox-storytelling-hero" ||
+          (el.tagName.toLowerCase() === "eox-a2ui-element" &&
+            (el.querySelector("eox-storytelling-hero") ||
+              /** @type {any} */ (el).context?.componentModel?.type ===
+                "EOxStorytellingHero"));
+
+        if (index === 0 && isHero) {
+          if (el.getAttribute("slot") !== "hero") {
+            el.setAttribute("slot", "hero");
+          }
+        } else {
+          if (el.getAttribute("slot") === "hero") {
+            el.removeAttribute("slot");
+          }
+        }
+      });
+
+      this._handleSlottedChildrenChange();
+    } else {
+      this._isSlottedMode = false;
+      this.handleSlotChange();
+    }
+  }
+
+  /**
+   * Handles changes to the slotted children in flat-component mode
+   */
+  _handleSlottedChildrenChange() {
+    /**
+     * @type {HTMLElement[]}
+     */
+    const flatElements = /** @type {HTMLElement[]} */ (
+      Array.from(this.children).filter(
+        (node) =>
+          node instanceof HTMLElement &&
+          (node.tagName.toLowerCase() === "eox-a2ui-element" ||
+            (node.tagName.toLowerCase().startsWith("eox-storytelling-") &&
+              node.tagName.toLowerCase() !== "eox-storytelling")),
+      )
+    );
+
+    if (this.showNav) {
+      this.nav = flatElements
+        .filter((child) => {
+          const childAny = /** @type {any} */ (child);
+          const inner =
+            child.tagName.toLowerCase() === "eox-a2ui-element"
+              ? child.querySelector("*")
+              : child;
+          const tagName = inner
+            ? inner.tagName.toLowerCase()
+            : child.tagName.toLowerCase();
+
+          // Exclude hero components from the navigation list
+          const isHero =
+            tagName === "eox-storytelling-hero" ||
+            (child.tagName.toLowerCase() === "eox-a2ui-element" &&
+              childAny.context?.componentModel?.type === "EOxStorytellingHero");
+
+          return !isHero;
+        })
+        .map((child) => {
+          const childAny = /** @type {any} */ (child);
+          const inner =
+            child.tagName.toLowerCase() === "eox-a2ui-element"
+              ? child.querySelector("*")
+              : child;
+          const innerAny = /** @type {any} */ (inner);
+          const id =
+            child.id ||
+            child.getAttribute("id") ||
+            (child.tagName.toLowerCase() === "eox-a2ui-element" &&
+              childAny.context?.componentModel?.id) ||
+            (inner && (inner.id || inner.getAttribute("id"))) ||
+            "";
+          let title =
+            (innerAny &&
+              ("title" in innerAny
+                ? innerAny.title
+                : innerAny.getAttribute("title"))) ||
+            child.getAttribute("title") ||
+            (child.tagName.toLowerCase() === "eox-a2ui-element" &&
+              (childAny.context?.componentModel?.properties?.title ||
+                childAny.context?.componentModel?.title ||
+                childAny.controller?.props?.title)) ||
+            "";
+
+          if (!title) {
+            let markdown = "";
+            if (
+              innerAny &&
+              "markdown" in innerAny &&
+              typeof innerAny.markdown === "string"
+            ) {
+              markdown = innerAny.markdown;
+            } else if (
+              child.tagName.toLowerCase() === "eox-a2ui-element" &&
+              typeof childAny.context?.componentModel?.properties?.markdown ===
+                "string"
+            ) {
+              markdown = childAny.context?.componentModel?.properties?.markdown;
+            }
+
+            if (markdown) {
+              const headingMatch = markdown.match(/^\s*#{1,6}\s+(.+)$/m);
+              if (headingMatch) {
+                title = headingMatch[1].replace(/<!--[\s\S]*?-->/g, "").trim();
+              }
+            }
+          }
+          return {
+            id,
+            title,
+            state: true,
+          };
+        })
+        .filter((item) => item.id);
+
+      if (this.nav.length) {
+        const parser = new DOMParser();
+        const navHtml = `
+          <div class="navigation">
+            <div class="container nav-container">
+              <span class="hamburger-menu" aria-label="Toggle navigation"></span>
+              <div class="nav-overlay"></div>
+              <ul class="nav-list">
+                ${this.nav
+                  .map(({ id, title, state }) =>
+                    state
+                      ? `<li class="nav-${id} center-align"><a href="#${id}"><small class="truncate">${title}</small></a></li>`
+                      : "",
+                  )
+                  .join("")}
+              </ul>
+            </div>
+          </div>
+        `;
+        const navDOM = /** @type {HTMLElement} */ (
+          parser.parseFromString(navHtml, "text/html").body.firstChild
+        );
+
+        // Add click handler for hamburger menu
+        const hamburgerBtn = navDOM.querySelector(".hamburger-menu");
+        const navList = navDOM.querySelector(".navigation .container ul");
+        const navOverlay = navDOM.querySelector(".nav-overlay");
+        const navListItems = navDOM.querySelectorAll(".nav-list li");
+
+        if (hamburgerBtn && navList) {
+          const navEventHandlers = () => {
+            hamburgerBtn.classList.toggle("active");
+            navList.classList.toggle("show");
+            navOverlay.classList.toggle("show");
+          };
+          hamburgerBtn.addEventListener("click", () => navEventHandlers());
+          navOverlay.addEventListener("click", () => navEventHandlers());
+          navListItems.forEach((item) => {
+            item.addEventListener("click", () => navEventHandlers());
+          });
+        }
+
+        // Attach click event listeners
+        navDOM.querySelectorAll(".navigation a").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.parent.location.hash = /** @type {HTMLAnchorElement} */ (
+              e.currentTarget
+            ).hash.replace("#", "");
+            scrollIntoView(this);
+          });
+        });
+
+        // Setup IntersectionObserver for active state
+        const sectionNavObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const intersecting = entry.isIntersecting;
+              const id = entry.target.getAttribute("id");
+              if (intersecting) {
+                const root = this.shadowRoot || this;
+                root.querySelectorAll(".navigation li").forEach((navItem) => {
+                  if (navItem.classList.contains(`nav-${id}`)) {
+                    navItem.classList.add("active");
+                  } else {
+                    navItem.classList.remove("active");
+                  }
+                });
+              }
+            });
+          },
+          { rootMargin: "-50% 0px" },
+        );
+
+        flatElements.forEach((child) => {
+          if (child.id) {
+            sectionNavObserver.observe(child);
+          }
+        });
+
+        this._slottedNavHtml = navDOM;
+      } else {
+        this._slottedNavHtml = null;
+      }
+    } else {
+      this._slottedNavHtml = null;
+    }
+    this.requestUpdate();
   }
 
   async firstUpdated() {
@@ -331,7 +566,9 @@ export class EOxStoryTelling extends LitElement {
     addLightBoxScript();
 
     // Check if this.#html is initialized, if not, wait for it
-    if (this.#html === undefined) await this.waitForHtmlInitialization();
+    if (this.markdown || this.markdownURL) {
+      if (this.#html === undefined) await this.waitForHtmlInitialization();
+    }
     scrollIntoView(this);
   }
 
@@ -354,9 +591,10 @@ export class EOxStoryTelling extends LitElement {
     } editor-${this.showEditor}`;
 
     const navClass = `${this.showNav && this.nav.length ? "nav-enabled" : ""}`;
+    const isSlotted =
+      this._isSlottedMode && !this.markdown && !this.markdownURL;
 
     return html`
-      <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
       <style>
         :host { display: block; }
         .slot-hide { display: none; }
@@ -364,7 +602,21 @@ export class EOxStoryTelling extends LitElement {
       </style>
 
       <div class="story-telling ${editorClass} ${navClass}">
-        <div>${when(this.#html, () => html`${this.#html}`)}</div>
+        <div>
+          ${when(this.#html, () => html`${this.#html}`)}
+          ${isSlotted
+            ? html`
+                <slot name="hero" @slotchange=${this._handleSlotChange}></slot>
+                ${this._slottedNavHtml || ""}
+                <slot @slotchange=${this._handleSlotChange}></slot>
+              `
+            : html`
+                <slot
+                  class="slot-hide"
+                  @slotchange=${this._handleSlotChange}
+                ></slot>
+              `}
+        </div>
         ${when(
           this.showEditor !== undefined,
           () => html`

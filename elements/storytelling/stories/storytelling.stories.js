@@ -12,6 +12,7 @@ import {
   MarkdownImageTourStory,
   MarkdownShowcaseStory,
   MarkdownInitEventStory,
+  FlatComponentsStory,
 } from "./index";
 import { html } from "lit";
 
@@ -95,3 +96,25 @@ export const MarkdownInitEvent = MarkdownInitEventStory;
  * A comprehensive example combining a hero section, standard markdown with configuration, a map section, a map tour, and an image tour all in one story.
  */
 export const MarkdownShowcase = MarkdownShowcaseStory;
+
+/**
+ * Flat Components story.
+ * Demonstrates the use of flat, normalized storytelling components (<eox-storytelling-text>, <eox-storytelling-tour-step>, <eox-storytelling-tour>)
+ * to enable real-time streaming updates in alignment with the @a2ui/ streaming protocol.
+ *
+ * \`\`\`html
+ * <eox-storytelling-text
+ *   title="Introductory Text"
+ *   markdown="This is rendered via individual storytelling custom elements."
+ * ></eox-storytelling-text>
+ *
+ * <eox-storytelling-tour position="left">
+ *   <eox-storytelling-tour-step
+ *     title="Step 1: Europe"
+ *     description="This step zooms into Europe."
+ *     .config=\${{ zoom: 4, center: [15, 48], layers: [...] }}
+ *   ></eox-storytelling-tour-step>
+ * </eox-storytelling-tour>
+ * \`\`\`
+ */
+export const FlatStorytellingComponents = FlatComponentsStory;

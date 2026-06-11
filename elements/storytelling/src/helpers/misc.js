@@ -26,15 +26,28 @@ export function scrollAnchorClickEvent(that, selector) {
  */
 export function scrollIntoView(that) {
   const hash = window.parent.location.hash;
-  const element = hash
-    ? /**@type{HTMLElement}*/ (that.shadowRoot.querySelector(hash))
+  let element = hash
+    ? /**@type{HTMLElement}*/ (
+        (that.shadowRoot && that.shadowRoot.querySelector(hash)) ||
+          that.querySelector(hash)
+      )
     : null;
   if (element) {
-    const navBar = that.shadowRoot.querySelector(".navigation");
+    if (window.getComputedStyle(element).display === "contents") {
+      const inner = element.querySelector("*");
+      if (inner instanceof HTMLElement) {
+        element = inner;
+      }
+    }
+
+    const navBar =
+      (that.shadowRoot && that.shadowRoot.querySelector(".navigation")) ||
+      that.querySelector(".navigation");
+    const navTop = navBar ? navBar.getBoundingClientRect().top : 0;
+    const safeNavTop = navTop > 200 ? 0 : navTop;
+    const navHeight = navBar ? navBar.getBoundingClientRect().height : 60;
     element.style.scrollMarginTop = `calc(${
-      navBar?.getBoundingClientRect().top +
-        navBar?.getBoundingClientRect().height ||
-      that.getBoundingClientRect().top
+      safeNavTop + navHeight || that.getBoundingClientRect().top
     }px + 1rem)`;
     element.style.scrollMarginBottom = "1rem";
     const firstStepSection = element.querySelector("section-step");

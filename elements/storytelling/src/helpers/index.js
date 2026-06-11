@@ -1,5 +1,11 @@
 export { default as loadMarkdownURL } from "./load-markdown-url.js";
 export { renderHtmlString, parseNavWithAddSection } from "./render-html-string";
+export { md, renderAndSanitizeMarkdown } from "./markdown";
+export {
+  assignNewAttrValue,
+  fadeLayer,
+  preloadMapTiles,
+} from "./map-transition";
 export {
   scrollAnchorClickEvent,
   scrollIntoView,

@@ -15,6 +15,8 @@ import {
   loadHeroSectionTest,
   loadMarkdownLightBoxTest,
   loadMarkdownErrorStory,
+  loadFlatComponentsTest,
+  loadFlatWrapperTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -59,4 +61,10 @@ describe("Storytelling", () => {
 
   // Test case to ensure markdown error loaded
   it("Load markdown error", () => loadMarkdownErrorStory());
+
+  // Test case to ensure flat storytelling components load correctly
+  it("loads flat storytelling components", () => loadFlatComponentsTest());
+
+  // Test case to ensure single entry-point wrapper with slotted components & auto-navigation works
+  it("loads flat wrapper with slotted navigation", () => loadFlatWrapperTest());
 });
