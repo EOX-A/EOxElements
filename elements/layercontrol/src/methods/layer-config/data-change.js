@@ -74,7 +74,9 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
       const globusLayer = globe.planet.layers.filter(
         (l) => l.name == EOxLayerControlLayerConfig.layer.get("id"),
       )[0];
-      globusLayer.setUrl(updateUrl(globusLayer.url, updatedData));
+      if (globusLayer) {
+        globusLayer.setUrl(updateUrl(globusLayer.url, updatedData));
+      }
       window.eoxMapGlobe.refresh();
     }
   }
