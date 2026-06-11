@@ -36,10 +36,10 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^8.0.13"
+    "vite": "^8.0.16"
   },
   "dependencies": {
-    "@eox/elements-utils": "^1.1.0",
+    "@eox/elements-utils": "^1.2.0",
     "@eox/ui": "^1.1.0",
     "lit": "^3.3.3",
     "lodash.debounce": "^4.0.8",
