@@ -2,6 +2,7 @@ import "../src/main";
 import {
   addSelectInteraction,
   selectAfterReArrangingLayers,
+  clearHoverHighlightOnPointerLeave,
 } from "./cases/hover/index.js";
 
 /**
@@ -18,4 +19,10 @@ describe("select interaction with hover", () => {
    */
   it("working selection after re-arranging layers", () =>
     selectAfterReArrangingLayers());
+
+  /**
+   * Test case that the hover highlight clears when the pointer leaves the map
+   */
+  it("clears the hover highlight when the pointer leaves the map", () =>
+    clearHoverHighlightOnPointerLeave());
 });

@@ -6,3 +6,4 @@ export { default as setDefaultLoadingIndicator } from "./set-default-loading-ind
 export { default as setCustomFullScreenLoadingIndicator } from "./set-custom-fullscreen-loading-indicator";
 export { default as setLayoutControls } from "./set-layout-controls";
 export { default as setSlottedControls } from "./set-slotted-controls";
+export { default as setAttributionVisibility } from "./set-attribution-visibility";

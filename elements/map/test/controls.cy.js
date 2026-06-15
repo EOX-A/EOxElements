@@ -1,5 +1,6 @@
 import "../src/main";
 import {
+  setAttributionVisibility,
   setBasicControls,
   setCustomFullScreenLoadingIndicator,
   setDefaultLoadingIndicator,
@@ -42,4 +43,9 @@ describe("webcomponent property parsing", () => {
    */
   it("Custom Full Screen Loading Indicator Control", () =>
     setCustomFullScreenLoadingIndicator());
+
+  /**
+   * Test case that the attribution control hides when there are no attributions
+   */
+  it("Attribution visibility when empty", () => setAttributionVisibility());
 });
