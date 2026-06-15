@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.6.1](https://github.com/EOX-A/EOxElements/compare/map-v2.6.0...map-v2.6.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* Clear duplicate select (click & hover) highlights ([#2397](https://github.com/EOX-A/EOxElements/issues/2397)) ([1ce97ee](https://github.com/EOX-A/EOxElements/commit/1ce97eea10792d2f8531b8c57b6a6f7b2b721b12))
+* Hide attribution control when empty ([#2396](https://github.com/EOX-A/EOxElements/issues/2396)) ([2a52afa](https://github.com/EOX-A/EOxElements/commit/2a52afa1bd60b2547a148abd03c6b60da7af0dfd))
+
 ## [2.6.0](https://github.com/EOX-A/EOxElements/compare/map-v2.5.1...map-v2.6.0) (2026-05-21)
 
 
