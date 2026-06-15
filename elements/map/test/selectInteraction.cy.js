@@ -8,7 +8,6 @@ import {
   removeSelectInteractionLayer,
   removeSelectInteraction,
   removeSelectInteractionCleansUp,
-  clearHoverHighlightOnPointerLeave,
   noDuplicateVectorLoad,
 } from "./cases/select/index.js";
 
@@ -85,13 +84,6 @@ describe("select interaction on click", () => {
    */
   it("cleans up listeners so a re-added layer does not restore a stale highlight", () =>
     removeSelectInteractionCleansUp());
-
-  /**
-   * A hover (pointermove) interaction must clear its highlight when the pointer
-   * leaves the map
-   */
-  it("clears the hover highlight when the pointer leaves the map", () =>
-    clearHoverHighlightOnPointerLeave());
 
   /**
    * Adding a select interaction must not duplicate the vector source XHR

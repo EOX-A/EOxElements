@@ -80,9 +80,7 @@ export class EOxSelectInteraction {
     const pointerLeaveListener = () => {
       if (options.condition !== "pointermove") return;
       overlay?.setPosition(undefined);
-      // Clear the hover highlight when the pointer leaves the map, otherwise it
-      // stays stuck (and stacks with other highlights) once the pointer moves
-      // off the map.
+      // Clear the hover highlight, otherwise it stays stuck
       if (this.selectedFids?.length) {
         this.selectedFids = [];
         this.selectStyleLayer?.changed();
@@ -533,8 +531,7 @@ export class EOxSelectInteraction {
       this.selectLayer instanceof VectorTile
     ) {
       this.selectStyleLayer.setMap(null);
-      // Without this, the orphaned listener re-attaches this dead style layer
-      // (and its stale highlight) whenever a layer with the same id reappears.
+      // Drop the listener so the dead style layer doesnt re-attach.
       this.eoxMap.map.getLayerGroup().un("change", this.changeLayerListener);
       delete this.eoxMap.selectInteractions[this.options.id];
       this.selectLayer.un("change:source", this.changeSourceListener);

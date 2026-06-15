@@ -3,9 +3,8 @@ import ecoRegionsFixture from "../../fixtures/ecoregions.json";
 import vectorLayerJson from "../../fixtures/vectorLayer.json";
 
 /**
- * A pointermove (hover) select interaction must clear its highlight when the
- * pointer leaves the map, otherwise the highlight stays stuck (and stacks with
- * other highlights) once the pointer moves off the map.
+ * A hover (pointermove) interaction must clear its highlight when the pointer
+ * leaves the map.
  */
 const clearHoverHighlightOnPointerLeave = () => {
   cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
@@ -33,11 +32,9 @@ const clearHoverHighlightOnPointerLeave = () => {
     const interaction = eoxMap.selectInteractions.hoverInteraction;
     expect(interaction, "hover interaction created").to.exist;
 
-    // Simulate a hover highlight.
     interaction.highlightById(["someFeatureId"]);
     expect(interaction.selectedFids, "highlight set").to.have.length(1);
 
-    // Pointer leaves the map -> highlight must be cleared.
     eoxMap.map
       .getTargetElement()
       .dispatchEvent(new PointerEvent("pointerleave"));
