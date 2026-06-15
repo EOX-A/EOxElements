@@ -25,6 +25,11 @@ import { getLayerById } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
+/**
+ * Event bus for synchronizing multiple globes.
+ * @type {EventTarget & {_isSyncing?: boolean}}
+ */
+const globeSyncBus = new EventTarget();
 let globus;
 
 /**
@@ -70,6 +75,181 @@ export function translateOLStyleExpressions(olStyle, properties) {
   }
   return ogStyle;
 }
+
+export const setupGlobeSync = (EOxMap, globus) => {
+  const { planet } = globus;
+  const map = EOxMap.map;
+  const onGlobeMove = () => {
+    // Do not sync from globe to OL if a programmatic move is in progress.
+    const cam = planet.camera;
+
+    const centerCartesian = planet.getCartesianFromPixelTerrain(
+      planet.renderer.handler.getCenter(),
+    );
+    if (!centerCartesian) {
+      return;
+    }
+
+    const lonLat = planet.ellipsoid.cartesianToLonLat(centerCartesian);
+    let zoomFactor = map.globeConfig?.useHighLOD ? 1 : 2;
+    const zoom = Math.log2(21050000 / cam.getLonLat().height) + zoomFactor;
+    const center = transform(
+      [lonLat.lon, lonLat.lat],
+      "EPSG:4326",
+      map.getView().getProjection().getCode(),
+    );
+    const rotation = -1 * cam.getHeading() * (Math.PI / 180);
+    EOxMap._isSyncing = true;
+    map.getView().setCenter(center);
+    map.getView().setZoom(zoom);
+    if (!Number.isNaN(rotation) && rotation !== map.getView().getRotation()) {
+      map.getView().setRotation(rotation);
+    }
+
+    EOxMap._isSyncing = false;
+
+    // sync other globes
+    if (!globeSyncBus._isSyncing) {
+      globeSyncBus._isSyncing = true;
+      globeSyncBus.dispatchEvent(
+        new CustomEvent("move", { detail: { source: globus, EOxMap } }),
+      );
+      globeSyncBus._isSyncing = false;
+    }
+  };
+
+  const updateGlobeCamera = () => {
+    if (EOxMap._isSyncing) {
+      return;
+    }
+    const view = map.getView();
+    const center = view.getCenter();
+    const resolution = view.getResolution();
+    // const rotation = view.getRotation();
+    // const pitch = view.get("pitch") || -90;
+
+    if (!center || resolution === undefined) {
+      return;
+    }
+
+    const lonLatCenter = transform(
+      center,
+      view.getProjection().getCode(),
+      "EPSG:4326",
+    );
+
+    let currZoom = EOxMap.map.getView().getZoom() - 1;
+    if (!EOxMap.globeConfig?.useHighLOD) {
+      globus.planet.quadTreeStrategy.setLodSize(512);
+      currZoom = currZoom - 1;
+    }
+
+    const groundHeight = 21050000 / Math.pow(2, currZoom);
+
+    EOxMap._isSyncing = true;
+    globus.planet.camera.setLonLat(
+      new LonLat(lonLatCenter[0], lonLatCenter[1], groundHeight),
+      new LonLat(lonLatCenter[0], lonLatCenter[1], 0),
+      Vec3.NORTH,
+    );
+
+    EOxMap._isSyncing = false;
+  };
+
+  const startMove = () => {
+    // Only attach the listener if we are not in the middle of a programmatic update
+    if (!EOxMap._isSyncing) {
+      planet.renderer.events.on("draw", onGlobeMove);
+    }
+  };
+
+  const endMove = () => {
+    planet.renderer.events.off("draw", onGlobeMove);
+    // Once movement is finished, we can stop listening for the 'moveend' event.
+    planet.camera.events.off("moveend", endMove);
+  };
+
+  // Debounced function to detach the move listener after mouse wheel scrolling stops.
+  const debouncedEndMove = debounce(endMove, 250);
+
+  const onMouseWheel = () => {
+    if (!EOxMap._isSyncing) {
+      // Attach the listener for immediate feedback during scroll
+      startMove();
+      // Reset the timer to detach the listener when scrolling stops
+      debouncedEndMove();
+    }
+  };
+
+  const onMouseUp = () => {
+    // When the mouse is released, we don't stop the sync immediately.
+    // Instead, we wait for the camera to completely stop moving (including inertia).
+    planet.camera.events.on("moveend", endMove);
+    if (!EOxMap._isSyncing) {
+      console.log("Mouse up detected, waiting for camera to stop moving...");
+      debounce(endMove, 0);
+    }
+    onMouseWheel();
+  };
+
+  // Attach listeners for events that signify the start of a user interaction
+  planet.renderer.events.on("ldown", startMove);
+  planet.renderer.events.on("rdown", startMove);
+  planet.renderer.events.on("mdown", startMove);
+  planet.renderer.events.on("touchstart", startMove);
+
+  // Attach listeners for events that signify the end of a user interaction
+  planet.renderer.events.on("lup", onMouseUp);
+  planet.renderer.events.on("rup", onMouseUp);
+  planet.renderer.events.on("mup", onMouseUp);
+  planet.renderer.events.on("touchend", onMouseUp);
+
+  // Handle mouse wheel separately to use debouncing
+  planet.renderer.events.on("mousewheel", onMouseWheel);
+
+  const viewListeners = [
+    "change:center",
+    "change:resolution",
+    "change:rotation",
+  ];
+  let currentView = map.getView();
+  const attachViewListeners = (view) => {
+    view.on(viewListeners, updateGlobeCamera);
+  };
+  const detachViewListeners = (view) => {
+    view.un(viewListeners, updateGlobeCamera);
+  };
+
+  attachViewListeners(currentView);
+  const viewChangeHandler = () => {
+    detachViewListeners(currentView);
+    currentView = map.getView();
+    attachViewListeners(currentView);
+  };
+  //map.on("change:view", viewChangeHandler);
+
+  // Store for cleanup
+  globus.onMouseUp = onMouseUp;
+  globus._onGlobeMove = onGlobeMove;
+  globus._updateGlobeCamera = updateGlobeCamera;
+  globus._viewChangeHandler = viewChangeHandler;
+  globus._detachViewListeners = detachViewListeners;
+  globus._onMouseWheel = onMouseWheel; // Store for cleanup
+};
+
+const onOtherGlobeMove = (evt) => {
+  if (globeSyncBus._isSyncing) {
+    return;
+  }
+  const { source, EOxMap: sourceEOxMap } = evt.detail;
+  if (sourceEOxMap.globe) {
+    globeSyncBus._isSyncing = true;
+    sourceEOxMap.globe.planet.camera.set(source.planet.camera);
+    globeSyncBus._isSyncing = false;
+  }
+};
+
+globeSyncBus.addEventListener("move", onOtherGlobeMove);
 
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
@@ -117,10 +297,16 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
     }
   `;
   target.appendChild(style);
+
+  setupGlobeSync(EOxMap, globus);
+
   return globus;
 };
 
-export const refreshGlobe = () => {
+/**
+ * @param {OgGlobe} globus
+ */
+export const refreshGlobe = (globus) => {
   if (globus) {
     globus.planet.layers.forEach((l) => {
       if (l instanceof CanvasTiles) {
@@ -133,7 +319,7 @@ export const refreshGlobe = () => {
   }
 };
 
-export const createGlobusLayer = (olLayer, mapPool) => {
+export const createGlobusLayer = (olLayer, mapPool, globus) => {
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
 
@@ -288,7 +474,7 @@ export const enableGlobe = (map) => {
     map.registerProjectionFromCode("EPSG:3857"); // Ensure projection is registered for OL, globe uses its own.
 
     // Store the globe instance returned by create, if any.
-    map.globe = window.eoxMapGlobe.create({
+    const globe = window.eoxMapGlobe.create({
       EOxMap: map,
       target: globeDiv,
     });
@@ -296,6 +482,7 @@ export const enableGlobe = (map) => {
     /** @type {HTMLElement} */
     (map.shadowRoot.querySelector("#map")).style.display = "none";
     map.globeEnabled = true;
+    map.globe = globe;
   }
 
   // Keep compatible controls visible, hide others
@@ -445,6 +632,7 @@ export const enableGlobe = (map) => {
       existingFullScreen.source_ = map.shadowRoot.querySelector("#globe");
     }
   }
+  return map.globe;
 };
 
 export const disableGlobe = (map) => {
@@ -554,6 +742,23 @@ export const disableGlobe = (map) => {
             existingFullScreen.source_ = map.shadowRoot.querySelector("#map");
           }
         }
+        // Sync cleanup
+        planet.renderer.events.off("draw", globe._onGlobeMove);
+        planet.renderer.events.off("ldown");
+        planet.renderer.events.off("rdown");
+        planet.renderer.events.off("mdown");
+        planet.renderer.events.off("touchstart");
+        planet.renderer.events.off("lup", globus._onMouseUp);
+        planet.renderer.events.off("rup", globus._onMouseUp);
+        planet.renderer.events.off("rup", globus._onMouseUp);
+        planet.renderer.events.off("mup", globus._onMouseUp);
+        planet.renderer.events.off("touchend", globus._onMouseUp);
+        planet.renderer.events.off("mousewheel", globe._onMouseWheel);
+        // Also ensure the moveend listener is cleaned up
+        planet.camera.events.off("moveend");
+        globe._detachViewListeners(map.map.getView());
+        map.map.un("change:view", globe._viewChangeHandler);
+        globeSyncBus.removeEventListener("move", onOtherGlobeMove);
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation
@@ -598,7 +803,7 @@ function debounce(func, wait) {
  */
 export const setupLayerListeners = (olLayer, globe, mapPool) => {
   const debouncedRefresh = debounce(() => {
-    refreshGlobe();
+    refreshGlobe(globe);
   }, 200);
 
   olLayer.on("change", () => {

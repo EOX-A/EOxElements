@@ -66,7 +66,7 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
         (l) => l.name == EOxLayerControlLayerConfig.layer.get("id"),
       )[0];
       globusLayer.setUrl(updateUrl(globusLayer.url, data));
-      window.eoxMapGlobe.refresh();
+      window.eoxMapGlobe.refresh(globe);
     }
   }
 
