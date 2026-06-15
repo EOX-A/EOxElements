@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@eox/map": "*",
-    "vite": "^8.0.13"
+    "vite": "^8.0.16"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -38,13 +38,13 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^1.1.0",
+    "@eox/elements-utils": "^1.2.0",
     "@eox/ui": "^1.1.0",
     "@json-editor/json-editor": "^2.16.0",
     "@turf/bbox-polygon": "^7.3.5",
     "ace-builds": "^1.44.0",
     "easymde": "^2.21.0",
-    "isomorphic-dompurify": "^3.13.0",
+    "isomorphic-dompurify": "^3.15.0",
     "lit": "^3.3.3",
     "lodash.isequal": "^4.5.0",
     "toolcool-range-slider": "^4.0.28"

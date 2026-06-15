@@ -130,6 +130,7 @@ customElements.define("eox-example", EOxExample);
   - The component class calls these from its setters/lifecycle, passing `this`.
   - Re-export methods via barrel `index.js` files.
 - **Enums & Constants**: Do NOT use TypeScript enums. Constants live in `src/enums/` as frozen JavaScript objects with `SCREAMING_SNAKE_CASE` naming.
+- **Projections**: For vector sources with a specific projection (e.g., GeoJSON in EPSG:3035), ensure the projection is registered globally. Prefer using `registerProjection` with a direct proj4 definition string for stability in stories, or `registerProjectionFromCode` for dynamic environments. In the layer definition, use the `format` object to specify `dataProjection`.
 - **Inter-Component Communication**: Components depending on `<eox-map>` use a standardized `for` property (a CSS selector defaulting to `"eox-map"`). In `firstUpdated()`, call `getElement(this.for)` from `@eox/elements-utils` to resolve the reference, even across shadow boundaries. Address re-resolution on property change in `updated()`.
 - **Styling**:
   - **EOxUI First**: This repository uses [EOxUI](https://github.com/EOX-A/EOxUI). Prefer using proper HTML structure and EOxUI classes over writing custom CSS.
