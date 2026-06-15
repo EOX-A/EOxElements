@@ -301,10 +301,10 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
  *
  * @param {HTMLElement} node - The DOM node to process.
  * @param {Function} initDispatchFunc - Init dispatch event
- * @param {import("../main.js").EOxStoryTelling} that - The EOxStoryTelling instance.
+ * @param {import("../main.js").EOxStoryTelling} _that - The EOxStoryTelling instance.
  * @returns {HTMLElement} The processed DOM node.
  */
-function processNode(node, initDispatchFunc, that) {
+export function processNode(node, initDispatchFunc, _that) {
   if (node.nodeType === Node.ELEMENT_NODE) {
     const childElements = node.querySelectorAll("*");
     childElements.forEach((element) => {
@@ -353,10 +353,7 @@ function processNode(node, initDispatchFunc, that) {
 
         // Handle media loading error by switching to backup URL if available
         media.onerror = () => {
-          if (
-            that.renderRoot.contains(media) &&
-            media.getAttribute("data-fallback-src")
-          ) {
+          if (media.getAttribute("data-fallback-src")) {
             media.src = media.getAttribute("data-fallback-src");
             media.removeAttribute("data-fallback-src");
           } else {

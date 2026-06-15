@@ -1,5 +1,9 @@
 export { default as loadMarkdownURL } from "./load-markdown-url.js";
-export { renderHtmlString, parseNavWithAddSection } from "./render-html-string";
+export {
+  renderHtmlString,
+  parseNavWithAddSection,
+  processNode,
+} from "./render-html-string";
 export { md, renderAndSanitizeMarkdown } from "./markdown";
 export {
   assignNewAttrValue,
@@ -24,5 +28,7 @@ export {
   preventEditorOutsideScroll,
   runWhenEditorInitialised,
   updateEditorInitVisibility,
+  blocksToMarkdown,
+  markdownToBlocks,
 } from "./editor";
 export { validateMarkdownAttrs } from "./validator";

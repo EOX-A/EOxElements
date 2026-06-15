@@ -438,3 +438,340 @@ export function updateEditorInitVisibility(StoryTellingEditor) {
     ).click();
   else setTimeout(() => updateEditorInitVisibility(StoryTellingEditor), 100);
 }
+
+/**
+ * Helper to serialize an attribute value for Markdown HTML comments.
+ * @param {string} key
+ * @param {any} value
+ * @returns {string}
+ */
+function serializeAttribute(key, value) {
+  if (typeof value === "object") {
+    return `${key}='${JSON.stringify(value)}'`;
+  } else if (typeof value === "string") {
+    return `${key}="${value}"`;
+  } else {
+    return `${key}=${value}`;
+  }
+}
+
+/**
+ * Generate Markdown from blocks JSON structure.
+ * @param {Array<any>} blocks
+ * @returns {string}
+ */
+export function blocksToMarkdown(blocks) {
+  const markdownParts = [];
+
+  const rootBlock = blocks.find(
+    (b) => b.id === "storytelling-root" || b.component === "EOxStorytelling",
+  );
+  if (rootBlock) {
+    const configLines = [];
+    if (rootBlock.showNav !== undefined) {
+      configLines.push(`nav: ${rootBlock.showNav}`);
+    }
+    if (configLines.length > 0) {
+      markdownParts.push(`---\n${configLines.join("\n")}\n---`);
+    }
+  }
+
+  const topLevelIds = rootBlock && rootBlock.children ? rootBlock.children : [];
+  let topLevelBlocks = [];
+  if (topLevelIds.length > 0) {
+    topLevelBlocks = topLevelIds
+      .map((id) => blocks.find((b) => b.id === id))
+      .filter(Boolean);
+  } else {
+    topLevelBlocks = blocks.filter(
+      (b) =>
+        b.component !== "EOxStorytelling" &&
+        b.id !== "storytelling-root" &&
+        b.component !== "EOxStorytellingTourStep",
+    );
+  }
+
+  for (const block of topLevelBlocks) {
+    if (block.component === "EOxStorytellingHero") {
+      const attrs = [];
+      if (block.id) attrs.push(`id="${block.id}"`);
+      if (block.as) attrs.push(`as="${block.as}"`);
+      attrs.push(`mode="hero"`);
+      if (block.background) attrs.push(`src="${block.background}"`);
+      if (block.position) attrs.push(`position="${block.position}"`);
+
+      const title = block.title || "";
+      const description = block.description || "";
+
+      const heading = `# ${title} <!--{ ${attrs.join(" ")} }-->`;
+      const descPart = description
+        ? `${description} <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->`
+        : "";
+
+      markdownParts.push([heading, descPart].filter(Boolean).join("\n"));
+    } else if (block.component === "EOxStorytellingText") {
+      let mdContent = block.markdown || "";
+      const headingMatch = mdContent.match(/^(\s*#+)\s+([^\n<!]+)(.*)$/m);
+      if (headingMatch) {
+        const fullMatch = headingMatch[0];
+        const headingPrefix = headingMatch[1];
+        const headingTitle = headingMatch[2].trim();
+        const existingComment = headingMatch[3].trim();
+
+        let newComment = "";
+        if (
+          existingComment.startsWith("<!--") &&
+          existingComment.endsWith("-->")
+        ) {
+          const innerContent = existingComment
+            .substring(4, existingComment.length - 3)
+            .trim();
+          const braceMatch = innerContent.match(/^\{(.*)\}$/);
+          let innerAttrs = braceMatch ? braceMatch[1].trim() : innerContent;
+          if (!innerAttrs.includes(`id=`)) {
+            innerAttrs = `id="${block.id}" ${innerAttrs}`;
+          }
+          newComment = `<!--{ ${innerAttrs.trim()} }-->`;
+        } else {
+          newComment = `<!--{ id="${block.id}" }-->`;
+        }
+
+        mdContent = mdContent.replace(
+          fullMatch,
+          `${headingPrefix} ${headingTitle} ${newComment}`,
+        );
+      } else {
+        const headingTitle =
+          block.title ||
+          (block.id && !block.id.startsWith("text-") ? block.id : "");
+        const headingLine = headingTitle
+          ? `## ${headingTitle} <!--{ id="${block.id}" }-->`
+          : `## <!--{ id="${block.id}" }-->`;
+        mdContent = headingLine + "\n" + mdContent;
+      }
+      markdownParts.push(mdContent.trim());
+    } else if (block.component === "EOxStorytellingTour") {
+      const attrs = [];
+      if (block.id) attrs.push(`id="${block.id}"`);
+      const asType = block.as || "eox-map";
+      attrs.push(`as="${asType}"`);
+      attrs.push(`mode="tour"`);
+      if (block.position) attrs.push(`position="${block.position}"`);
+
+      const title = block.title || "Tour section";
+      const heading = `## ${title} <!--{ ${attrs.join(" ")} }-->`;
+
+      const stepParts = [];
+      const stepIds = block.children || [];
+      const steps = stepIds
+        .map((id) => blocks.find((b) => b.id === id))
+        .filter(Boolean);
+
+      for (const step of steps) {
+        const stepAttrs = [];
+        if (step.id) stepAttrs.push(`id="${step.id}"`);
+
+        const config = step.config || {};
+        for (const [key, value] of Object.entries(config)) {
+          stepAttrs.push(serializeAttribute(key, value));
+        }
+
+        const stepHeading = `### <!--{ ${stepAttrs.join(" ")} }-->`;
+        const stepTitle = step.title ? `#### ${step.title}` : "";
+        const stepDesc = step.description || "";
+
+        stepParts.push(
+          [stepHeading, stepTitle, stepDesc].filter(Boolean).join("\n"),
+        );
+      }
+
+      markdownParts.push([heading, ...stepParts].join("\n\n"));
+    }
+  }
+
+  return markdownParts.join("\n\n");
+}
+
+/**
+ * CLIENT-SIDE Markdown-to-Blocks JSON Compiler
+ * Parses annotative markdown back into correct A2UI storytelling blocks instantly.
+ * @param {string} markdown
+ * @returns {Array<any>}
+ */
+export function markdownToBlocks(markdown) {
+  const blocks = [];
+  // Normalize Windows line endings and trim surrounding padding
+  let normalized = markdown.replace(/\r\n/g, "\n").trim();
+
+  // Strip YAML frontmatter at the very start of the file
+  normalized = normalized.replace(/^---\n[\s\S]*?\n---\n?/, "");
+
+  const lines = normalized.split("\n");
+
+  let currentBlock = null;
+  let currentStep = null;
+  let textBuffer = [];
+  let blockCounter = 0;
+
+  function parsePropsFromComment(commentStr) {
+    if (!commentStr) return {};
+    const props = {};
+    const regex =
+      /([a-zA-Z0-9_-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|(\{[\s\S]*?\})|(\[[\s\S]*?\])|([^\s'"]+))/g;
+    let match;
+    while ((match = regex.exec(commentStr)) !== null) {
+      const key = match[1];
+      const valStr = match[2] || match[3] || match[4] || match[5] || match[6];
+      try {
+        if (
+          (valStr.startsWith("{") && valStr.endsWith("}")) ||
+          (valStr.startsWith("[") && valStr.endsWith("]")) ||
+          valStr === "true" ||
+          valStr === "false" ||
+          !isNaN(/** @type {any} */ (valStr))
+        ) {
+          props[key] = JSON.parse(valStr);
+        } else {
+          props[key] = valStr;
+        }
+      } catch (_) {
+        props[key] = valStr;
+      }
+    }
+    return props;
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    // Robust header matching allowing spaces inside <!-- { ... } -->
+    const headerMatch = line.match(
+      /^(\s*)(#+)\s+([^\n<!]*?)(?:\s*<!--\s*\{\s*([\s\S]*?)\s*\}\s*-->)?\s*$/,
+    );
+
+    if (headerMatch) {
+      const level = headerMatch[2].length;
+      const title = headerMatch[3].trim();
+      const commentStr = headerMatch[4] ? headerMatch[4].trim() : "";
+      const props = parsePropsFromComment(commentStr);
+
+      const isHero =
+        level === 1 &&
+        (props.mode === "hero" || ["img", "video"].includes(props.as));
+      const isTour = level === 2 && props.mode === "tour";
+      const isText = level === 2 && props.mode !== "tour";
+      const isStep =
+        level === 3 &&
+        currentBlock &&
+        currentBlock.component === "EOxStorytellingTour";
+      const isStepTitle = level === 4 && currentStep;
+
+      const isBlockBoundary = isHero || isTour || isText || isStep;
+
+      if (isBlockBoundary) {
+        // Flush previous block contents
+        if (currentBlock && currentBlock.component === "EOxStorytellingText") {
+          currentBlock.markdown = textBuffer.join("\n").trim();
+        } else if (currentStep) {
+          currentStep.description = textBuffer.join("\n").trim();
+        } else if (
+          currentBlock &&
+          currentBlock.component === "EOxStorytellingHero"
+        ) {
+          currentBlock.description = textBuffer.join("\n").trim();
+        }
+        textBuffer = [];
+
+        if (isHero) {
+          currentBlock = {
+            id: props.id || `welcome`,
+            component: "EOxStorytellingHero",
+            title: title,
+            background: props.src || "",
+            as: props.as || "img",
+            position: props.position || "center",
+            description: "",
+          };
+          blocks.push(currentBlock);
+          currentStep = null;
+        } else if (isTour) {
+          currentBlock = {
+            id: props.id || `tour-${blockCounter++}`,
+            component: "EOxStorytellingTour",
+            title: title,
+            as: props.as || "eox-map",
+            position: props.position || "left",
+            children: [],
+          };
+          blocks.push(currentBlock);
+          currentStep = null;
+        } else if (isText) {
+          currentBlock = {
+            id: props.id || `text-${blockCounter++}`,
+            component: "EOxStorytellingText",
+            markdown: "",
+          };
+          let commentSuffix = commentStr ? ` <!--{ ${commentStr} }-->` : "";
+          if (title || commentStr) {
+            textBuffer.push(`## ${title}${commentSuffix}`);
+          }
+          blocks.push(currentBlock);
+          currentStep = null;
+        } else if (isStep) {
+          const config = {};
+          for (const [k, v] of Object.entries(props)) {
+            if (k !== "id") config[k] = v;
+          }
+
+          currentStep = {
+            id: props.id || `step-${blockCounter++}`,
+            component: "EOxStorytellingTourStep",
+            title: "",
+            description: "",
+            config: config,
+          };
+          blocks.push(currentStep);
+          currentBlock.children.push(currentStep.id);
+        }
+      } else if (isStepTitle) {
+        currentStep.title = title;
+      } else {
+        // Not a block boundary, so it's just standard markdown heading text inside the current block/step
+        if (!currentBlock && !currentStep) {
+          currentBlock = {
+            id: `text-${blockCounter++}`,
+            component: "EOxStorytellingText",
+            markdown: "",
+          };
+          blocks.push(currentBlock);
+        }
+        let commentSuffix = commentStr ? ` <!--{ ${commentStr} }-->` : "";
+        textBuffer.push(`${"#".repeat(level)} ${title}${commentSuffix}`);
+      }
+    } else {
+      // Accumulate text, auto-initializing a default text block if leading content occurs before first heading
+      if (line.trim() !== "") {
+        if (!currentBlock && !currentStep) {
+          currentBlock = {
+            id: `text-${blockCounter++}`,
+            component: "EOxStorytellingText",
+            markdown: "",
+          };
+          blocks.push(currentBlock);
+        }
+      }
+      if (currentBlock || currentStep) {
+        textBuffer.push(line);
+      }
+    }
+  }
+
+  if (currentBlock && currentBlock.component === "EOxStorytellingText") {
+    currentBlock.markdown = textBuffer.join("\n").trim();
+  } else if (currentStep) {
+    currentStep.description = textBuffer.join("\n").trim();
+  } else if (currentBlock && currentBlock.component === "EOxStorytellingHero") {
+    currentBlock.description = textBuffer.join("\n").trim();
+  }
+
+  return blocks;
+}

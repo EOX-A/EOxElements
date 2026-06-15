@@ -379,6 +379,33 @@ export class EOxStoryTelling extends LitElement {
       )
     );
 
+    if (flatElements.length > 0) {
+      flatElements.forEach((el) => {
+        el.classList.remove(
+          "section-start",
+          "section-end",
+          "section-after-nav",
+          "section-item",
+        );
+      });
+
+      const navIndex = this.showNav ? 0 : -1;
+      const sectionStartIndex = navIndex + 1;
+
+      flatElements.forEach((el, index) => {
+        el.classList.add("section-item");
+        if (index === 0) {
+          el.classList.add("section-start");
+        }
+        if (index === flatElements.length - 1) {
+          el.classList.add("section-end");
+        }
+        if (index === sectionStartIndex) {
+          el.classList.add("section-after-nav");
+        }
+      });
+    }
+
     if (this.showNav) {
       this.nav = flatElements
         .filter((child) => {
@@ -442,19 +469,35 @@ export class EOxStoryTelling extends LitElement {
             }
 
             if (markdown) {
-              const headingMatch = markdown.match(/^\s*#{1,6}\s+(.+)$/m);
+              const headingMatch = markdown.match(/^\s*##\s+(.+)$/m);
               if (headingMatch) {
                 title = headingMatch[1].replace(/<!--[\s\S]*?-->/g, "").trim();
               }
             }
           }
+          let navState = true;
+          let attrNav =
+            child.getAttribute("nav") || (inner && inner.getAttribute("nav"));
+          if (
+            attrNav === null &&
+            child.tagName.toLowerCase() === "eox-a2ui-element"
+          ) {
+            attrNav =
+              childAny.context?.componentModel?.properties?.nav ||
+              childAny.context?.componentModel?.nav ||
+              childAny.controller?.props?.nav;
+          }
+          if (attrNav === "false" || /** @type {any} */ (attrNav) === false) {
+            navState = false;
+          }
+
           return {
             id,
             title,
-            state: true,
+            state: navState,
           };
         })
-        .filter((item) => item.id);
+        .filter((item) => item.id && item.title);
 
       if (this.nav.length) {
         const parser = new DOMParser();
@@ -602,7 +645,7 @@ export class EOxStoryTelling extends LitElement {
       </style>
 
       <div class="story-telling ${editorClass} ${navClass}">
-        <div>
+        <div class="story-telling-content">
           ${when(this.#html, () => html`${this.#html}`)}
           ${isSlotted
             ? html`
@@ -729,3 +772,5 @@ export class EOxStoryTelling extends LitElement {
 }
 
 customElements.define("eox-storytelling", EOxStoryTelling);
+
+export { blocksToMarkdown, markdownToBlocks } from "./helpers";

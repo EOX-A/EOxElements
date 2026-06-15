@@ -1,8 +1,5 @@
-import { TEST_SELECTORS } from "../../src/enums/index.js";
 import "../../../map/src/main";
 import "../../src/main";
-
-const { storyTelling } = TEST_SELECTORS;
 
 /**
  * Ensure flat components loaded and align with A2UI streaming updates
@@ -42,7 +39,7 @@ const loadFlatComponentsTest = () => {
     .eq(0)
     .shadow()
     .within(() => {
-      cy.get("h3").should("have.text", "Step 1 Title");
+      cy.get("h4").should("have.text", "Step 1 Title");
       cy.get("strong").should("have.text", "markdown");
     });
 
@@ -67,7 +64,7 @@ const loadFlatComponentsTest = () => {
     .eq(0)
     .shadow()
     .within(() => {
-      cy.get("h3").should("have.text", "Updated Title");
+      cy.get("h4").should("have.text", "Updated Title");
       cy.get("strong").should("have.text", "rich");
     });
 
@@ -98,7 +95,7 @@ const loadFlatComponentsTest = () => {
   cy.get("#step-2")
     .shadow()
     .within(() => {
-      cy.get("h3").should("have.text", "Step 3 Title");
+      cy.get("h4").should("have.text", "Step 3 Title");
     });
 };
 

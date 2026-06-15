@@ -131,7 +131,12 @@ function curlyAttrs(state) {
     finalTokens.push(token);
 
     const currAttr = getAttr(stack.last.attrs, "as");
-    if (stack.last.markup === "#" && HERO_MEDIA_TYPES.includes(currAttr)) {
+    const currMode = getAttr(stack.last.attrs, "mode");
+    if (
+      stack.last.markup === "#" &&
+      HERO_MEDIA_TYPES.includes(currAttr) &&
+      currMode === "hero"
+    ) {
       finalTokens = parseHeroSection(finalTokens, state, stack);
       i++;
     }

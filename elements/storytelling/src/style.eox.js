@@ -340,7 +340,9 @@ const styleEOX = `
     position: relative;
     border-bottom: 1px solid #efefef;
   }
-  .story-telling .section-wrap.section-item.section-after-nav:not(.tour) {
+  .story-telling .section-wrap.section-item.section-after-nav:not(.tour),
+  :host(.section-after-nav) .story-telling .section-wrap.section-item:not(.tour),
+  :host(.section-after-nav:not(.tour)) {
     margin-top: 2rem;
   }
   .story-telling.editor-enabled .section-wrap.section-item.section-end::after, 
@@ -377,14 +379,19 @@ const styleEOX = `
     bottom: -12px;
     top: unset;
   }
-  .story-telling .section-wrap.container.section-start:not(.hero) {
+  .story-telling .section-wrap.container.section-start:not(.hero),
+  :host(.section-start) .story-telling .section-wrap.container:not(.hero),
+  :host(.section-start:not(.hero)) {
     padding-top: 4rem;
   }
   .story-telling p:last-child {
     margin-bottom: 0;
   }
-  .story-telling .section-wrap.container:last-child {
+  .story-telling-content > .section-wrap.container:last-child {
     padding-bottom: 4rem; 
+  }
+  .story-telling-content > ::slotted(*:last-child) {
+    padding-bottom: 4rem;
   }
   .story-telling .tour {
     width: 100%;
