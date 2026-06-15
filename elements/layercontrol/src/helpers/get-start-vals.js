@@ -49,18 +49,30 @@ export function getStartVals(layer, layerConfig) {
       : layerConfig.style?.variables;
   if ((layerConfig.type === "style" || layerConfig.style) && styleVars) {
     nestedValues = styleVars;
-
-    // @ts-expect-error TODO
-  } else if (layer.getSource()?.getTileUrlFunction?.()) {
+  } else if (/** @type {any} */ (layer.getSource())?.getParams?.()) {
+    nestedValues = /** @type {any} */ (layer.getSource()).getParams();
+  } else if (
+    /** @type {import("ol/source").Source & { getTileUrlFunction: Function }} */ (
+      layer.getSource()
+    )?.getTileUrlFunction?.()
+  ) {
     // Extract query parameters from tile URL
-    // @ts-expect-error TODO
-    const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
-
-    // Retrieve startVals based on schema and query parameters
-    nestedValues = {};
-    for (const [key, value] of url.searchParams.entries()) {
-      const allValues = url.searchParams.getAll(key);
-      nestedValues[key] = allValues.length > 1 ? allValues : value;
+    try {
+      const tileUrl =
+        /** @type {import("ol/source").Source & { getTileUrlFunction: Function }} */ (
+          layer.getSource()
+        ).getTileUrlFunction()([0, 0, 0]);
+      if (tileUrl) {
+        const url = new URL(tileUrl);
+        // Retrieve startVals based on schema and query parameters
+        nestedValues = {};
+        for (const [key, value] of url.searchParams.entries()) {
+          const allValues = url.searchParams.getAll(key);
+          nestedValues[key] = allValues.length > 1 ? allValues : value;
+        }
+      }
+    } catch (e) {
+      console.error("Error parsing start values from tile URL", e);
     }
   } else return null;
 

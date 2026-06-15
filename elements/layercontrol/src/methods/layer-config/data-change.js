@@ -16,44 +16,47 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
   // Checking if the layer's tile URL function exists.
   // If it does, set 'newTileUrlFunc' to the layer's tile URL function.
   // This step ensures the original tile URL function is preserved if 'tileUrlFunc' is not provided.
-  // @ts-expect-error TODO
-  if (EOxLayerControlLayerConfig.layer.getSource().getTileUrlFunction()) {
+  const source =
+    /** @type {import("ol/source").Source & { getTileUrlFunction: Function, setTileUrlFunction: Function, setKey: Function, updateParams: Function, _updatedUrl: string, getUrls: Function }} */ (
+      EOxLayerControlLayerConfig.layer.getSource()
+    );
+  if (source.updateParams) {
+    const updatedData = { ...data };
+    const removeProperties =
+      EOxLayerControlLayerConfig.layerConfig.schema?.options
+        ?.removeProperties ?? [];
+    removeProperties.forEach((prop) => delete updatedData[prop]);
+    source.updateParams(updatedData);
+  } else if (source.getTileUrlFunction && source.getTileUrlFunction()) {
     if (!newTileUrlFunc) {
-      newTileUrlFunc = EOxLayerControlLayerConfig.layer
-        .getSource()
-        // @ts-expect-error TODO
-        .getTileUrlFunction();
+      newTileUrlFunc = source.getTileUrlFunction();
     }
 
     // Setting a new tile URL function for the layer's source by applying updated data to the existing function.
-    EOxLayerControlLayerConfig.layer
-      .getSource()
-      // @ts-expect-error TODO
-      .setTileUrlFunction((...args) => {
-        const url = new URL(newTileUrlFunc(...args));
-        const removeProperties =
-          EOxLayerControlLayerConfig.layerConfig.schema?.options
-            ?.removeProperties ?? [];
+    source.setTileUrlFunction((...args) => {
+      const url = new URL(newTileUrlFunc(...args));
+      const removeProperties =
+        EOxLayerControlLayerConfig.layerConfig.schema?.options
+          ?.removeProperties ?? [];
 
-        // Store the updated URL on the source for other components (like the globe) to use
-        if (EOxLayerControlLayerConfig.layer.getSource() instanceof XYZ_ol) {
-          // @ts-expect-error TODO
-          EOxLayerControlLayerConfig.layer.getSource()._updatedUrl = updateUrl(
-            /** @type {XYZ_ol} */ (
-              EOxLayerControlLayerConfig.layer.getSource()
-            ).getUrls()[0],
-            data,
-          );
-        }
-        // Remove unwanted properties from query parameters
-        removeProperties.forEach((prop) => url.searchParams.delete(prop));
-        return updateUrl(url.href, data);
-      });
+      const updatedData = { ...data };
+      removeProperties.forEach((prop) => delete updatedData[prop]);
+
+      // Store the updated URL on the source for other components (like the globe) to use
+      if (source instanceof XYZ_ol) {
+        source._updatedUrl = updateUrl(
+          /** @type {XYZ_ol} */ (source).getUrls()[0],
+          updatedData,
+        );
+      }
+      // Remove unwanted properties from query parameters
+      removeProperties.forEach((prop) => url.searchParams.delete(prop));
+      return updateUrl(url.href, updatedData);
+    });
 
     // TODO: It's not advisable to access protected methods directly.
     // Setting a new key for the layer source to trigger a refresh.
-    // @ts-expect-error TODO
-    EOxLayerControlLayerConfig.layer.getSource().setKey(new Date());
+    source.setKey(new Date().toISOString());
   }
 
   const map = /** @type {import("../../../../map/src/main").EOxMap} */ (
@@ -62,10 +65,18 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
   if (map) {
     const globe = map.globe;
     if (globe) {
+      const updatedData = { ...data };
+      const removeProperties =
+        EOxLayerControlLayerConfig.layerConfig.schema?.options
+          ?.removeProperties ?? [];
+      removeProperties.forEach((prop) => delete updatedData[prop]);
+
       const globusLayer = globe.planet.layers.filter(
         (l) => l.name == EOxLayerControlLayerConfig.layer.get("id"),
       )[0];
-      globusLayer.setUrl(updateUrl(globusLayer.url, data));
+      if (globusLayer) {
+        globusLayer.setUrl(updateUrl(globusLayer.url, updatedData));
+      }
       window.eoxMapGlobe.refresh();
     }
   }
