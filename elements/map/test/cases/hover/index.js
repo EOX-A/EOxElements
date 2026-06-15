@@ -2,6 +2,7 @@
 
 export { default as addSelectInteraction } from "./add-select-interaction";
 export { default as selectAfterReArrangingLayers } from "./select-after-re-arranging-layers";
+export { default as clearHoverHighlightOnPointerLeave } from "./clear-hover-highlight-on-pointer-leave";
 export { default as displayTooltip } from "./display-tooltip";
 export { default as displayCustomTooltip } from "./display-custom-tooltip";
 export { default as disableTooltip } from "./disable-tooltip";
