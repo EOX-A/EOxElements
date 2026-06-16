@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { A2UI_SPEC_VERSION } from "../src/constants.js";
+import { virtualComponents } from "../src/transformers/virtual-components.js";
 
 // Locate package.json to read current version
 const packageJsonPath = path.resolve(process.cwd(), "package.json");
@@ -202,6 +203,107 @@ for (const el of elements) {
       {
         type: "object",
         properties: componentProps,
+        required: ["component"],
+      },
+    ],
+    unevaluatedProperties: false,
+  };
+}
+
+for (const vc of virtualComponents) {
+  const componentProps = {
+    component: { const: vc.name },
+  };
+
+  let properties = {};
+  if (vc.name === "EOxStorytellingHero") {
+    properties = {
+      title: { type: "string", description: "Main title of the hero section" },
+      as: {
+        type: "string",
+        enum: ["img", "video"],
+        description: "Render hero background as an image or a video",
+      },
+      background: {
+        type: "string",
+        description: "URL of the hero background image/video source",
+      },
+      description: {
+        type: "string",
+        description: "Sub-description text to overlay on the hero section",
+      },
+    };
+  } else if (vc.name === "EOxStorytellingText") {
+    properties = {
+      title: {
+        type: "string",
+        description: "Title of the text narrative section",
+      },
+      markdown: {
+        type: "string",
+        description: "Markdown-formatted text narrative content",
+      },
+    };
+  } else if (vc.name === "EOxStorytellingTour") {
+    properties = {
+      title: { type: "string", description: "Title of the tour section" },
+      tourTitle: { type: "string", description: "Alternative tour title" },
+      as: {
+        type: "string",
+        description:
+          "Target element type to render under the tour, e.g. 'eox-map' or 'img'",
+      },
+      tourAs: {
+        type: "string",
+        description: "Alternative target element type",
+      },
+      position: {
+        type: "string",
+        enum: ["left", "right"],
+        description:
+          "Position of the text narrative overlay relative to the media",
+      },
+      tourPosition: {
+        type: "string",
+        enum: ["left", "right"],
+        description: "Alternative position override",
+      },
+      children: {
+        type: "array",
+        items: { type: "string" },
+        description: "Array of tour step component IDs",
+      },
+    };
+  } else if (vc.name === "EOxStorytellingTourStep") {
+    properties = {
+      title: { type: "string", description: "Title of the tour step" },
+      stepTitle: { type: "string", description: "Alternative tour step title" },
+      description: {
+        type: "string",
+        description: "Description narrative content of the tour step",
+      },
+      stepDescription: {
+        type: "string",
+        description: "Alternative tour step description narrative content",
+      },
+      config: {
+        type: "object",
+        description:
+          "Configuration object or string containing layers/zoom/center settings for the step",
+      },
+    };
+  }
+
+  eoxCatalogJson.components[vc.name] = {
+    type: "object",
+    allOf: [
+      { $ref: "common_types.json#/$defs/ComponentCommon" },
+      {
+        type: "object",
+        properties: {
+          ...componentProps,
+          ...properties,
+        },
         required: ["component"],
       },
     ],
