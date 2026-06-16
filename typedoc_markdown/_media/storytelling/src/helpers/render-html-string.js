@@ -10,6 +10,7 @@ let sectionObservers = [];
 let sectionNavObservers = [];
 let stepSectionObservers = [];
 let sectionOverlayObservers = [];
+let sectionTimeouts = [];
 
 /**
  * Converts an HTML string into DOM nodes and processes each node.
@@ -27,6 +28,10 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   const parent = /** @type {HTMLElement} */ (that.shadowRoot || that);
 
   const isNavigation = !!(that.showNav && that.nav.length);
+
+  // Clear all pending timeouts
+  sectionTimeouts.forEach((t) => clearTimeout(t));
+  sectionTimeouts = [];
 
   // Open all links inside story in a new tab
   const anchorTagsArr = doc.querySelectorAll("a");
@@ -70,13 +75,14 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
         { rootMargin: "-50% 0px" },
       );
 
-      setTimeout(() => {
+      const navTimeout = setTimeout(() => {
         const sectionDom = parent.querySelector(`#${section.id}`);
         if (sectionDom) {
           sectionNavObserver.observe(sectionDom);
           sectionNavObservers.push(sectionNavObserver);
         }
       }, 200);
+      sectionTimeouts.push(navTimeout);
     });
   }
 
@@ -191,7 +197,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       });
 
       // Create scroll Step Section Observer with a small delay
-      setTimeout(() => {
+      const stepObserverTimeout = setTimeout(() => {
         const contentParent = parent.querySelector(`#${sectionId}`);
         if (!contentParent) return;
 
@@ -216,7 +222,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
         // Deferred load of remaining hidden layers
         // This ensures the initial view loads fast, then we inject the rest for caching/preloading
-        setTimeout(() => {
+        const deferredTimeout = setTimeout(() => {
           if (!layersLoaded) {
             layersLoaded = true;
             assignNewAttrValue(
@@ -228,21 +234,23 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
             );
           }
         }, 2500);
+        sectionTimeouts.push(deferredTimeout);
 
         sectionObserver.observe(contentParent);
         sectionObservers.push(sectionObserver);
       }, 500);
+      sectionTimeouts.push(stepObserverTimeout);
 
       // Explicit Preloader: Forces loading of tiles for future steps (different zoom/center)
       // This complements the "Hidden Layer" strategy which only handles the current view.
-      setTimeout(() => {
+      const preloadTimeout = setTimeout(() => {
         const eoxMap = /** @type {any} */ (
           parent.querySelector(elementSelector)
         );
         if (eoxMap && eoxMap.preloadTiles) {
           section.steps.forEach((step, stepIndex) => {
             // Stagger requests to prevent freezing the main thread & network congestion
-            setTimeout(() => {
+            const staggerTimeout = setTimeout(() => {
               const stepLayers = step.layers || [];
               // Collect IDs - these are already deduplicated in the previous block
               const layerIds = stepLayers
@@ -257,9 +265,11 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
                 eoxMap.preloadTiles(layerIds, zoom, center, 0.5);
               }
             }, stepIndex * 1000); // 1-second delay between preloading each step
+            sectionTimeouts.push(staggerTimeout);
           });
         }
       }, 3000); // Start preloading 3s after init
+      sectionTimeouts.push(preloadTimeout);
     }
   });
 
@@ -331,9 +341,11 @@ function assignNewAttrValue(
   allLayers = [],
 ) {
   const element = /** @type {any} */ (parent.querySelector(elementSelector));
+  if (!element) return;
   const attrs = section.steps[index];
 
   Object.keys(attrs).forEach((attr) => {
+    if (attr === "id") return;
     if (attr === "layers" && allLayers.length && Array.isArray(attrs[attr])) {
       const stepLayers = attrs[attr];
       const mergedLayers = allLayers.map((layer) => {
@@ -464,7 +476,8 @@ function processNode(node, initDispatchFunc, that) {
             )),
         );
       }
-      setTimeout(() => initDispatchFunc(element), 100);
+      const dispatchTimeout = setTimeout(() => initDispatchFunc(element), 100);
+      sectionTimeouts.push(dispatchTimeout);
     });
   }
 
