@@ -229,4 +229,5 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
       return () => EoxMap.removeEventListener("layerschanged", onLayersChanged);
     }
   }
+  return undefined;
 }
