@@ -4749,6 +4749,16 @@
             },
             {
               "kind": "field",
+              "name": "#cleanupLayersListener",
+              "privacy": "private",
+              "type": {
+                "text": "(() => void) | null"
+              },
+              "default": "null",
+              "description": "Removes the map `layerschanged` listener registered in firstUpdated."
+            },
+            {
+              "kind": "field",
               "name": "sliderValues",
               "description": "Sets the array of slider values.",
               "type": {
