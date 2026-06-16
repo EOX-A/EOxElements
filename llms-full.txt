@@ -12348,7 +12348,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-06-16T19:03:18.558Z",
+              default: "2026-06-16T19:04:33.714Z",
               options: {
                 hidden: true,
               },
@@ -12501,6 +12501,7 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `"eox-
 - `customEditorInterfaces` (Array): List of custom editor interfaces for layer config eox-jsonforms
 Read more about the implementation of custom editor interfaces here:
 https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html (Default: `[]`)
+- `colormapRegistry` (null):  (Default: `null`)
 
 ### Events
 
@@ -12517,7 +12518,7 @@ Demonstrates adding external layers. The control can be configured to allow user
 ```html
 <eox-layercontrol
   for="eox-map#external"
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 
 <script type="module">
@@ -12660,7 +12661,7 @@ Demonstrates adding external layers. The control can be configured to allow user
 Demonstrates color swatches for layers. Shows how to define and display custom colors for layers, useful for thematic mapping and visual differentiation of datasets.
 
 ```html
-<eox-layercontrol for="epxmap#color" style="width: 240px"></eox-layercontrol>
+<eox-layercontrol for="epxmap#color" style="width: 350px"></eox-layercontrol>
 
 <script type="module">
   import "@eox/layercontrol/dist/eox-layercontrol.js";
@@ -12805,7 +12806,7 @@ Demonstrates mutually exclusive layers. By setting the `layerControlExclusive` p
 
 ```html
 <eox-layercontrol
-  style="width: 240px"
+  style="width: 350px"
   for="eox-map#exclusive"
 ></eox-layercontrol>
 <eox-map
@@ -12860,7 +12861,7 @@ Shows how to pre-expand layers in the control. By setting the `layerControlExpan
 ```html
 <eox-layercontrol
   for="eox-map#expanded"
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
@@ -12918,7 +12919,7 @@ Shows how to pre-expand layers in the control. By setting the `layerControlExpan
 Shows how to hide layers from the control. By setting the `layerControlHide` property, layers are excluded from the layer control UI but may still be rendered on the map. Useful for background or technical layers that should not be user-managed.
 
 ```html
-<eox-layercontrol for="eox-map#hidden" style="width: 240px"></eox-layercontrol>
+<eox-layercontrol for="eox-map#hidden" style="width: 350px"></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
   id="hidden"
@@ -12973,7 +12974,7 @@ Shows the config tool in action. The "config" tool reads settings from the `laye
 <eox-layercontrol
   tools='["config"]'
   for="eox-map#config"
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
@@ -13174,7 +13175,7 @@ Shows how to modify layer time properties. By adding the "datetime" tool, users 
 ```html
 <eox-layercontrol
   for="eox-map#datetime"
-  style="width: 240px"
+  style="width: 350px"
   tools='["datetime"]'
 ></eox-layercontrol>
 
@@ -13339,7 +13340,7 @@ Demonstrates dynamic color legends for layers. The "legend" tool reads configura
 
 ```html
 <eox-layercontrol
-  style="width: 240px"
+  style="width: 350px"
   tools='["legend"]'
   for="eox-map#legend"
 ></eox-layercontrol>
@@ -13481,6 +13482,156 @@ Demonstrates dynamic color legends for layers. The "legend" tool reads configura
 
 ```
 
+#### LayerLegendDynamic
+
+Demonstrates dynamic color legends that update when the layer configuration changes. Using `rangeProperty` and `domainProperties`, the legend reacts to slider changes and colormap selection. Also defines the property `colormapRegistry` on the LayerControl with externally supplied ranges for given colormap.
+
+```html
+<eox-layercontrol
+  style="width: 350px"
+  tools='["legend","config"]'
+  for="eox-map#legend-dynamic"
+></eox-layercontrol>
+
+<script type="module">
+  import "@eox/layercontrol/dist/eox-layercontrol.js";
+
+  const eoxLayercontrol = document.querySelector("eox-layercontrol");
+
+  // Assign properties
+  Object.assign(eoxLayercontrol, {
+    additionalComponents: {
+      "eox-map": {
+        center: [0, 4800000],
+        zoom: 6,
+        style: "width: 400px; height: 300px; margin-left: 7px;",
+        layers: [
+          {
+            type: "Tile",
+            properties: {
+              id: "terrain-light",
+              title: "Terrain Light",
+            },
+            source: {
+              type: "XYZ",
+              url: "//tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+            },
+          },
+          {
+            type: "Tile",
+            properties: {
+              id: "esdl-dynamic",
+              title: "Dynamic Legends Layer",
+              layerControlExpand: true,
+              layerControlToolsExpand: true,
+              layerConfig: {
+                type: "tileUrl",
+                legend: {
+                  title: "Dynamic Legend",
+                  rangeProperty: "cbar",
+                  domainProperties: ["vmin", "vmax"],
+                  tickFormat: ".2f",
+                },
+                schema: {
+                  type: "object",
+                  properties: {
+                    vminmax: {
+                      title: "Range",
+                      type: "object",
+                      properties: {
+                        vmin: {
+                          type: "number",
+                          minimum: 0,
+                          maximum: 1,
+                          step: 0.01,
+                          format: "range",
+                          default: 0,
+                        },
+                        vmax: {
+                          type: "number",
+                          minimum: 0,
+                          maximum: 1,
+                          step: 0.01,
+                          format: "range",
+                          default: 1,
+                        },
+                      },
+                      format: "minmax",
+                    },
+                    cbar: {
+                      title: "Colormap",
+                      type: "string",
+                      enum: ["magma", "viridis", "plasma", "plasma_r"],
+                      default: "plasma_r",
+                    },
+                  },
+                },
+              },
+            },
+            source: {
+              type: "XYZ",
+              url: "https://api.earthsystemdatalab.net/api/tiles/hydrology/SM/{z}/{y}/{x}?crs=EPSG:3857&time=2022-06-15T00:00:00Z&vmin=0&vmax=1&cbar=plasma_r",
+            },
+          },
+        ],
+        id: "legend-dynamic",
+      },
+    },
+    colormapRegistry: {
+      magma: [
+        "#000004",
+        "#180f3d",
+        "#440f76",
+        "#721f81",
+        "#9e2f7f",
+        "#cd4071",
+        "#f1605d",
+        "#fd9567",
+        "#fec98d",
+        "#fcfdbf",
+      ],
+      viridis: [
+        "#440154",
+        "#482878",
+        "#3e4989",
+        "#31688e",
+        "#26828e",
+        "#1f9e89",
+        "#35b779",
+        "#6ece58",
+        "#b5de2b",
+        "#fde725",
+      ],
+      plasma: [
+        "#0d0887",
+        "#46039f",
+        "#7201a8",
+        "#9c179e",
+        "#bd3786",
+        "#d8576b",
+        "#ed7953",
+        "#fb9f3a",
+        "#fdca26",
+        "#f0f921",
+      ],
+      plasma_r: [
+        "#f0f921",
+        "#fdca26",
+        "#fb9f3a",
+        "#ed7953",
+        "#d8576b",
+        "#bd3786",
+        "#9c179e",
+        "#721f81",
+        "#46039f",
+        "#0d0887",
+      ],
+    },
+  });
+</script>
+
+```
+
 #### LayerStylesConfig
 
 Demonstrates layer style configuration. The "styles" tool allows users to modify layer appearance, such as color and opacity, using a dedicated interface. Useful for customizing the look and feel of map layers interactively.
@@ -13489,7 +13640,7 @@ Demonstrates layer style configuration. The "styles" tool allows users to modify
 <eox-layercontrol
   tools='["config"]'
   for="eox-map#config-styles"
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
@@ -14073,7 +14224,7 @@ Shows zoom-based layer state. Layers can be configured with `minZoom` and `maxZo
 ```html
 <eox-layercontrol
   for="eox-map#zoomstate"
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 
 <script type="module">
@@ -14136,7 +14287,7 @@ Demonstrates optional layers. By setting the `layerControlOptional` property, la
 
 ```html
 <eox-layercontrol
-  style="width: 240px"
+  style="width: 350px"
   for="eox-map#optional"
 ></eox-layercontrol>
 <eox-map
@@ -14212,7 +14363,7 @@ Basic usage of eox-layercontrol. It shows that also with a `for` attribute,
 it automatically connects to the first `eox-map` it finds in the DOM.
 
 ```html
-<eox-layercontrol style="width: 240px"></eox-layercontrol>
+<eox-layercontrol style="width: 350px"></eox-layercontrol>
 <eox-map style="width: 400px; height: 300px; margin-left: 7px"></eox-map>
 
 <script type="module">
@@ -14350,7 +14501,7 @@ In the Controls panel, try toggling different combinations of tools to see how t
 <eox-layercontrol
   for="eox-map#tools"
   tools='["info"]'
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
@@ -14550,7 +14701,7 @@ Shows tools rendered as a list instead of tabs. By enabling the `toolsAsList` pr
 <eox-layercontrol
   toolsAsList
   for="eox-map#tools-as-list"
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 <eox-map style="width: 400px; height: 300px; margin-left: 7px"></eox-map
 ><id></id>
@@ -14713,7 +14864,7 @@ Demonstrates the `toolsAutoExpand` property. When enabled, toggling a layer's vi
 <eox-layercontrol
   for="eox-map#tools-auto-expand"
   tools='["info","opacity"]'
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 <eox-map
   style="width: 400px; height: 300px; margin-left: 7px"
@@ -14814,7 +14965,7 @@ Demonstrates the unstyled version of the element. By setting the `unstyled` prop
 <eox-layercontrol
   for="eox-map#unstyled"
   unstyled
-  style="width: 240px"
+  style="width: 350px"
 ></eox-layercontrol>
 
 <script type="module">
