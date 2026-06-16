@@ -62,7 +62,10 @@ const loadTimelineOnLayersChange = () => {
       .center=${STORY_ARGS.center}
       .layers=${[baseLayer, GroupLayer([])]}
     ></eox-map>
-    <eox-timecontrol for="eox-map#timeline-dynamic" .externalMapRendering=${true}>
+    <eox-timecontrol
+      for="eox-map#timeline-dynamic"
+      .externalMapRendering=${true}
+    >
       <eox-timecontrol-timeline></eox-timecontrol-timeline>
     </eox-timecontrol>
   `);
