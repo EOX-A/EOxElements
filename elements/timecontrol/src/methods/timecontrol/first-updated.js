@@ -34,6 +34,7 @@ let itemFilterAdded = false;
  *
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  * @param {Function} emitUpdateEvent - The function to emit the update event.
+ * @returns {(() => void) | undefined} Cleanup that removes the layer listener.
  */
 export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
   // Update map reference
@@ -223,11 +224,9 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
 
     if (flatLayers.length > 0 || EOxTimeControl.controlValues.length) init();
     if (EoxMap) {
-      EoxMap.map.getLayers().on("add", () => init());
-      EoxMap.map.getLayers().on("remove", () => init());
-      EoxMap.map.on("change", () => {
-        init();
-      });
+      const onLayersChanged = () => init();
+      EoxMap.addEventListener("layerschanged", onLayersChanged);
+      return () => EoxMap.removeEventListener("layerschanged", onLayersChanged);
     }
   }
 }

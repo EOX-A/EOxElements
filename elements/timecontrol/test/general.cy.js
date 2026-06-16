@@ -15,6 +15,7 @@ import {
   loadDatePickerSelectEvent,
   loadSlider,
   loadTimeline,
+  loadTimelineOnLayersChange,
   loadDateFormatInitDate,
   loadDateFormatNavigation,
   loadDateWithSlider,
@@ -84,6 +85,9 @@ describe("TimeControl", () => {
 
   // Test to verify that timecontrol works without map and all components synchronize date values
   it("loads no map synchronization", () => loadNoMapSynchronization());
+
+  // Test to verify that the timeline reacts to group layers updates
+  it("updates timeline when layers change", () => loadTimelineOnLayersChange());
 
   // Test to verify that expert mode with timelapse export functionality works correctly
   it("loads expert mode export", () => loadExpertModeExport());
