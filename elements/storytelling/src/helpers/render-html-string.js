@@ -94,7 +94,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       const idCounters = new Map(); // Key: OriginalID, Value: Counter
 
       section.steps.forEach((step) => {
-        if (step.layers) {
+        if (Array.isArray(step.layers)) {
           step.layers.forEach((layer) => {
             if (layer.properties && layer.properties.id) {
               const originalId = layer.properties.id;
@@ -130,7 +130,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       // Collect all unique layers from all steps to enable preloading
       const layerMap = new Map();
       section.steps.forEach((step) => {
-        if (step.layers) {
+        if (Array.isArray(step.layers)) {
           step.layers.forEach((layer) => {
             if (layer.properties && layer.properties.id) {
               layerMap.set(layer.properties.id, layer);
