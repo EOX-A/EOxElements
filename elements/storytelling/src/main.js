@@ -302,12 +302,15 @@ export class EOxStoryTelling extends LitElement {
       const slottedContent = slot.assignedNodes({ flatten: true });
 
       // Map each node to its text content, filtering out any non-text nodes, and join into a single string
-      this.markdown = slottedContent
+      const slottedText = slottedContent
         .map((node) => (node.textContent ? node.textContent : ""))
         .join("");
 
-      // Request an update to re-render the component with the new content
-      this.requestUpdate();
+      if (slottedText.trim()) {
+        this.markdown = slottedText;
+        // Request an update to re-render the component with the new content
+        this.requestUpdate();
+      }
     }
   }
 
