@@ -13,6 +13,7 @@ import {
   addLightBoxScript,
   addCustomSection,
   initSavedMarkdown,
+  reconcileChildren,
 } from "./helpers";
 import DOMPurify from "isomorphic-dompurify";
 import {
@@ -266,6 +267,13 @@ export class EOxStoryTelling extends LitElement {
         this,
       );
 
+      const storyContent = /** @type {HTMLElement} */ (
+        (this.shadowRoot || this).querySelector("#story-content")
+      );
+      if (storyContent) {
+        reconcileChildren(storyContent, this.#html);
+      }
+
       if (this.showEditor !== undefined) {
         const parent = this.shadowRoot || this;
         /**
@@ -367,7 +375,7 @@ export class EOxStoryTelling extends LitElement {
       </style>
 
       <div class="story-telling ${editorClass} ${navClass}">
-        <div>${when(this.#html, () => html`${this.#html}`)}</div>
+        <div id="story-content"></div>
         ${when(
           this.showEditor !== undefined,
           () => html`
