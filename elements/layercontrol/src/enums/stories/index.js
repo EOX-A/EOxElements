@@ -15,7 +15,7 @@ const LAYER_EOX_CLOUDLESS = (year) => ({
   },
 });
 
-export const STORIES_LAYERCONTROL_STYLE = "width: 240px;";
+export const STORIES_LAYERCONTROL_STYLE = "width: 350px;";
 
 export const STORIES_MAP_STYLE =
   "width: 400px; height: 300px; margin-left: 7px;";
@@ -811,5 +811,62 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
       TILED: true,
       TIME: "2021-03-01T00:00:00Z",
     },
+  },
+};
+
+export const STORIES_LAYER_ESDL_DYNAMIC = {
+  type: "Tile",
+  properties: {
+    id: "esdl-dynamic",
+    title: "Dynamic Legends Layer",
+    layerControlExpand: true,
+    layerControlToolsExpand: true,
+    layerConfig: {
+      type: "tileUrl",
+      legend: {
+        title: "Dynamic Legend",
+        rangeProperty: "cbar",
+        domainProperties: ["vmin", "vmax"],
+        tickFormat: ".2f",
+      },
+      schema: {
+        type: "object",
+        properties: {
+          vminmax: {
+            title: "Range",
+            type: "object",
+            properties: {
+              vmin: {
+                type: "number",
+                minimum: 0,
+                maximum: 1,
+                step: 0.01,
+                format: "range",
+                default: 0,
+              },
+              vmax: {
+                type: "number",
+                minimum: 0,
+                maximum: 1,
+                step: 0.01,
+                format: "range",
+                default: 1,
+              },
+            },
+            format: "minmax",
+          },
+          cbar: {
+            title: "Colormap",
+            type: "string",
+            enum: ["magma", "viridis", "plasma", "plasma_r"],
+            default: "plasma_r",
+          },
+        },
+      },
+    },
+  },
+  source: {
+    type: "XYZ",
+    url: "https://api.earthsystemdatalab.net/api/tiles/hydrology/SM/{z}/{y}/{x}?crs=EPSG:3857&time=2022-06-15T00:00:00Z&vmin=0&vmax=1&cbar=plasma_r",
   },
 };
