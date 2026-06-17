@@ -18,7 +18,8 @@ const WMTSTileGridStory = {
           type: "WMTS",
           url: "https://tiles.maps.eox.at/wmts",
           layer: "s2cloudless-2025_3857",
-          attribution: 'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
           style: "default",
           matrixSet: "GoogleMapsCompatible",
           tileGrid: {

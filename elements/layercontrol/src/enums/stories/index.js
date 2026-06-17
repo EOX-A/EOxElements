@@ -12,7 +12,7 @@ const LAYER_EOX_CLOUDLESS = (year) => ({
   source: {
     type: "XYZ",
     url: S2MAP_URL(`s2cloudless-${year}_3857`),
-    attribution: `EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data ${year})`
+    attribution: `EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data ${year})`,
   },
 });
 
@@ -85,7 +85,8 @@ export const STORIES_LAYER_S2 = {
   source: {
     type: "GeoTIFF",
     normalize: false,
-    attributions: 'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
+    attributions:
+      'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
     sources: [
       {
         url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/exploitation-ready-epsg-4326/exploitation-ready_eoxcloudless-sentinel-2-2024_zoom-1_4bands_16bit.tif",
