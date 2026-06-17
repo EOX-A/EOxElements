@@ -16,11 +16,12 @@ const GlobeStory = {
         type: "Tile",
         properties: {
           id: "cloudless",
-          title: "Sentinel-2 Cloudless 2024",
+          title: "Sentinel-2 Cloudless 2025",
         },
         source: {
           type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution: 'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
           crossOrigin: "anonymous",
         },
       },
