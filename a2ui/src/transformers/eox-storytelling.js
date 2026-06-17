@@ -109,7 +109,14 @@ export function transformEOxStorytelling(children, parentProps) {
 
       let tourMarkdown = `## ${tourTitle} <!--{ as="${tourAs}" mode="tour" position="${tourPosition}" }-->`;
 
-      const steps = Array.isArray(child.children) ? child.children : [];
+      const steps = Array.isArray(child.children)
+        ? child.children.map((step) => {
+            if (typeof step === "string") {
+              return children.find((c) => c && c.id === step) || step;
+            }
+            return step;
+          })
+        : [];
       for (const step of steps) {
         if (!step) continue;
         const stepConfig = step.config || "";
@@ -120,6 +127,12 @@ export function transformEOxStorytelling(children, parentProps) {
         tourMarkdown += `\n\n### <!--{ ${stepConfigJson} }-->\n#### ${stepTitle}\n${stepDescription}`;
       }
       markdownParts.push(tourMarkdown);
+    } else if (
+      type === "EOxStorytellingTourStep" ||
+      type === "EOxStorytellingMaptourStep"
+    ) {
+      // Tour steps are rendered nested inside their parent EOxStorytellingTour component
+      continue;
     } else {
       // Fallback for Unknown Elements
       const tagName = getTagName(type);
