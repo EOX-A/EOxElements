@@ -36,6 +36,12 @@ Simply place `<eox-a2ui-wrapper>` in your HTML and set its `stream` or `messages
   import "@eox/elements/map"; // Make sure the actual EOxElements are loaded
 </script>
 
+<!-- Alternatively, to load directly from a CDN (bundled self-contained version): -->
+<!--
+<script type="module" src="https://cdn.jsdelivr.net/npm/@eox/elements-a2ui/dist/eox-elements-a2ui.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@eox/map/dist/eox-map.js"></script>
+-->
+
 <eox-a2ui-wrapper id="my-a2ui-renderer"></eox-a2ui-wrapper>
 
 <script>
