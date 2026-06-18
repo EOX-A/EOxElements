@@ -1193,63 +1193,6 @@
       ],
       "unevaluatedProperties": false
     },
-    "EOxJsonform": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "common_types.json#/$defs/ComponentCommon"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "component": {
-              "const": "EOxJsonform"
-            },
-            "schema": {
-              "description": "Schema for the form editor",
-              "type": "string"
-            },
-            "value": {
-              "description": "JSON value of the form editor",
-              "type": "string"
-            },
-            "defaults": {
-              "description": "Default values for the JSONEditor instance",
-              "type": "string"
-            },
-            "options": {
-              "description": "Options for the form editor",
-              "type": "string"
-            },
-            "customEditorInterfaces": {
-              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "type": "array",
-              "items": {}
-            },
-            "noShadow": {
-              "description": "Renders the element without a shadow root",
-              "type": "boolean"
-            },
-            "propertiesToggle": {
-              "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
-              "type": "boolean"
-            },
-            "unstyled": {
-              "description": "Render the element without additional styles",
-              "type": "boolean"
-            },
-            "editor": {
-              "description": "Getter for the JSONEditor instance",
-              "type": "string"
-            }
-          },
-          "required": [
-            "component"
-          ]
-        }
-      ],
-      "unevaluatedProperties": false
-    },
     "EOxItemfilter": {
       "type": "object",
       "allOf": [
@@ -1367,6 +1310,63 @@
             },
             "externalFilter": {
               "description": "Use an external search endpoint instead of fuse search.\nPassed properties: input string, filters object.\nThe function can return a URL string, or an object containing a `url,\nan optional `fetchFn` to handle the request, or/and an optional `key` to\nreturn a specific property from the fetched data.\nThis is a property-only field as it expects a function.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxJsonform": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxJsonform"
+            },
+            "schema": {
+              "description": "Schema for the form editor",
+              "type": "string"
+            },
+            "value": {
+              "description": "JSON value of the form editor",
+              "type": "string"
+            },
+            "defaults": {
+              "description": "Default values for the JSONEditor instance",
+              "type": "string"
+            },
+            "options": {
+              "description": "Options for the form editor",
+              "type": "string"
+            },
+            "customEditorInterfaces": {
+              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "type": "array",
+              "items": {}
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "propertiesToggle": {
+              "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "editor": {
+              "description": "Getter for the JSONEditor instance",
               "type": "string"
             }
           },
