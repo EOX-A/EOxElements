@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.5.0...timecontrol-v2.5.1) (2026-06-18)
+
+
+### Bug Fixes
+
+* Timeline not updating on group layer changes ([#2409](https://github.com/EOX-A/EOxElements/issues/2409)) ([eb8c839](https://github.com/EOX-A/EOxElements/commit/eb8c8394af9506f55b2d32a247acaa830f98f41b))
+
 ## [2.5.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.4.0...timecontrol-v2.5.0) (2026-05-20)
 
 
