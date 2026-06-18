@@ -121,7 +121,9 @@ export class EOxA2uiWrapper extends LitElement {
       const isAppend =
         processedCount > 0 &&
         processedCount < msgs.length &&
-        this._processedMessages.every((msg, idx) => JSON.stringify(msg) === JSON.stringify(msgs[idx]))
+        this._processedMessages.every(
+          (msg, idx) => JSON.stringify(msg) === JSON.stringify(msgs[idx]),
+        );
 
       if (isAppend) {
         newMsgs = msgs.slice(processedCount);
