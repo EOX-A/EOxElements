@@ -960,6 +960,38 @@
       ],
       "unevaluatedProperties": false
     },
+    "EOxFeedback": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxFeedback"
+            },
+            "endpoint": {
+              "description": "The endpoint to send the feedback to as POST message.",
+              "type": "string"
+            },
+            "unstyled": {
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "type": "string"
+            },
+            "schema": {
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
     "EOxDrawtools": {
       "type": "object",
       "allOf": [
@@ -1067,38 +1099,6 @@
             },
             "selectionEvents": {
               "description": "",
-              "type": "string"
-            }
-          },
-          "required": [
-            "component"
-          ]
-        }
-      ],
-      "unevaluatedProperties": false
-    },
-    "EOxFeedback": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "common_types.json#/$defs/ComponentCommon"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "component": {
-              "const": "EOxFeedback"
-            },
-            "endpoint": {
-              "description": "The endpoint to send the feedback to as POST message.",
-              "type": "string"
-            },
-            "unstyled": {
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "type": "string"
-            },
-            "schema": {
-              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported.",
               "type": "string"
             }
           },
