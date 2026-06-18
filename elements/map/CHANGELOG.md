@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/EOX-A/EOxElements/compare/map-v2.6.1...map-v2.7.0) (2026-06-18)
+
+
+### Features
+
+* Update wms and wmts params by layercontrol config change ([#2381](https://github.com/EOX-A/EOxElements/issues/2381)) ([b24111c](https://github.com/EOX-A/EOxElements/commit/b24111cd227933c7bb8d712355d4a1ce79493307))
+
 ## [2.6.1](https://github.com/EOX-A/EOxElements/compare/map-v2.6.0...map-v2.6.1) (2026-06-15)
 
 
