@@ -176,6 +176,44 @@ export class EOxA2uiWrapper extends LitElement {
     }
   }
 
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    this.style.pointerEvents = "none";
+
+    const styleId = "custom-a2ui-style";
+    const css = `
+      a2ui-basic-column {
+        position: relative !important;
+        z-index: 1 !important;
+        pointer-events: auto !important;
+      }
+      a2ui-basic-card {
+        pointer-events: auto !important;
+      }
+      eox-a2ui-element {
+        pointer-events: auto !important;
+      }
+    `;
+
+    function injectStyles(root) {
+      if (root.shadowRoot) {
+        if (!root.shadowRoot.querySelector("#" + styleId)) {
+          const style = document.createElement("style");
+          style.id = styleId;
+          style.textContent = css;
+          root.shadowRoot.appendChild(style);
+        }
+        injectStyles(root.shadowRoot);
+      }
+      const children = root.querySelectorAll("*");
+      for (let i = 0; i < children.length; i++) {
+        injectStyles(children[i]);
+      }
+    }
+
+    injectStyles(this);
+  }
+
   render() {
     if (!this.messageProcessor) return nothing;
     const surfaces = Array.from(

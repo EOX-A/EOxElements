@@ -704,7 +704,7 @@ export class A2uiStreamingDemo extends LitElement {
                 zoom: 6,
                 center: [16.37, 48.21],
                 style:
-                  "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: -1",
+                  "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: 0",
                 layers: [
                   {
                     type: "Tile",
@@ -1383,7 +1383,7 @@ const demoStream = [
           zoom: 6,
           center: [16.37, 48.21],
           style:
-            "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: -1",
+            "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: 0",
           layers: [
             {
               type: "Tile",
@@ -1543,7 +1543,7 @@ const demoStream = [
  *           "component": "EOxMap",
  *           "zoom": 6,
  *           "center": [16.37, 48.21],
- *           "style": "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: -1",
+ *           "style": "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: 0",
  *           "layers": [
  *             {
  *               "type": "Tile",

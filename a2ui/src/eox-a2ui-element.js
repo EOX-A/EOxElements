@@ -5,10 +5,39 @@ import { A2uiLitElement, A2uiController } from "@a2ui/lit/v0_9";
 import { eoxCatalog } from "./eox-catalog.js";
 import { componentTransformers } from "./transformers/index.js";
 
+function isEqual(a, b) {
+  if (a === b) return true;
+  if (
+    typeof a === "object" &&
+    typeof b === "object" &&
+    a !== null &&
+    b !== null
+  ) {
+    try {
+      return JSON.stringify(a) === JSON.stringify(b);
+    } catch (e) {
+      return false;
+    }
+  }
+  return false;
+}
+
+function safeClone(val) {
+  if (typeof val === "object" && val !== null) {
+    try {
+      return JSON.parse(JSON.stringify(val));
+    } catch (e) {
+      return val;
+    }
+  }
+  return val;
+}
+
 export class EOxA2uiElement extends A2uiLitElement {
   constructor() {
     super();
     this._elementRef = createRef();
+    this._appliedProps = {};
   }
 
   createRenderRoot() {
@@ -177,8 +206,9 @@ export class EOxA2uiElement extends A2uiLitElement {
         if (key === "children") {
           continue;
         }
-        if (element[key] !== value) {
+        if (!isEqual(this._appliedProps[key], value)) {
           element[key] = value;
+          this._appliedProps[key] = safeClone(value);
         }
       }
     }
