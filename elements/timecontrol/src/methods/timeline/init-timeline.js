@@ -267,6 +267,15 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
+      ...(EOxTimeControlTimeline.binning
+        ? {
+            cluster: {
+              maxItems: 2,
+              showStipes: true,
+              fitOnDoubleClick: true,
+            },
+          }
+        : {}),
       template: (_y, _x, data) => {
         if (data.isCluster) return `<div>${data.items.length}</div>`;
         else return `<div>${data.content}</div>`;

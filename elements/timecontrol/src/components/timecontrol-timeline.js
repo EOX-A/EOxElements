@@ -33,6 +33,7 @@ export class EOxTimeControlTimeline extends LitElement {
       unstyled: { type: Boolean, attribute: "unstyled" },
       selectionDuration: { type: Object, attribute: false },
       selectionResizable: { type: Boolean, attribute: "selection-resizable" },
+      binning: { type: Boolean, attribute: "binning" },
     };
   }
 
@@ -82,6 +83,12 @@ export class EOxTimeControlTimeline extends LitElement {
      * @type {boolean}
      */
     this.selectionResizable = true;
+
+    /**
+     * Whether to enable or disable binning the items.
+     * @type {boolean}
+     */
+    this.binning = false;
   }
 
   /**

@@ -15,6 +15,7 @@ import {
   loadDatePickerSelectEvent,
   loadSlider,
   loadTimeline,
+  loadTimelineWithBinning,
   loadDateFormatInitDate,
   loadDateFormatNavigation,
   loadDateWithSlider,
@@ -57,6 +58,9 @@ describe("TimeControl", () => {
 
   // Test to verify that timeline component loads with vis-timeline visualization
   it("loads timeline", () => loadTimeline());
+
+  // Test to verify that timeline component loads with binning enabled
+  it("loads timeline with binning", () => loadTimelineWithBinning());
 
   // Test to verify that timeline component loads with range configuration
   it("loads timeline with range configuration", () =>

@@ -12,11 +12,6 @@ export const DEFAULT_VIS_TIMELINE_OPTIONS = {
   showCurrentTime: true,
   showTooltips: true,
   orientation: { axis: "top" },
-  cluster: {
-    maxItems: 2,
-    showStipes: true,
-    fitOnDoubleClick: true,
-  },
 };
 
 /**

@@ -17,6 +17,7 @@ import {
   DateInUTCStory,
   TimelineSelectionDurationStory,
   TimelineSelectionResizableStory,
+  TimelineWithBinningStory,
 } from "./index";
 
 export default {
@@ -127,6 +128,18 @@ export const Slider = SliderStory;
  * comprehensive time navigation interface.
  */
 export const Timeline = TimelineStory;
+
+/**
+ * Timeline visualization using vis-timeline with binning configuration
+ *
+ * This example shows the `<eox-timecontrol-timeline>` component with `binning` enabled,
+ * which groups timeline items into bins for better visualization of large datasets.
+ *
+ * Features demonstrated:
+ * - Timeline visualization with binning enabled
+ * - Items are automatically grouped into bins when there are many items
+ */
+export const TimelineWithBinning = TimelineWithBinningStory;
 
 /**
  * Timeline visualization with custom selection duration

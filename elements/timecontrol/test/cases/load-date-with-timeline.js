@@ -139,7 +139,7 @@ const loadDateWithTimeline = () => {
         cy.get(".vis-item").should("have.length.greaterThan", 0);
 
         // Verify timeline items are clickable (have proper event handlers)
-        cy.get(".vis-item").last().should("be.visible");
+        cy.get(".vis-item").first().should("be.visible");
       });
     });
 
