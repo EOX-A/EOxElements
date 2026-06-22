@@ -10,6 +10,7 @@ import { renderMarkdown } from "@a2ui/markdown-it";
  * A wrapper custom element that accepts a2ui stream/messages data and renders the elements inside.
  *
  * @element eox-a2ui-wrapper
+ * @fires {CustomEvent} a2ui-action - Fired when an action is triggered by any component inside the rendered surface.
  */
 export class EOxA2uiWrapper extends LitElement {
   static get properties() {
@@ -88,6 +89,9 @@ export class EOxA2uiWrapper extends LitElement {
     if (this._surfaceDeletedSub) {
       this._surfaceDeletedSub.unsubscribe();
     }
+    if (this._actionSub) {
+      this._actionSub.unsubscribe();
+    }
 
     this.messageProcessor = new MessageProcessor([this.catalog]);
 
@@ -96,6 +100,20 @@ export class EOxA2uiWrapper extends LitElement {
     );
     this._surfaceDeletedSub = this.messageProcessor.onSurfaceDeleted(() =>
       this.requestUpdate(),
+    );
+    this._actionSub = this.messageProcessor.model.onAction.subscribe(
+      (action) => {
+        /**
+         * Fired when an A2UI action is triggered (e.g. button click).
+         */
+        this.dispatchEvent(
+          new CustomEvent("a2ui-action", {
+            detail: action,
+            bubbles: true,
+            composed: true,
+          }),
+        );
+      },
     );
 
     this._processedMessages = [];
@@ -152,6 +170,9 @@ export class EOxA2uiWrapper extends LitElement {
     }
     if (this._surfaceDeletedSub) {
       this._surfaceDeletedSub.unsubscribe();
+    }
+    if (this._actionSub) {
+      this._actionSub.unsubscribe();
     }
   }
 
