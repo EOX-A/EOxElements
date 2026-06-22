@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { LitElement, html, css } from "lit";
 import eoxStyle from "@eox/ui/style.css?inline";
 import "@eox/ui";
 import "color-legend-element";
@@ -10,8 +10,10 @@ import "./elements/layercontrol/src/main.js";
 
 export default {
   title: "Demo",
+  tags: ["autodocs"],
+  component: "eox-a2ui-wrapper",
   parameters: {
-    componentSubtitle: "Automatically fetch & display properties of STAC files",
+    componentSubtitle: "A2UI Integration & Kitchen Sink Showcase",
     layout: "fullscreen",
   },
 };
@@ -638,6 +640,717 @@ export const KitchenSink = {
   `,
 };
 
+export class A2uiStreamingDemo extends LitElement {
+  static get properties() {
+    return {
+      isPlaying: { type: Boolean, state: true },
+      currentStep: { type: Number, state: true },
+      stream: { type: Array, state: true },
+      logMessages: { type: Array, state: true },
+      isCollapsed: { type: Boolean, state: true },
+    };
+  }
+
+  constructor() {
+    super();
+    this.isPlaying = false;
+    this.currentStep = -1;
+    this.stream = [];
+    this.logMessages = [];
+    this.isCollapsed = false;
+    this.timer = null;
+  }
+
+  get steps() {
+    return [
+      {
+        name: "Create Surface",
+        description:
+          "Initialize the interactive A2UI surface with the EOxElements catalog.",
+        action: {
+          createSurface: {
+            surfaceId: "demo_surface",
+            catalogId:
+              "https://eox-a.github.io/EOxElements/a2ui/0_9/combined_catalog.json",
+            sendDataModel: true,
+          },
+        },
+      },
+      {
+        name: "Render Fullscreen Map",
+        description:
+          "Set up the viewport with a background interactive EOxMap centered on Vienna with terrain-light and NO2 layer.",
+        action: {
+          updateComponents: {
+            surfaceId: "demo_surface",
+            components: [
+              {
+                id: "root",
+                component: "Column",
+                children: ["workspace"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "workspace",
+                component: "Row",
+                children: ["my_map"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "my_map",
+                component: "EOxMap",
+                zoom: 6,
+                center: [16.37, 48.21],
+                style:
+                  "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: -1",
+                layers: [
+                  {
+                    type: "Tile",
+                    properties: {
+                      id: "terrain-light",
+                      title: "Terrain Light",
+                      layerControlExclusive: true,
+                    },
+                    source: {
+                      type: "XYZ",
+                      url: "//tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+                    },
+                    visible: true,
+                  },
+                  {
+                    type: "Tile",
+                    properties: {
+                      id: "NO2",
+                      title: "NO2",
+                    },
+                    source: {
+                      type: "TileWMS",
+                      url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+                      params: {
+                        LAYERS: "AWS_NO2-VISUALISATION",
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        name: "Add Left Sidebar",
+        description:
+          "Insert a Left Sidebar containing an EOx Card with Title and Subtitle.",
+        action: {
+          updateComponents: {
+            surfaceId: "demo_surface",
+            components: [
+              {
+                id: "workspace",
+                component: "Row",
+                children: ["my_map", "left_col"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "left_col",
+                component: "Column",
+                children: ["sidebar_card"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "sidebar_card",
+                component: "Card",
+                child: "sidebar_card_content",
+              },
+              {
+                id: "sidebar_card_content",
+                component: "Column",
+                children: ["title", "subtitle"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "title",
+                component: "Text",
+                text: "EOxElements A2UI Demo",
+                variant: "h3",
+              },
+              {
+                id: "subtitle",
+                component: "Text",
+                text: "A dynamic layout rendered from an [A2UI protocol](https://a2ui.org/) JSON.",
+                variant: "body",
+              },
+            ],
+          },
+        },
+      },
+      {
+        name: "Inject Tabbed Tools",
+        description:
+          "Dynamically mount an EOxLayercontrol and EOxDrawtools inside standard Tabs.",
+        action: {
+          updateComponents: {
+            surfaceId: "demo_surface",
+            components: [
+              {
+                id: "sidebar_card_content",
+                component: "Column",
+                children: ["title", "subtitle", "my_tabs"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "my_tabs",
+                component: "Tabs",
+                tabs: [
+                  {
+                    title: "Layers",
+                    child: "my_layercontrol",
+                  },
+                  {
+                    title: "Draw",
+                    child: "my_drawtools",
+                  },
+                ],
+              },
+              {
+                id: "my_layercontrol",
+                component: "EOxLayercontrol",
+              },
+              {
+                id: "my_drawtools",
+                component: "EOxDrawtools",
+              },
+            ],
+          },
+        },
+      },
+      {
+        name: "Append Actions Card",
+        description:
+          "Add a secondary Action card containing an EOx Button for LLM triggers.",
+        action: {
+          updateComponents: {
+            surfaceId: "demo_surface",
+            components: [
+              {
+                id: "left_col",
+                component: "Column",
+                children: ["sidebar_card", "demo_card"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "demo_card",
+                component: "Card",
+                child: "demo_card_content",
+              },
+              {
+                id: "demo_card_content",
+                component: "Column",
+                children: ["demo_card_title", "my_button"],
+                align: "stretch",
+                justify: "start",
+              },
+              {
+                id: "demo_card_title",
+                component: "Text",
+                text: "Actions",
+                variant: "h4",
+              },
+              {
+                id: "my_button",
+                component: "Button",
+                child: "my_button_label",
+                variant: "primary",
+                action: {
+                  event: {
+                    name: "demo_button_clicked",
+                  },
+                },
+              },
+              {
+                id: "my_button_label",
+                component: "Text",
+                text: "Demo Button",
+              },
+            ],
+          },
+        },
+      },
+    ];
+  }
+
+  static get styles() {
+    return css`
+      :host {
+        --a2ui-color-primary: #004170;
+        --a2ui-button-border-radius: 1.5rem;
+        --a2ui-card-border-radius: 1rem;
+        --a2ui-card-background: #ffffffee;
+        --a2ui-card-border: none;
+        --a2ui-card-padding: 1.5rem;
+        display: block;
+        width: 100dvw;
+        height: 100dvh;
+        position: relative;
+        font-family: Roboto, system-ui, sans-serif;
+      }
+
+      .floating-widget {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 400px;
+        max-height: 480px;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        color: #f8fafc;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .floating-widget.collapsed {
+        height: 52px;
+      }
+
+      .widget-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        background: rgba(30, 41, 59, 0.85);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 14px;
+        font-weight: 600;
+        user-select: none;
+        cursor: pointer;
+      }
+
+      .widget-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #94a3b8;
+        transition: all 0.3s;
+      }
+
+      .status-dot.active {
+        background: #10b981;
+        box-shadow: 0 0 10px #10b981;
+      }
+
+      .toggle-btn {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      .toggle-btn:hover {
+        color: #f1f5f9;
+      }
+
+      .widget-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 16px;
+        gap: 14px;
+        overflow: hidden;
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .btn {
+        background: #334155;
+        color: #f8fafc;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+      }
+
+      .btn:hover:not(:disabled) {
+        background: #475569;
+      }
+
+      .btn.primary {
+        background: #004170;
+      }
+
+      .btn.primary:hover:not(:disabled) {
+        background: #025793;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .progress-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      .progress-bar {
+        flex: 1;
+        height: 6px;
+        background: #334155;
+        border-radius: 3px;
+        margin: 0 12px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: #10b981;
+        transition: width 0.3s ease;
+      }
+
+      .console-log {
+        flex: 1;
+        background: #090d16;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        font-family: monospace;
+        font-size: 11px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-height: 200px;
+      }
+
+      .console-header {
+        background: #1e293b;
+        padding: 8px 12px;
+        font-size: 10px;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .console-content {
+        padding: 12px;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .log-line {
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      .log-line.info {
+        color: #94a3b8;
+      }
+
+      .log-line.step {
+        color: #38bdf8;
+        font-weight: 600;
+      }
+
+      .log-line.success {
+        color: #4ade80;
+        font-weight: 600;
+      }
+
+      .log-line.json {
+        color: #e2e8f0;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 8px;
+        border-radius: 6px;
+        border-left: 3px solid #004170;
+        margin-left: 4px;
+        font-size: 10px;
+      }
+
+      a2ui-basic-column {
+        width: 380px;
+        max-width: calc(100% - 32px);
+        margin: 16px;
+        z-index: 10;
+        pointer-events: auto;
+      }
+
+      a2ui-basic-card {
+        margin-bottom: 12px;
+      }
+
+      @media (max-width: 600px) {
+        a2ui-basic-column {
+          width: calc(100% - 32px) !important;
+          margin: 16px !important;
+          max-height: 40dvh !important;
+          overflow-y: auto !important;
+          position: fixed !important;
+          top: 16px !important;
+          bottom: auto !important;
+          left: 0 !important;
+          right: 0 !important;
+          box-sizing: border-box;
+        }
+
+        .floating-widget {
+          position: fixed !important;
+          bottom: 16px !important;
+          top: auto !important;
+          right: 16px !important;
+          left: 16px !important;
+          width: calc(100% - 32px) !important;
+          max-height: 38dvh !important;
+        }
+
+        .floating-widget.collapsed {
+          height: 52px !important;
+        }
+      }
+    `;
+  }
+
+  firstUpdated() {
+    this.reset();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.stop();
+  }
+
+  togglePlay() {
+    if (this.isPlaying) {
+      this.pause();
+    } else {
+      this.play();
+    }
+  }
+
+  play() {
+    this.isPlaying = true;
+    if (this.currentStep >= this.steps.length - 1) {
+      this.reset();
+    }
+    this.timer = setInterval(() => {
+      this.next();
+    }, 2000);
+    if (this.currentStep === -1) {
+      this.next();
+    }
+  }
+
+  pause() {
+    this.isPlaying = false;
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+
+  stop() {
+    this.pause();
+  }
+
+  reset() {
+    this.stop();
+    this.currentStep = -1;
+    this.stream = [];
+    this.logMessages = [
+      {
+        type: "info",
+        text: "Ready to stream. Click Play to start simulation.",
+      },
+    ];
+  }
+
+  scrollConsole() {
+    setTimeout(() => {
+      const consoleEl = this.shadowRoot.querySelector(".console-content");
+      if (consoleEl) {
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+    }, 50);
+  }
+
+  handleA2uiAction(event) {
+    const detail = event.detail;
+    if (detail && detail.name === "demo_button_clicked") {
+      alert("A2UI Action: Demo Button Clicked!");
+
+      this.logMessages = [
+        ...this.logMessages,
+        {
+          type: "info",
+          text: "🖲 User clicked 'Demo Button'. Triggered client-side alert!",
+        },
+      ];
+
+      this.scrollConsole();
+    }
+  }
+
+  handleLayerChange(event) {
+    this.logMessages = [
+      ...this.logMessages,
+      {
+        type: "info",
+        text: "🔄 EOxLayercontrol Fired 'layerchange' Event! Layer states updated.",
+      },
+    ];
+    this.requestUpdate();
+    this.scrollConsole();
+  }
+
+  handleDrawUpdate(event) {
+    this.logMessages = [
+      ...this.logMessages,
+      {
+        type: "info",
+        text: "✏️ EOxDrawtools Fired 'drawupdate' Event! Features updated.",
+      },
+    ];
+    this.requestUpdate();
+    this.scrollConsole();
+  }
+
+  next() {
+    if (this.currentStep < this.steps.length - 1) {
+      this.currentStep++;
+      const nextStep = this.steps[this.currentStep];
+      this.stream = [...this.stream, nextStep.action];
+      this.logMessages = [
+        ...this.logMessages,
+        { type: "step", text: `>>> Stream Event: ${nextStep.name}` },
+        { type: "json", text: JSON.stringify(nextStep.action, null, 2) },
+      ];
+
+      this.scrollConsole();
+
+      if (this.currentStep === this.steps.length - 1) {
+        this.pause();
+        this.logMessages = [
+          ...this.logMessages,
+          { type: "success", text: "✔ Dynamic layout rendering complete." },
+        ];
+      }
+    } else {
+      this.pause();
+    }
+  }
+
+  render() {
+    const progressPercent = Math.round(
+      ((this.currentStep + 1) / this.steps.length) * 100,
+    );
+
+    return html`
+      <eox-a2ui-wrapper
+        .stream=${this.stream}
+        @a2ui-action=${this.handleA2uiAction}
+        @layerchange=${this.handleLayerChange}
+        @drawupdate=${this.handleDrawUpdate}
+      ></eox-a2ui-wrapper>
+
+      <div class="floating-widget ${this.isCollapsed ? "collapsed" : ""}">
+        <div
+          class="widget-header"
+          @click=${() => {
+            this.isCollapsed = !this.isCollapsed;
+          }}
+        >
+          <div class="widget-title">
+            <div class="status-dot ${this.isPlaying ? "active" : ""}"></div>
+            <span>A2UI Streaming Simulator</span>
+          </div>
+          <button class="toggle-btn">
+            ${this.isCollapsed ? html`▲` : html`▼`}
+          </button>
+        </div>
+
+        <div class="widget-content">
+          <div class="controls">
+            <button class="btn primary" @click=${this.togglePlay}>
+              ${this.isPlaying ? html`⏸ Pause` : html`▶ Play`}
+            </button>
+            <button class="btn" @click=${this.reset}>↺ Reset</button>
+            <button
+              class="btn"
+              ?disabled=${this.isPlaying ||
+              this.currentStep >= this.steps.length - 1}
+              @click=${this.next}
+            >
+              Step ➔
+            </button>
+          </div>
+
+          <div class="progress-container">
+            <span>Step ${this.currentStep + 1} of ${this.steps.length}</span>
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                style="width: ${progressPercent}%"
+              ></div>
+            </div>
+            <span>${progressPercent}%</span>
+          </div>
+
+          <div class="console-log">
+            <div class="console-header">A2UI JSON Stream Logs</div>
+            <div class="console-content">
+              ${this.logMessages.map(
+                (msg) => html`
+                  <div class="log-line ${msg.type}">${msg.text}</div>
+                `,
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+customElements.define("a2ui-streaming-demo", A2uiStreamingDemo);
+
 const demoStream = [
   {
     createSurface: {
@@ -654,22 +1367,78 @@ const demoStream = [
         {
           id: "root",
           component: "Column",
-          children: ["header", "workspace"],
+          children: ["workspace"],
           align: "stretch",
           justify: "start",
         },
         {
-          id: "header",
+          id: "workspace",
+          component: "Row",
+          children: ["my_map", "left_col"],
+          align: "stretch",
+          justify: "start",
+        },
+        {
+          id: "my_map",
+          component: "EOxMap",
+          zoom: 6,
+          center: [16.37, 48.21],
+          style:
+            "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: -1",
+          layers: [
+            {
+              type: "Tile",
+              properties: {
+                id: "terrain-light",
+                title: "Terrain Light",
+                layerControlExclusive: true,
+              },
+              source: {
+                type: "XYZ",
+                url: "//tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+              },
+              visible: true,
+            },
+            {
+              type: "Tile",
+              properties: {
+                id: "NO2",
+                title: "NO2",
+              },
+              source: {
+                type: "TileWMS",
+                url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+                params: {
+                  LAYERS: "AWS_NO2-VISUALISATION",
+                },
+              },
+            },
+          ],
+        },
+        {
+          id: "left_col",
           component: "Column",
-          children: ["title", "subtitle"],
-          align: "start",
+          children: ["sidebar_card", "demo_card"],
+          align: "stretch",
+          justify: "start",
+        },
+        {
+          id: "sidebar_card",
+          component: "Card",
+          child: "sidebar_card_content",
+        },
+        {
+          id: "sidebar_card_content",
+          component: "Column",
+          children: ["title", "subtitle", "my_tabs"],
+          align: "stretch",
           justify: "start",
         },
         {
           id: "title",
           component: "Text",
           text: "EOxElements A2UI Demo",
-          variant: "h1",
+          variant: "h3",
         },
         {
           id: "subtitle",
@@ -678,54 +1447,60 @@ const demoStream = [
           variant: "body",
         },
         {
-          id: "workspace",
-          component: "Row",
-          children: ["left_col", "right_col"],
-          align: "stretch",
-          justify: "spaceBetween",
+          id: "my_tabs",
+          component: "Tabs",
+          tabs: [
+            {
+              title: "Layers",
+              child: "my_layercontrol",
+            },
+            {
+              title: "Draw",
+              child: "my_drawtools",
+            },
+          ],
         },
         {
-          id: "left_col",
+          id: "demo_card",
+          component: "Card",
+          child: "demo_card_content",
+        },
+        {
+          id: "demo_card_content",
           component: "Column",
-          children: ["my_drawtools", "my_layercontrol"],
+          children: ["demo_card_title", "my_button"],
           align: "stretch",
           justify: "start",
-          weight: 1,
         },
         {
-          id: "right_col",
-          component: "Column",
-          children: ["my_map"],
-          align: "stretch",
-          justify: "start",
-          weight: 2,
-        },
-        {
-          id: "my_drawtools",
-          component: "EOxDrawtools",
+          id: "demo_card_title",
+          component: "Text",
+          text: "Actions",
+          variant: "h4",
         },
         {
           id: "my_layercontrol",
           component: "EOxLayercontrol",
         },
         {
-          id: "my_map",
-          component: "EOxMap",
-          zoom: 6,
-          center: [16.37, 48.21],
-          style: "height: 400px",
-          layers: [
-            {
-              type: "Tile",
-              properties: {
-                id: "osm",
-                title: "OpenStreetMap",
-              },
-              source: {
-                type: "OSM",
-              },
+          id: "my_drawtools",
+          component: "EOxDrawtools",
+        },
+        {
+          id: "my_button",
+          component: "Button",
+          child: "my_button_label",
+          variant: "primary",
+          action: {
+            event: {
+              name: "demo_button_clicked",
             },
-          ],
+          },
+        },
+        {
+          id: "my_button_label",
+          component: "Text",
+          text: "Demo Button",
         },
       ],
     },
@@ -754,22 +1529,77 @@ const demoStream = [
  *         {
  *           "id": "root",
  *           "component": "Column",
- *           "children": ["header", "workspace"],
+ *           "children": ["workspace"],
  *           "align": "stretch",
  *           "justify": "start"
  *         },
  *         {
- *           "id": "header",
+ *           "id": "workspace",
+ *           "component": "Row",
+ *           "children": ["my_map", "left_col"],
+ *           "align": "stretch",
+ *           "justify": "start"
+ *         },
+ *         {
+ *           "id": "my_map",
+ *           "component": "EOxMap",
+ *           "zoom": 6,
+ *           "center": [16.37, 48.21],
+ *           "style": "width: 100dvw; height: 100dvh; position: absolute; left: 0; z-index: -1",
+ *           "layers": [
+ *             {
+ *               "type": "Tile",
+ *               "properties": {
+ *                 "id": "terrain-light",
+ *                 "title": "Terrain Light",
+ *                 "layerControlExclusive": true
+                  },
+ *               "source": {
+ *                 "type": "XYZ",
+ *                 "url": "//tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg"
+ *               },
+ *               "visible": true
+ *             },
+ *             {
+ *               "type": "Tile",
+ *               "properties": {
+ *                 "id": "NO2",
+ *                 "title": "NO2"
+ *               },
+ *               "source": {
+ *                 "type": "TileWMS",
+ *                 "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+ *                 "params": {
+ *                   "LAYERS": "AWS_NO2-VISUALISATION"
+ *                 }
+ *               }
+ *             }
+ *           ]
+ *         },
+ *         {
+ *           "id": "left_col",
  *           "component": "Column",
- *           "children": ["title", "subtitle"],
- *           "align": "start",
+ *           "children": ["sidebar_card", "demo_card"],
+ *           "align": "stretch",
+ *           "justify": "start"
+ *         },
+ *         {
+ *           "id": "sidebar_card",
+ *           "component": "Card",
+ *           "child": "sidebar_card_content"
+ *         },
+ *         {
+ *           "id": "sidebar_card_content",
+ *           "component": "Column",
+ *           "children": ["title", "subtitle", "my_tabs"],
+ *           "align": "stretch",
  *           "justify": "start"
  *         },
  *         {
  *           "id": "title",
  *           "component": "Text",
  *           "text": "EOxElements A2UI Demo",
- *           "variant": "h1"
+ *           "variant": "h3"
  *         },
  *         {
  *           "id": "subtitle",
@@ -778,54 +1608,60 @@ const demoStream = [
  *           "variant": "body"
  *         },
  *         {
- *           "id": "workspace",
- *           "component": "Row",
- *           "children": ["left_col", "right_col"],
- *           "align": "stretch",
- *           "justify": "spaceBetween"
+ *           "id": "my_tabs",
+ *           "component": "Tabs",
+ *           "tabs": [
+ *             {
+ *               "title": "Layers",
+ *               "child": "my_layercontrol"
+ *             },
+ *             {
+ *               "title": "Draw",
+ *               "child": "my_drawtools"
+ *             }
+ *           ]
  *         },
  *         {
- *           "id": "left_col",
+ *           "id": "demo_card",
+ *           "component": "Card",
+ *           "child": "demo_card_content"
+ *         },
+ *         {
+ *           "id": "demo_card_content",
  *           "component": "Column",
- *           "children": ["my_drawtools", "my_layercontrol"],
+ *           "children": ["demo_card_title", "my_button"],
  *           "align": "stretch",
- *           "justify": "start",
- *           "weight": 1
+ *           "justify": "start"
  *         },
  *         {
- *           "id": "right_col",
- *           "component": "Column",
- *           "children": ["my_map"],
- *           "align": "stretch",
- *           "justify": "start",
- *           "weight": 2
- *         },
- *         {
- *           "id": "my_drawtools",
- *           "component": "EOxDrawtools"
+ *           "id": "demo_card_title",
+ *           "component": "Text",
+ *           "text": "Actions",
+ *           "variant": "h4"
  *         },
  *         {
  *           "id": "my_layercontrol",
  *           "component": "EOxLayercontrol"
  *         },
  *         {
- *           "id": "my_map",
- *           "component": "EOxMap",
- *           "zoom": 6,
- *           "center": [16.37, 48.21],
- *           "style": "height: 400px",
- *           "layers": [
- *             {
- *               "type": "Tile",
- *               "properties": {
- *                 "id": "osm",
- *                 "title": "OpenStreetMap"
- *               },
- *               "source": {
- *                 "type": "OSM"
- *               }
+ *           "id": "my_drawtools",
+ *           "component": "EOxDrawtools"
+ *         },
+ *         {
+ *           "id": "my_button",
+ *           "component": "Button",
+ *           "child": "my_button_label",
+ *           "variant": "primary",
+ *           "action": {
+ *             "event": {
+ *               "name": "demo_button_clicked"
  *             }
- *           ]
+ *           }
+ *         },
+ *         {
+ *           "id": "my_button_label",
+ *           "component": "Text",
+ *           "text": "Demo Button"
  *         }
  *       ]
  *     }
@@ -838,11 +1674,17 @@ export const A2uiShowcase = {
   args: {
     stream: demoStream,
   },
-  render: (args) => html`
-    <div
-      style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; height: 100vh; overflow: auto;"
-    >
-      <eox-a2ui-wrapper .stream=${args.stream}></eox-a2ui-wrapper>
-    </div>
+  render: () => html`
+    <style>
+      #root-inner > div {
+        background: transparent !important;
+        padding: 0 !important;
+        width: 100dvw !important;
+        height: 100dvh !important;
+        position: fixed !important;
+        overflow: hidden !important;
+      }
+    </style>
+    <a2ui-streaming-demo></a2ui-streaming-demo>
   `,
 };

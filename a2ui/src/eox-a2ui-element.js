@@ -26,6 +26,28 @@ export class EOxA2uiElement extends A2uiLitElement {
     return new A2uiController(this, api);
   }
 
+  firstUpdated(changedProperties) {
+    super.firstUpdated(changedProperties);
+    const element = this._elementRef.value;
+    if (element) {
+      const type = this.context.componentModel.type;
+      const api = eoxCatalog.components.get(type);
+      const eventsToForward = api?.events || [];
+
+      eventsToForward.forEach((eventName) => {
+        element.addEventListener(eventName, (e) => {
+          this.dispatchEvent(
+            new CustomEvent(eventName, {
+              detail: e.detail,
+              bubbles: true,
+              composed: true,
+            }),
+          );
+        });
+      });
+    }
+  }
+
   updated(changedProperties) {
     super.updated(changedProperties);
     const element = this._elementRef.value;

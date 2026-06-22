@@ -74,6 +74,32 @@ Simply place `<eox-a2ui-wrapper>` in your HTML and set its `stream` or `messages
 </script>
 ```
 
+### Action Events & Interactivity
+
+The `<eox-a2ui-wrapper>` dispatches a standard, bubbling, and composed DOM event named `"a2ui-action"` whenever any component inside the rendered surface triggers an action (such as clicking a standard A2UI `Button` component).
+
+You can listen for this event on the wrapper element to handle triggers and actions in your client-side application:
+
+```html
+<eox-a2ui-wrapper id="my-a2ui-renderer"></eox-a2ui-wrapper>
+
+<script>
+  const renderer = document.getElementById("my-a2ui-renderer");
+
+  // Listen for A2UI actions (e.g. button clicks)
+  renderer.addEventListener("a2ui-action", (event) => {
+    const actionPayload = event.detail;
+    console.log("A2UI Action Triggered:", actionPayload);
+
+    if (actionPayload.name === "demo_button_clicked") {
+      alert(
+        "Button was clicked! Context: " + JSON.stringify(actionPayload.context),
+      );
+    }
+  });
+</script>
+```
+
 ### 2. Custom Integration in an existing `@a2ui/lit` application
 
 To add EOxElements support to your existing `@a2ui/lit` application, use the exported `combinedCatalog` or `mergeCatalogs` helper:

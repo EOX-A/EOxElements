@@ -519,6 +519,10 @@
             "map": {
               "description": "The native OL map instance",
               "type": "string"
+            },
+            "colormapRegistry": {
+              "description": "",
+              "type": "string"
             }
           },
           "required": ["component"]
@@ -941,6 +945,220 @@
             "unstyled": {
               "description": "Whether to disable the default EOx branded styling.",
               "type": "boolean"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxA2uiElement": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxA2uiElement"
+            },
+            "_elementRef": {
+              "description": "",
+              "type": "string"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxA2uiWrapper": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxA2uiWrapper"
+            },
+            "stream": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            },
+            "messages": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            },
+            "catalog": {
+              "description": "",
+              "type": "string"
+            },
+            "_stream": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            },
+            "_messages": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxStorytellingHero": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxStorytellingHero"
+            },
+            "title": {
+              "type": "string",
+              "description": "Main title of the hero section"
+            },
+            "as": {
+              "type": "string",
+              "enum": ["img", "video"],
+              "description": "Render hero background as an image or a video"
+            },
+            "background": {
+              "type": "string",
+              "description": "URL of the hero background image/video source"
+            },
+            "description": {
+              "type": "string",
+              "description": "Sub-description text to overlay on the hero section"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxStorytellingText": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxStorytellingText"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title of the text narrative section"
+            },
+            "markdown": {
+              "type": "string",
+              "description": "Markdown-formatted text narrative content"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxStorytellingTour": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxStorytellingTour"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title of the tour section"
+            },
+            "tourTitle": {
+              "type": "string",
+              "description": "Alternative tour title"
+            },
+            "as": {
+              "type": "string",
+              "description": "Target element type to render under the tour, e.g. 'eox-map' or 'img'"
+            },
+            "tourAs": {
+              "type": "string",
+              "description": "Alternative target element type"
+            },
+            "position": {
+              "type": "string",
+              "enum": ["left", "right"],
+              "description": "Position of the text narrative overlay relative to the media"
+            },
+            "tourPosition": {
+              "type": "string",
+              "enum": ["left", "right"],
+              "description": "Alternative position override"
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Array of tour step component IDs"
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxStorytellingTourStep": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxStorytellingTourStep"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title of the tour step"
+            },
+            "stepTitle": {
+              "type": "string",
+              "description": "Alternative tour step title"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description narrative content of the tour step"
+            },
+            "stepDescription": {
+              "type": "string",
+              "description": "Alternative tour step description narrative content"
+            },
+            "config": {
+              "type": "object",
+              "description": "Configuration object or string containing layers/zoom/center settings for the step"
             }
           },
           "required": ["component"]
