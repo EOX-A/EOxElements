@@ -104,11 +104,20 @@ if (manifest.modules) {
           }
         }
 
+        // 3. Process events
+        const events = [];
+        if (decl.events) {
+          for (const ev of decl.events) {
+            events.push(ev.name);
+          }
+        }
+
         elements.push({
           tagName,
           className,
           description,
           props,
+          events,
         });
       }
     }
@@ -130,6 +139,7 @@ for (const el of elements) {
   out += `  name: '${el.className}',\n`;
   out += `  tagName: 'eox-a2ui-element',\n`;
   out += `  targetTagName: '${el.tagName}',\n`;
+  out += `  events: ${JSON.stringify(el.events || [])},\n`;
   out += `  schema: z.object({\n`;
   for (const [propName, propInfo] of Object.entries(el.props)) {
     const zodType = mapTypeToZod(propInfo.type);
