@@ -711,7 +711,6 @@ export class A2uiStreamingDemo extends LitElement {
                     properties: {
                       id: "terrain-light",
                       title: "Terrain Light",
-                      layerControlExclusive: true,
                     },
                     source: {
                       type: "XYZ",
@@ -1391,7 +1390,6 @@ const demoStream = [
               properties: {
                 id: "terrain-light",
                 title: "Terrain Light",
-                layerControlExclusive: true,
               },
               source: {
                 type: "XYZ",
@@ -1551,8 +1549,7 @@ const demoStream = [
  *               "type": "Tile",
  *               "properties": {
  *                 "id": "terrain-light",
- *                 "title": "Terrain Light",
- *                 "layerControlExclusive": true
+ *                 "title": "Terrain Light"
                   },
  *               "source": {
  *                 "type": "XYZ",
