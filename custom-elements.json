@@ -5348,6 +5348,366 @@
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "a2ui/src/constants.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "A2UI_SPEC_VERSION",
+          "type": {
+            "text": "string"
+          },
+          "default": "\"0_9\""
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "A2UI_SPEC_VERSION",
+          "declaration": {
+            "name": "A2UI_SPEC_VERSION",
+            "module": "a2ui/src/constants.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "a2ui/src/eox-a2ui-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "EOxA2uiElement",
+          "members": [
+            {
+              "kind": "method",
+              "name": "createController"
+            },
+            {
+              "kind": "field",
+              "name": "_elementRef"
+            }
+          ],
+          "events": [
+            {
+              "name": "eventName",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "A2uiLitElement",
+            "package": "@a2ui/lit/v0_9"
+          },
+          "tagName": "eox-a2ui-element",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxA2uiElement",
+          "declaration": {
+            "name": "EOxA2uiElement",
+            "module": "a2ui/src/eox-a2ui-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-a2ui-element",
+          "declaration": {
+            "name": "EOxA2uiElement",
+            "module": "a2ui/src/eox-a2ui-element.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "a2ui/src/eox-a2ui-wrapper.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A wrapper custom element that accepts a2ui stream/messages data and renders the elements inside.",
+          "name": "EOxA2uiWrapper",
+          "members": [
+            {
+              "kind": "field",
+              "name": "stream",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "attribute": "stream"
+            },
+            {
+              "kind": "field",
+              "name": "messages",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "attribute": "messages"
+            },
+            {
+              "kind": "method",
+              "name": "_initMessageProcessorOnly"
+            },
+            {
+              "kind": "method",
+              "name": "_initMessageProcessor"
+            },
+            {
+              "kind": "method",
+              "name": "_processNewMessages",
+              "parameters": [
+                {
+                  "name": "msgs"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "catalog",
+              "privacy": "public",
+              "type": {
+                "text": "object"
+              },
+              "default": "combinedCatalog",
+              "attribute": "catalog"
+            },
+            {
+              "kind": "field",
+              "name": "_stream",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "_messages",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            }
+          ],
+          "events": [
+            {
+              "name": "a2ui-action",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when an action is triggered by any component inside the rendered surface."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stream",
+              "type": {
+                "text": "array"
+              },
+              "fieldName": "stream"
+            },
+            {
+              "name": "messages",
+              "type": {
+                "text": "array"
+              },
+              "fieldName": "messages"
+            },
+            {
+              "name": "catalog",
+              "type": {
+                "text": "object"
+              },
+              "default": "combinedCatalog",
+              "fieldName": "catalog"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "eox-a2ui-wrapper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxA2uiWrapper",
+          "declaration": {
+            "name": "EOxA2uiWrapper",
+            "module": "a2ui/src/eox-a2ui-wrapper.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-a2ui-wrapper",
+          "declaration": {
+            "name": "EOxA2uiWrapper",
+            "module": "a2ui/src/eox-a2ui-wrapper.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "a2ui/src/eox-catalog-helper.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "mergeCatalogs",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "Unique catalog identifier",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "catalogs",
+              "description": "Catalogs to merge",
+              "type": {
+                "text": "...Catalog"
+              }
+            }
+          ],
+          "description": "Merge multiple a2ui catalogs into a single combined catalog.",
+          "return": {
+            "type": {
+              "text": "Catalog"
+            }
+          }
+        },
+        {
+          "kind": "variable",
+          "name": "combinedCatalog",
+          "description": "Combined catalog of basic A2UI components and EOxElements custom catalog."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "mergeCatalogs",
+          "declaration": {
+            "name": "mergeCatalogs",
+            "module": "a2ui/src/eox-catalog-helper.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "combinedCatalog",
+          "declaration": {
+            "name": "combinedCatalog",
+            "module": "a2ui/src/eox-catalog-helper.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "a2ui/src/eox-catalog.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "urlVersion",
+          "default": "A2UI_SPEC_VERSION"
+        },
+        {
+          "kind": "variable",
+          "name": "eoxCatalog",
+          "default": "new Catalog( `https://eox-a.github.io/EOxElements/a2ui/${urlVersion}/eox_catalog.json`, [...eoxComponents, ...virtualComponents], )"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "urlVersion",
+          "declaration": {
+            "name": "urlVersion",
+            "module": "a2ui/src/eox-catalog.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "eoxCatalog",
+          "declaration": {
+            "name": "eoxCatalog",
+            "module": "a2ui/src/eox-catalog.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "a2ui/src/index.js",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxA2uiElement",
+          "declaration": {
+            "name": "EOxA2uiElement",
+            "module": "./eox-a2ui-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EOxA2uiWrapper",
+          "declaration": {
+            "name": "EOxA2uiWrapper",
+            "module": "./eox-a2ui-wrapper.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "eoxCatalog",
+          "declaration": {
+            "name": "eoxCatalog",
+            "module": "./eox-catalog.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "combinedCatalog",
+          "declaration": {
+            "name": "combinedCatalog",
+            "module": "./eox-catalog-helper.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "mergeCatalogs",
+          "declaration": {
+            "name": "mergeCatalogs",
+            "module": "./eox-catalog-helper.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "module": "a2ui/src/transformers/index.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "module": "a2ui/src/generated-catalog.js"
+          }
+        }
+      ]
     }
   ]
 }

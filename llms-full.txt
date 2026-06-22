@@ -162,6 +162,38 @@ The main branch of this project contains the v2 version of EOxElements. For the 
 
 # API Reference & Usage
 
+## eox-a2ui-element
+
+
+
+### Events
+
+- `eventName`: 
+
+---
+
+## eox-a2ui-wrapper
+
+A wrapper custom element that accepts a2ui stream/messages data and renders the elements inside.
+
+### Attributes
+
+- `stream` (array): 
+- `messages` (array): 
+- `catalog` (object): 
+
+### Properties
+
+- `stream` (array):  (Default: `undefined`)
+- `messages` (array):  (Default: `undefined`)
+- `catalog` (object):  (Default: `combinedCatalog`)
+
+### Events
+
+- `a2ui-action`: Fired when an action is triggered by any component inside the rendered surface.
+
+---
+
 ## eox-chart
 
 Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
@@ -12348,7 +12380,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-06-18T21:03:45.150Z",
+              default: "2026-06-22T10:58:53.050Z",
               options: {
                 hidden: true,
               },

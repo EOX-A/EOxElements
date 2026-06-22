@@ -7,6 +7,8 @@ EOxElements is a collection of web components for Earth Observation data visuali
 
 ## Available Elements
 
+- [eox-a2ui-element](https://eox-a.github.io/EOxElements/?path=/docs/elements-a2ui-element--docs): 
+- [eox-a2ui-wrapper](https://eox-a.github.io/EOxElements/?path=/docs/elements-a2ui-wrapper--docs): A wrapper custom element that accepts a2ui stream/messages data and renders the elements inside.
 - [eox-chart](https://eox-a.github.io/EOxElements/?path=/docs/elements-chart--docs): Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
 - [eox-drawtools](https://eox-a.github.io/EOxElements/?path=/docs/elements-drawtools--docs): The `eox-drawtools` element provides a comprehensive set of drawing, editing, selection, and import tools for vector features on an `eox-map`. It supports drawing multiple feature types (Polygon, Box, Point, Circle, LineString), continuous drawing, feature modification, selection from existing layers, and import/export in various formats (GeoJSON, WKT, native OL feature).
 - [eox-feedback](https://eox-a.github.io/EOxElements/?path=/docs/elements-feedback--docs): The `eox-feedback` element provides a modal dialog for collecting user feedback.

@@ -980,6 +980,74 @@
       ],
       "unevaluatedProperties": false
     },
+    "EOxA2uiElement": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxA2uiElement"
+            },
+            "_elementRef": {
+              "description": "",
+              "type": "string"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxA2uiWrapper": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxA2uiWrapper"
+            },
+            "stream": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            },
+            "messages": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            },
+            "catalog": {
+              "description": "",
+              "type": "string"
+            },
+            "_stream": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            },
+            "_messages": {
+              "description": "",
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
     "EOxStorytellingHero": {
       "type": "object",
       "allOf": [

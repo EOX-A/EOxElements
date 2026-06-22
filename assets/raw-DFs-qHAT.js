@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-CMxvf4Kt.js";import{o as t,s as n}from"./iframe-AA_gDm25.js";var r;e((()=>{n(),r=class extends t{decodeBlock(e){return e}}}))();export{r as default};
