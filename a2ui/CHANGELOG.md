@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-a2ui-v1.0.0...elements-a2ui-v1.1.0) (2026-06-22)
+
+
+### Features
+
+* Event forwarding and action bubbling ([#2414](https://github.com/EOX-A/EOxElements/issues/2414)) ([6b947f3](https://github.com/EOX-A/EOxElements/commit/6b947f36504638cdb73412c4017fca760275c43d))
+
+
+### Bug Fixes
+
+* Support for background elements and pointer events ([113c789](https://github.com/EOX-A/EOxElements/commit/113c789b1c3f07431cb17ee469fff5ae6cd813b7))
+
 ## 1.0.0 (2026-06-18)
 
 
