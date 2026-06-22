@@ -1,0 +1,32 @@
+{
+  "name": "@eox/elements-a2ui",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "description": "a2ui compatibility integration for EOxElements",
+  "main": "./src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "node ./scripts/build-catalog.js && vite build",
+    "types:generate": ""
+  },
+  "author": "EOX",
+  "dependencies": {
+    "@a2ui/lit": "^0.10.0",
+    "@a2ui/markdown-it": "0.0.4",
+    "@a2ui/web_core": "^0.10.0",
+    "lit": "^3.0.0"
+  },
+  "peerDependencies": {
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "vite": "^8.0.16"
+  }
+}

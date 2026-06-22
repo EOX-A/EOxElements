@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.7.0...layercontrol-v1.8.0) (2026-06-18)
+
+
+### Features
+
+* Layercontrol dynamic legend colormap with a registry ([#2391](https://github.com/EOX-A/EOxElements/issues/2391)) ([a0e88e0](https://github.com/EOX-A/EOxElements/commit/a0e88e0dfd7afcf16487065c1de24e3e29e1dd12))
+* Update wms and wmts params by layercontrol config change ([#2381](https://github.com/EOX-A/EOxElements/issues/2381)) ([b24111c](https://github.com/EOX-A/EOxElements/commit/b24111cd227933c7bb8d712355d4a1ce79493307))
+
 ## [1.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.6.0...layercontrol-v1.7.0) (2026-05-19)
 
 

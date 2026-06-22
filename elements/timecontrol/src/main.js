@@ -130,6 +130,13 @@ export class EOxTimeControl extends LitElement {
   #sliderValues = [];
 
   /**
+   * Removes the map `layerschanged` listener registered in firstUpdated.
+   *
+   * @type {(() => void) | null}
+   */
+  #cleanupLayersListener = null;
+
+  /**
    * Creates a new EOxTimeControl instance.
    */
   constructor() {
@@ -377,8 +384,21 @@ export class EOxTimeControl extends LitElement {
    * Initializes the timecontrol by finding the associated map and setting up layer listeners.
    */
   firstUpdated() {
-    firstUpdatedMethod(this, this.#emitUpdateEvent);
+    this.#cleanupLayersListener = firstUpdatedMethod(
+      this,
+      this.#emitUpdateEvent,
+    );
     this.requestUpdate();
+  }
+
+  /**
+   * Lifecycle method called when the component is disconnected from the DOM.
+   * Removes the map layer listener so it does not leak across re-mounts.
+   */
+  disconnectedCallback() {
+    this.#cleanupLayersListener?.();
+    this.#cleanupLayersListener = null;
+    super.disconnectedCallback();
   }
 
   /**

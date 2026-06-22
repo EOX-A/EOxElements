@@ -7,4 +7,5 @@ export { default as highlightByIdVectorLayer } from "./highlight-by-id-vector-la
 export { default as highlightByIdVectorTileLayer } from "./highlight-by-id-vector-tile-layer";
 export { default as removeSelectInteraction } from "./remove-select-interaction";
 export { default as removeSelectInteractionLayer } from "./remove-select-interaction-layer";
+export { default as removeSelectInteractionCleansUp } from "./remove-select-interaction-cleanup";
 export { default as noDuplicateVectorLoad } from "./no-duplicate-vector-load";

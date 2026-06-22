@@ -7,6 +7,7 @@ export { default as loadDatePickerPopupItems } from "./load-date-picker-popup-it
 export { default as loadDatePickerStandalone } from "./load-date-picker-standalone.js";
 export { default as loadSlider } from "./load-slider.js";
 export { default as loadTimeline } from "./load-timeline.js";
+export { default as loadTimelineOnLayersChange } from "./load-timeline-on-layers-change.js";
 export { default as loadDateFormatInitDate } from "./load-date-format-init-date.js";
 export { default as loadDateFormatNavigation } from "./load-date-format-navigation.js";
 export { default as loadDateWithSlider } from "./load-date-with-slider.js";

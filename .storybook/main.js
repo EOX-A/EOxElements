@@ -57,6 +57,7 @@ const config = {
   },
   staticDirs: [
     "./public",
+    "../a2ui/public",
     "../elements/geosearch/stories/public/",
     "../elements/jsonform/stories/public/",
     "../elements/layercontrol/stories/public/",

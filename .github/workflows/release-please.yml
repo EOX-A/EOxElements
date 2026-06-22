@@ -18,7 +18,7 @@ jobs:
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
       - name: Checkout 🛎️
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         # these if statements ensure that a publication only occurs when
         # a new release is created:
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
@@ -40,12 +40,12 @@ jobs:
           ELEMENT_PATHS: ${{ steps.release.outputs.paths_released }}
         run: |
           npm run styles && \
+          ROOT_DIR=$(pwd)
           for path in `echo ${ELEMENT_PATHS//,/ } | tr -d '[]"'`
           do \
-          cd $path && \
+          cd $ROOT_DIR/$path && \
           npm run types:generate && \
           npm run build && \
-          npm publish --access=public && \
-          cd ../../
+          npm publish --access=public
           done
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
