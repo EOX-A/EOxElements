@@ -12380,7 +12380,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-06-23T08:24:49.342Z",
+              default: "2026-06-23T08:25:46.583Z",
               options: {
                 hidden: true,
               },
