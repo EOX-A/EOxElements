@@ -17,7 +17,7 @@ import {
   DateInUTCStory,
   TimelineSelectionDurationStory,
   TimelineSelectionResizableStory,
-  TimelineWithBinningStory,
+  TimelineWithClusteringStory,
 } from "./index";
 
 export default {
@@ -130,16 +130,16 @@ export const Slider = SliderStory;
 export const Timeline = TimelineStory;
 
 /**
- * Timeline visualization using vis-timeline with binning configuration
+ * Timeline visualization using vis-timeline with clustering configuration
  *
- * This example shows the `<eox-timecontrol-timeline>` component with `binning` enabled,
- * which groups timeline items into bins for better visualization of large datasets.
+ * This example shows the `<eox-timecontrol-timeline>` component with `clustering` enabled,
+ * which groups timeline items into clusters for better visualization of large datasets.
  *
  * Features demonstrated:
- * - Timeline visualization with binning enabled
- * - Items are automatically grouped into bins when there are many items
+ * - Timeline visualization with clustering enabled
+ * - Items are automatically grouped into clusters when there are many items
  */
-export const TimelineWithBinning = TimelineWithBinningStory;
+export const TimelineWithClustering = TimelineWithClusteringStory;
 
 /**
  * Timeline visualization with custom selection duration

@@ -267,7 +267,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
-      ...(EOxTimeControlTimeline.binning
+      ...(EOxTimeControlTimeline.clustering
         ? {
             cluster: {
               maxItems: 2,

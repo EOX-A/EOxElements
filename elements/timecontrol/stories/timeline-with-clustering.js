@@ -2,17 +2,17 @@ import { html } from "lit";
 import { STORY_ARGS } from "../src/enums";
 
 /**
- * Timeline visualization using vis-timeline with binning configuration
+ * Timeline visualization using vis-timeline with clustering configuration
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-const TimelineWithBinningStory = {
+const TimelineWithClusteringStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
-    for: "eox-map#timeline-with-binning",
+    for: "eox-map#timeline-with-clustering",
     storyAdditionalComponents: {
       "eox-map": {
-        id: "timeline-with-binning",
+        id: "timeline-with-clustering",
         zoom: STORY_ARGS.zoom,
         center: STORY_ARGS.center,
         layers: STORY_ARGS.layers,
@@ -20,7 +20,7 @@ const TimelineWithBinningStory = {
       "eox-timecontrol-timeline": {
         storyImport: false,
         storySlot: true,
-        binning: true,
+        clustering: true,
       },
     },
   },
@@ -40,11 +40,11 @@ const TimelineWithBinningStory = {
       .externalMapRendering=${args.externalMapRendering}
     >
       <eox-timecontrol-timeline
-        .binning=${args.storyAdditionalComponents["eox-timecontrol-timeline"]
-          .binning}
+        .clustering=${args.storyAdditionalComponents["eox-timecontrol-timeline"]
+          .clustering}
       ></eox-timecontrol-timeline>
     </eox-timecontrol>
   `,
 };
 
-export default TimelineWithBinningStory;
+export default TimelineWithClusteringStory;

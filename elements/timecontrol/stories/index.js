@@ -17,4 +17,4 @@ export { default as DateWithInitDateStory } from "./date-with-init-date"; // Dat
 export { default as DateInUTCStory } from "./date-in-utc"; // Date in UTC story
 export { default as TimelineSelectionDurationStory } from "./timeline-selection-duration"; // Timeline with selection duration story
 export { default as TimelineSelectionResizableStory } from "./timeline-selection-resizable"; // Timeline with selection resizable story
-export { default as TimelineWithBinningStory } from "./timeline-with-binning"; // Timeline with binning story
+export { default as TimelineWithClusteringStory } from "./timeline-with-clustering"; // Timeline with clustering story

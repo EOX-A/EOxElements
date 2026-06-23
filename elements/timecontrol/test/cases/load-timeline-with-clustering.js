@@ -3,9 +3,9 @@ import { STORY_ARGS } from "../../src/enums.js";
 
 /**
  * Test case to verify that the timecontrol timeline component loads correctly
- * and displays the vis-timeline visualization with timeline items and with binning enabled.
+ * and displays the vis-timeline visualization with timeline items and with clustering enabled.
  */
-const loadTimelineWithBinning = () => {
+const loadTimelineWithClustering = () => {
   // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
@@ -21,7 +21,7 @@ const loadTimelineWithBinning = () => {
       .layers=${STORY_ARGS.layers}
     ></eox-map>
     <eox-timecontrol for="eox-map#timeline">
-      <eox-timecontrol-timeline .binning=${true}></eox-timecontrol-timeline>
+      <eox-timecontrol-timeline .clustering=${true}></eox-timecontrol-timeline>
     </eox-timecontrol>
   `);
 
@@ -44,7 +44,7 @@ const loadTimelineWithBinning = () => {
       cy.get("#timeline")
         .should("exist")
         .within(() => {
-          // verify that timeline shows binning as cluster
+          // verify that timeline shows clustering as cluster
           cy.get(".vis-timeline .vis-cluster", { timeout: 2000 }).should(
             "exist",
           );
@@ -52,4 +52,4 @@ const loadTimelineWithBinning = () => {
     });
 };
 
-export default loadTimelineWithBinning;
+export default loadTimelineWithClustering;
