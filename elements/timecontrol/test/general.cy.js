@@ -15,6 +15,7 @@ import {
   loadDatePickerSelectEvent,
   loadSlider,
   loadTimeline,
+  loadTimelineWithClustering,
   loadTimelineOnLayersChange,
   loadDateFormatInitDate,
   loadDateFormatNavigation,
@@ -58,6 +59,9 @@ describe("TimeControl", () => {
 
   // Test to verify that timeline component loads with vis-timeline visualization
   it("loads timeline", () => loadTimeline());
+
+  // Test to verify that timeline component loads with clustering enabled
+  it("loads timeline with clustering", () => loadTimelineWithClustering());
 
   // Test to verify that timeline component loads with range configuration
   it("loads timeline with range configuration", () =>

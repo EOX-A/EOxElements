@@ -18,3 +18,4 @@ export { default as loadNoMapSynchronization } from "./load-no-map-synchronizati
 export { default as loadExpertModeExport } from "./load-expert-mode-export.js";
 export { default as loadDateInUTC } from "./load-date-in-utc.js";
 export { default as loadTimelineWithRangeConfiguration } from "./load-timeline-with-range-configuration.js";
+export { default as loadTimelineWithClustering } from "./load-timeline-with-clustering.js";

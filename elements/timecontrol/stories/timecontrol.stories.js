@@ -17,6 +17,7 @@ import {
   DateInUTCStory,
   TimelineSelectionDurationStory,
   TimelineSelectionResizableStory,
+  TimelineWithClusteringStory,
 } from "./index";
 
 export default {
@@ -127,6 +128,18 @@ export const Slider = SliderStory;
  * comprehensive time navigation interface.
  */
 export const Timeline = TimelineStory;
+
+/**
+ * Timeline visualization using vis-timeline with clustering configuration
+ *
+ * This example shows the `<eox-timecontrol-timeline>` component with `clustering` enabled,
+ * which groups timeline items into clusters for better visualization of large datasets.
+ *
+ * Features demonstrated:
+ * - Timeline visualization with clustering enabled
+ * - Items are automatically grouped into clusters when there are many items
+ */
+export const TimelineWithClustering = TimelineWithClusteringStory;
 
 /**
  * Timeline visualization with custom selection duration
