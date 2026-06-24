@@ -61,18 +61,37 @@ export const styleTimeline = `
 .vis-item.milestone.vis-point {
   background: var(--primary) !important;
   border: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 0px !important;
+  width: 15px;
+  height: 15px;
+  margin-left: -6px;
+  border-radius: 100px !important;
+  z-index: 2;
 }
-.vis-item.milestone.vis-point.vis-selected-item {
+.vis-group {
+  height: 55px !important;
+}
+.vis-item.vis-range .vis-item-content {
+  padding: 0px; 
+}
+.vis-item.vis-range .vis-item-content,
+.vis-item.vis-cluster-line,
+.vis-item.vis-cluster-dot {
+  display: none !important;
+}
+.vis-item.vis-range {
+  border: 0;
+  background: var(--primary) !important;
+  border-radius: 100px;
+  height: 15px !important;
+}
+.vis-item.milestone.vis-point:hover {
   background: #ffc200 !important;
 }
 .vis-item.milestone.vis-point.vis-not-filtered {
   background: var(--primary-container) !important;
   /*opacity: 0.4;*/
 }
-.vis-item.milestone.vis-point:hover {
+.vis-item.milestone.vis-point:hover:not(.vis-cluster-item) {
   background: #ffc200 !important;
   cursor: pointer;
 }
@@ -83,11 +102,8 @@ export const styleTimeline = `
 }
 .vis-custom-time.multi-select-start {
   background: rgb(var(--eox-theme-light-primary), 0.4) !important;
-  // border-left: 1px solid var(--primary) !important;
-  // border-right: 1px solid var(--primary) !important;
 }
 .vis-custom-time.multi-select-end {
-  // display: none;
   background: none;
 }
 .vis-custom-time.multi-select-start div, 
@@ -198,6 +214,32 @@ export const styleTimeline = `
   width: 200px;
   height: 100px;
 }
+div.vis-tooltip {
+  background: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: inherit;
+  z-index: 99999999;
+}
+div.vis-tooltip .vis-tooltip-item,
+div.vis-tooltip .vis-tooltip-item-more {
+  display: flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+div.vis-tooltip .vis-tooltip-item-more {
+  opacity: 0.5;
+}
+div.vis-tooltip .vis-tooltip-item-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  margin-right: 6px;
+}
+div.vis-tooltip .count { font-weight: 700; }
 @keyframes loading {
   0%{
     left: -45%;
