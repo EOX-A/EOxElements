@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.12.0...storytelling-v1.13.0) (2026-06-29)
+
+
+### Features
+
+* Map loading indicator ([#2420](https://github.com/EOX-A/EOxElements/issues/2420)) ([67d4eca](https://github.com/EOX-A/EOxElements/commit/67d4ecae707b6494e24ff1900a6f7b041efdbca2))
+
 ## [1.12.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.11.0...storytelling-v1.12.0) (2026-06-18)
 
 

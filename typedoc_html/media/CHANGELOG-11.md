@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.5.1...timecontrol-v2.6.0) (2026-06-29)
+
+
+### Features
+
+* Timeline clustering ([#2243](https://github.com/EOX-A/EOxElements/issues/2243)) ([2cb4ed0](https://github.com/EOX-A/EOxElements/commit/2cb4ed0e484f78ec5ec55cdfff67b0a4ca62a617))
+
 ## [2.5.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.5.0...timecontrol-v2.5.1) (2026-06-18)
 
 

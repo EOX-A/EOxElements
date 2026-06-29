@@ -8,7 +8,7 @@
 
 > **TimelineGroup** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:350](https://github.com/EOX-A/EOxElements/blob/67d4ecae707b6494e24ff1900a6f7b041efdbca2/elements/timecontrol/src/types.ts#L350)
+Defined in: [elements/timecontrol/src/types.ts:350](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/timecontrol/src/types.ts#L350)
 
 Timeline group structure for vis-timeline.
 
@@ -18,7 +18,7 @@ Timeline group structure for vis-timeline.
 
 > **content**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:358](https://github.com/EOX-A/EOxElements/blob/67d4ecae707b6494e24ff1900a6f7b041efdbca2/elements/timecontrol/src/types.ts#L358)
+Defined in: [elements/timecontrol/src/types.ts:358](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/timecontrol/src/types.ts#L358)
 
 Display content/label for the group.
 
@@ -28,6 +28,6 @@ Display content/label for the group.
 
 > **id**: `string` \| `number`
 
-Defined in: [elements/timecontrol/src/types.ts:354](https://github.com/EOX-A/EOxElements/blob/67d4ecae707b6494e24ff1900a6f7b041efdbca2/elements/timecontrol/src/types.ts#L354)
+Defined in: [elements/timecontrol/src/types.ts:354](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/timecontrol/src/types.ts#L354)
 
 Unique identifier for the group.
