@@ -5,6 +5,7 @@ export interface CustomMarkdownIt extends MarkdownIt {
   config: { version?: number; versionCheck: boolean };
   nav: Array<string>;
   sections: object;
+  showMapLoadingIndicator?: boolean;
 }
 export type CustomMarkdownItState = InstanceType<
   MarkdownIt["core"]["State"]
