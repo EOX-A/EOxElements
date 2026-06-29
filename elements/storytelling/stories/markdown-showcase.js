@@ -137,12 +137,14 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
     id: "markdown-tour",
     showNav: true,
     showHeroScrollIndicator: true,
+    showMapLoadingIndicator: true,
   },
   render: (args) => html`
     <eox-storytelling
       id=${args.id}
       ?show-nav=${args.showNav}
       ?show-hero-scroll-indicator=${args.showHeroScrollIndicator}
+      ?show-map-loading-indicator=${args.showMapLoadingIndicator}
       markdown=${args.markdown}
     ></eox-storytelling>
   `,
