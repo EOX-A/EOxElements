@@ -12380,7 +12380,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-06-24T07:05:20.388Z",
+              default: "2026-06-29T11:50:32.164Z",
               options: {
                 hidden: true,
               },
@@ -18329,6 +18329,7 @@ Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--ma
 - `show-nav` (Boolean): Enable or disable navigation
 - `show-editor` (String | "closed" | undefined): Enable or disable editor
 - `show-hero-scroll-indicator` (Boolean): Enable or disable hero scroll indicator
+- `show-map-loading-indicator` (Boolean): Enable or disable map loading indicator by default
 - `no-shadow` (Boolean): Renders the element without a shadow root
 - `disable-autosave` (Boolean): Disable auto save
 - `unstyled` (Boolean): Render the element without additional styles
@@ -18345,6 +18346,7 @@ Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--ma
 - `showEditor` (String | "closed" | undefined): Enable or disable editor (Default: `undefined`)
 - `showNav` (Boolean): Enable or disable navigation (Default: `false`)
 - `showHeroScrollIndicator` (Boolean): Enable or disable hero scroll indicator (Default: `false`)
+- `showMapLoadingIndicator` (Boolean): Enable or disable map loading indicator by default (Default: `false`)
 - `nav` (Array<Object>): List of items in navigation (Default: `[]`)
 - `addCustomSectionIndex` (Number): custom section index (Default: `-1`)
 - `selectedCustomElement` (Object | null): Selected custom element object (Default: `null`)
@@ -18742,6 +18744,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
   Object.assign(eoxStorytelling, {
     showNav: true,
     showHeroScrollIndicator: true,
+    showMapLoadingIndicator: true,
   });
 </script>
 

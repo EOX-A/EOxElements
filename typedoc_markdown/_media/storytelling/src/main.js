@@ -71,6 +71,10 @@ export class EOxStoryTelling extends LitElement {
         attribute: "show-hero-scroll-indicator",
         type: Boolean,
       },
+      showMapLoadingIndicator: {
+        attribute: "show-map-loading-indicator",
+        type: Boolean,
+      },
       noShadow: { attribute: "no-shadow", type: Boolean },
       disableAutosave: { attribute: "disable-autosave", type: Boolean },
       unstyled: { type: Boolean },
@@ -157,6 +161,13 @@ export class EOxStoryTelling extends LitElement {
     this.showHeroScrollIndicator = false;
 
     /**
+     * Enable or disable map loading indicator by default
+     *
+     * @type {Boolean}
+     */
+    this.showMapLoadingIndicator = false;
+
+    /**
      * List of items in navigation
      *
      * @type {Array<Object>}
@@ -225,8 +236,11 @@ export class EOxStoryTelling extends LitElement {
       this.requestUpdate();
     }
 
-    // Check if 'markdown' property itself has changed and generate sanitized html
-    if (changedProperties.has("markdown")) {
+    // Check if 'markdown' or 'showMapLoadingIndicator' property itself has changed and generate sanitized html
+    if (
+      changedProperties.has("markdown") ||
+      changedProperties.has("showMapLoadingIndicator")
+    ) {
       if (this.markdown) {
         this.dispatchEvent(
           /**
@@ -238,6 +252,7 @@ export class EOxStoryTelling extends LitElement {
         );
       }
 
+      md.showMapLoadingIndicator = this.showMapLoadingIndicator;
       const unsafeHTML = md.render(this.markdown);
 
       validateMarkdownAttrs(md.attrs.sections, this);

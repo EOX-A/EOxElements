@@ -4532,6 +4532,17 @@
             },
             {
               "kind": "field",
+              "name": "showMapLoadingIndicator",
+              "privacy": "public",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Enable or disable map loading indicator by default",
+              "default": "false",
+              "attribute": "show-map-loading-indicator"
+            },
+            {
+              "kind": "field",
               "name": "nav",
               "privacy": "public",
               "type": {
@@ -4632,6 +4643,15 @@
               "description": "Enable or disable hero scroll indicator",
               "default": "false",
               "fieldName": "showHeroScrollIndicator"
+            },
+            {
+              "name": "show-map-loading-indicator",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Enable or disable map loading indicator by default",
+              "default": "false",
+              "fieldName": "showMapLoadingIndicator"
             },
             {
               "name": "no-shadow",

@@ -1744,6 +1744,10 @@
               "description": "Enable or disable hero scroll indicator",
               "type": "boolean"
             },
+            "showMapLoadingIndicator": {
+              "description": "Enable or disable map loading indicator by default",
+              "type": "boolean"
+            },
             "noShadow": {
               "description": "Renders the element without a shadow root",
               "type": "boolean"

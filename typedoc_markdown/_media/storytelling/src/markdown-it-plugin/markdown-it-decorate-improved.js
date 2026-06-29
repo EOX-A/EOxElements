@@ -110,7 +110,7 @@ function curlyAttrs(state) {
       }
 
       parent = findParent(stack, m[1], m[2]);
-      if (parent && applyToToken(parent, m[3])) {
+      if (parent && applyToToken(parent, m[3], state.md)) {
         omissions.unshift(i);
       }
     }
@@ -125,6 +125,7 @@ function curlyAttrs(state) {
         sectionStartIndex,
         sectionStepsIndex,
         sectionSteps,
+        state.md,
       );
 
     token.level = token.level + 1;
@@ -225,6 +226,7 @@ function parseFallBack(nextInlineToken) {
  * @param {Number} sectionStartIndex
  * @param {Number} sectionStepsIndex
  * @param {Boolean} sectionSteps
+ * @param {import("../types").CustomMarkdownIt} md
  * @return {Array<Object>} finalTokens
  *
  */
@@ -236,6 +238,7 @@ function parseInlineContent(
   sectionStartIndex,
   sectionStepsIndex,
   sectionSteps,
+  md,
 ) {
   /**
    * @type {InstanceType<InstanceType<import("markdown-it").default["core"]["State"]>["Token"]>}
@@ -255,7 +258,7 @@ function parseInlineContent(
     const m = child.content.match(TAGS_EXPR);
     if (m) {
       const parent = findParent(stack, m[1], m[2]);
-      if (parent && applyToToken(parent, m[3])) {
+      if (parent && applyToToken(parent, m[3], md)) {
         omissions.unshift(i);
         if (lastText) trimRight(lastText, "content");
       }
@@ -267,7 +270,7 @@ function parseInlineContent(
   if (stack.last.tag === "h3" && sectionSteps && sectionStepsIndex !== -1) {
     const currentSectionStepToken = finalTokens[sectionStepsIndex];
     currentSectionStepToken.section = finalTokens[sectionStartIndex].id;
-    applyToToken(currentSectionStepToken, stack.last.attrStr);
+    applyToToken(currentSectionStepToken, stack.last.attrStr, md);
   }
 
   // Generate nav value and transform div section to `as` attribute
@@ -310,6 +313,7 @@ function parseInlineContent(
         `${lastText ? `title='${lastText.content}'` : ""}${
           stack.last.attrStr
         } #${id}`,
+        md,
       );
 
       currentSectionToken.mode = mode;
@@ -319,10 +323,11 @@ function parseInlineContent(
       applyToToken(
         currentSectionToken,
         `#${sectionId} .${currentSectionToken.attrs[0][1]} .section-custom`,
+        md,
       );
     }
 
-    applyToToken(currentSectionToken, sectionClass);
+    applyToToken(currentSectionToken, sectionClass, md);
   }
 
   if (token.children) omissions.forEach((idx) => token.children.splice(idx, 1));
@@ -570,8 +575,9 @@ function findParent(stack, tag, depth) {
  *
  * @param {Object} token
  * @param {String} attrs
+ * @param {import("../types").CustomMarkdownIt} md
  */
-function applyToToken(token, attrs = "") {
+function applyToToken(token, attrs = "", md = null) {
   let m;
   token.attrStr = attrs;
 
@@ -624,6 +630,28 @@ function applyToToken(token, attrs = "") {
 
   const asAttr = getAttr(token.attrs, "as");
   const modeAttr = getAttr(token.attrs, "mode");
+
+  const showMapLoadingIndicator = md ? md.showMapLoadingIndicator : false;
+
+  if (asAttr === "eox-map" && showMapLoadingIndicator === true) {
+    const controlsAttr = getAttr(token.attrs, "controls");
+    const configAttr = getAttr(token.attrs, "config");
+
+    if (configAttr) {
+      try {
+        const configObj = JSON.parse(configAttr);
+        if (!configObj.controls) {
+          configObj.controls = { LoadingIndicator: {} };
+          const idx = token.attrIndex("config");
+          token.attrs[idx][1] = JSON.stringify(configObj);
+        }
+      } catch (e) {
+        console.error("Error parsing/merging config for map:", e);
+      }
+    } else if (!controlsAttr) {
+      addAttr(token, "controls", '{"LoadingIndicator":{}}');
+    }
+  }
 
   // Adding default attribute based on mode and as
   DEFAULT_MODE_ATTRS[asAttr]?.[modeAttr]?.forEach((attr) => {
