@@ -8,7 +8,7 @@
 
 > **EOxControlLayoutOptions** = `object`
 
-Defined in: [elements/map/src/types.ts:165](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L165)
+Defined in: [elements/map/src/types.ts:165](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L165)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/types.ts:165](https://github.com/EOX-A/EOxElements
 
 > `optional` **orientation?**: `"horizontal"` \| `"vertical"`
 
-Defined in: [elements/map/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L167)
+Defined in: [elements/map/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L167)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [elements/map/src/types.ts:167](https://github.com/EOX-A/EOxElements
 
 > `optional` **position?**: [`EOxControlPosition`](EOxControlPosition.md)
 
-Defined in: [elements/map/src/types.ts:166](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L166)
+Defined in: [elements/map/src/types.ts:166](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L166)

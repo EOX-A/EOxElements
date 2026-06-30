@@ -8,7 +8,7 @@
 
 > **FlatGeoBufOptions** = `object`
 
-Defined in: [elements/map/src/types.ts:226](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L226)
+Defined in: [elements/map/src/types.ts:226](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L226)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/types.ts:226](https://github.com/EOX-A/EOxElements
 
 > `optional` **attributions?**: `AttributionLike`
 
-Defined in: [elements/map/src/types.ts:228](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L228)
+Defined in: [elements/map/src/types.ts:228](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L228)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/types.ts:228](https://github.com/EOX-A/EOxElements
 
 > `optional` **projection?**: [`ProjectionLike`](ProjectionLike.md)
 
-Defined in: [elements/map/src/types.ts:230](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L230)
+Defined in: [elements/map/src/types.ts:230](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L230)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/types.ts:230](https://github.com/EOX-A/EOxElements
 
 > **url**: `string` \| `string`[]
 
-Defined in: [elements/map/src/types.ts:227](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L227)
+Defined in: [elements/map/src/types.ts:227](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L227)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [elements/map/src/types.ts:227](https://github.com/EOX-A/EOxElements
 
 > `optional` **wrapX?**: `boolean`
 
-Defined in: [elements/map/src/types.ts:229](https://github.com/EOX-A/EOxElements/blob/7587a859f7980bf54edf52fad73c73cb6b0d47fc/elements/map/src/types.ts#L229)
+Defined in: [elements/map/src/types.ts:229](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/types.ts#L229)
