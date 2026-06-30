@@ -8,7 +8,7 @@
 
 > **EOxLayerType**\<`T`, `S`\> = `OlLayerOption`\<`T`\> *extends* `object` ? `Omit`\<`OlLayerOption`\<`T`\>, `"sources"`\> & `object` : `OlLayerOption`\<`T`\> & `object` & `S` *extends* keyof [`OLSources`](OLSources.md) ? `SourceProperties`\<`S`\> : `object`
 
-Defined in: [elements/map/src/layers.ts:144](https://github.com/EOX-A/EOxElements/blob/b79d61ae1034765cdf87c33c6102cc74b2c4d844/elements/map/src/layers.ts#L144)
+Defined in: [elements/map/src/layers.ts:144](https://github.com/EOX-A/EOxElements/blob/9bf5a07d16bdc7117da11c21c53d0cbc538ec7f5/elements/map/src/layers.ts#L144)
 
 ## Type Declaration
 
