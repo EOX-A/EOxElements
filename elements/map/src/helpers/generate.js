@@ -91,6 +91,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   const olLayer = new newLayer({
     ...layer,
     ...(layer.type !== "MapboxStyle" &&
+      "source" in layer &&
       layer.source && {
         source: createOlSourceFromDefinition(layer.source, EOxMap),
       }),
@@ -111,11 +112,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
     );
   }
 
-  if ("style" in layer) {
+  if ("style" in layer && layer.style) {
     /** @type {VectorOrVectorTileLayer} **/ (olLayer).setStyle(
-      /** @type {import("../layers").EOxLayerType<"Vector","Vector">} **/ (
-        layer
-      ).style,
+      /** @type {import("ol/style/Style").StyleLike} */ (layer.style),
     );
   }
 
@@ -268,6 +267,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   if (
     newLayerDefinition.type !== existingJsonDefinition.type ||
     (newLayerDefinition.type !== "MapboxStyle" &&
+      "source" in newLayerDefinition &&
+      "source" in existingJsonDefinition &&
       newLayerDefinition.source?.type !== existingJsonDefinition.source?.type)
   ) {
     throw new Error(`Layers are not compatible to be updated`);
@@ -279,6 +280,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Update source if different
   if (
     newLayerDefinition.type !== "MapboxStyle" &&
+    "source" in newLayerDefinition &&
+    "source" in existingJsonDefinition &&
     serialize(newLayerDefinition.source) !==
       serialize(existingJsonDefinition.source)
   ) {
@@ -312,11 +315,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Update style if different
   if (
     ["Vector", "VectorTile", "WebGLTile"].includes(newLayerDefinition.type) &&
-    serialize(
-      /** @type {import("../layers.ts").EOxLayerType<"Vector"|"VectorTile"|"WebGLTile",any>} */ (
-        newLayerDefinition
-      ).style,
-    ) !== serialize(existingJsonDefinition.style)
+    serialize(newLayerDefinition.style) !==
+      serialize(existingJsonDefinition.style)
   ) {
     // @ts-expect-error TODO
     existingLayer.setStyle(

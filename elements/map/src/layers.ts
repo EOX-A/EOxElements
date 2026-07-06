@@ -119,8 +119,14 @@ type OlSourceOption<S extends keyof OLSources> = Omit<
 
 type OlLayerOption<T extends keyof OLLayers> = Omit<
   Omit<ConstructorParameters<OLLayers[T]>[0], "properties">,
-  "source" | "layers" | "map"
+  "source" | "layers" | "map" | "style"
 >;
+
+type EOxLayerStyle<T extends keyof OLLayers> = T extends "Vector" | "VectorTile"
+  ? import("ol/style/Style").StyleLike | import("ol/style/flat").FlatStyleLike
+  : T extends "WebGLTile"
+    ? import("ol/layer/WebGLTile").Style
+    : never;
 
 export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
   ? OlSourceOption<S>
@@ -151,6 +157,7 @@ export type EOxLayerType<
   zIndex?: number;
   visible?: boolean;
   opacity?: number;
+  style?: EOxLayerStyle<T>;
   properties?: {
     id: string;
     [key: string]: any;
@@ -158,17 +165,14 @@ export type EOxLayerType<
   interactions?: T extends "Vector" | "VectorTile"
     ? Array<import("./types").EOxInteraction>
     : never;
-} & (S extends keyof OLSources ? SourceProperties<S> : {});
+} & ([S] extends [never] ? {} : SourceProperties<S>);
 
-export type EOxLayerTypeGroup = Omit<
-  EOxLayerType<"Group", keyof OLSources>,
-  "layers"
-> & {
+export type EOxLayerTypeGroup = Omit<EOxLayerType<"Group">, "layers"> & {
   layers: EoxLayer[];
 };
 
 export type EOxLayerTypeMapboxStyle = Omit<
-  EOxLayerType<"MapboxStyle", keyof OLSources>,
+  EOxLayerType<"MapboxStyle">,
   "source" | "sources"
 >;
 
