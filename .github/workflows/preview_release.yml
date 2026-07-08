@@ -41,7 +41,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Determine changed packages 🔍
+        id: changed
+        run: |
+          git fetch --depth=1 origin "${{ github.event.pull_request.base.ref }}"
+          PATHS=$(git diff --name-only FETCH_HEAD HEAD | node -e 'const pkgs=Object.keys(require(process.cwd()+"/release-please-config.json").packages);const files=require("fs").readFileSync(0,"utf8").split("\n").filter(Boolean);process.stdout.write(pkgs.filter((p)=>files.some((f)=>f.startsWith(p+"/"))).join(" "))')
+          echo "paths=$PATHS" >> "$GITHUB_OUTPUT"
+
       - name: Install dependencies 👨🏻‍💻
+        if: steps.changed.outputs.paths != ''
         run: npm ci --prefer-offline --no-audit
-      - name: Release preview 🚀
-        run: npx pkg-pr-new publish './elements/*' './utils/' --comment=off
+
+      - name: Release previews 🚀
+        if: steps.changed.outputs.paths != ''
+        run: |
+          ROOT_DIR=$(pwd)
+          for p in ${{ steps.changed.outputs.paths }}; do
+            cd "$ROOT_DIR/$p"
+            npm run types:generate --if-present
+            npx pkg-pr-new publish . --comment=off
+          done
