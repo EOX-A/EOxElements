@@ -314,7 +314,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update style if different
   if (
-    ["Vector", "VectorTile", "WebGLTile"].includes(newLayerDefinition.type) &&
+    "style" in newLayerDefinition &&
+    "style" in existingJsonDefinition &&
     serialize(newLayerDefinition.style) !==
       serialize(existingJsonDefinition.style)
   ) {

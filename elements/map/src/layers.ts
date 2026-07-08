@@ -91,7 +91,7 @@ export type EOxFormatType<F extends keyof OLFormats> =
   | F
   | ({
       type: F;
-    } & ConstructorParameters<OLFormats[F]>[0]);
+    } & NonNullable<ConstructorParameters<OLFormats[F]>[0]>);
 
 export type EOxFormat =
   | EOxFormatType<"EsriJSON">
@@ -113,20 +113,14 @@ export type EOxFormat =
   | EOxFormatType<"WKB">;
 
 type OlSourceOption<S extends keyof OLSources> = Omit<
-  ConstructorParameters<OLSources[S]>[0],
+  NonNullable<ConstructorParameters<OLSources[S]>[0]>,
   "map" | "layer"
 >;
 
 type OlLayerOption<T extends keyof OLLayers> = Omit<
-  Omit<ConstructorParameters<OLLayers[T]>[0], "properties">,
-  "source" | "layers" | "map" | "style"
+  Omit<NonNullable<ConstructorParameters<OLLayers[T]>[0]>, "properties">,
+  "source" | "layers" | "map"
 >;
-
-type EOxLayerStyle<T extends keyof OLLayers> = T extends "Vector" | "VectorTile"
-  ? import("ol/style/Style").StyleLike | import("ol/style/flat").FlatStyleLike
-  : T extends "WebGLTile"
-    ? import("ol/layer/WebGLTile").Style
-    : never;
 
 export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
   ? OlSourceOption<S>
@@ -157,7 +151,6 @@ export type EOxLayerType<
   zIndex?: number;
   visible?: boolean;
   opacity?: number;
-  style?: EOxLayerStyle<T>;
   properties?: {
     id: string;
     [key: string]: any;
@@ -180,6 +173,11 @@ export type EoxLayer =
   | EOxLayerType<"Vector", "Vector">
   | EOxLayerType<"Vector", "FlatGeoBuf">
   | EOxLayerType<"Vector", "Cluster">
+  | EOxLayerType<"VectorImage", "Vector">
+  | EOxLayerType<"Heatmap", "Vector">
+  | EOxLayerType<"WebGLVector", "Vector">
+  | EOxLayerType<"WebGLPoints", "Vector">
+  | EOxLayerType<"Graticule">
   | EOxLayerType<"VectorTile", "VectorTile">
   | EOxLayerType<"WebGLTile", "GeoTIFF">
   | EOxLayerType<"WebGLTile", "GeoZarr">
