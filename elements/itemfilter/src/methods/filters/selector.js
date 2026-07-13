@@ -162,6 +162,7 @@ function updateSuggestions(EOxItemFilterSelector) {
   if (EOxItemFilterSelector.query) {
     const fuse = new Fuse(items, {
       threshold: 0.4,
+      ignoreLocation: true,
     });
     filteredSuggestion = fuse
       .search(EOxItemFilterSelector.query)
