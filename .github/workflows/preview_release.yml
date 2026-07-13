@@ -44,8 +44,12 @@ jobs:
       - name: Determine changed packages 🔍
         id: changed
         run: |
-          git fetch --depth=1 origin "${{ github.event.pull_request.base.ref }}"
-          PATHS=$(git diff --name-only FETCH_HEAD HEAD | node -e 'const pkgs=Object.keys(require(process.cwd()+"/release-please-config.json").packages);const files=require("fs").readFileSync(0,"utf8").split("\n").filter(Boolean);process.stdout.write(pkgs.filter((p)=>files.some((f)=>f.startsWith(p+"/"))).join(" "))')
+          PATHS=$(git diff --name-only -r HEAD^1 HEAD | node -e '
+            const { packages } = require("./release-please-config.json");
+            const files = require("fs").readFileSync(0, "utf8").split("\n");
+            const changed = Object.keys(packages).filter((p) => files.some((f) => f.startsWith(p + "/")));
+            process.stdout.write(changed.join(" "));
+          ')
           echo "paths=$PATHS" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies 👨🏻‍💻
