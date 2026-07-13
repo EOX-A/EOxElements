@@ -1,6 +1,6 @@
 import "../src/main";
 import testItems from "./testItems.json";
-import { filterkeysTest } from "./cases/filters/";
+import { filterkeysTest, selectorSearchTest } from "./cases/filters/";
 
 describe("Item Filter Config", () => {
   const state = {
@@ -51,4 +51,10 @@ describe("Item Filter Config", () => {
    * Test case for filterKeys
    */
   it("should support setting filterKeys", () => filterkeysTest(filterKeys));
+
+  /**
+   * Test case for selector autocomplete search
+   */
+  it("should find long selector options by words at the end", () =>
+    selectorSearchTest());
 });
