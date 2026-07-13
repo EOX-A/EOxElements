@@ -8,7 +8,7 @@
 
 > **EOxFormatType**\<`F`\> = `F` \| `object` & `ConstructorParameters`\<[`OLFormats`](OLFormats.md)\[`F`\]\>\[`0`\]
 
-Defined in: [elements/map/src/layers.ts:90](https://github.com/EOX-A/EOxElements/blob/0d270b18f6806371315c2a35b2cef8f563038173/elements/map/src/layers.ts#L90)
+Defined in: [elements/map/src/layers.ts:90](https://github.com/EOX-A/EOxElements/blob/538c9720c3600fb76efcbbbce4bc7f6efa5da2f3/elements/map/src/layers.ts#L90)
 
 ## Type Parameters
 
