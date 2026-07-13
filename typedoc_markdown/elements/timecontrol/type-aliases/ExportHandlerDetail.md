@@ -8,7 +8,7 @@
 
 > **ExportHandlerDetail** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:382](https://github.com/EOX-A/EOxElements/blob/0ddc4f395486a0e976d4333c409dc5720200f2f6/elements/timecontrol/src/types.ts#L382)
+Defined in: [elements/timecontrol/src/types.ts:382](https://github.com/EOX-A/EOxElements/blob/3bae963dafb92e047d8cf9be7fde8b5d8a08d132/elements/timecontrol/src/types.ts#L382)
 
 Export handler detail structure.
 
@@ -18,7 +18,7 @@ Export handler detail structure.
 
 > **eoxMapConfig**: `object`
 
-Defined in: [elements/timecontrol/src/types.ts:406](https://github.com/EOX-A/EOxElements/blob/0ddc4f395486a0e976d4333c409dc5720200f2f6/elements/timecontrol/src/types.ts#L406)
+Defined in: [elements/timecontrol/src/types.ts:406](https://github.com/EOX-A/EOxElements/blob/3bae963dafb92e047d8cf9be7fde8b5d8a08d132/elements/timecontrol/src/types.ts#L406)
 
 EOxMap configuration object.
 
@@ -40,7 +40,7 @@ EOxMap configuration object.
 
 > **filters**: [`FilterConfig`](FilterConfig.md)[]
 
-Defined in: [elements/timecontrol/src/types.ts:386](https://github.com/EOX-A/EOxElements/blob/0ddc4f395486a0e976d4333c409dc5720200f2f6/elements/timecontrol/src/types.ts#L386)
+Defined in: [elements/timecontrol/src/types.ts:386](https://github.com/EOX-A/EOxElements/blob/3bae963dafb92e047d8cf9be7fde8b5d8a08d132/elements/timecontrol/src/types.ts#L386)
 
 Array of filter configurations.
 
@@ -50,7 +50,7 @@ Array of filter configurations.
 
 > **instances**: `Record`\<`string`, \{ `layer`: `any`; `source`: `any`; \}\>
 
-Defined in: [elements/timecontrol/src/types.ts:402](https://github.com/EOX-A/EOxElements/blob/0ddc4f395486a0e976d4333c409dc5720200f2f6/elements/timecontrol/src/types.ts#L402)
+Defined in: [elements/timecontrol/src/types.ts:402](https://github.com/EOX-A/EOxElements/blob/3bae963dafb92e047d8cf9be7fde8b5d8a08d132/elements/timecontrol/src/types.ts#L402)
 
 Array of instances.
 
@@ -60,7 +60,7 @@ Array of instances.
 
 > **selectedRangeItems**: `object`
 
-Defined in: [elements/timecontrol/src/types.ts:390](https://github.com/EOX-A/EOxElements/blob/0ddc4f395486a0e976d4333c409dc5720200f2f6/elements/timecontrol/src/types.ts#L390)
+Defined in: [elements/timecontrol/src/types.ts:390](https://github.com/EOX-A/EOxElements/blob/3bae963dafb92e047d8cf9be7fde8b5d8a08d132/elements/timecontrol/src/types.ts#L390)
 
 Selected range items organized by date.
 
