@@ -648,14 +648,14 @@ export const processLayers = (layers, globe, mapPool) => {
   layers.forEach((olLayer) => {
     if (olLayer.get("id")) {
       setupLayerListeners(
-        /** @type {ExtendedOLLayer} */(olLayer),
+        /** @type {ExtendedOLLayer} */ (olLayer),
         globe,
         mapPool,
       );
     }
     if (/** @type {any} */ (olLayer).getLayers) {
       processLayers(
-        /** @type {any} */(olLayer).getLayers().getArray(),
+        /** @type {any} */ (olLayer).getLayers().getArray(),
         globe,
         mapPool,
       );
