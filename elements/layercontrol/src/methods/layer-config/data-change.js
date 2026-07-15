@@ -20,12 +20,14 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     /** @type {import("ol/source").Source & { getTileUrlFunction: Function, setTileUrlFunction: Function, setKey: Function, updateParams: Function, _updatedUrl: string, getUrls: Function }} */ (
       EOxLayerControlLayerConfig.layer.getSource()
     );
+    
+  const removeProperties =
+    EOxLayerControlLayerConfig.layerConfig.schema?.options?.removeProperties ??
+    [];
+  const updatedData = { ...data };
+  removeProperties.forEach((prop) => delete updatedData[prop]);
+
   if (source.updateParams) {
-    const updatedData = { ...data };
-    const removeProperties =
-      EOxLayerControlLayerConfig.layerConfig.schema?.options
-        ?.removeProperties ?? [];
-    removeProperties.forEach((prop) => delete updatedData[prop]);
     source.updateParams(updatedData);
   } else if (source.getTileUrlFunction && source.getTileUrlFunction()) {
     if (!newTileUrlFunc) {
@@ -43,10 +45,6 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     // Setting a new tile URL function for the layer's source by applying updated data to the existing function.
     source.setTileUrlFunction((...args) => {
       const url = new URL(newTileUrlFunc(...args));
-      const removeProperties =
-        EOxLayerControlLayerConfig.layerConfig.schema?.options
-          ?.removeProperties ?? [];
-
       // Remove unwanted properties from query parameters
       removeProperties.forEach((prop) => url.searchParams.delete(prop));
       return updateUrl(url.href, data);
