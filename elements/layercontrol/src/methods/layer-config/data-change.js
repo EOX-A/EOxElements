@@ -20,7 +20,7 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     /** @type {import("ol/source").Source & { getTileUrlFunction: Function, setTileUrlFunction: Function, setKey: Function, updateParams: Function, _updatedUrl: string, getUrls: Function }} */ (
       EOxLayerControlLayerConfig.layer.getSource()
     );
-    
+
   const removeProperties =
     EOxLayerControlLayerConfig.layerConfig.schema?.options?.removeProperties ??
     [];
