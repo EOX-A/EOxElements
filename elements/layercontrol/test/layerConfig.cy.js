@@ -8,7 +8,9 @@ describe("LayerControl: LayerConfig", () => {
         "eox-jsonform",
         class extends HTMLElement {
           set schema(val) {}
-          set value(val) {}
+          set value(val) {
+            this.seededValue = val;
+          }
           set options(val) {}
         },
       );
@@ -140,5 +142,64 @@ describe("LayerControl: LayerConfig", () => {
       expect(resultUrl).to.contain("foo=new_bar");
       expect(resultUrl).to.not.contain("removeMe=should_be_stripped");
     });
+  });
+
+  it("seeds start values from the tile URL when the schema nests fields under anyOf", () => {
+    // json-editor's "pick one variant" shape: the fields live in the anyOf branches and the
+    // schema's own `properties` is empty. The layer's URL asks for one variant, the schema
+    // defaults to another — without seeding, json-editor applies the default and layer-config
+    // writes it straight back into the tile URL, re-rendering the layer with parameters it
+    // never asked for.
+    const mockSource = {
+      getTileUrlFunction: () => () =>
+        "https://tiles.com/0/0/0.png?expression=%2Fdescending%3Avv&bidx=2",
+      setTileUrlFunction: () => {},
+      setKey: () => {},
+      getUrls: () => ["https://tiles.com/0/0/0.png"],
+      on: () => {},
+      un: () => {},
+      getState: () => "ready",
+    };
+
+    const mockLayer = {
+      getSource: () => mockSource,
+      get: (prop) => (prop === "id" ? "test-anyof" : null),
+      on: () => {},
+      un: () => {},
+    };
+
+    const layerConfig = {
+      schema: {
+        type: "object",
+        properties: {},
+        anyOf: [
+          {
+            type: "object",
+            title: "Composite",
+            properties: {
+              expression: { type: "string", default: "/ascending:vv" },
+              bidx: { type: "number", default: 1 },
+            },
+          },
+        ],
+      },
+    };
+
+    cy.mount(html`
+      <eox-layercontrol-layerconfig
+        .layer=${mockLayer}
+        .layerConfig=${layerConfig}
+      ></eox-layercontrol-layerconfig>
+    `);
+
+    cy.get("eox-layercontrol-layerconfig")
+      .shadow()
+      .find("eox-jsonform", { timeout: 10000 })
+      .then(($jsonform) => {
+        expect($jsonform[0].seededValue).to.deep.include({
+          expression: "/descending:vv",
+          bidx: 2,
+        });
+      });
   });
 });

@@ -1,4 +1,29 @@
 /**
+ * Collects a schema's field definitions, from `properties` and from any `anyOf`/`oneOf`/`allOf`
+ * branches.
+ *
+ * json-editor uses those combinators for "pick one variant" forms, where the fields live in the
+ * branches and the schema's own `properties` is empty — so reading `properties` alone finds
+ * nothing.
+ *
+ * @param {{[key: string]: any}} schema - The schema object to collect fields from.
+ * @returns {{[key: string]: any}} - Field definitions keyed by property name.
+ */
+function collectFieldSchemas(schema) {
+  if (!schema || typeof schema !== "object") return {};
+
+  const fields = { ...schema.properties };
+  for (const key of ["anyOf", "oneOf", "allOf"]) {
+    if (Array.isArray(schema[key])) {
+      for (const branch of schema[key]) {
+        Object.assign(fields, collectFieldSchemas(branch));
+      }
+    }
+  }
+  return fields;
+}
+
+/**
  * Recursively traverses the schema object to extract startVals based on values of nested properties.
  *
  * @param {{[key: string]: any}} schema - The schema object to traverse.
@@ -12,16 +37,19 @@ export function getNestedStartVals(schema, nestedValues) {
     const type = schema[key].type;
     // Extract startVal based on type
     if (type && type !== "object" && nestedValues[key] !== undefined) {
-      startVals[key] =
+      const value =
         type === "number" ? Number(nestedValues[key]) : nestedValues[key];
-    } else if (typeof schema[key] === "object" && schema[key]?.properties) {
+      // A value the URL carries but the schema can't hold (e.g. "auto" as a number) would
+      // otherwise seed the form with NaN.
+      startVals[key] = Number.isNaN(value) ? nestedValues[key] : value;
+    } else {
       // Recursively traverse nested properties
-      const nestedStartVals = getNestedStartVals(
-        schema[key].properties,
-        nestedValues,
-      );
-      if (Object.keys(nestedStartVals).length > 0) {
-        startVals[key] = nestedStartVals;
+      const nestedFields = collectFieldSchemas(schema[key]);
+      if (Object.keys(nestedFields).length) {
+        const nestedStartVals = getNestedStartVals(nestedFields, nestedValues);
+        if (Object.keys(nestedStartVals).length > 0) {
+          startVals[key] = nestedStartVals;
+        }
       }
     }
   }
@@ -76,8 +104,10 @@ export function getStartVals(layer, layerConfig) {
     }
   } else return null;
 
+  // Fall back to the schema itself for schemas passed as a bare map of property definitions.
+  const fieldSchemas = collectFieldSchemas(layerConfig.schema);
   const startVals = getNestedStartVals(
-    layerConfig.schema?.properties || layerConfig.schema,
+    Object.keys(fieldSchemas).length ? fieldSchemas : layerConfig.schema,
     nestedValues,
   );
 
