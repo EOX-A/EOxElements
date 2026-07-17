@@ -12,7 +12,7 @@
 function collectFieldSchemas(schema) {
   if (!schema || typeof schema !== "object") return {};
 
-  const fields = { ...schema.properties };
+  const fields = {};
   for (const key of ["anyOf", "oneOf", "allOf"]) {
     if (Array.isArray(schema[key])) {
       for (const branch of schema[key]) {
@@ -20,7 +20,9 @@ function collectFieldSchemas(schema) {
       }
     }
   }
-  return fields;
+  // The schema's own `properties` overlays last: branches only extend it, so a
+  // constraint-only branch entry (e.g. `{const: "a"}`) can't shadow a real field definition.
+  return Object.assign(fields, schema.properties);
 }
 
 /**
@@ -44,12 +46,12 @@ export function getNestedStartVals(schema, nestedValues) {
       startVals[key] = Number.isNaN(value) ? nestedValues[key] : value;
     } else {
       // Recursively traverse nested properties
-      const nestedFields = collectFieldSchemas(schema[key]);
-      if (Object.keys(nestedFields).length) {
-        const nestedStartVals = getNestedStartVals(nestedFields, nestedValues);
-        if (Object.keys(nestedStartVals).length > 0) {
-          startVals[key] = nestedStartVals;
-        }
+      const nestedStartVals = getNestedStartVals(
+        collectFieldSchemas(schema[key]),
+        nestedValues,
+      );
+      if (Object.keys(nestedStartVals).length > 0) {
+        startVals[key] = nestedStartVals;
       }
     }
   }

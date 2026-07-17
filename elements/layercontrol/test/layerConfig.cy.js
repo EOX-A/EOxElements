@@ -144,18 +144,16 @@ describe("LayerControl: LayerConfig", () => {
     });
   });
 
-  it("seeds start values from the tile URL when the schema nests fields under anyOf", () => {
-    // json-editor's "pick one variant" shape: the fields live in the anyOf branches and the
-    // schema's own `properties` is empty. The layer's URL asks for one variant, the schema
-    // defaults to another — without seeding, json-editor applies the default and layer-config
-    // writes it straight back into the tile URL, re-rendering the layer with parameters it
-    // never asked for.
+  /**
+   * Mounts a layerconfig for a mock tile layer whose URL carries the given query string,
+   * and yields the value the component seeds into eox-jsonform.
+   */
+  const seededValueFor = (tileUrl, schema) => {
     const mockSource = {
-      getTileUrlFunction: () => () =>
-        "https://tiles.com/0/0/0.png?expression=%2Fdescending%3Avv&bidx=2",
+      getTileUrlFunction: () => () => tileUrl,
       setTileUrlFunction: () => {},
       setKey: () => {},
-      getUrls: () => ["https://tiles.com/0/0/0.png"],
+      getUrls: () => [tileUrl.split("?")[0]],
       on: () => {},
       un: () => {},
       getState: () => "ready",
@@ -163,13 +161,34 @@ describe("LayerControl: LayerConfig", () => {
 
     const mockLayer = {
       getSource: () => mockSource,
-      get: (prop) => (prop === "id" ? "test-anyof" : null),
+      get: (prop) => (prop === "id" ? "test-seed" : null),
       on: () => {},
       un: () => {},
     };
 
-    const layerConfig = {
-      schema: {
+    cy.mount(html`
+      <eox-layercontrol-layerconfig
+        .layer=${mockLayer}
+        .layerConfig=${{ schema }}
+      ></eox-layercontrol-layerconfig>
+    `);
+
+    return cy
+      .get("eox-layercontrol-layerconfig")
+      .shadow()
+      .find("eox-jsonform", { timeout: 10000 })
+      .then(($jsonform) => $jsonform[0].seededValue);
+  };
+
+  it("seeds start values from the tile URL when the schema nests fields under anyOf", () => {
+    // json-editor's "pick one variant" shape: the fields live in the anyOf branches and the
+    // schema's own `properties` is empty. The layer's URL asks for one variant, the schema
+    // defaults to another — without seeding, json-editor applies the default and layer-config
+    // writes it straight back into the tile URL, re-rendering the layer with parameters it
+    // never asked for.
+    seededValueFor(
+      "https://tiles.com/0/0/0.png?expression=%2Fdescending%3Avv&bidx=2",
+      {
         type: "object",
         properties: {},
         anyOf: [
@@ -183,23 +202,36 @@ describe("LayerControl: LayerConfig", () => {
           },
         ],
       },
-    };
+    ).should("deep.include", {
+      expression: "/descending:vv",
+      bidx: 2,
+    });
+  });
 
-    cy.mount(html`
-      <eox-layercontrol-layerconfig
-        .layer=${mockLayer}
-        .layerConfig=${layerConfig}
-      ></eox-layercontrol-layerconfig>
-    `);
+  it("keeps seeding top-level properties when anyOf branches carry constraint-only entries", () => {
+    // The conditional-validation idiom: real fields live in `properties`, and anyOf branches
+    // repeat some of them as constraints (e.g. `{const: "a"}` plus a `required` list). Those
+    // constraint entries must not shadow the real definitions, or the field stops seeding.
+    seededValueFor("https://tiles.com/0/0/0.png?mode=a&other=y", {
+      type: "object",
+      properties: {
+        mode: { type: "string" },
+        other: { type: "string" },
+      },
+      anyOf: [
+        { properties: { mode: { const: "a" } }, required: ["other"] },
+        { properties: { mode: { const: "b" } } },
+      ],
+    }).should("deep.include", { mode: "a", other: "y" });
+  });
 
-    cy.get("eox-layercontrol-layerconfig")
-      .shadow()
-      .find("eox-jsonform", { timeout: 10000 })
-      .then(($jsonform) => {
-        expect($jsonform[0].seededValue).to.deep.include({
-          expression: "/descending:vv",
-          bidx: 2,
-        });
-      });
+  it("seeds the raw URL value instead of NaN when a number field carries a non-numeric value", () => {
+    seededValueFor("https://tiles.com/0/0/0.png?rescale=auto&bidx=2", {
+      type: "object",
+      properties: {
+        rescale: { type: "number" },
+        bidx: { type: "number" },
+      },
+    }).should("deep.include", { rescale: "auto", bidx: 2 });
   });
 });
