@@ -145,8 +145,7 @@ describe("LayerControl: LayerConfig", () => {
   });
 
   /**
-   * Mounts a layerconfig for a mock tile layer whose URL carries the given query string,
-   * and yields the value the component seeds into eox-jsonform.
+   * Mounts a layerconfig for a mock tile layer and yields the value seeded into eox-jsonform.
    */
   const seededValueFor = (tileUrl, schema) => {
     const mockSource = {
@@ -181,11 +180,8 @@ describe("LayerControl: LayerConfig", () => {
   };
 
   it("seeds start values from the tile URL when the schema nests fields under anyOf", () => {
-    // json-editor's "pick one variant" shape: the fields live in the anyOf branches and the
-    // schema's own `properties` is empty. The layer's URL asks for one variant, the schema
-    // defaults to another — without seeding, json-editor applies the default and layer-config
-    // writes it straight back into the tile URL, re-rendering the layer with parameters it
-    // never asked for.
+    // fields live in the anyOf branches, `properties` is empty; without seeding,
+    // json-editor's defaults get written back into the tile URL
     seededValueFor(
       "https://tiles.com/0/0/0.png?expression=%2Fdescending%3Avv&bidx=2",
       {
@@ -208,10 +204,32 @@ describe("LayerControl: LayerConfig", () => {
     });
   });
 
+  it("seeds start values when anyOf branches are $refs into definitions", () => {
+    seededValueFor(
+      "https://tiles.com/0/0/0.png?expression=%2Fdescending%3Avv&bidx=2",
+      {
+        type: "object",
+        properties: {},
+        anyOf: [{ $ref: "#/definitions/composite" }],
+        definitions: {
+          composite: {
+            type: "object",
+            title: "Composite",
+            properties: {
+              expression: { type: "string", default: "/ascending:vv" },
+              bidx: { type: "number", default: 1 },
+            },
+          },
+        },
+      },
+    ).should("deep.include", {
+      expression: "/descending:vv",
+      bidx: 2,
+    });
+  });
+
   it("keeps seeding top-level properties when anyOf branches carry constraint-only entries", () => {
-    // The conditional-validation idiom: real fields live in `properties`, and anyOf branches
-    // repeat some of them as constraints (e.g. `{const: "a"}` plus a `required` list). Those
-    // constraint entries must not shadow the real definitions, or the field stops seeding.
+    // constraint entries like `{const: "a"}` must not shadow the real definitions in `properties`
     seededValueFor("https://tiles.com/0/0/0.png?mode=a&other=y", {
       type: "object",
       properties: {
@@ -226,12 +244,13 @@ describe("LayerControl: LayerConfig", () => {
   });
 
   it("seeds the raw URL value instead of NaN when a number field carries a non-numeric value", () => {
-    seededValueFor("https://tiles.com/0/0/0.png?rescale=auto&bidx=2", {
+    seededValueFor("https://tiles.com/0/0/0.png?rescale=auto&bidx=2&zoom=3", {
       type: "object",
       properties: {
         rescale: { type: "number" },
         bidx: { type: "number" },
+        zoom: { type: "integer" },
       },
-    }).should("deep.include", { rescale: "auto", bidx: 2 });
+    }).should("deep.include", { rescale: "auto", bidx: 2, zoom: 3 });
   });
 });
