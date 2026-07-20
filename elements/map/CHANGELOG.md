@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/EOX-A/EOxElements/compare/map-v2.7.0...map-v2.7.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* EoxLayer type declaration ([#2430](https://github.com/EOX-A/EOxElements/issues/2430)) ([deb724d](https://github.com/EOX-A/EOxElements/commit/deb724d3784f91ed0eaf3e9e08fd08aa0ad985e0))
+
 ## [2.7.0](https://github.com/EOX-A/EOxElements/compare/map-v2.6.1...map-v2.7.0) (2026-06-18)
 
 
