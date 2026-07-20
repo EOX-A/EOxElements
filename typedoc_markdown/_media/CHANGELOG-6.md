@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.0...layercontrol-v1.8.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* Seed `layerConfig` start values for anyOf/oneOf/allOf schemas ([#2447](https://github.com/EOX-A/EOxElements/issues/2447)) ([2e85928](https://github.com/EOX-A/EOxElements/commit/2e859287312853baafbe2b7e0ae99a6e36b89380))
+
 ## [1.8.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.7.0...layercontrol-v1.8.0) (2026-06-18)
 
 

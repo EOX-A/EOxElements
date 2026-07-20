@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlPickerType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:34](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L34)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:34](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L34)
 
 The `eox-timecontrol-picker` component provides a calendar-based date picker for selecting single dates or date ranges.
 It uses vanilla-calendar-pro and can be displayed inline or as a popup. The calendar can show dots indicating
@@ -1016,7 +1016,7 @@ The read-only **`baseURI`** property of the Node interface returns the absolute 
 
 > **cal**: `Calendar`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:77](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L77)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:77](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L77)
 
 Reference to the vanilla-calendar-pro Calendar instance.
 
@@ -4812,7 +4812,7 @@ The **`popover`** property of the HTMLElement interface gets and sets an element
 
 > **popup**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:84](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L84)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:84](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L84)
 
 Whether the calendar is displayed in popup mode.
 
@@ -4822,7 +4822,7 @@ Whether the calendar is displayed in popup mode.
 
 > **position**: `string`[]
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:119](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L119)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:119](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L119)
 
 Position of the calendar picker.
 
@@ -4894,7 +4894,7 @@ node is a ProcessingInstruction node.
 
 > **range**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:98](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L98)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:98](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L98)
 
 Whether range selection is enabled.
 
@@ -4998,7 +4998,7 @@ The `Element.shadowRoot` read-only property represents the shadow root hosted by
 
 > **showDots**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:105](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L105)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:105](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L105)
 
 Whether to show dots indicating available data on calendar dates.
 
@@ -5008,7 +5008,7 @@ Whether to show dots indicating available data on calendar dates.
 
 > **showItems**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:112](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L112)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:112](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L112)
 
 Whether to show items in the calendar popup.
 
@@ -5126,7 +5126,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:91](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L91)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:91](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L91)
 
 Whether default styling is disabled.
 
@@ -5834,7 +5834,7 @@ The **`contains()`** method of the Node interface returns a boolean value indica
 
 > **disconnectedCallback**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:135](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L135)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:135](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L135)
 
 Lifecycle method called when the component is disconnected from the DOM.
 Cleans up calendar styles to prevent memory leaks.
@@ -5879,7 +5879,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:126](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L126)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:126](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L126)
 
 Lifecycle method called after the component's first update.
 Injects calendar styles and initializes the calendar if not already initialized.
@@ -6434,7 +6434,7 @@ The **`getRootNode()`** method of the Node interface returns the context object'
 
 > **getViewRange**(): `any`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:187](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L187)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:187](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L187)
 
 Gets the view range of the calendar picker.
 
@@ -6592,7 +6592,7 @@ The **`hidePopover()`** method of the HTMLElement interface hides a popover elem
 
 > **initCalendar**(`options?`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:215](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L215)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:215](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L215)
 
 Initializes the calendar picker with the given options.
 Creates a new vanilla-calendar-pro Calendar instance and sets up event handlers for date selection.
@@ -7909,7 +7909,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:145](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L145)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:145](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L145)
 
 Sets the date range and updates the calendar selection.
 
@@ -8130,7 +8130,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:422](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-picker.js#L422)
+Defined in: [elements/timecontrol/src/components/timecontrol-picker.js:422](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/timecontrol/src/components/timecontrol-picker.js#L422)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a
