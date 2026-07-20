@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlDateType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:26](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L26)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:26](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L26)
 
 The `eox-timecontrol-date` component displays the currently selected date(s) with optional navigation buttons.
 It formats the date according to the specified format string and can display single dates or date ranges.
@@ -19,6 +19,164 @@ eox-timecontrol-date
 ## Extends
 
 - `LitElement`
+
+## attributes
+
+### attributeChangedCallback()
+
+> **attributeChangedCallback**(`name`, `_old`, `value`): `void`
+
+Defined in: node\_modules/@lit/reactive-element/development/reactive-element.d.ts:597
+
+Synchronizes property values when attributes change.
+
+Specifically, when an attribute is set, the corresponding property is set.
+You should rarely need to implement this callback. If this method is
+overridden, `super.attributeChangedCallback(name, _old, value)` must be
+called.
+
+See [responding to attribute changes](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#responding_to_attribute_changes)
+on MDN for more information about the `attributeChangedCallback`.
+
+#### Parameters
+
+##### name
+
+`string`
+
+##### \_old
+
+`string`
+
+##### value
+
+`string`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`LitElement.attributeChangedCallback`
+
+## controllers
+
+### addController()
+
+> **addController**(`controller`): `void`
+
+Defined in: node\_modules/@lit/reactive-element/development/reactive-element.d.ts:542
+
+Registers a `ReactiveController` to participate in the element's reactive
+update cycle. The element automatically calls into any registered
+controllers during its lifecycle callbacks.
+
+If the element is connected when `addController()` is called, the
+controller's `hostConnected()` callback will be immediately called.
+
+#### Parameters
+
+##### controller
+
+`ReactiveController`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`LitElement.addController`
+
+***
+
+### removeController()
+
+> **removeController**(`controller`): `void`
+
+Defined in: node\_modules/@lit/reactive-element/development/reactive-element.d.ts:547
+
+Removes a `ReactiveController` from the element.
+
+#### Parameters
+
+##### controller
+
+`ReactiveController`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`LitElement.removeController`
+
+## lifecycle
+
+### connectedCallback()
+
+> **connectedCallback**(): `void`
+
+Defined in: node\_modules/lit-element/development/lit-element.d.ts:122
+
+Invoked when the component is added to the document's DOM.
+
+In `connectedCallback()` you should setup tasks that should only occur when
+the element is connected to the document. The most common of these is
+adding event listeners to nodes external to the element, like a keydown
+event handler added to the window.
+
+```ts
+connectedCallback() {
+  super.connectedCallback();
+  addEventListener('keydown', this._handleKeydown);
+}
+```
+
+Typically, anything done in `connectedCallback()` should be undone when the
+element is disconnected, in `disconnectedCallback()`.
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`LitElement.connectedCallback`
+
+***
+
+### disconnectedCallback()
+
+> **disconnectedCallback**(): `void`
+
+Defined in: node\_modules/lit-element/development/lit-element.d.ts:142
+
+Invoked when the component is removed from the document's DOM.
+
+This callback is the main signal to the element that it may no longer be
+used. `disconnectedCallback()` should ensure that nothing is holding a
+reference to the element (such as event listeners added to nodes external
+to the element), so that it is free to be garbage collected.
+
+```ts
+disconnectedCallback() {
+  super.disconnectedCallback();
+  window.removeEventListener('keydown', this._handleKeydown);
+}
+```
+
+An element may be re-connected after being disconnected.
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+`LitElement.disconnectedCallback`
 
 ## Other
 
@@ -1328,7 +1486,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **format**: `string`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:65](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L65)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:65](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L65)
 
 Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
@@ -1542,7 +1700,7 @@ The **`Element.namespaceURI`** read-only property returns the namespace URI of t
 
 > **navigation**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:72](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L72)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:72](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L72)
 
 Whether navigation buttons (previous/next) are shown.
 
@@ -4960,7 +5118,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:79](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L79)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:79](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L79)
 
 Whether default styling is disabled.
 
@@ -5694,7 +5852,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:183](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L183)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:183](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L183)
 
 Lifecycle method called after the component's first update.
 Checks if a popup picker is present and sets the input mode accordingly.
@@ -6197,7 +6355,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getEOxTimeControl**(): [`EOxTimeControlType`](EOxTimeControlType.md)
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:87](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L87)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:87](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L87)
 
 Gets the parent EOxTimeControl component instance.
 
@@ -7685,7 +7843,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:174](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L174)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:174](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L174)
 
 Sets the date range and triggers a re-render.
 
@@ -7835,7 +7993,7 @@ The **`togglePopover()`** method of the HTMLElement interface toggles a Popover_
 
 > **updateStep**(`step?`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:135](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L135)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:135](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L135)
 
 Updates the selected date by stepping forward or backward through available dates.
 
@@ -7878,164 +8036,6 @@ This is a legacy alias of `matches`.
 #### Inherited from
 
 `LitElement.webkitMatchesSelector`
-
-## attributes
-
-### attributeChangedCallback()
-
-> **attributeChangedCallback**(`name`, `_old`, `value`): `void`
-
-Defined in: node\_modules/@lit/reactive-element/development/reactive-element.d.ts:597
-
-Synchronizes property values when attributes change.
-
-Specifically, when an attribute is set, the corresponding property is set.
-You should rarely need to implement this callback. If this method is
-overridden, `super.attributeChangedCallback(name, _old, value)` must be
-called.
-
-See [responding to attribute changes](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#responding_to_attribute_changes)
-on MDN for more information about the `attributeChangedCallback`.
-
-#### Parameters
-
-##### name
-
-`string`
-
-##### \_old
-
-`string`
-
-##### value
-
-`string`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`LitElement.attributeChangedCallback`
-
-## controllers
-
-### addController()
-
-> **addController**(`controller`): `void`
-
-Defined in: node\_modules/@lit/reactive-element/development/reactive-element.d.ts:542
-
-Registers a `ReactiveController` to participate in the element's reactive
-update cycle. The element automatically calls into any registered
-controllers during its lifecycle callbacks.
-
-If the element is connected when `addController()` is called, the
-controller's `hostConnected()` callback will be immediately called.
-
-#### Parameters
-
-##### controller
-
-`ReactiveController`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`LitElement.addController`
-
-***
-
-### removeController()
-
-> **removeController**(`controller`): `void`
-
-Defined in: node\_modules/@lit/reactive-element/development/reactive-element.d.ts:547
-
-Removes a `ReactiveController` from the element.
-
-#### Parameters
-
-##### controller
-
-`ReactiveController`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`LitElement.removeController`
-
-## lifecycle
-
-### connectedCallback()
-
-> **connectedCallback**(): `void`
-
-Defined in: node\_modules/lit-element/development/lit-element.d.ts:122
-
-Invoked when the component is added to the document's DOM.
-
-In `connectedCallback()` you should setup tasks that should only occur when
-the element is connected to the document. The most common of these is
-adding event listeners to nodes external to the element, like a keydown
-event handler added to the window.
-
-```ts
-connectedCallback() {
-  super.connectedCallback();
-  addEventListener('keydown', this._handleKeydown);
-}
-```
-
-Typically, anything done in `connectedCallback()` should be undone when the
-element is disconnected, in `disconnectedCallback()`.
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`LitElement.connectedCallback`
-
-***
-
-### disconnectedCallback()
-
-> **disconnectedCallback**(): `void`
-
-Defined in: node\_modules/lit-element/development/lit-element.d.ts:142
-
-Invoked when the component is removed from the document's DOM.
-
-This callback is the main signal to the element that it may no longer be
-used. `disconnectedCallback()` should ensure that nothing is holding a
-reference to the element (such as event listeners added to nodes external
-to the element), so that it is free to be garbage collected.
-
-```ts
-disconnectedCallback() {
-  super.disconnectedCallback();
-  window.removeEventListener('keydown', this._handleKeydown);
-}
-```
-
-An element may be re-connected after being disconnected.
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-`LitElement.disconnectedCallback`
 
 ## rendering
 
@@ -8086,7 +8086,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:221](https://github.com/EOX-A/EOxElements/blob/ecab6ecedbdbaee07d48c753136b0c3cdde01c90/elements/timecontrol/src/components/timecontrol-date.js#L221)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:221](https://github.com/EOX-A/EOxElements/blob/e864002470584a3e50ae4eab6b7494c4e12c4869/elements/timecontrol/src/components/timecontrol-date.js#L221)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a

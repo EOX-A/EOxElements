@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{o as t,s as n}from"./iframe-BV-9D2ou.js";import{n as r,t as i}from"./pako.esm-DmfqryZi.js";var a;e((()=>{r(),n(),a=class extends t{decodeBlock(e){return i(new Uint8Array(e)).buffer}}}))();export{a as default};
