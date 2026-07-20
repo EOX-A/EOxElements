@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-B45gAKPr.js";import{o as t,s as n}from"./iframe-D-z-m5k8.js";var r;e((()=>{n(),r=class extends t{decodeBlock(e){return e}}}))();export{r as default};
