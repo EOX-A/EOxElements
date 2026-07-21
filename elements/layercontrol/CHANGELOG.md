@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.1...layercontrol-v1.8.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* LayerConfig removeProperties behaviour ([#2445](https://github.com/EOX-A/EOxElements/issues/2445)) ([5207e84](https://github.com/EOX-A/EOxElements/commit/5207e84b3882f4df8a8ddd1dd6ae92b80b786825))
+
 ## [1.8.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.0...layercontrol-v1.8.1) (2026-07-20)
 
 
