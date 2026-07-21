@@ -8,7 +8,7 @@
 
 > **DrawOptions** = `Omit`\<`Options`, `"type"`\> & `object`
 
-Defined in: [elements/map/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/d083b448fdf982055f73338b25b8620ad48a7092/elements/map/src/types.ts#L8)
+Defined in: [elements/map/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/5207e84b3882f4df8a8ddd1dd6ae92b80b786825/elements/map/src/types.ts#L8)
 
 ## Type Declaration
 

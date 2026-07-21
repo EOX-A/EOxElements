@@ -12380,7 +12380,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-07-20T07:28:03.834Z",
+              default: "2026-07-21T08:23:53.446Z",
               options: {
                 hidden: true,
               },
@@ -13001,6 +13001,7 @@ Shows how to hide layers from the control. By setting the `layerControlHide` pro
 #### LayerConfig
 
 Shows the config tool in action. The "config" tool reads settings from the `layerConfig` property and renders a form based on a provided JSON schema, allowing users to update source URL parameters and other settings. Requires the `@eox/jsonform` package for form rendering.
+This example demonstrates `layerConfig.type: "tileUrl"` , with a top level special option `removeProperties` in the schema that describes a list of parameter keys whose initial tile URL values are dropped, so they are not carried over as start values into the form updates.
 
 ```html
 <eox-layercontrol

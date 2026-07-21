@@ -63,6 +63,7 @@ export const Tools = ToolsStory;
 
 /**
  * Shows the config tool in action. The "config" tool reads settings from the `layerConfig` property and renders a form based on a provided JSON schema, allowing users to update source URL parameters and other settings. Requires the `@eox/jsonform` package for form rendering.
+ * This example demonstrates `layerConfig.type: "tileUrl"` , with a top level special option `removeProperties` in the schema that describes a list of parameter keys whose initial tile URL values are dropped, so they are not carried over as start values into the form updates.
  */
 export const LayerConfig = LayerConfigStory;
 

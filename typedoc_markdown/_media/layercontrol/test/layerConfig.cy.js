@@ -75,13 +75,13 @@ describe("LayerControl: LayerConfig", () => {
     });
   });
 
-  it("updates XYZ tileUrlFunction and respects removeProperties", () => {
+  it("updates XYZ tileUrlFunction, clearing removeProperties from the existing URL while applying the full update", () => {
     const setTileUrlFunctionSpy = cy.spy().as("setTileUrlFunctionSpy");
     const setKeySpy = cy.spy().as("setKeySpy");
 
     const mockSource = {
       getTileUrlFunction: () => () =>
-        `https://tiles.com/z/y/x?foo=bar&removeMe=old`,
+        `https://tiles.com/z/y/x?style=old&cmap=speed&stale=1`,
       setTileUrlFunction: setTileUrlFunctionSpy,
       setKey: setKeySpy,
       getUrls: () => ["https://tiles.com/z/y/x"],
@@ -101,11 +101,11 @@ describe("LayerControl: LayerConfig", () => {
       schema: {
         type: "object",
         properties: {
-          foo: { type: "string" },
-          removeMe: { type: "string" },
+          style: { type: "string" },
+          cmap: { type: "string" },
         },
         options: {
-          removeProperties: ["removeMe"],
+          removeProperties: ["cmap", "stale"],
         },
       },
     };
@@ -124,8 +124,8 @@ describe("LayerControl: LayerConfig", () => {
         $jsonform[0].dispatchEvent(
           new CustomEvent("change", {
             detail: {
-              foo: "new_bar",
-              removeMe: "should_be_stripped",
+              style: "new",
+              cmap: "thermal",
             },
           }),
         );
@@ -135,12 +135,16 @@ describe("LayerControl: LayerConfig", () => {
     cy.get("@setTileUrlFunctionSpy").should("have.been.called");
     cy.get("@setKeySpy").should("have.been.called");
 
-    // Verify the new tile function correctly filters the URL
     cy.get("@setTileUrlFunctionSpy").then((spy) => {
       const newTileFunc = spy.getCall(0).args[0];
       const resultUrl = newTileFunc([0, 0, 0]);
-      expect(resultUrl).to.contain("foo=new_bar");
-      expect(resultUrl).to.not.contain("removeMe=should_be_stripped");
+      // The full form update is applied, including a removeProperties key
+      expect(resultUrl).to.contain("style=new");
+      expect(resultUrl).to.contain("cmap=thermal");
+      // Stale/initial values from the existing URL are cleared
+      expect(resultUrl).to.not.contain("style=old");
+      expect(resultUrl).to.not.contain("cmap=speed");
+      expect(resultUrl).to.not.contain("stale=1");
     });
   });
 
