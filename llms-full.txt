@@ -12380,7 +12380,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-07-21T08:23:53.446Z",
+              default: "2026-07-21T12:22:06.270Z",
               options: {
                 hidden: true,
               },
@@ -16693,13 +16693,13 @@ Renders `GeoZarr` layer as `WebGLTile`
       {
         type: "WebGLTile",
         properties: {
-          id: "geozarrLayer",
+          id: "sentinel-2-l2a",
+          title: "Surface Reflectance",
         },
         source: {
           type: "GeoZarr",
-          url: "https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2A_MSIL2A_20251107T100231_N0511_R122_T32TQR_20251107T115310.zarr",
-          group: "measurements/reflectance",
-          bands: ["b04", "b03", "b02", "b05"],
+          url: "https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2C_MSIL2A_20260716T100601_N0512_R022_T32TQR_20260716T154011.zarr/measurements/reflectance",
+          bands: ["b04", "b03", "b02"],
         },
         style: {
           gamma: 1.5,
@@ -16708,12 +16708,6 @@ Renders `GeoZarr` layer as `WebGLTile`
             ["interpolate", ["linear"], ["band", 1], 0, 0, 0.5, 255],
             ["interpolate", ["linear"], ["band", 2], 0, 0, 0.5, 255],
             ["interpolate", ["linear"], ["band", 3], 0, 0, 0.5, 255],
-            [
-              "case",
-              ["==", ["+", ["band", 1], ["band", 2], ["band", 3]], 0],
-              0,
-              1,
-            ],
           ],
         },
       },
