@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/elements-a2ui-v1.1.0...elements-a2ui-v1.2.0) (2026-07-27)
+
+
+### Features
+
+* Add markdown to a2ui storytelling child transformer ([#2457](https://github.com/EOX-A/EOxElements/issues/2457)) ([4601090](https://github.com/EOX-A/EOxElements/commit/4601090cf0e8650a6a093c50d4b93f96a8141333))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-a2ui-v1.0.0...elements-a2ui-v1.1.0) (2026-06-22)
 
 

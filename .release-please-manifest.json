@@ -1,7 +1,7 @@
 {
   "elements/drawtools": "1.6.0",
-  "elements/itemfilter": "1.17.4",
-  "elements/layercontrol": "1.8.1",
+  "elements/itemfilter": "1.17.5",
+  "elements/layercontrol": "1.8.2",
   "elements/map": "2.7.1",
   "elements/stacinfo": "1.2.0",
   "elements/timecontrol": "2.6.0",
@@ -14,5 +14,5 @@
   "utils": "1.2.0",
   "mcp-server": "1.2.1",
   "elements/tour": "1.1.0",
-  "a2ui": "1.1.0"
+  "a2ui": "1.2.0"
 }
