@@ -8,7 +8,7 @@
 
 > **GeolocationOptions** = `Options` & `object`
 
-Defined in: [elements/map/src/types.ts:101](https://github.com/EOX-A/EOxElements/blob/35bd6a097072e03d5f804f861704b54bc2052f3f/elements/map/src/types.ts#L101)
+Defined in: [elements/map/src/types.ts:101](https://github.com/EOX-A/EOxElements/blob/9411150b38468e69b71c1b52861db1bb07dba79b/elements/map/src/types.ts#L101)
 
 ## Type Declaration
 
