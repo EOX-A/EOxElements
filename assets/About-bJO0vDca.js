@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{i as t}from"./mdx-react-BkFcNKGA.js";import{Gt as n,Kt as r}from"./iframe-BTy5na2w.js";function i(e){let n={a:`a`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(n.h1,{id:`eoxelements-beta`,children:`EOxElements [beta]`}),`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{i as t}from"./mdx-react-BkFcNKGA.js";import{Gt as n,Kt as r}from"./iframe-C9--5M0b.js";function i(e){let n={a:`a`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(n.h1,{id:`eoxelements-beta`,children:`EOxElements [beta]`}),`
 `,`
 `,(0,o.jsxs)(`a`,{href:`https://github.com/EOX-A/EOxElements`,target:`_blank`,style:{display:`flex`,alignItems:`center`,margin:`20px 0`},children:[(0,o.jsx)(`img`,{src:`https://eox-a.github.io/EOxElements/github-mark.svg`,alt:`github logo`,width:`25`,style:{marginRight:`6px`}}),`GitHub repository`]}),`
 `,(0,o.jsx)(n.h2,{id:`introduction`,children:`Introduction`}),`

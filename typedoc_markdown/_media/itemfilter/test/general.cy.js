@@ -20,6 +20,7 @@ import {
   resultSortingTest,
   resultAggregationTest,
   inlineModeToggleTest,
+  resultsTitleTest,
 } from "./cases/general/";
 
 /**
@@ -162,4 +163,10 @@ describe("Item Filter Config", () => {
    */
   it("should preserve active filters when toggling inlineMode back and forth", () =>
     inlineModeToggleTest());
+
+  /**
+   * Test case to verify result title attribute and capitalized formatting.
+   */
+  it("should display capitalized title attribute for result items", () =>
+    resultsTitleTest());
 });

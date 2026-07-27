@@ -418,6 +418,30 @@ eox-itemfilter-results li {
   display: flex;
   justify-content: space-between;
   min-block-size: 32px !important;
+  height: auto;
+}
+.select li label,
+.multiselect li label {
+  min-width: 0;
+  max-width: 100%;
+}
+.select li label .title,
+.multiselect li label .title {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  overflow: visible;
+}
+.select li label .title .title-text,
+.multiselect li label .title .title-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
 }
 .select li:hover,
 .multiselect li:hover,
