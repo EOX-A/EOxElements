@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.5](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.4...itemfilter-v1.17.5) (2026-07-27)
+
+
+### Bug Fixes
+
+* **style:** Handle long titles in filter options and search results ([#2458](https://github.com/EOX-A/EOxElements/issues/2458)) ([4b38e72](https://github.com/EOX-A/EOxElements/commit/4b38e725594d84756372837d1a8b5b9afa4f0849))
+
 ## [1.17.4](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.3...itemfilter-v1.17.4) (2026-07-13)
 
 
