@@ -75,14 +75,197 @@ function serializeProps(child) {
     .join(" ");
 }
 
+function getChildType(tagName) {
+  for (const [name, comp] of eoxCatalog?.components || []) {
+    if (comp?.targetTagName === tagName) {
+      return name;
+    }
+  }
+  return tagName;
+}
+
+function parseAttributes(attrString) {
+  const attrs = {};
+  if (!attrString) return attrs;
+  const attrRegex = /([\w-]+)=(?:'([^']*)'|"([^"]*)"|(\[[^\]]*\])|(\S+))/g;
+  let match;
+  while ((match = attrRegex.exec(attrString)) !== null) {
+    const [, key, singleQuoted, doubleQuoted, bracketed, bare] = match;
+    if (singleQuoted !== undefined) {
+      try {
+        attrs[key] = JSON.parse(singleQuoted);
+      } catch {
+        attrs[key] = singleQuoted;
+      }
+    } else if (doubleQuoted !== undefined) {
+      attrs[key] = doubleQuoted.replace(/&quot;/g, '"');
+    } else if (bracketed !== undefined) {
+      attrs[key] = bracketed
+        .slice(1, -1)
+        .split(",")
+        .filter((item) => item.trim() !== "")
+        .map((item) => {
+          const trimmed = item.trim();
+          const num = Number(trimmed);
+          return Number.isNaN(num) ? trimmed : num;
+        });
+    } else if (bare === "true" || bare === "false") {
+      attrs[key] = bare === "true";
+    } else {
+      const num = Number(bare);
+      attrs[key] = Number.isNaN(num) ? bare : num;
+    }
+  }
+  return attrs;
+}
+
+const sectionCommentRegex = /<!--\{(.*?)\}-->/;
+
+function parseHeading(text) {
+  const commentMatch = text.match(sectionCommentRegex);
+  const rawComment = commentMatch ? commentMatch[1].trim() : "";
+  const attrs = commentMatch ? parseAttributes(commentMatch[1]) : null;
+  const title = text.replace(sectionCommentRegex, "").trim();
+  return { title, attrs, rawComment };
+}
+
 /**
- * Transforms A2UI virtual storytelling children into a EOxStorytelling-compatible markdown string.
+ * Parses an EOxStorytelling-compatible markdown string back into
+ * A2UI virtual storytelling children nodes.
  *
- * @param {Array} children - Resolved virtual children nodes of the EOxStorytelling component.
- * @param {Object} parentProps - Current properties of the parent EOxStorytelling component.
- * @returns {Object} `{ markdown: string }`
+ * @param {string} markdown - EOxStorytelling markdown string.
+ * @returns {Array} Virtual children nodes of the EOxStorytelling component.
  */
-export function transformEOxStorytelling(children, parentProps) {
+function parseMarkdownToChildren(markdown) {
+  const children = [];
+  let current = null;
+  let currentStep = null;
+  let currentTourSteps = [];
+  let sectionCounter = 0;
+  let stepCounter = 0;
+
+  const flushStep = () => {
+    if (currentStep) {
+      currentStep.description = currentStep.description.join("\n").trim();
+      current.children.push(currentStep.id);
+      currentTourSteps.push(currentStep);
+      currentStep = null;
+    }
+  };
+
+  const flush = () => {
+    flushStep();
+    if (current) {
+      if (current.type === "EOxStorytellingText") {
+        current.markdown = current.markdown.join("\n").trim();
+      }
+      children.push(current);
+      children.push(...currentTourSteps);
+      currentTourSteps = [];
+      current = null;
+    }
+  };
+
+  for (const line of (markdown || "").split("\n")) {
+    if (line.startsWith("#### ")) {
+      const text = line.slice(5).trim();
+      if (currentStep && !currentStep.title) {
+        currentStep.title = text;
+      } else if (current?.type === "EOxStorytellingHero") {
+        current.description = text;
+      } else if (current?.type === "EOxStorytellingText") {
+        current.markdown.push(line);
+      } else if (currentStep) {
+        currentStep.description.push(line);
+      }
+    } else if (line.startsWith("### ")) {
+      if (current?.type === "EOxStorytellingTour") {
+        flushStep();
+        const { title, attrs, rawComment } = parseHeading(line.slice(4));
+        stepCounter += 1;
+        currentStep = {
+          id: `step-${stepCounter}`,
+          type: "EOxStorytellingTourStep",
+          title,
+          description: [],
+          config: attrs && Object.keys(attrs).length > 0 ? attrs : rawComment,
+        };
+      } else if (current?.type === "EOxStorytellingText") {
+        current.markdown.push(line);
+      }
+    } else if (line.startsWith("## ")) {
+      flush();
+      sectionCounter += 1;
+      const { title, attrs } = parseHeading(line.slice(3));
+      if (attrs && attrs.mode === "tour") {
+        current = {
+          id: `section-idx-${sectionCounter}`,
+          type: "EOxStorytellingTour",
+          title,
+          as: attrs.as || "eox-map",
+          position: attrs.position || "left",
+          children: [],
+        };
+      } else if (attrs && attrs.as) {
+        const { as, mode: _mode, ...extraProps } = attrs;
+        current = {
+          id: `section-idx-${sectionCounter}`,
+          type: getChildType(as),
+          title,
+          ...extraProps,
+        };
+      } else {
+        current = {
+          id: `section-idx-${sectionCounter}`,
+          type: "EOxStorytellingText",
+          title,
+          markdown: [],
+        };
+      }
+    } else if (line.startsWith("# ")) {
+      flush();
+      sectionCounter += 1;
+      const { title, attrs } = parseHeading(line.slice(2));
+      current = {
+        id: `section-idx-${sectionCounter}`,
+        type: "EOxStorytellingHero",
+        title,
+        as: attrs?.as || "img",
+        background: attrs?.src || "",
+        description: "",
+      };
+    } else if (currentStep) {
+      currentStep.description.push(line);
+    } else if (current?.type === "EOxStorytellingText") {
+      current.markdown.push(line);
+    }
+  }
+
+  flush();
+  return children;
+}
+
+/**
+ * Transforms between A2UI virtual storytelling children and a
+ * EOxStorytelling-compatible markdown string, in either direction.
+ *
+ * When `data` is an array/object of resolved virtual children nodes, they are
+ * serialized into `{ markdown }`. When `data` is a markdown string, it is
+ * parsed back into `{ children }`.
+ *
+ * @param {Array|Object|string} data - Resolved virtual children nodes of the EOxStorytelling component, or a markdown string.
+ * @param {Object} parentProps - Current properties of the parent EOxStorytelling component.
+ * @returns {Object} `{ markdown: string }` or `{ children: Array }`
+ */
+export function transformEOxStorytelling(data, parentProps) {
+  if (typeof data === "string") {
+    return {
+      children: parseMarkdownToChildren(data),
+      markdown: data,
+    };
+  }
+
+  const children = Array.isArray(data) ? data : data ? [data] : [];
   const markdownParts = [];
 
   for (const child of children) {
@@ -147,5 +330,6 @@ export function transformEOxStorytelling(children, parentProps) {
 
   return {
     markdown: markdownParts.join("\n\n"),
+    children: children,
   };
 }
