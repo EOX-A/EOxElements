@@ -1,6 +1,10 @@
 import "../src/main";
 import testItems from "./testItems.json";
-import { filterkeysTest, selectorSearchTest } from "./cases/filters/";
+import {
+  filterkeysTest,
+  selectorSearchTest,
+  selectorLongTitleTest,
+} from "./cases/filters/";
 
 describe("Item Filter Config", () => {
   const state = {
@@ -57,4 +61,10 @@ describe("Item Filter Config", () => {
    */
   it("should find long selector options by words at the end", () =>
     selectorSearchTest());
+
+  /**
+   * Test case for long selector option title display
+   */
+  it("should display full title for long selector option on hover/focus and set title attribute", () =>
+    selectorLongTitleTest());
 });
