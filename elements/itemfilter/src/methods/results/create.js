@@ -3,7 +3,7 @@ import { html as staticHtml, unsafeStatic } from "lit/static-html.js";
 import { repeat } from "lit/directives/repeat.js";
 import { when } from "lit/directives/when.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { getValue } from "../../helpers";
+import { capitalize, getValue } from "../../helpers";
 
 /**
  * Creates the item details view for the aggregation property in the EOxItemFilterResults component.
@@ -80,9 +80,16 @@ export function createItemListMethod(
       ${repeat(
         items,
         (item) => item.id,
-        (item) => staticHtml`
+        (item) => {
+          const itemTitleRaw =
+            getValue(config.titleProperty, item)?.toString() || "";
+          const itemTitle = item.highlightedText
+            ? itemTitleRaw
+            : capitalize(itemTitleRaw);
+          return staticHtml`
         ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout-item`) : unsafeStatic(`<li`)}
             class="${className(item)}"
+            title="${itemTitle}"
             @click=${() => {
               if (EOxItemFilterResults.selectedResult === item) {
                 EOxItemFilterResults.selectedResult = null;
@@ -173,6 +180,7 @@ export function createItemListMethod(
                       class="title truncate ${item.highlightedText
                         ? "highlight-enabled"
                         : ""}"
+                      title="${itemTitle}"
                       >${unsafeHTML(
                         item.highlightedText ||
                           getValue(config.titleProperty, item).toString(),
@@ -196,6 +204,7 @@ export function createItemListMethod(
                       class="title truncate ${item.highlightedText
                         ? "highlight-enabled"
                         : ""}"
+                      title="${itemTitle}"
                       >${unsafeHTML(
                         item.highlightedText || item[config.titleProperty],
                       )}</span
@@ -227,7 +236,8 @@ export function createItemListMethod(
               )}
             </nav>
           </li>
-        `,
+        `;
+        },
       )}
     ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`</eox-layout>`) : unsafeStatic(`</ul>`)}
   `;

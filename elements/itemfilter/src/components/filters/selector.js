@@ -8,6 +8,7 @@ import {
   handleKeyDownSelectorMethod,
   updatedSelectorMethod,
 } from "../../methods/filters";
+import { capitalize } from "../../helpers";
 
 /**
  * EOxSelector is a custom web component that provides a flexible selector interface for filtering items.
@@ -231,7 +232,10 @@ export class EOxSelector extends LitElement {
                 data-identifier="${suggestion.toString().toLowerCase()}"
                 data-title="${suggestion}"
               >
-                <label class="${type} small max">
+                <label
+                  class="${type} small max"
+                  title="${capitalize(suggestion.toString())}"
+                >
                   <input
                     type="${type}"
                     name=${suggestion}
@@ -243,7 +247,12 @@ export class EOxSelector extends LitElement {
                     }}
                     tabindex=${this.tabIndex + 1}
                   />
-                  <span class="title small-line">${suggestion}</span>
+                  <span
+                    class="title small-line"
+                    title="${capitalize(suggestion.toString())}"
+                  >
+                    <span class="title-text">${suggestion}</span>
+                  </span>
                 </label>
               </li>
             `,
