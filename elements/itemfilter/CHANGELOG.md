@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.4](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.3...itemfilter-v1.17.4) (2026-07-13)
+
+
+### Bug Fixes
+
+* Allow selector search to match end of long option names ([#2437](https://github.com/EOX-A/EOxElements/issues/2437)) ([f667d96](https://github.com/EOX-A/EOxElements/commit/f667d9603d4617a4d707ec2185c19b0a7f63f2f3))
+
 ## [1.17.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.2...itemfilter-v1.17.3) (2026-05-28)
 
 

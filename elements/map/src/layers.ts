@@ -91,7 +91,7 @@ export type EOxFormatType<F extends keyof OLFormats> =
   | F
   | ({
       type: F;
-    } & ConstructorParameters<OLFormats[F]>[0]);
+    } & NonNullable<ConstructorParameters<OLFormats[F]>[0]>);
 
 export type EOxFormat =
   | EOxFormatType<"EsriJSON">
@@ -113,12 +113,12 @@ export type EOxFormat =
   | EOxFormatType<"WKB">;
 
 type OlSourceOption<S extends keyof OLSources> = Omit<
-  ConstructorParameters<OLSources[S]>[0],
+  NonNullable<ConstructorParameters<OLSources[S]>[0]>,
   "map" | "layer"
 >;
 
 type OlLayerOption<T extends keyof OLLayers> = Omit<
-  Omit<ConstructorParameters<OLLayers[T]>[0], "properties">,
+  Omit<NonNullable<ConstructorParameters<OLLayers[T]>[0]>, "properties">,
   "source" | "layers" | "map"
 >;
 
@@ -158,17 +158,14 @@ export type EOxLayerType<
   interactions?: T extends "Vector" | "VectorTile"
     ? Array<import("./types").EOxInteraction>
     : never;
-} & (S extends keyof OLSources ? SourceProperties<S> : {});
+} & ([S] extends [never] ? {} : SourceProperties<S>);
 
-export type EOxLayerTypeGroup = Omit<
-  EOxLayerType<"Group", keyof OLSources>,
-  "layers"
-> & {
+export type EOxLayerTypeGroup = Omit<EOxLayerType<"Group">, "layers"> & {
   layers: EoxLayer[];
 };
 
 export type EOxLayerTypeMapboxStyle = Omit<
-  EOxLayerType<"MapboxStyle", keyof OLSources>,
+  EOxLayerType<"MapboxStyle">,
   "source" | "sources"
 >;
 
@@ -176,6 +173,11 @@ export type EoxLayer =
   | EOxLayerType<"Vector", "Vector">
   | EOxLayerType<"Vector", "FlatGeoBuf">
   | EOxLayerType<"Vector", "Cluster">
+  | EOxLayerType<"VectorImage", "Vector">
+  | EOxLayerType<"Heatmap", "Vector">
+  | EOxLayerType<"WebGLVector", "Vector">
+  | EOxLayerType<"WebGLPoints", "Vector">
+  | EOxLayerType<"Graticule">
   | EOxLayerType<"VectorTile", "VectorTile">
   | EOxLayerType<"WebGLTile", "GeoTIFF">
   | EOxLayerType<"WebGLTile", "GeoZarr">

@@ -576,6 +576,10 @@ declare global {
      */
     loading: boolean;
     /**
+     * Whether to enable or disable clustering the items.
+     */
+    clustering: boolean;
+    /**
      * Gets the container element.
      */
     getContainer(): HTMLElement;

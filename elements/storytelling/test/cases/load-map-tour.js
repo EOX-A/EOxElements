@@ -20,13 +20,16 @@ const loadMapTourTest = () => {
 `;
 
   cy.mount(
-    `<eox-storytelling markdown='${testTextMapTour}'></eox-storytelling>`,
+    `<eox-storytelling show-map-loading-indicator markdown='${testTextMapTour}'></eox-storytelling>`,
   ).as(storyTelling);
 
   cy.get(storyTelling)
     .shadow()
     .within(() => {
       cy.get("eox-map").should("exist");
+      cy.get("eox-map").then(($eoxMap) => {
+        expect($eoxMap[0].controls).to.have.property("LoadingIndicator");
+      });
       heading.forEach((i, key) =>
         cy.get("section-step h4").eq(key).should("have.text", i),
       );

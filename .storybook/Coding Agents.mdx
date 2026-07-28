@@ -64,3 +64,45 @@ The following tools are available:
 - `get_element_slots`: Get the slots for a specific EOxElements custom element.
 - `get_element_css_properties`: Get the CSS custom properties for a specific EOxElements custom element.
 - `get_element_css_parts`: Get the CSS shadow parts for a specific EOxElements custom element.
+
+## A2UI Integration
+
+EOxElements is compatible with [**A2UI** (Agent-to-User Interface)](https://a2ui.org/) via our `@eox/elements-a2ui` package. This allows AI coding agents and backend streams to dynamically generate and control complex layouts of maps, charts, forms, and tools using standard JSON streams.
+
+### Custom Catalog
+
+We publish two auto-generated catalogs containing Zod schemas for all EOxElements:
+
+1. **EOxElements Custom Catalog**
+   This is our custom catalog containing strictly EOxElements components.
+   - **Catalog ID/URL**: `https://eox-a.github.io/EOxElements/a2ui/0_9/eox_catalog.json`
+
+2. **Combined Catalog** (Additional Helper)
+   This is an additional helper catalog that combines standard `@a2ui/lit`'s `basicCatalog` with our custom EOxElements catalog. It is useful for applications that need both in one place.
+   - **Catalog ID/URL**: `https://eox-a.github.io/EOxElements/a2ui/0_9/combined_catalog.json`
+
+### Mounting with `<eox-a2ui-wrapper>`
+
+You can render this entire interactive workspace directly inside your webpage by using our wrapper element:
+
+```html
+<!-- Load elements and wrappers -->
+<script type="module">
+  import "@eox/elements-a2ui";
+  import "@eox/elements/map";
+  import "@eox/elements/drawtools";
+  import "@eox/elements/layercontrol";
+</script>
+
+<!-- Render the stream -->
+<eox-a2ui-wrapper id="workspace-renderer"></eox-a2ui-wrapper>
+
+<script>
+  const renderer = document.getElementById('workspace-renderer');
+  renderer.stream = /* the JSON specification stream above */;
+</script>
+```
+
+### Live Rendered Showcase
+
+You can view this interactive showcase as a full-screen, standalone demo in the **Demo** category **[here](./?path=/story/demo--a-2-ui-showcase)**.

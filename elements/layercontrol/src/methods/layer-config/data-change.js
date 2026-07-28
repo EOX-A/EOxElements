@@ -20,38 +20,34 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     /** @type {import("ol/source").Source & { getTileUrlFunction: Function, setTileUrlFunction: Function, setKey: Function, updateParams: Function, _updatedUrl: string, getUrls: Function }} */ (
       EOxLayerControlLayerConfig.layer.getSource()
     );
+
+  const removeProperties =
+    EOxLayerControlLayerConfig.layerConfig.schema?.options?.removeProperties ??
+    [];
+  const updatedData = { ...data };
+  removeProperties.forEach((prop) => delete updatedData[prop]);
+
   if (source.updateParams) {
-    const updatedData = { ...data };
-    const removeProperties =
-      EOxLayerControlLayerConfig.layerConfig.schema?.options
-        ?.removeProperties ?? [];
-    removeProperties.forEach((prop) => delete updatedData[prop]);
     source.updateParams(updatedData);
   } else if (source.getTileUrlFunction && source.getTileUrlFunction()) {
     if (!newTileUrlFunc) {
       newTileUrlFunc = source.getTileUrlFunction();
     }
 
+    // Store the updated URL synchronously so switching to the globe reflects the change
+    if (source instanceof XYZ_ol) {
+      source._updatedUrl = updateUrl(
+        /** @type {XYZ_ol} */ (source).getUrls()[0],
+        data,
+      );
+    }
+
     // Setting a new tile URL function for the layer's source by applying updated data to the existing function.
     source.setTileUrlFunction((...args) => {
       const url = new URL(newTileUrlFunc(...args));
-      const removeProperties =
-        EOxLayerControlLayerConfig.layerConfig.schema?.options
-          ?.removeProperties ?? [];
-
-      const updatedData = { ...data };
-      removeProperties.forEach((prop) => delete updatedData[prop]);
-
-      // Store the updated URL on the source for other components (like the globe) to use
-      if (source instanceof XYZ_ol) {
-        source._updatedUrl = updateUrl(
-          /** @type {XYZ_ol} */ (source).getUrls()[0],
-          updatedData,
-        );
-      }
       // Remove unwanted properties from query parameters
       removeProperties.forEach((prop) => url.searchParams.delete(prop));
-      return updateUrl(url.href, updatedData);
+      return updateUrl(url.href, data);
     });
 
     // TODO: It's not advisable to access protected methods directly.
@@ -65,17 +61,11 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
   if (map) {
     const globe = map.globe;
     if (globe) {
-      const updatedData = { ...data };
-      const removeProperties =
-        EOxLayerControlLayerConfig.layerConfig.schema?.options
-          ?.removeProperties ?? [];
-      removeProperties.forEach((prop) => delete updatedData[prop]);
-
       const globusLayer = globe.planet.layers.filter(
         (l) => l.name == EOxLayerControlLayerConfig.layer.get("id"),
       )[0];
       if (globusLayer) {
-        globusLayer.setUrl(updateUrl(globusLayer.url, updatedData));
+        globusLayer.setUrl(updateUrl(globusLayer.url, data));
       }
       window.eoxMapGlobe.refresh();
     }

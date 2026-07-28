@@ -1,11 +1,14 @@
-import { getUTCLocalDateTime, updateTimelineItems } from "../../helpers";
+import {
+  getDateRange,
+  getUTCLocalDateTime,
+  updateTimelineItems,
+} from "../../helpers";
 import { DataSet } from "vis-data/standalone";
 import { getElement } from "@eox/elements-utils";
 import dayjs from "dayjs";
 import isequal from "lodash.isequal";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { TIME_CONTROL_DATE_FORMAT } from "../../enums";
 import { updateChildrenProp, getInitDate } from "../../helpers";
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -34,6 +37,7 @@ let itemFilterAdded = false;
  *
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  * @param {Function} emitUpdateEvent - The function to emit the update event.
+ * @returns {(() => void) | undefined} Cleanup that removes the layer listener.
  */
 export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
   // Update map reference
@@ -158,34 +162,18 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
 
           const itemValues = EOxTimeControl.items.get();
           if (itemValues && itemValues.length) {
-            const utc = dayjs(itemValues[itemValues.length - 1].utc);
-            const startDate = EOxTimeControl.showUTC
-              ? utc.utc().format()
-              : utc.format();
-            const endDate = EOxTimeControl.showUTC
-              ? utc.utc().endOf("day").format()
-              : utc.endOf("day").format();
-            const dateRange =
-              initDateRange || /** @type {DateRange} */ ([startDate, endDate]);
+            const { dateRange } = getDateRange(
+              EOxTimeControl,
+              itemValues,
+              initDateRange,
+            );
 
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
               EOxTimeControl.querySelector("eox-timecontrol-picker")
             );
 
             setTimeout(() => {
-              if (EOxTimeControlTimeline) {
-                EOxTimeControlTimeline.visTimeline.setOptions({
-                  ...EOxTimeControlTimeline.visTimeline.setOptions,
-                  start: dayjs(dateRange[0])
-                    .subtract(30, "day")
-                    .format(TIME_CONTROL_DATE_FORMAT),
-                  end: dayjs(dateRange[0])
-                    .add(30, "day")
-                    .format(TIME_CONTROL_DATE_FORMAT),
-                });
-              }
               EOxTimeControl.dateChange(dateRange, EOxTimeControl);
-
               const EOxItemFilter = /** @type {EOxItemFilter} */ (
                 EOxTimeControl.querySelector("eox-itemfilter")
               );
@@ -223,11 +211,10 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
 
     if (flatLayers.length > 0 || EOxTimeControl.controlValues.length) init();
     if (EoxMap) {
-      EoxMap.map.getLayers().on("add", () => init());
-      EoxMap.map.getLayers().on("remove", () => init());
-      EoxMap.map.on("change", () => {
-        init();
-      });
+      const onLayersChanged = () => init();
+      EoxMap.addEventListener("layerschanged", onLayersChanged);
+      return () => EoxMap.removeEventListener("layerschanged", onLayersChanged);
     }
   }
+  return undefined;
 }

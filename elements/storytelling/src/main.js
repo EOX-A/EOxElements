@@ -13,6 +13,7 @@ import {
   addLightBoxScript,
   addCustomSection,
   initSavedMarkdown,
+  reconcileChildren,
 } from "./helpers";
 import DOMPurify from "isomorphic-dompurify";
 import {
@@ -68,6 +69,10 @@ export class EOxStoryTelling extends LitElement {
       showEditor: { attribute: "show-editor", type: String },
       showHeroScrollIndicator: {
         attribute: "show-hero-scroll-indicator",
+        type: Boolean,
+      },
+      showMapLoadingIndicator: {
+        attribute: "show-map-loading-indicator",
         type: Boolean,
       },
       noShadow: { attribute: "no-shadow", type: Boolean },
@@ -156,6 +161,13 @@ export class EOxStoryTelling extends LitElement {
     this.showHeroScrollIndicator = false;
 
     /**
+     * Enable or disable map loading indicator by default
+     *
+     * @type {Boolean}
+     */
+    this.showMapLoadingIndicator = false;
+
+    /**
      * List of items in navigation
      *
      * @type {Array<Object>}
@@ -224,8 +236,11 @@ export class EOxStoryTelling extends LitElement {
       this.requestUpdate();
     }
 
-    // Check if 'markdown' property itself has changed and generate sanitized html
-    if (changedProperties.has("markdown")) {
+    // Check if 'markdown' or 'showMapLoadingIndicator' property itself has changed and generate sanitized html
+    if (
+      changedProperties.has("markdown") ||
+      changedProperties.has("showMapLoadingIndicator")
+    ) {
       if (this.markdown) {
         this.dispatchEvent(
           /**
@@ -237,6 +252,7 @@ export class EOxStoryTelling extends LitElement {
         );
       }
 
+      md.showMapLoadingIndicator = this.showMapLoadingIndicator;
       const unsafeHTML = md.render(this.markdown);
 
       validateMarkdownAttrs(md.attrs.sections, this);
@@ -265,6 +281,13 @@ export class EOxStoryTelling extends LitElement {
         this.showEditor,
         this,
       );
+
+      const storyContent = /** @type {HTMLElement} */ (
+        (this.shadowRoot || this).querySelector("#story-content")
+      );
+      if (storyContent) {
+        reconcileChildren(storyContent, this.#html);
+      }
 
       if (this.showEditor !== undefined) {
         const parent = this.shadowRoot || this;
@@ -302,12 +325,15 @@ export class EOxStoryTelling extends LitElement {
       const slottedContent = slot.assignedNodes({ flatten: true });
 
       // Map each node to its text content, filtering out any non-text nodes, and join into a single string
-      this.markdown = slottedContent
+      const slottedText = slottedContent
         .map((node) => (node.textContent ? node.textContent : ""))
         .join("");
 
-      // Request an update to re-render the component with the new content
-      this.requestUpdate();
+      if (slottedText.trim()) {
+        this.markdown = slottedText;
+        // Request an update to re-render the component with the new content
+        this.requestUpdate();
+      }
     }
   }
 
@@ -364,7 +390,7 @@ export class EOxStoryTelling extends LitElement {
       </style>
 
       <div class="story-telling ${editorClass} ${navClass}">
-        <div>${when(this.#html, () => html`${this.#html}`)}</div>
+        <div id="story-content"></div>
         ${when(
           this.showEditor !== undefined,
           () => html`

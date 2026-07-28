@@ -10,6 +10,7 @@ export { default as LayerConfigStory } from "./layer-config";
 export { default as LayerStylesConfigStory } from "./layer-config-styles";
 export { default as layerDatetimeStory } from "./layer-datetime";
 export { default as layerLegendStory } from "./layer-legend";
+export { default as layerLegendDynamicStory } from "./layer-legend-dynamic";
 export { default as HiddenLayersStory } from "./hidden-layer";
 export { default as addExternalLayerStory } from "./add-external-layer";
 export { default as layerZoomStateStory } from "./layer-zoom-state";

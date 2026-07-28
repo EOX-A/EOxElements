@@ -7,6 +7,7 @@ export { default as loadDatePickerPopupItems } from "./load-date-picker-popup-it
 export { default as loadDatePickerStandalone } from "./load-date-picker-standalone.js";
 export { default as loadSlider } from "./load-slider.js";
 export { default as loadTimeline } from "./load-timeline.js";
+export { default as loadTimelineOnLayersChange } from "./load-timeline-on-layers-change.js";
 export { default as loadDateFormatInitDate } from "./load-date-format-init-date.js";
 export { default as loadDateFormatNavigation } from "./load-date-format-navigation.js";
 export { default as loadDateWithSlider } from "./load-date-with-slider.js";
@@ -17,3 +18,4 @@ export { default as loadNoMapSynchronization } from "./load-no-map-synchronizati
 export { default as loadExpertModeExport } from "./load-expert-mode-export.js";
 export { default as loadDateInUTC } from "./load-date-in-utc.js";
 export { default as loadTimelineWithRangeConfiguration } from "./load-timeline-with-range-configuration.js";
+export { default as loadTimelineWithClustering } from "./load-timeline-with-clustering.js";

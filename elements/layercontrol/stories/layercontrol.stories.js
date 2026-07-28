@@ -14,6 +14,7 @@ import {
   layerZoomStateStory,
   toolsAsListStory,
   layerLegendStory,
+  layerLegendDynamicStory,
   layerColorStory,
 } from ".";
 
@@ -62,6 +63,7 @@ export const Tools = ToolsStory;
 
 /**
  * Shows the config tool in action. The "config" tool reads settings from the `layerConfig` property and renders a form based on a provided JSON schema, allowing users to update source URL parameters and other settings. Requires the `@eox/jsonform` package for form rendering.
+ * This example demonstrates `layerConfig.type: "tileUrl"` , with a top level special option `removeProperties` in the schema that describes a list of parameter keys whose initial tile URL values are dropped, so they are not carried over as start values into the form updates.
  */
 export const LayerConfig = LayerConfigStory;
 
@@ -79,6 +81,11 @@ export const LayerDateTime = layerDatetimeStory;
  * Demonstrates dynamic color legends for layers. The "legend" tool reads configuration from the `layerLegend` property and creates a color legend based on value ranges and domains. Supports partial configuration of the color-legend-element. Useful for visualizing data ranges and categories.
  */
 export const LayerLegend = layerLegendStory;
+
+/**
+ * Demonstrates dynamic color legends that update when the layer configuration changes. Using `rangeProperty` and `domainProperties`, the legend reacts to slider changes and colormap selection. Also defines the property `colormapRegistry` on the LayerControl with externally supplied ranges for given colormap.
+ */
+export const LayerLegendDynamic = layerLegendDynamicStory;
 
 /**
  * Shows how to hide layers from the control. By setting the `layerControlHide` property, layers are excluded from the layer control UI but may still be rendered on the map. Useful for background or technical layers that should not be user-managed.

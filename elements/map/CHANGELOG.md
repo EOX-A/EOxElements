@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.7.1](https://github.com/EOX-A/EOxElements/compare/map-v2.7.0...map-v2.7.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* EoxLayer type declaration ([#2430](https://github.com/EOX-A/EOxElements/issues/2430)) ([deb724d](https://github.com/EOX-A/EOxElements/commit/deb724d3784f91ed0eaf3e9e08fd08aa0ad985e0))
+
+## [2.7.0](https://github.com/EOX-A/EOxElements/compare/map-v2.6.1...map-v2.7.0) (2026-06-18)
+
+
+### Features
+
+* Update wms and wmts params by layercontrol config change ([#2381](https://github.com/EOX-A/EOxElements/issues/2381)) ([b24111c](https://github.com/EOX-A/EOxElements/commit/b24111cd227933c7bb8d712355d4a1ce79493307))
+
 ## [2.6.1](https://github.com/EOX-A/EOxElements/compare/map-v2.6.0...map-v2.6.1) (2026-06-15)
 
 

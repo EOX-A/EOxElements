@@ -39,6 +39,7 @@ export class EOxLayerControlLayerTools extends LitElement {
       type: Boolean,
     },
     embedded: { state: true },
+    colormapRegistry: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -126,6 +127,13 @@ export class EOxLayerControlLayerTools extends LitElement {
      * @type {Array}
      */
     this.customEditorInterfaces = [];
+
+    /**
+     * Optional colormap registry for dynamic legend updates
+     *
+     * @type {Record<string,string[]>}
+     */
+    this.colormapRegistry = null;
   }
 
   /**
@@ -209,6 +217,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .layer=${this.layer}
               .noShadow=${true}
               .layerConfig=${this.layer.get("layerConfig")}
+              .colormapRegistry=${this.colormapRegistry}
               .unstyled=${this.unstyled}
               .customEditorInterfaces=${this.customEditorInterfaces}
               @changed=${() => this.requestUpdate()}
