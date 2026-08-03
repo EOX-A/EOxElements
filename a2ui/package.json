@@ -1,6 +1,6 @@
 {
   "name": "@eox/elements-a2ui",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "repository": {
     "type": "git",
@@ -19,8 +19,8 @@
   "author": "EOX",
   "dependencies": {
     "@a2ui/lit": "^0.10.1",
-    "@a2ui/markdown-it": "0.0.4",
-    "@a2ui/web_core": "^0.10.3",
+    "@a2ui/markdown-it": "0.1.0",
+    "@a2ui/web_core": "^0.10.5",
     "lit": "^3.0.0"
   },
   "peerDependencies": {
