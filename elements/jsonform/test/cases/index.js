@@ -28,3 +28,4 @@ export {
   loadStepsEditorCascadingResetTest,
   loadStepsEditorConditionalTest,
 } from "./load-steps-editor";
+export { default as loadMinMaxEditorTest } from "./load-minmax-editor";
