@@ -29,6 +29,7 @@ import {
   loadStepsEditorInteractionTest,
   loadStepsEditorCascadingResetTest,
   loadStepsEditorConditionalTest,
+  loadMinMaxEditorTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -66,4 +67,6 @@ describe("Jsonform", () => {
     loadStepsEditorCascadingResetTest());
   it("handles steps editor conditional if/then", () =>
     loadStepsEditorConditionalTest());
+  it("loads the minmax editor with correct precision", () =>
+    loadMinMaxEditorTest());
 });

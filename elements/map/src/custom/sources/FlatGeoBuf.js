@@ -1,4 +1,5 @@
-import { transformExtent } from "ol/proj";
+import { transformExtent, transform } from "../../helpers/transform";
+import { containsCoordinate } from "ol/extent";
 import { deserialize } from "flatgeobuf/lib/mjs/geojson";
 import Vector from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON";
@@ -32,12 +33,68 @@ class FlatGeoBuf extends Vector {
    * @returns
    */
   fgbBoundingBox(extent, projection) {
-    // minx, miny, maxx, maxy
+    const sourceProjectionCode = projection.getCode();
+    const dataProjectionCode =
+      typeof this.dataProjection === "string"
+        ? this.dataProjection
+        : this.dataProjection.getCode();
+
+    // Use OL's transformExtent with densification (stops)
+    // to better handle non-linear transformations (like polar)
     const transformedExtent = transformExtent(
       extent,
-      projection.getCode(),
-      this.dataProjection,
+      sourceProjectionCode,
+      dataProjectionCode,
+      20,
     );
+
+    // If source is not the same as data projection, we perform more robust checks
+    if (sourceProjectionCode !== dataProjectionCode) {
+      // Check if the extent contains the poles in polar projections
+      // Transform pole coordinates to source projection
+      const poleNorth = transform([0, 90], "EPSG:4326", sourceProjectionCode);
+      const poleSouth = transform([0, -90], "EPSG:4326", sourceProjectionCode);
+
+      const containsNorthPole = containsCoordinate(extent, poleNorth);
+      const containsSouthPole = containsCoordinate(extent, poleSouth);
+
+      if (containsNorthPole || containsSouthPole) {
+        // If it contains a pole, the extent in 4326 should cover all longitudes
+        transformedExtent[0] = -180;
+        transformedExtent[2] = 180;
+        if (containsNorthPole) {
+          transformedExtent[3] = 90;
+        }
+        if (containsSouthPole) {
+          transformedExtent[1] = -90;
+        }
+      }
+
+      // Antimeridian check
+      const normalizeLon = (lon) => ((((lon + 180) % 360) + 360) % 360) - 180;
+      const leftLon = normalizeLon(
+        transform(
+          [extent[0], (extent[1] + extent[3]) / 2],
+          sourceProjectionCode,
+          dataProjectionCode,
+        )[0],
+      );
+      const rightLon = normalizeLon(
+        transform(
+          [extent[2], (extent[1] + extent[3]) / 2],
+          sourceProjectionCode,
+          dataProjectionCode,
+        )[0],
+      );
+      if (leftLon > rightLon) {
+        // If the left longitude is greater than the right one,
+        // it means we've crossed the antimeridian (180/-180).
+        // In this case, we expand the extent to cover all longitudes.
+        transformedExtent[0] = -180;
+        transformedExtent[2] = 180;
+      }
+    }
+
     return {
       minX: transformedExtent[0],
       minY: transformedExtent[1],
