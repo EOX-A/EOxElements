@@ -71,16 +71,21 @@ class FlatGeoBuf extends Vector {
       }
 
       // Antimeridian check
-      const leftLon = transform(
-        [extent[0], (extent[1] + extent[3]) / 2],
-        sourceProjectionCode,
-        dataProjectionCode,
-      )[0];
-      const rightLon = transform(
-        [extent[2], (extent[1] + extent[3]) / 2],
-        sourceProjectionCode,
-        dataProjectionCode,
-      )[0];
+      const normalizeLon = (lon) => ((((lon + 180) % 360) + 360) % 360) - 180;
+      const leftLon = normalizeLon(
+        transform(
+          [extent[0], (extent[1] + extent[3]) / 2],
+          sourceProjectionCode,
+          dataProjectionCode,
+        )[0],
+      );
+      const rightLon = normalizeLon(
+        transform(
+          [extent[2], (extent[1] + extent[3]) / 2],
+          sourceProjectionCode,
+          dataProjectionCode,
+        )[0],
+      );
       if (leftLon > rightLon) {
         // If the left longitude is greater than the right one,
         // it means we've crossed the antimeridian (180/-180).
