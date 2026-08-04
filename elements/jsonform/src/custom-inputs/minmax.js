@@ -14,6 +14,34 @@ function setAttributes(element, attributes) {
   });
 }
 
+/**
+ * Return the number of decimal places required to represent a numeric step.
+ * Supports both ordinary decimals and scientific notation.
+ *
+ * @param {number|string|undefined} value
+ * @returns {number|undefined}
+ */
+function getDecimalPlaces(value) {
+  if (value === undefined || value === null || value === "") {
+    return undefined;
+  }
+
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue) || numericValue <= 0) {
+    return undefined;
+  }
+
+  const [coefficient, exponentString = "0"] = numericValue
+    .toString()
+    .toLowerCase()
+    .split("e");
+
+  const fractionLength = coefficient.split(".")[1]?.length ?? 0;
+  const exponent = Number(exponentString);
+
+  return Math.max(0, fractionLength - exponent);
+}
+
 // Define a custom editor class extending AbstractEditor
 export class MinMaxEditor extends AbstractEditor {
   register() {
@@ -55,18 +83,22 @@ export class MinMaxEditor extends AbstractEditor {
     const minKey = Object.keys(properties).find((k) => k.includes("min"));
     const maxKey = Object.keys(properties).find((k) => k.includes("max"));
 
+    const step = properties[minKey].step ?? properties[maxKey].step;
+    const round = getDecimalPlaces(step);
+
     // Define attributes for the range slider
     const attributes = {
       min: properties[minKey].minimum,
       max: properties[maxKey].maximum,
       // only positive integer supported
-      step: properties[minKey].step || properties[maxKey].step,
-      value1: startVals?.[minKey] || properties[minKey].default,
-      value2: startVals?.[maxKey] || properties[maxKey].default,
+      step,
+      value1: startVals?.[minKey] ?? properties[minKey].default,
+      value2: startVals?.[maxKey] ?? properties[maxKey].default,
       "generate-labels": "true",
       "generate-labels-text-color": "currentColor",
       "slider-width": "100%",
       "range-dragging": "false",
+      ...(round !== undefined && { round }),
     };
     setAttributes(range, attributes);
 
