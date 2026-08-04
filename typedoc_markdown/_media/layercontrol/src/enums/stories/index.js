@@ -340,6 +340,7 @@ const LAYERCONFIG_LAYER_SEE = {
             maximum: 5,
             format: "range",
             default: 2,
+            step: 0.001,
           },
           vmax: {
             type: "number",
