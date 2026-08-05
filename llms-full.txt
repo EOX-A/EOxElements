@@ -12380,7 +12380,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-08-05T07:10:05.784Z",
+              default: "2026-08-05T08:28:29.053Z",
               options: {
                 hidden: true,
               },
@@ -12594,7 +12594,7 @@ Demonstrates adding external layers. The control can be configured to allow user
                 properties: {
                   id: "s2",
                   layerControlExclusive: true,
-                  title: "s2",
+                  title: "EOxCloudless 2024 Exploitation Ready",
                 },
                 style: {
                   variables: {
@@ -12617,9 +12617,11 @@ Demonstrates adding external layers. The control can be configured to allow user
                 source: {
                   type: "GeoTIFF",
                   normalize: false,
+                  attributions:
+                    'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
                   sources: [
                     {
-                      url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif",
+                      url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/exploitation-ready-epsg-4326/exploitation-ready_eoxcloudless-sentinel-2-2024_zoom-1_4bands_16bit.tif",
                     },
                   ],
                 },
@@ -12735,7 +12737,7 @@ Demonstrates color swatches for layers. Shows how to define and display custom c
                 properties: {
                   id: "s2",
                   layerControlExclusive: true,
-                  title: "s2",
+                  title: "EOxCloudless 2024 Exploitation Ready",
                 },
                 style: {
                   variables: {
@@ -12758,9 +12760,11 @@ Demonstrates color swatches for layers. Shows how to define and display custom c
                 source: {
                   type: "GeoTIFF",
                   normalize: false,
+                  attributions:
+                    'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
                   sources: [
                     {
-                      url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif",
+                      url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/exploitation-ready-epsg-4326/exploitation-ready_eoxcloudless-sentinel-2-2024_zoom-1_4bands_16bit.tif",
                     },
                   ],
                 },
@@ -12864,6 +12868,8 @@ Demonstrates mutually exclusive layers. By setting the `layerControlExclusive` p
         source: {
           type: "XYZ",
           url: "//tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2021)',
         },
         visible: false,
       },
@@ -12924,6 +12930,8 @@ Shows how to pre-expand layers in the control. By setting the `layerControlExpan
             source: {
               type: "XYZ",
               url: "//tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",
+              attribution:
+                'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2021)',
             },
             visible: false,
           },
@@ -14358,6 +14366,8 @@ Demonstrates optional layers. By setting the `layerControlOptional` property, la
         source: {
           type: "XYZ",
           url: "//tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019)',
         },
         visible: false,
       },
@@ -14370,6 +14380,8 @@ Demonstrates optional layers. By setting the `layerControlOptional` property, la
         source: {
           type: "XYZ",
           url: "//tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020)',
         },
         visible: false,
       },
@@ -14382,6 +14394,8 @@ Demonstrates optional layers. By setting the `layerControlOptional` property, la
         source: {
           type: "XYZ",
           url: "//tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2021)',
         },
         visible: false,
       },
@@ -14435,7 +14449,7 @@ it automatically connects to the first `eox-map` it finds in the DOM.
             properties: {
               id: "s2",
               layerControlExclusive: true,
-              title: "s2",
+              title: "EOxCloudless 2024 Exploitation Ready",
             },
             style: {
               variables: {
@@ -14458,9 +14472,11 @@ it automatically connects to the first `eox-map` it finds in the DOM.
             source: {
               type: "GeoTIFF",
               normalize: false,
+              attributions:
+                'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
               sources: [
                 {
-                  url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif",
+                  url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/exploitation-ready-epsg-4326/exploitation-ready_eoxcloudless-sentinel-2-2024_zoom-1_4bands_16bit.tif",
                 },
               ],
             },
@@ -14783,7 +14799,7 @@ Shows tools rendered as a list instead of tabs. By enabling the `toolsAsList` pr
             properties: {
               id: "s2",
               layerControlExclusive: true,
-              title: "s2",
+              title: "EOxCloudless 2024 Exploitation Ready",
             },
             style: {
               variables: {
@@ -14806,9 +14822,11 @@ Shows tools rendered as a list instead of tabs. By enabling the `toolsAsList` pr
             source: {
               type: "GeoTIFF",
               normalize: false,
+              attributions:
+                'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
               sources: [
                 {
-                  url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif",
+                  url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/exploitation-ready-epsg-4326/exploitation-ready_eoxcloudless-sentinel-2-2024_zoom-1_4bands_16bit.tif",
                 },
               ],
             },
@@ -15039,7 +15057,7 @@ Demonstrates the unstyled version of the element. By setting the `unstyled` prop
                 properties: {
                   id: "s2",
                   layerControlExclusive: true,
-                  title: "s2",
+                  title: "EOxCloudless 2024 Exploitation Ready",
                 },
                 style: {
                   variables: {
@@ -15062,9 +15080,11 @@ Demonstrates the unstyled version of the element. By setting the `unstyled` prop
                 source: {
                   type: "GeoTIFF",
                   normalize: false,
+                  attributions:
+                    'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
                   sources: [
                     {
-                      url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif",
+                      url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/exploitation-ready-epsg-4326/exploitation-ready_eoxcloudless-sentinel-2-2024_zoom-1_4bands_16bit.tif",
                     },
                   ],
                 },
@@ -16174,9 +16194,9 @@ and adjust CSS sizing properties (like \`--map-control-size\`) on the fly to sup
         type: "Tile",
         source: {
           type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg",
           attributions:
-            '<a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a>',
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
         },
       },
     ],
@@ -16850,11 +16870,13 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
         type: "Tile",
         properties: {
           id: "cloudless",
-          title: "Sentinel-2 Cloudless 2024",
+          title: "Sentinel-2 Cloudless 2025",
         },
         source: {
           type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
           crossOrigin: "anonymous",
         },
       },
@@ -17973,7 +17995,9 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
         source: {
           type: "WMTSCapabilities",
           url: "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
-          layer: "s2cloudless-2017",
+          layer: "s2cloudless-2025",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
         },
       },
     ],
@@ -18005,7 +18029,9 @@ Renders `WMTSCapabilities` layer and fetches the provided capabilities url
         source: {
           type: "WMTS",
           url: "https://tiles.maps.eox.at/wmts",
-          layer: "s2cloudless-2017_3857",
+          layer: "s2cloudless-2025_3857",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
           style: "default",
           matrixSet: "GoogleMapsCompatible",
           tileGrid: {
@@ -18576,11 +18602,11 @@ You achieve this by starting a new step with an *h3* (*###*) heading and passing
 ### <!--{ layers=&apos;[...]&apos; center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
 ```
 
-### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]&apos; center=[12.46,41.89] zoom="10" }-->
+### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2025"}}]&apos; center=[12.46,41.89] zoom="10" }-->
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]&apos; center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
+### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2025"}}]&apos; center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
 #### Third tour step.
 To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map'
   id="markdown-map-tour"
@@ -18694,11 +18720,11 @@ You achieve this by starting a new step with an *h3* (*###*) heading and passing
 ### <!--{ layers=&apos;[...]&apos; center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
 ```
 
-### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]&apos; center=[12.46,41.89] zoom="10" }-->
+### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2025"}}]&apos; center=[12.46,41.89] zoom="10" }-->
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]&apos; center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
+### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2025"}}]&apos; center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
 #### Third tour step.
 To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map
 
