@@ -22,24 +22,60 @@ const testFlatGeoBufPolarLogic = () => {
   const poleExtent = [-1000, -1000, 1000, 1000];
   const poleProjection = new Projection({ code: "EPSG:3413" });
 
-  const poleBbox = source.fgbBoundingBox(poleExtent, poleProjection);
+  const poleBboxes = source.fgbBoundingBoxes(poleExtent, poleProjection);
 
-  expect(poleBbox.minX).to.equal(-180, "North pole crossing sets minX to -180");
-  expect(poleBbox.maxX).to.equal(180, "North pole crossing sets maxX to 180");
-  expect(poleBbox.maxY).to.equal(90, "North pole crossing sets maxY to 90");
+  expect(poleBboxes[0].minX).to.equal(
+    -180,
+    "North pole crossing sets minX to -180",
+  );
+  expect(poleBboxes[0].maxX).to.equal(
+    180,
+    "North pole crossing sets maxX to 180",
+  );
+  expect(poleBboxes[0].maxY).to.equal(
+    90,
+    "North pole crossing sets maxY to 90",
+  );
 
   // 2. Test Antimeridian Crossing
   // In EPSG:3857, the antimeridian is around 20037508
   const antimeridianExtent = [20037000, 0, 20038000, 1000];
   const webMercator = new Projection({ code: "EPSG:3857" });
 
-  const antiBbox = source.fgbBoundingBox(antimeridianExtent, webMercator);
+  const antiBboxes = source.fgbBoundingBoxes(antimeridianExtent, webMercator);
 
-  expect(antiBbox.minX).to.equal(
-    -180,
-    "Antimeridian crossing sets minX to -180",
+  expect(antiBboxes.length).to.equal(
+    2,
+    "Antimeridian crossing returns 2 boxes",
   );
-  expect(antiBbox.maxX).to.equal(180, "Antimeridian crossing sets maxX to 180");
+  expect(antiBboxes[0].maxX).to.equal(180, "Box A ends at 180");
+  expect(antiBboxes[1].minX).to.equal(-180, "Box B starts at -180");
+
+  // 3. Test Antimeridian Crossing in Polar Projection (without containing the pole)
+  const polarAntimeridianExtent = [-1500, 500, -500, 1500];
+  const polarAntiBboxes = source.fgbBoundingBoxes(
+    polarAntimeridianExtent,
+    poleProjection,
+  );
+
+  expect(polarAntiBboxes.length).to.equal(
+    2,
+    "Polar antimeridian crossing returns 2 boxes",
+  );
+
+  // 4. Negative Test: Normal Extent
+  // Ensure a "normal" extent (Austria) doesn't get expanded
+  const normalExtent = [1000000, 5000000, 2000000, 6000000]; // EPSG:3857
+  const normalBboxes = source.fgbBoundingBoxes(normalExtent, webMercator);
+  expect(normalBboxes.length).to.equal(1, "Normal extent returns 1 box");
+  expect(normalBboxes[0].minX).to.be.greaterThan(
+    -180,
+    "Normal extent does not expand minX to -180",
+  );
+  expect(normalBboxes[0].maxX).to.be.lessThan(
+    180,
+    "Normal extent does not expand maxX to 180",
+  );
 };
 
 export default testFlatGeoBufPolarLogic;
