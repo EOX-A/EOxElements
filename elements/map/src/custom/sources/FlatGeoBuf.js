@@ -30,9 +30,9 @@ class FlatGeoBuf extends Vector {
    * transform an ol extent into FlatGeoBuf-format
    * @param {import("ol/extent").Extent} extent
    * @param {import("ol/proj").Projection} projection
-   * @returns
+   * @returns {Array<{minX: number, minY: number, maxX: number, maxY: number}>}
    */
-  fgbBoundingBox(extent, projection) {
+  fgbBoundingBoxes(extent, projection) {
     const sourceProjectionCode = projection.getCode();
     const dataProjectionCode =
       typeof this.dataProjection === "string"
@@ -45,8 +45,15 @@ class FlatGeoBuf extends Vector {
       extent,
       sourceProjectionCode,
       dataProjectionCode,
-      20,
+      50,
     );
+
+    const baseRect = {
+      minX: transformedExtent[0],
+      minY: transformedExtent[1],
+      maxX: transformedExtent[2],
+      maxY: transformedExtent[3],
+    };
 
     // If source is not the same as data projection, we perform more robust checks
     if (sourceProjectionCode !== dataProjectionCode) {
@@ -60,47 +67,79 @@ class FlatGeoBuf extends Vector {
 
       if (containsNorthPole || containsSouthPole) {
         // If it contains a pole, the extent in 4326 should cover all longitudes
-        transformedExtent[0] = -180;
-        transformedExtent[2] = 180;
+        baseRect.minX = -180;
+        baseRect.maxX = 180;
         if (containsNorthPole) {
-          transformedExtent[3] = 90;
+          baseRect.maxY = 90;
         }
         if (containsSouthPole) {
-          transformedExtent[1] = -90;
+          baseRect.minY = -90;
         }
+        return [baseRect];
       }
 
       // Antimeridian check
       const normalizeLon = (lon) => ((((lon + 180) % 360) + 360) % 360) - 180;
-      const leftLon = normalizeLon(
-        transform(
-          [extent[0], (extent[1] + extent[3]) / 2],
-          sourceProjectionCode,
-          dataProjectionCode,
-        )[0],
-      );
-      const rightLon = normalizeLon(
-        transform(
-          [extent[2], (extent[1] + extent[3]) / 2],
-          sourceProjectionCode,
-          dataProjectionCode,
-        )[0],
-      );
-      if (leftLon > rightLon) {
-        // If the left longitude is greater than the right one,
-        // it means we've crossed the antimeridian (180/-180).
-        // In this case, we expand the extent to cover all longitudes.
-        transformedExtent[0] = -180;
-        transformedExtent[2] = 180;
+      const stops = 10;
+      const segments = [
+        [
+          [extent[0], extent[1]],
+          [extent[0], extent[3]],
+        ], // left edge
+        [
+          [extent[2], extent[1]],
+          [extent[2], extent[3]],
+        ], // right edge
+        [
+          [extent[0], extent[1]],
+          [extent[2], extent[1]],
+        ], // bottom edge
+        [
+          [extent[0], extent[3]],
+          [extent[2], extent[3]],
+        ], // top edge
+      ];
+      let crossesAntimeridian = false;
+      let minLonPos = 180;
+      let maxLonNeg = -180;
+      let hasPos = false;
+      let hasNeg = false;
+
+      for (const [start, end] of segments) {
+        let prevLon = null;
+        for (let i = 0; i <= stops; i++) {
+          const coords = [
+            start[0] + (end[0] - start[0]) * (i / stops),
+            start[1] + (end[1] - start[1]) * (i / stops),
+          ];
+          const lon = normalizeLon(
+            transform(coords, sourceProjectionCode, dataProjectionCode)[0],
+          );
+          if (lon >= 0) {
+            minLonPos = Math.min(minLonPos, lon);
+            hasPos = true;
+          } else {
+            maxLonNeg = Math.max(maxLonNeg, lon);
+            hasNeg = true;
+          }
+          if (prevLon !== null && Math.abs(lon - prevLon) > 180) {
+            crossesAntimeridian = true;
+          }
+          prevLon = lon;
+        }
+      }
+
+      if (crossesAntimeridian && hasPos && hasNeg) {
+        // If we've crossed the antimeridian (180/-180),
+        // we return two boxes: one for the positive side and one for the negative side.
+        return [
+          { ...baseRect, minX: minLonPos, maxX: 180 },
+          { ...baseRect, minX: -180, maxX: maxLonNeg },
+        ];
       }
     }
 
-    return {
-      minX: transformedExtent[0],
-      minY: transformedExtent[1],
-      maxX: transformedExtent[2],
-      maxY: transformedExtent[3],
-    };
+    return [baseRect];
   }
 
   /**
@@ -108,46 +147,48 @@ class FlatGeoBuf extends Vector {
    * @this {FlatGeoBuf}
    */
   async loader(extent, _, projection, success, failure) {
-    const rect = this.fgbBoundingBox(extent, projection);
+    const rects = this.fgbBoundingBoxes(extent, projection);
     try {
-      // Use flatgeobuf JavaScript API to iterate features as geojson.
-      // Because we specify a bounding box, flatgeobuf will only fetch the relevant subset of data,
-      // rather than the entire file.
-      if (rect.minX !== -Infinity) {
-        /**
-         * @type {Array<import("ol/Feature").default>}
-         */
-        const features = [];
-        const geoJsonFormat = new GeoJSON({
-          featureProjection: projection,
-          dataProjection: this.dataProjection,
-        });
-        const usedIds = new Set();
-        let fallbackCounter = 0;
-        for (const url of this.resourceURLs) {
+      /**
+       * @type {Array<import("ol/Feature").default>}
+       */
+      const features = [];
+      const usedIds = new Set();
+      let fallbackCounter = 0;
+      const geoJsonFormat = new GeoJSON({
+        featureProjection: projection,
+        dataProjection: this.dataProjection,
+      });
+
+      for (const url of this.resourceURLs) {
+        for (const rect of rects) {
+          if (rect.minX === -Infinity || rect.maxX === Infinity) continue;
           const iter = deserialize(url, rect);
           for await (const feature of iter) {
             const olFeature = geoJsonFormat.readFeature(feature);
             //@ts-expect-error for GeoJSON-Format this should always be a single feature.
-            let id = olFeature.getId();
-            // If no ID exists, or it's already used, generate a new one
-            if (id == null || usedIds.has(id)) {
-              // Generate unique fallback ID
-              do {
-                id = `auto_${fallbackCounter++}`;
-              } while (usedIds.has(id));
-              //@ts-expect-error for GeoJSON-Format this should always be a single feature.
-              olFeature.setId(id);
+            const id = olFeature.getId();
+
+            const actualId =
+              id !== null && id !== undefined ? id : fallbackCounter++;
+            // Create a unique internal ID combining URL and feature ID
+            // to allow deduplication across split boxes but keep features from different URLs
+            const combinedId = `${url}_${actualId}`;
+            if (usedIds.has(combinedId)) {
+              continue;
             }
-            usedIds.add(id);
+            usedIds.add(combinedId);
+
+            //@ts-expect-error for GeoJSON-Format this should always be a single feature.
+            olFeature.setId(combinedId);
             //@ts-expect-error for GeoJSON-Format this should always be a single feature.
             features.push(olFeature);
           }
         }
-        super.clear();
-        super.addFeatures(features);
-        success(features);
       }
+      super.clear();
+      super.addFeatures(features);
+      success(features);
     } catch (_) {
       failure();
     }
