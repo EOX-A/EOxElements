@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.1...jsonform-v1.12.2) (2026-08-07)
+
+
+### Bug Fixes
+
+* Jsonform round based on step for minmaxslider ([#2472](https://github.com/EOX-A/EOxElements/issues/2472)) ([8f766be](https://github.com/EOX-A/EOxElements/commit/8f766be8e337025fdc67c0190418cd4e41a64bd7))
+
 ## [1.12.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.0...jsonform-v1.12.1) (2026-06-01)
 
 
