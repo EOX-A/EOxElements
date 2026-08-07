@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.2](https://github.com/EOX-A/EOxElements/compare/map-v2.7.1...map-v2.7.2) (2026-08-07)
+
+
+### Bug Fixes
+
+* Robust FlatGeoBuf bbox calculation for poles and antimeridian crossings ([#2474](https://github.com/EOX-A/EOxElements/issues/2474)) ([382d8c7](https://github.com/EOX-A/EOxElements/commit/382d8c7c93fcd6cc48637ddddcaf6825c6401da6))
+
 ## [2.7.1](https://github.com/EOX-A/EOxElements/compare/map-v2.7.0...map-v2.7.1) (2026-07-20)
 
 
