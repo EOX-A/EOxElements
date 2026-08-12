@@ -2,7 +2,7 @@
 
 ## Examples
 
-[Examples](https://eox-a.github.io/EOxElements/elements/storytelling/examples/index.html)
+[Examples of built stories](https://eoxhub-workspaces.github.io/preview-narratives/?preview_url=https://esa-eodashboards.github.io/eodashboard-narratives/)
 
 ## Usage
 

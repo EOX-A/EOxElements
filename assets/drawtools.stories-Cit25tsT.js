@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit-X6_6WslE.js";import{B as r,R as i,V as a,z as o}from"./iframe-CXAAwJpU.js";var s,c=e((()=>{n(),i(),s={args:{for:`eox-map#primary`,allowModify:!1,multipleFeatures:!1,type:`Polygon`,drawupdate:e=>console.log(e),storyAdditionalComponents:{"eox-map":{id:`primary`,style:r,layers:o}}},render:e=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit-X6_6WslE.js";import{B as r,R as i,V as a,z as o}from"./iframe-BwnGWyJM.js";var s,c=e((()=>{n(),i(),s={args:{for:`eox-map#primary`,allowModify:!1,multipleFeatures:!1,type:`Polygon`,drawupdate:e=>console.log(e),storyAdditionalComponents:{"eox-map":{id:`primary`,style:r,layers:o}}},render:e=>t`
     <eox-drawtools
       for=${e.for}
       .allowModify=${e.allowModify}
