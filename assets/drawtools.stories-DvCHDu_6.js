@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit-X6_6WslE.js";import{B as r,R as i,V as a,z as o}from"./iframe-cb3hID3a.js";var s,c=e((()=>{n(),i(),s={args:{for:`eox-map#primary`,allowModify:!1,multipleFeatures:!1,type:`Polygon`,drawupdate:e=>console.log(e),storyAdditionalComponents:{"eox-map":{id:`primary`,style:r,layers:o}}},render:e=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit-X6_6WslE.js";import{I as r,L as i,R as a,z as o}from"./iframe-s3sZnEQv.js";var s,c=e((()=>{n(),r(),s={args:{for:`eox-map#primary`,allowModify:!1,multipleFeatures:!1,type:`Polygon`,drawupdate:e=>console.log(e),storyAdditionalComponents:{"eox-map":{id:`primary`,style:a,layers:i}}},render:e=>t`
     <eox-drawtools
       for=${e.for}
       .allowModify=${e.allowModify}
@@ -11,7 +11,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style=${e.storyAdditionalComponents[`eox-map`].style}
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),l,u=e((()=>{n(),i(),l={args:{for:`eox-map#drawTypes`,"multiple-features":!0,"allow-modify":!0,type:`Box`,storyAdditionalComponents:{"eox-map":{id:`drawTypes`,layers:o,style:r}}},render:e=>t`
+  `}})),l,u=e((()=>{n(),r(),l={args:{for:`eox-map#drawTypes`,"multiple-features":!0,"allow-modify":!0,type:`Box`,storyAdditionalComponents:{"eox-map":{id:`drawTypes`,layers:i,style:a}}},render:e=>t`
     <eox-drawtools
       for=${e.for}
       ?multiple-features=${e[`multiple-features`]}
@@ -23,7 +23,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style=${e.storyAdditionalComponents[`eox-map`].style}
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),d,f=e((()=>{n(),i(),d={args:{for:`eox-map#multi`,multipleFeatures:!0,storyAdditionalComponents:{"eox-map":{id:`multi`,style:r,layers:o}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
+  `}})),d,f=e((()=>{n(),r(),d={args:{for:`eox-map#multi`,multipleFeatures:!0,storyAdditionalComponents:{"eox-map":{id:`multi`,style:a,layers:i}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
     <eox-drawtools
       for="${e.for}"
       ?multiple-features="${e.multipleFeatures}"
@@ -34,7 +34,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style="${e.storyAdditionalComponents[`eox-map`].style}"
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),p,m=e((()=>{n(),i(),p={args:{for:`eox-map#modify`,multipleFeatures:!0,allowModify:!0,storyAdditionalComponents:{"eox-map":{id:`modify`,style:r,layers:o}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
+  `}})),p,m=e((()=>{n(),r(),p={args:{for:`eox-map#modify`,multipleFeatures:!0,allowModify:!0,storyAdditionalComponents:{"eox-map":{id:`modify`,style:a,layers:i}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
     <eox-drawtools
       for="${e.for}"
       ?multiple-features="${e.multipleFeatures}"
@@ -46,7 +46,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style="${e.storyAdditionalComponents[`eox-map`].style}"
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),h,g=e((()=>{n(),i(),h={args:{for:`eox-map#list`,multipleFeatures:!0,showList:!0,featureName:`Polygon`,storyAdditionalComponents:{"eox-map":{id:`list`,style:r,layers:o}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
+  `}})),h,g=e((()=>{n(),r(),h={args:{for:`eox-map#list`,multipleFeatures:!0,showList:!0,featureName:`Polygon`,storyAdditionalComponents:{"eox-map":{id:`list`,style:a,layers:i}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
     <eox-drawtools
       for="${e.for}"
       ?multiple-features="${e.multipleFeatures}"
@@ -59,7 +59,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style="${e.storyAdditionalComponents[`eox-map`].style}"
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),_,v=e((()=>{n(),i(),_={args:{for:`eox-map#import`,"multiple-features":!0,"import-features":!0,"show-editor":!0,"show-list":!0,storyAdditionalComponents:{"eox-map":{id:`import`,style:`width:100%; height:400px;`,layers:o}}},render:e=>t`
+  `}})),_,v=e((()=>{n(),r(),_={args:{for:`eox-map#import`,"multiple-features":!0,"import-features":!0,"show-editor":!0,"show-list":!0,storyAdditionalComponents:{"eox-map":{id:`import`,style:`width:100%; height:400px;`,layers:i}}},render:e=>t`
     <eox-drawtools
       for=${e.for}
       ?multiple-features=${e[`multiple-features`]}
@@ -72,7 +72,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
       style=${e.storyAdditionalComponents[`eox-map`].style}
     ></eox-map>
-  `}})),y,b=e((()=>{n(),i(),y={args:{for:`eox-map#select`,multipleFeatures:!1,type:`Polygon`,layerId:`regions`,drawupdate:e=>{console.log(`drawUpdate:`,e.detail)},storyAdditionalComponents:{"eox-map":{id:`select`,style:r,layers:a}}},render:e=>t`
+  `}})),y,b=e((()=>{n(),r(),y={args:{for:`eox-map#select`,multipleFeatures:!1,type:`Polygon`,layerId:`regions`,drawupdate:e=>{console.log(`drawUpdate:`,e.detail)},storyAdditionalComponents:{"eox-map":{id:`select`,style:a,layers:o}}},render:e=>t`
     <eox-drawtools
       for="${e.for}"
       .multipleFeatures=${e.multipleFeatures}
@@ -85,7 +85,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style="${e.storyAdditionalComponents[`eox-map`].style}"
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),x,S=e((()=>{n(),i(),x={args:{for:`eox-map#multi-select`,allowModify:!1,multipleFeatures:!0,type:`Box`,layerId:`regions`,showList:!0,featureName:`Region`,featureNameKey:`ECO_NAME`,featureStyles:{layer:{"fill-color":`#16A105A0`,"stroke-color":`#16A105`,"stroke-width":2.5},hover:{"fill-color":`#19B806A0`,"stroke-color":`#19B806`,"stroke-width":2.5}},drawupdate:e=>{console.log(`drawUpdate:`,e.detail)},storyAdditionalComponents:{"eox-map":{id:`multi-select`,style:r,layers:a}}},render:e=>t`
+  `}})),x,S=e((()=>{n(),r(),x={args:{for:`eox-map#multi-select`,allowModify:!1,multipleFeatures:!0,type:`Box`,layerId:`regions`,showList:!0,featureName:`Region`,featureNameKey:`ECO_NAME`,featureStyles:{layer:{"fill-color":`#16A105A0`,"stroke-color":`#16A105`,"stroke-width":2.5},hover:{"fill-color":`#19B806A0`,"stroke-color":`#19B806`,"stroke-width":2.5}},drawupdate:e=>{console.log(`drawUpdate:`,e.detail)},storyAdditionalComponents:{"eox-map":{id:`multi-select`,style:a,layers:o}}},render:e=>t`
     <eox-drawtools
       for="${e.for}"
       .allowModify=${e.allowModify}
@@ -103,7 +103,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style="${e.storyAdditionalComponents[`eox-map`].style}"
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),C,w=e((()=>{n(),i(),C={args:{id:`feature-projection`,for:`eox-map#feature-projection-map`,projection:`EPSG:3857`,type:`Box`,drawupdate:e=>{console.log(`extent of the created feature in ${e.target?.projection}`,e.detail?.[0]?.getGeometry().getExtent())},storyAdditionalComponents:{"eox-map":{id:`feature-projection-map`,style:r,layers:o}}},render:e=>t`
+  `}})),C,w=e((()=>{n(),r(),C={args:{id:`feature-projection`,for:`eox-map#feature-projection-map`,projection:`EPSG:3857`,type:`Box`,drawupdate:e=>{console.log(`extent of the created feature in ${e.target?.projection}`,e.detail?.[0]?.getGeometry().getExtent())},storyAdditionalComponents:{"eox-map":{id:`feature-projection-map`,style:a,layers:i}}},render:e=>t`
     <eox-drawtools
       id=${e.id}
       for=${e.for}
@@ -116,7 +116,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
       style=${e.storyAdditionalComponents[`eox-map`].style}
     ></eox-map>
-  `}})),T,E=e((()=>{n(),i(),T={args:{id:`feature-projection`,for:`eox-map#formats`,type:`Box`,format:`feature`,multipleFeatures:!0,drawupdate:e=>{console.log(`returned values in ${e.target?.format} format `,e.detail)},storyAdditionalComponents:{"eox-map":{id:`formats`,style:r,layers:o}}},render:e=>t`
+  `}})),T,E=e((()=>{n(),r(),T={args:{id:`feature-projection`,for:`eox-map#formats`,type:`Box`,format:`feature`,multipleFeatures:!0,drawupdate:e=>{console.log(`returned values in ${e.target?.format} format `,e.detail)},storyAdditionalComponents:{"eox-map":{id:`formats`,style:a,layers:i}}},render:e=>t`
     <eox-drawtools
       id=${e.id}
       for=${e.for}
@@ -130,7 +130,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
       style=${e.storyAdditionalComponents[`eox-map`].style}
     ></eox-map>
-  `}})),D,O=e((()=>{n(),i(),D={args:{continuous:!0,for:`eox-map#continuous`,storyAdditionalComponents:{"eox-map":{id:`continuous`,layers:o,style:r}}},render:e=>t`
+  `}})),D,O=e((()=>{n(),r(),D={args:{continuous:!0,for:`eox-map#continuous`,storyAdditionalComponents:{"eox-map":{id:`continuous`,layers:i,style:a}}},render:e=>t`
     <!-- Render eox-map component with ID "continuous" -->
     <eox-map
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -143,7 +143,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       for="${e.for}"
       continuous=${e.continuous}
     ></eox-drawtools>
-  `}})),k,A=e((()=>{n(),i(),k={args:{for:`eox-map#css-var-override`,"multiple-features":!0,"show-list":!0,style:`--primary: #ffa55c; --error: #00ff00;`,storyAdditionalComponents:{"eox-map":{id:`css-var-override`,layers:o,style:r}}},render:e=>t`
+  `}})),k,A=e((()=>{n(),r(),k={args:{for:`eox-map#css-var-override`,"multiple-features":!0,"show-list":!0,style:`--primary: #ffa55c; --error: #00ff00;`,storyAdditionalComponents:{"eox-map":{id:`css-var-override`,layers:i,style:a}}},render:e=>t`
     <eox-map
       id=${e.storyAdditionalComponents[`eox-map`].id}
       style=${e.storyAdditionalComponents[`eox-map`].style}
@@ -155,7 +155,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       ?show-list=${e[`show-list`]}
       style=${e.style}
     ></eox-drawtools>
-  `}})),j,M=e((()=>{n(),i(),j={args:{for:`eox-map#unstyled`,multipleFeatures:!0,showList:!0,unstyled:!0,storyAdditionalComponents:{"eox-map":{id:`unstyled`,style:r,layers:o}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
+  `}})),j,M=e((()=>{n(),r(),j={args:{for:`eox-map#unstyled`,multipleFeatures:!0,showList:!0,unstyled:!0,storyAdditionalComponents:{"eox-map":{id:`unstyled`,style:a,layers:i}},drawupdate:e=>{console.log(`drawupdate`,e.detail)}},render:e=>t`
     <eox-drawtools
       for="${e.for}"
       ?multiple-features="${e.multipleFeatures}"
@@ -168,7 +168,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{d as t,t as n}from"./lit
       style="${e.storyAdditionalComponents[`eox-map`].style}"
       .layers=${e.storyAdditionalComponents[`eox-map`].layers}
     ></eox-map>
-  `}})),N,P=e((()=>{n(),i(),N={args:{for:`eox-map#measure`,allowModify:!0,multipleFeatures:!0,measure:!0,type:`Polygon`,storyAdditionalComponents:{"eox-map":{id:`measure`,style:r,layers:o}}},render:e=>t`
+  `}})),N,P=e((()=>{n(),r(),N={args:{for:`eox-map#measure`,allowModify:!0,multipleFeatures:!0,measure:!0,type:`Polygon`,storyAdditionalComponents:{"eox-map":{id:`measure`,style:a,layers:i}}},render:e=>t`
     <eox-drawtools
       for=${e.for}
       .allowModify=${e.allowModify}

@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{i as t}from"./mdx-react-BkFcNKGA.js";import{Ut as n,Wt as r}from"./iframe-cb3hID3a.js";function i(e){let n={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,h4:`h4`,li:`li`,ol:`ol`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(n.h1,{id:`coding-agents`,children:`Coding Agents`}),`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{i as t}from"./mdx-react-BkFcNKGA.js";import{Ht as n,Vt as r}from"./iframe-s3sZnEQv.js";function i(e){let n={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,h4:`h4`,li:`li`,ol:`ol`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(n.h1,{id:`coding-agents`,children:`Coding Agents`}),`
 `,(0,o.jsx)(n.p,{children:`EOxElements provides several resources to help AI coding agents understand and work with the library.`}),`
 `,(0,o.jsx)(n.h2,{id:`llmstxt`,children:`LLMs.txt`}),`
 `,(0,o.jsx)(n.p,{children:`We provide structured documentation files specifically designed for Large Language Models (LLMs). These files contain comprehensive information about the library, making it easy for AI tools to understand and assist with EOxElements development.`}),`
@@ -80,4 +80,4 @@ This is an additional helper catalog that combines standard `,(0,o.jsx)(n.code,{
 <\/script>
 `})}),`
 `,(0,o.jsx)(n.h3,{id:`live-rendered-showcase`,children:`Live Rendered Showcase`}),`
-`,(0,o.jsxs)(n.p,{children:[`You can view this interactive showcase as a full-screen, standalone demo in the `,(0,o.jsx)(n.strong,{children:`Demo`}),` category `,(0,o.jsx)(n.strong,{children:(0,o.jsx)(n.a,{href:`./?path=/story/demo--a-2-ui-showcase`,children:`here`})}),`.`]})]})}function a(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,o.jsx)(n,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;e((()=>{o=r(),n()}))();export{a as default};
+`,(0,o.jsxs)(n.p,{children:[`You can view this interactive showcase as a full-screen, standalone demo in the `,(0,o.jsx)(n.strong,{children:`Demo`}),` category `,(0,o.jsx)(n.strong,{children:(0,o.jsx)(n.a,{href:`./?path=/story/demo--a-2-ui-showcase`,children:`here`})}),`.`]})]})}function a(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,o.jsx)(n,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;e((()=>{o=n(),r()}))();export{a as default};

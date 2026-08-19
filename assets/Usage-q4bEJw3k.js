@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{i as t}from"./mdx-react-BkFcNKGA.js";import{Ut as n,Wt as r}from"./iframe-cb3hID3a.js";function i(e){let n={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,p:`p`,pre:`pre`,...t(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(n.h1,{id:`usage-of-eoxelements`,children:`Usage of EOxElements`}),`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{i as t}from"./mdx-react-BkFcNKGA.js";import{Ht as n,Vt as r}from"./iframe-s3sZnEQv.js";function i(e){let n={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,p:`p`,pre:`pre`,...t(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(n.h1,{id:`usage-of-eoxelements`,children:`Usage of EOxElements`}),`
 `,(0,o.jsx)(n.h2,{id:`introduction`,children:`Introduction`}),`
 `,(0,o.jsxs)(n.p,{children:[`Web components are a set of browser-native technologies that allow you to create reusable, encapsulated HTML tags. Think of them like custom-built LEGO bricks for your website. You define a component once—with its own HTML structure, CSS styles, and JavaScript logic—and then you can use it anywhere on the web, just like a standard `,(0,o.jsx)(n.code,{children:`<div>`}),` or `,(0,o.jsx)(n.code,{children:`<button>`}),` tag.`]}),`
 `,(0,o.jsxs)(n.p,{children:[`Source: `,(0,o.jsx)(n.a,{href:`https://web.dev/articles/web-components-io-2019`,rel:`nofollow`,children:`web.dev`})]}),`
@@ -174,4 +174,4 @@ export class AppComponent {
   ></eox-map>
   <eox-layercontrol for="eox-map" style="flex-basis: 30%;"></eox-layercontrol>
 </div>
-`})})]})}function a(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,o.jsx)(n,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;e((()=>{o=r(),n()}))();export{a as default};
+`})})]})}function a(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,o.jsx)(n,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;e((()=>{o=n(),r()}))();export{a as default};
