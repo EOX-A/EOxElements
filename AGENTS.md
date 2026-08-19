@@ -123,6 +123,8 @@ customElements.define("eox-example", EOxExample);
 
 ### Key Rules for Implementation
 
+- **Monorepo Commands**: Always run `lint:fix`, `typecheck`, and `format` from the **root** of the repository. Do not run them inside element sub-directories as they might lack the necessary scripts or configuration.
+- **JSDoc Event Listeners**: In custom inputs/editors, cast custom event listener callbacks with `/** @type {EventListener} */` and events with `/** @type {CustomEvent} */` when accessing `e.detail` to prevent `tsc` typecheck errors.
 - **No TypeScript Code**: Use JSDoc for types. Do NOT use TypeScript decorators (`@property`, `@state`) or `.ts` files for logic. TypeScript is used only for type definitions (`types.ts`, `@typedef`).
 - **Reactive Properties**: Always use `static get properties()` or `static properties = {}`. Lit decorators are NOT used anywhere in the codebase. Use `attribute: false` for complex Object/Array types.
 - **Method Delegation (Most Important Pattern)**: Extract business logic to standalone functions in `src/methods/<domain>/` directories.
@@ -131,6 +133,9 @@ customElements.define("eox-example", EOxExample);
   - Re-export methods via barrel `index.js` files.
 - **Enums & Constants**: Do NOT use TypeScript enums. Constants live in `src/enums/` as frozen JavaScript objects with `SCREAMING_SNAKE_CASE` naming.
 - **Projections**: For vector sources with a specific projection (e.g., GeoJSON in EPSG:3035), ensure the projection is registered globally. Prefer using `registerProjection` with a direct proj4 definition string for stability in stories, or `registerProjectionFromCode` for dynamic environments. In the layer definition, use the `format` object to specify `dataProjection`.
+  - **Normalization**: When comparing projections, always normalize to string codes (e.g., `typeof p === 'string' ? p : p.getCode()`).
+  - **Coordinates & Longitude**: For wrap-around or antimeridian logic, always normalize longitudes to the `[-180, 180]` range before magnitude comparison.
+  - **Extent Transformation**: Use `transformExtent` with `stops` (densification) for non-linear or polar transformations to ensure accurate bounding box calculations.
 - **Inter-Component Communication**: Components depending on `<eox-map>` use a standardized `for` property (a CSS selector defaulting to `"eox-map"`). In `firstUpdated()`, call `getElement(this.for)` from `@eox/elements-utils` to resolve the reference, even across shadow boundaries. Address re-resolution on property change in `updated()`.
 - **Styling**:
   - **EOxUI First**: This repository uses [EOxUI](https://github.com/EOX-A/EOxUI). Prefer using proper HTML structure and EOxUI classes over writing custom CSS.

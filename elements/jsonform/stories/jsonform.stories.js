@@ -28,6 +28,7 @@ import {
   GridStory,
   GridStrictStory,
   StepsEditorStory,
+  BranchingStory,
 } from "./index.js";
 
 export default {
@@ -241,6 +242,13 @@ export const Defaults = DefaultsStory;
  * ```
  */
 export const StepsEditor = StepsEditorStory;
+
+/**
+ * Branching example with `anyOf` / `oneOf`. Demonstrates multi-variant schemas with `"keep_oneof_values": false`
+ * in options to ensure clean default resets across branch switches (avoiding stale value/slider bleeding),
+ * minmax sliders, dynamic watchers, and string template interpolation.
+ */
+export const Branching = BranchingStory;
 
 /**
  * Unstyled example. Renders the form without default styles.

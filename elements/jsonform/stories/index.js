@@ -26,3 +26,4 @@ export { default as GridStrictStory } from "./grid-strict"; // Grid strict layou
 
 export { default as FlexLayoutStory } from "./flex-layout"; // Flex layout story
 export { default as StepsEditorStory } from "./steps-editor"; // Steps editor wizard story
+export { default as BranchingStory } from "./branching"; // Branching story with anyOf and keep_oneof_values: false
