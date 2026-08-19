@@ -1,4 +1,6 @@
 import { defineConfig } from "cypress";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 const pathsChanged = process.env.CI_PATHS_CHANGED;
 
 // by default all component tests are run
