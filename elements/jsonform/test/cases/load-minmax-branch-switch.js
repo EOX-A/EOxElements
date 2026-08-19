@@ -36,7 +36,7 @@ const loadMinMaxBranchSwitchTest = () => {
   });
 
   const baseUrl =
-    "https://example.com/stac/collections/RCM_NERSC/tiles/UPSArcticWGS84Quad/{z}/{x}/{y}?assets=HH&rescale=0,0.05&colormap_name=gray";
+    "https://example.com/{z}/{x}/{y}?assets=HH&rescale=0,0.05&colormap_name=gray";
   let currentSourceUrl = baseUrl;
 
   cy.mount(
