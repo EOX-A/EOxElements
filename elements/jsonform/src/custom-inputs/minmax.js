@@ -138,15 +138,21 @@ export class MinMaxEditor extends AbstractEditor {
     }
 
     // Add event listener for change events on the range slider
-    this.input.addEventListener("change", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.value = {
-        [minKey]: range.value1 ?? e.detail.value1,
-        [maxKey]: range.value2 ?? e.detail.value2,
-      };
-      this.onChange(true);
-    });
+    this.input.addEventListener(
+      "change",
+      /** @type {EventListener} */ (
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const customEvent = /** @type {CustomEvent} */ (e);
+          this.value = {
+            [minKey]: range.value1 ?? customEvent.detail?.value1,
+            [maxKey]: range.value2 ?? customEvent.detail?.value2,
+          };
+          this.onChange(true);
+        }
+      ),
+    );
 
     this.container.appendChild(this.control);
 
