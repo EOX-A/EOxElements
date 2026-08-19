@@ -43,8 +43,7 @@
           },
           "options": {
             "hidden": true
-          },
-          "default": "0,0.05"
+          }
         },
         "colormap_name": {
           "type": "string",
@@ -93,8 +92,7 @@
           },
           "options": {
             "hidden": true
-          },
-          "default": "0,0.005"
+          }
         },
         "colormap_name": {
           "type": "string",
