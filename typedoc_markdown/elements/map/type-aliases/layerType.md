@@ -8,4 +8,4 @@
 
 > **layerType** = keyof [`OLBasicLayers`](OLBasicLayers.md) \| keyof [`OLAdvancedLayers`](OLAdvancedLayers.md)
 
-Defined in: [elements/map/src/types.ts:19](https://github.com/EOX-A/EOxElements/blob/41876f56762a451d6bcf86ff75bbc8c62e928274/elements/map/src/types.ts#L19)
+Defined in: [elements/map/src/types.ts:19](https://github.com/EOX-A/EOxElements/blob/aecc21e30458760e6934b1a44308480b04c53b89/elements/map/src/types.ts#L19)
