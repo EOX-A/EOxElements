@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{n as t,t as n}from"./basedecoder-CrHz_tQR.js";import{n as r,t as i}from"./pako.esm-2aJlvYL3.js";var a;function o(){return(o=e((()=>{r(),t(),a=class extends n{decodeBlock(e){return i(new Uint8Array(e)).buffer}}})))()}o();export{a as default};

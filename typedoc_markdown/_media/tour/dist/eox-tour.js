@@ -124,7 +124,7 @@ var S = class extends HTMLElement {
 	static finalizeStyles(e) {
 		let t = [];
 		if (Array.isArray(e)) {
-			let n = new Set(e.flat(Infinity).reverse());
+			let n = new Set(e.flat(1 / 0).reverse());
 			for (let e of n) t.unshift(s(e));
 		} else e !== void 0 && t.push(s(e));
 		return t;
@@ -303,16 +303,18 @@ var pe = (e, t) => {
 						i.append(e[t], D());
 					}
 				}
-			} else if (i.nodeType === 8) if (i.data === ne) c.push({
-				type: 2,
-				index: a
-			});
-			else {
-				let e = -1;
-				for (; (e = i.data.indexOf(T, e + 1)) !== -1;) c.push({
-					type: 7,
+			} else if (i.nodeType === 8) {
+				if (i.data === ne) c.push({
+					type: 2,
 					index: a
-				}), e += T.length - 1;
+				});
+				else {
+					let e = -1;
+					for (; (e = i.data.indexOf(T, e + 1)) !== -1;) c.push({
+						type: 7,
+						index: a
+					}), e += T.length - 1;
+				}
 			}
 			a++;
 		}
@@ -559,15 +561,17 @@ var we = `
 //#region src/methods/tour/handle-message.js
 async function Te(e, t) {
 	let n = e.data;
-	if (!(!n || n.tourId !== t.id)) if (n.type === "EOX_TOUR_HANDOFF") {
-		let e = !0;
-		t.config?.steps?.length > 0 && !n.forceConfigOverride && (e = !1), e && n.config && (t.config = n.config, await t.updateComplete);
-		let r = n.stepIndex === void 0 ? 0 : n.stepIndex;
-		n.childStepIndex !== void 0 && (r = n.childStepIndex), r === -1 && t.config?.steps && (r = t.config.steps.length - 1), t.start(r);
-	} else if (n.type === "EOX_TOUR_RESUME") {
-		let e = n.parentStepIndex ?? n.stepIndex ?? 0;
-		t.start(e);
-	} else n.type === "EOX_TOUR_DESTROY" && t.driver && t.driver.destroy();
+	if (!(!n || n.tourId !== t.id)) {
+		if (n.type === "EOX_TOUR_HANDOFF") {
+			let e = !0;
+			t.config?.steps?.length > 0 && !n.forceConfigOverride && (e = !1), e && n.config && (t.config = n.config, await t.updateComplete);
+			let r = n.stepIndex === void 0 ? 0 : n.stepIndex;
+			n.childStepIndex !== void 0 && (r = n.childStepIndex), r === -1 && t.config?.steps && (r = t.config.steps.length - 1), t.start(r);
+		} else if (n.type === "EOX_TOUR_RESUME") {
+			let e = n.parentStepIndex ?? n.stepIndex ?? 0;
+			t.start(e);
+		} else n.type === "EOX_TOUR_DESTROY" && t.driver && t.driver.destroy();
+	}
 }
 //#endregion
 //#region ../../node_modules/driver.js/dist/driver.js.mjs
@@ -872,7 +876,7 @@ function Z() {
 	e && window.cancelAnimationFrame(e), J("__resizeTimeout", window.requestAnimationFrame(it));
 }
 function st(e) {
-	if (!Y("isInitialized") || !(e.key === "Tab" || e.keyCode === 9)) return;
+	if (!Y("isInitialized") || e.key !== "Tab" && e.keyCode !== 9) return;
 	let t = Y("__activeElement"), n = Y("popover")?.wrapper, r = Ne([...n ? [n] : [], ...t ? [t] : []]), i = r[0], a = r[r.length - 1];
 	e.preventDefault(), e.shiftKey ? (r[r.indexOf(document.activeElement) - 1] || a)?.focus() : (r[r.indexOf(document.activeElement) + 1] || i)?.focus();
 }
@@ -1278,20 +1282,21 @@ function bt(e) {
 			let e = document.querySelector(l);
 			e && e.tagName === "IFRAME" && (u = !0);
 		}
-		if (u) if (l && l !== c) {
-			let t = document.querySelector(l);
-			if (t && t.contentWindow) {
-				a.driver[i]();
-				let o = JSON.parse(JSON.stringify(e.config)), c = r;
-				i === "movePrevious" && s.popover?.backwardChildStepIndex !== void 0 ? c = s.popover.backwardChildStepIndex : n.popover?.childStepIndex === void 0 ? n.childStepIndex !== void 0 && (c = n.childStepIndex) : c = n.popover.childStepIndex, t.contentWindow.postMessage({
-					type: "EOX_TOUR_HANDOFF",
-					tourId: e.id,
-					config: o,
-					stepIndex: c
-				}, "*");
-			} else console.warn(`[eox-tour] Parent cannot navigate over iframe handoff: Iframe ${l} not found.`), a.driver[i]();
-		} else a.driver[i]();
-		else if (l === c) a.driver[i]();
+		if (u) {
+			if (l && l !== c) {
+				let t = document.querySelector(l);
+				if (t && t.contentWindow) {
+					a.driver[i]();
+					let o = JSON.parse(JSON.stringify(e.config)), c = r;
+					i === "movePrevious" && s.popover?.backwardChildStepIndex !== void 0 ? c = s.popover.backwardChildStepIndex : n.popover?.childStepIndex === void 0 ? n.childStepIndex !== void 0 && (c = n.childStepIndex) : c = n.popover.childStepIndex, t.contentWindow.postMessage({
+						type: "EOX_TOUR_HANDOFF",
+						tourId: e.id,
+						config: o,
+						stepIndex: c
+					}, "*");
+				} else console.warn(`[eox-tour] Parent cannot navigate over iframe handoff: Iframe ${l} not found.`), a.driver[i]();
+			} else a.driver[i]();
+		} else if (l === c) a.driver[i]();
 		else {
 			a.driver.destroy();
 			let t = r;
