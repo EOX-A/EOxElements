@@ -27,47 +27,45 @@ const loadExpertModeExport = () => {
 
   // mount - mount expert mode components with external map rendering
   cy.mount(html`
-    <div class="expert-mode">
-      <eox-map
-        style="width: 100%; height: 500px;"
-        id="external-map-rendering-mosaic"
-        .zoom=${10}
-        .center=${[12, 42]}
-      ></eox-map>
-      <eox-timecontrol
-        .for=${"eox-map#external-map-rendering-mosaic"}
-        .layerIdKey=${STORY_ARGS.layerIdKey}
-        .titleKey=${STORY_ARGS.titleKey}
-        .externalMapRendering=${true}
-        .filters=${STORY_ARGS.filters}
-      >
-        <div style="display: flex; gap: 10px;align-items: center;">
-          <eox-timecontrol-date
-            style="flex-grow: 1;"
-            .navigation=${true}
-          ></eox-timecontrol-date>
-          <eox-timecontrol-picker
-            .range=${true}
-            .showDots=${true}
-            .popup=${true}
-          ></eox-timecontrol-picker>
-          <div style="display: flex;align-items: center;">
-            <eox-itemfilter
-              id="timecontrol-filter"
-              .inlineMode=${true}
-              .titleProperty=${"id"}
-              .showResults=${false}
-              .filterProperties=${STORY_ARGS.filters}
-              style="--inline-container-height: 40px"
-            ></eox-itemfilter>
-            <eox-timecontrol-timelapse></eox-timecontrol-timelapse>
-          </div>
+    <eox-map
+      style="width: 100%; height: 500px;"
+      id="external-map-rendering-mosaic"
+      .zoom=${10}
+      .center=${[12, 42]}
+    ></eox-map>
+    <eox-timecontrol
+      .for=${"eox-map#external-map-rendering-mosaic"}
+      .layerIdKey=${STORY_ARGS.layerIdKey}
+      .titleKey=${STORY_ARGS.titleKey}
+      .externalMapRendering=${true}
+      .filters=${STORY_ARGS.filters}
+    >
+      <div style="display: flex; gap: 10px;align-items: center;">
+        <eox-timecontrol-date
+          style="flex-grow: 1;"
+          .navigation=${true}
+        ></eox-timecontrol-date>
+        <eox-timecontrol-picker
+          .range=${true}
+          .showDots=${true}
+          .popup=${true}
+        ></eox-timecontrol-picker>
+        <div style="display: flex;align-items: center;">
+          <eox-itemfilter
+            id="timecontrol-filter"
+            .inlineMode=${true}
+            .titleProperty=${"id"}
+            .showResults=${false}
+            .filterProperties=${STORY_ARGS.filters}
+            style="--inline-container-height: 40px"
+          ></eox-itemfilter>
+          <eox-timecontrol-timelapse></eox-timecontrol-timelapse>
         </div>
-        <eox-timecontrol-timeline
-          style="margin-top: 10px;"
-        ></eox-timecontrol-timeline>
-      </eox-timecontrol>
-    </div>
+      </div>
+      <eox-timecontrol-timeline
+        style="margin-top: 10px;"
+      ></eox-timecontrol-timeline>
+    </eox-timecontrol>
   `);
 
   // ensure components are ready before proceeding with setup
