@@ -215,6 +215,7 @@ We use `release-please`. Formatting errors here will break the release pipeline.
 - [ ] Functional story added to `stories/` with a code example.
 - [ ] `npm run lint:fix`, `typecheck`, and `format` passed.
 - [ ] PR title/commit message follows `type(scope): message` format.
+- [ ] PR description follows the repository template (`.github/pull_request_template.md`).
 - [ ] I have verified that `addCommonStylesheet()` is used for common styles.
 
 ---
