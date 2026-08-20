@@ -14,10 +14,28 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
 /**
  * `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.
  * It is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.
- * Also check out the [JSON Editor documentation](https://github.com/json-editor/json-editor?tab=readme-ov-file#options) for more details on the available options and configurations.
+ * Also check out the [JSON Editor Documentation](https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md) for full details on schema syntax, options, and built-in editors.
+ *
+ * Core JSON-Editor Features & Options Reference:
+ * - **Branching (`anyOf` / `oneOf`)**:
+ *   - Use `"keep_oneof_values": false` in `options` when variants define different defaults, types (e.g., string vs array), or numeric ranges/steps. By default, JSON-Editor carries over values (`keep_oneof_values: true`), corrupting branch defaults and slider ranges.
+ *   - Example: `"options": { "no_additional_properties": true, "keep_oneof_values": false }`
+ * - **Dynamic Field Dependencies & Templates**:
+ *   - `watch`: Watch other form fields (e.g. `"watch": { "vminmax": "vminmax" }`).
+ *   - `template`: Interpolate watched values into string templates (e.g. `"template": "{{vminmax.vmin}},{{vminmax.vmax}}"`).
+ * - **Custom & Advanced Inputs**:
+ *   - `format: "minmax"`: Dual-handle range slider (via `tc-range-slider`) for selecting min/max bounds with automatic precision detection based on `step`.
+ *   - `format: "range"`: Single range slider with `minimum`, `maximum`, and `step`.
+ *   - `format: "markdown"` / `format: "ace"`: Markdown and Ace code editor integration.
+ *   - `format: "spatial"`: Bounding box, polygon, point, and line drawing integrated with `eox-map` / `eox-drawtools`.
+ * - **URL Parameter Filtering (`removeProperties`)**:
+ *   - Use `options.removeProperties: ["vminmax"]` to drop intermediate form/slider properties from consumers and tile URL updates.
+ * - **Configuration Options**:
+ *   - `no_additional_properties: true`: Restrict output strictly to defined schema properties.
+ *   - `disable_collapse`, `disable_edit_json`, `disable_properties`: Standard JSON-Editor UI toggles.
  *
  * Features:
- * - Renders forms from JSON schema, supporting complex nested structures and custom validation.
+ * - Renders forms from JSON schema, supporting complex nested structures, branching (`anyOf`/`oneOf`), and custom validation.
  * - All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).
  * - Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).
  * - Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).
@@ -26,7 +44,7 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
  * - Integrates with `eox-map` for spatial feature selection when required.
  * - Supports unstyled rendering for custom design integration.
  *
- * See the stories for usage examples covering validation, custom editors, spatial inputs, opt-in/optional properties, external loading, and more.
+ * See the stories for usage examples covering validation, custom editors, branching variants, spatial inputs, opt-in/optional properties, external loading, and more.
  *
  * @typedef {JSON & {properties: object}} JsonSchema
  * @element eox-jsonform
@@ -53,7 +71,7 @@ export class EOxJSONForm extends LitElement {
     super();
 
     /**
-     * Schema for the form editor
+     * Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: "minmax"`).
      *
      * @type {JsonSchema}
      */
@@ -74,7 +92,8 @@ export class EOxJSONForm extends LitElement {
     this.defaults = {};
 
     /**
-     * Options for the form editor
+     * Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).
+     * See JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md
      *
      * @type {object}
      */

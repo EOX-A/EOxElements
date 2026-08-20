@@ -2174,7 +2174,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.\nIt is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.\nAlso check out the [JSON Editor documentation](https://github.com/json-editor/json-editor?tab=readme-ov-file#options) for more details on the available options and configurations.\n\nFeatures:\n- Renders forms from JSON schema, supporting complex nested structures and custom validation.\n- All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).\n- Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).\n- Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).\n- Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.\n- Can load schema and values from external URLs, supporting async loading and ready events.\n- Integrates with `eox-map` for spatial feature selection when required.\n- Supports unstyled rendering for custom design integration.\n\nSee the stories for usage examples covering validation, custom editors, spatial inputs, opt-in/optional properties, external loading, and more.",
+          "description": "`eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.\nIt is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.\nAlso check out the [JSON Editor Documentation](https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md) for full details on schema syntax, options, and built-in editors.\n\nCore JSON-Editor Features & Options Reference:\n- **Branching (`anyOf` / `oneOf`)**:\n  - Use `\"keep_oneof_values\": false` in `options` when variants define different defaults, types (e.g., string vs array), or numeric ranges/steps. By default, JSON-Editor carries over values (`keep_oneof_values: true`), corrupting branch defaults and slider ranges.\n  - Example: `\"options\": { \"no_additional_properties\": true, \"keep_oneof_values\": false }`\n- **Dynamic Field Dependencies & Templates**:\n  - `watch`: Watch other form fields (e.g. `\"watch\": { \"vminmax\": \"vminmax\" }`).\n  - `template`: Interpolate watched values into string templates (e.g. `\"template\": \"{{vminmax.vmin}},{{vminmax.vmax}}\"`).\n- **Custom & Advanced Inputs**:\n  - `format: \"minmax\"`: Dual-handle range slider (via `tc-range-slider`) for selecting min/max bounds with automatic precision detection based on `step`.\n  - `format: \"range\"`: Single range slider with `minimum`, `maximum`, and `step`.\n  - `format: \"markdown\"` / `format: \"ace\"`: Markdown and Ace code editor integration.\n  - `format: \"spatial\"`: Bounding box, polygon, point, and line drawing integrated with `eox-map` / `eox-drawtools`.\n- **URL Parameter Filtering (`removeProperties`)**:\n  - Use `options.removeProperties: [\"vminmax\"]` to drop intermediate form/slider properties from consumers and tile URL updates.\n- **Configuration Options**:\n  - `no_additional_properties: true`: Restrict output strictly to defined schema properties.\n  - `disable_collapse`, `disable_edit_json`, `disable_properties`: Standard JSON-Editor UI toggles.\n\nFeatures:\n- Renders forms from JSON schema, supporting complex nested structures, branching (`anyOf`/`oneOf`), and custom validation.\n- All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).\n- Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).\n- Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).\n- Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.\n- Can load schema and values from external URLs, supporting async loading and ready events.\n- Integrates with `eox-map` for spatial feature selection when required.\n- Supports unstyled rendering for custom design integration.\n\nSee the stories for usage examples covering validation, custom editors, branching variants, spatial inputs, opt-in/optional properties, external loading, and more.",
           "name": "EOxJSONForm",
           "members": [
             {
@@ -2200,7 +2200,7 @@
               "type": {
                 "text": "JsonSchema"
               },
-              "description": "Schema for the form editor",
+              "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
               "return": {
                 "type": {
                   "text": "JsonSchema | String"
@@ -2277,7 +2277,7 @@
               "type": {
                 "text": "object"
               },
-              "description": "Options for the form editor",
+              "description": "Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).\nSee JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md",
               "default": "{}",
               "attribute": "options"
             },
@@ -2355,7 +2355,7 @@
               "type": {
                 "text": "JsonSchema"
               },
-              "description": "Schema for the form editor",
+              "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
               "return": {
                 "type": {
                   "text": "JsonSchema | String"
@@ -2403,7 +2403,7 @@
               "type": {
                 "text": "object"
               },
-              "description": "Options for the form editor",
+              "description": "Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).\nSee JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md",
               "default": "{}",
               "fieldName": "options"
             },
