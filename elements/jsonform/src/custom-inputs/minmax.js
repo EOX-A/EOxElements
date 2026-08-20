@@ -3,62 +3,92 @@ import "toolcool-range-slider/dist/plugins/tcrs-generated-labels.min.js";
 import "toolcool-range-slider";
 
 /**
- * Set multiple attributes to an element
+ * Return decimal places for step (supports scientific notation).
  *
- * @param {Element} element - The DOM element to set attributes on
- * @param {{[key: string]: any}} attributes - The attributes to set on the element
- */
-function setAttributes(element, attributes) {
-  Object.keys(attributes).forEach((attr) => {
-    element.setAttribute(attr, attributes[attr]);
-  });
-}
-
-/**
- * Return the number of decimal places required to represent a numeric step.
- * Supports both ordinary decimals and scientific notation.
- *
- * @param {number|string|undefined} value
+ * @param {number|string|undefined} val
  * @returns {number|undefined}
  */
-function getDecimalPlaces(value) {
-  if (value === undefined || value === null || value === "") {
-    return undefined;
-  }
-
-  const numericValue = Number(value);
-  if (!Number.isFinite(numericValue) || numericValue <= 0) {
-    return undefined;
-  }
-
-  const [coefficient, exponentString = "0"] = numericValue
-    .toString()
-    .toLowerCase()
-    .split("e");
-
-  const fractionLength = coefficient.split(".")[1]?.length ?? 0;
-  const exponent = Number(exponentString);
-
-  return Math.max(0, fractionLength - exponent);
+function getDecimalPlaces(val) {
+  const num = Number(val);
+  if (!Number.isFinite(num) || num <= 0) return undefined;
+  const [coeff, exp = 0] = num.toString().toLowerCase().split("e");
+  return Math.max(0, (coeff.split(".")[1]?.length ?? 0) - Number(exp));
 }
 
 // Define a custom editor class extending AbstractEditor
 export class MinMaxEditor extends AbstractEditor {
-  register() {
-    super.register();
+  _getConfig() {
+    const props = this.schema?.properties || {};
+    const minKey = Object.keys(props).find((k) => k.includes("min")) || "min";
+    const maxKey = Object.keys(props).find((k) => k.includes("max")) || "max";
+    const minProp = props[minKey] || {};
+    const maxProp = props[maxKey] || {};
+    const step = minProp.step ?? maxProp.step;
+    return {
+      minKey,
+      maxKey,
+      minProp,
+      maxProp,
+      step,
+      round: getDecimalPlaces(step),
+    };
   }
 
-  unregister() {
-    super.unregister();
+  getDefault() {
+    const { minKey, maxKey, minProp, maxProp } = this._getConfig();
+    return { [minKey]: minProp.default, [maxKey]: maxProp.default };
+  }
+
+  getValue() {
+    if (!this.dependenciesFulfilled) return undefined;
+    const { minKey, maxKey, minProp, maxProp } = this._getConfig();
+    return {
+      [minKey]: this.input?.value1 ?? this.value?.[minKey] ?? minProp.default,
+      [maxKey]: this.input?.value2 ?? this.value?.[maxKey] ?? maxProp.default,
+    };
+  }
+
+  setValue(value) {
+    const { minKey, maxKey, minProp, maxProp, round } = this._getConfig();
+    let vMin =
+      typeof value?.[minKey] === "number" && Number.isFinite(value[minKey])
+        ? value[minKey]
+        : minProp.default;
+    let vMax =
+      typeof value?.[maxKey] === "number" && Number.isFinite(value[maxKey])
+        ? value[maxKey]
+        : maxProp.default;
+
+    if (minProp.minimum !== undefined && vMin < minProp.minimum)
+      vMin = minProp.default;
+    if (maxProp.maximum !== undefined && vMax > maxProp.maximum)
+      vMax = maxProp.default;
+
+    this.value = { [minKey]: vMin, [maxKey]: vMax };
+
+    if (this.input) {
+      if (round !== undefined) {
+        this.input.round = round;
+        this.input.setAttribute("round", String(round));
+      }
+      if (vMin !== undefined) {
+        this.input.value1 = vMin;
+        this.input.setAttribute("value1", String(vMin));
+      }
+      if (vMax !== undefined) {
+        this.input.value2 = vMax;
+        this.input.setAttribute("value2", String(vMax));
+      }
+    }
+
+    this.onChange(true);
   }
 
   // Build the editor UI
   build() {
-    const properties = this.schema.properties;
-    const options = this.options;
-    const description = this.schema.description;
-    const theme = this.theme;
-    const startVals = this.defaults.startVals[this.key];
+    const { minKey, maxKey, minProp, maxProp, step, round } = this._getConfig();
+    const { options = {}, schema = {}, theme } = this;
+    const startVals = options.startval ?? this.defaults?.startVals?.[this.key];
 
     // Create label and description elements if not in compact mode
     if (!options.compact)
@@ -66,9 +96,9 @@ export class MinMaxEditor extends AbstractEditor {
         this.getTitle(),
         this.isRequired(),
       );
-    if (description)
+    if (schema.description)
       this.description = theme.getFormInputDescription(
-        this.translateProperty(description),
+        this.translateProperty(schema.description),
       );
     if (options.infoText)
       this.infoButton = theme.getInfoButton(
@@ -76,31 +106,22 @@ export class MinMaxEditor extends AbstractEditor {
       );
 
     // Create the range slider element
-    const range = /** @type {HTMLInputElement}*/ (
-      document.createElement("tc-range-slider")
-    );
-    // TODO - better logic to find min & max properties?
-    const minKey = Object.keys(properties).find((k) => k.includes("min"));
-    const maxKey = Object.keys(properties).find((k) => k.includes("max"));
+    const range =
+      /** @type {HTMLInputElement & { round?: number, value1?: number, value2?: number }} */ (
+        document.createElement("tc-range-slider")
+      );
 
-    const step = properties[minKey].step ?? properties[maxKey].step;
-    const round = getDecimalPlaces(step);
-
-    // Define attributes for the range slider
-    const attributes = {
-      min: properties[minKey].minimum,
-      max: properties[maxKey].maximum,
-      // only positive integer supported
-      step,
-      value1: startVals?.[minKey] ?? properties[minKey].default,
-      value2: startVals?.[maxKey] ?? properties[maxKey].default,
+    const attrs = {
+      ...(round !== undefined && { round }),
+      ...(minProp.minimum !== undefined && { min: minProp.minimum }),
+      ...(maxProp.maximum !== undefined && { max: maxProp.maximum }),
+      ...(step !== undefined && { step }),
       "generate-labels": "true",
       "generate-labels-text-color": "currentColor",
       "slider-width": "100%",
       "range-dragging": "false",
-      ...(round !== undefined && { round }),
     };
-    setAttributes(range, attributes);
+    Object.entries(attrs).forEach(([k, v]) => range.setAttribute(k, String(v)));
 
     this.input = range;
     this.input.id = this.formname;
@@ -111,7 +132,7 @@ export class MinMaxEditor extends AbstractEditor {
       this.infoButton,
     );
 
-    if (this.schema.readOnly || this.schema.readonly) {
+    if (schema.readOnly || schema.readonly) {
       this.disable(true);
       this.input.disabled = true;
     }
@@ -120,15 +141,13 @@ export class MinMaxEditor extends AbstractEditor {
     this.input.addEventListener(
       "change",
       /** @type {EventListener} */ (
-        /**
-         * @param {CustomEvent} e
-         */
         (e) => {
           e.preventDefault();
           e.stopPropagation();
+          const customEvent = /** @type {CustomEvent} */ (e);
           this.value = {
-            [minKey]: e.detail.value1,
-            [maxKey]: e.detail.value2,
+            [minKey]: range.value1 ?? customEvent.detail?.value1,
+            [maxKey]: range.value2 ?? customEvent.detail?.value2,
           };
           this.onChange(true);
         }
@@ -136,16 +155,21 @@ export class MinMaxEditor extends AbstractEditor {
     );
 
     this.container.appendChild(this.control);
+
+    // Initialize values and precision
+    this.setValue(
+      startVals ?? {
+        [minKey]: minProp.default,
+        [maxKey]: maxProp.default,
+      },
+    );
   }
 
   // Destroy the editor and remove all associated elements
   destroy() {
-    if (this.label && this.label.parentNode)
-      this.label.parentNode.removeChild(this.label);
-    if (this.description && this.description.parentNode)
-      this.description.parentNode.removeChild(this.description);
-    if (this.input && this.input.parentNode)
-      this.input.parentNode.removeChild(this.input);
+    this.label?.parentNode?.removeChild(this.label);
+    this.description?.parentNode?.removeChild(this.description);
+    this.input?.parentNode?.removeChild(this.input);
     super.destroy();
   }
 }
