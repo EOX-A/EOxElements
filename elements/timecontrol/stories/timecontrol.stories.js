@@ -73,11 +73,29 @@ export const DateWithNavigation = DateWithNavigationStory;
 export const DatePickerPopup = DatePickerPopupStory;
 
 /**
- * Calendar date picker displayed in popup mode and shows items in the popup
+ * Calendar date picker displayed in popup mode with configurable items popup card
  *
  * This example demonstrates the `<eox-timecontrol-picker>` component with `showItems` enabled.
  * The calendar appears as a popup overlay when clicking on the date input field (provided by
- * `<eox-timecontrol-date>`). The picker shows items in the popup.
+ * `<eox-timecontrol-date>`). Hovering over a date with available data displays a popup card.
+ *
+ * Card content is configurable using:
+ * - `itemTitleKey` / `item-title-key`: Selects which property to display on the primary line (defaults to timecontrol's `titleKey` / `"name"`).
+ * - `showTime` / `show-time`: Controls whether time is shown in the card metadata (defaults to `true`; time is automatically omitted for date-only items).
+ * - `propertyTransform`: Optional function to customize or transform item rendering (returns transformed object or custom HTML string).
+ *
+ * ```html
+ * <eox-timecontrol for="eox-map#my-map">
+ *   <eox-timecontrol-date navigation></eox-timecontrol-date>
+ *   <eox-timecontrol-picker
+ *     popup
+ *     show-dots
+ *     show-items
+ *     item-title-key="name"
+ *     show-time
+ *   ></eox-timecontrol-picker>
+ * </eox-timecontrol>
+ * ```
  */
 export const DatePickerPopupItems = DatePickerPopupItemsStory;
 

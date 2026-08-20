@@ -128,6 +128,26 @@ export type TimeControlPickerOptions = {
    * Whether to show dots indicating available data on calendar dates.
    */
   showDots?: boolean;
+  /**
+   * Whether to show items in the calendar popup.
+   */
+  showItems?: boolean;
+  /**
+   * Property key used to select the primary line in the popup items card.
+   */
+  itemTitleKey?: string;
+  /**
+   * Whether to show time in the popup items card.
+   */
+  showTime?: boolean;
+  /**
+   * Format string for time display in the popup items card.
+   */
+  timeFormat?: string;
+  /**
+   * Custom transformation function for popup items.
+   */
+  propertyTransform?: (item: any) => any;
 };
 
 /**
@@ -515,6 +535,26 @@ declare global {
      * Whether to show dots on calendar.
      */
     showDots: boolean;
+    /**
+     * Whether to show items in the calendar popup.
+     */
+    showItems: boolean;
+    /**
+     * Property key used to select the primary line in the popup items card.
+     */
+    itemTitleKey: string;
+    /**
+     * Whether to show time in the popup items card.
+     */
+    showTime: boolean;
+    /**
+     * Format string for time display in the popup items card.
+     */
+    timeFormat: string;
+    /**
+     * Custom transformation function for popup items.
+     */
+    propertyTransform: ((item: any) => any) | null;
     /**
      * Position of the calendar picker.
      */
