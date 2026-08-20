@@ -97,7 +97,7 @@ export class EOxTimeControl extends LitElement {
       },
       selectedDateRange: { type: Array },
       controlValues: { type: Array },
-      initDate: { type: Array },
+      initDate: { attribute: "init-date" },
     };
   }
 
@@ -389,6 +389,22 @@ export class EOxTimeControl extends LitElement {
       this.#emitUpdateEvent,
     );
     this.requestUpdate();
+  }
+
+  /**
+   * Lifecycle method called after property updates.
+   *
+   * @param {import("lit").PropertyValues} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (
+      changedProperties.has("controlValues") ||
+      changedProperties.has("for") ||
+      changedProperties.has("initDate")
+    ) {
+      firstUpdatedMethod(this, this.#emitUpdateEvent);
+    }
   }
 
   /**

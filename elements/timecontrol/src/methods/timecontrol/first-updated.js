@@ -89,6 +89,12 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
           ? EOxTimeControl.controlValues
           : flatLayers;
         for (const layer of layers) {
+          if (EOxTimeControl.eoxMap && typeof layer?.on === "function") {
+            if (!layer.get("_timeControlListenerAttached")) {
+              layer.set("_timeControlListenerAttached", true);
+              layer.on("change:timeControlValues", () => init());
+            }
+          }
           const properties = EOxTimeControl.controlValues.length
             ? layer
             : layer.getProperties();
@@ -121,8 +127,6 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
               values: values,
               layerInstance: EOxTimeControl.eoxMap ? layer : null,
             });
-            if (EOxTimeControl.eoxMap)
-              layer.on("change:timeControlValues", () => init());
           }
         }
       }
@@ -158,9 +162,11 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             loading: false,
           });
 
-          const initDateRange = getInitDate(EOxTimeControl.initDate);
-
           const itemValues = EOxTimeControl.items.get();
+          const initDateRange = getInitDate(
+            EOxTimeControl.initDate,
+            itemValues,
+          );
           if (itemValues && itemValues.length) {
             const { dateRange } = getDateRange(
               EOxTimeControl,
