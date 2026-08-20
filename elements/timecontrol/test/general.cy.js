@@ -26,6 +26,7 @@ import {
   loadExpertModeExport,
   loadDateInUTC,
   loadTimelineWithRangeConfiguration,
+  loadDatePickerSelectionModes,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -95,4 +96,8 @@ describe("TimeControl", () => {
 
   // Test to verify that expert mode with timelapse export functionality works correctly
   it("loads expert mode export", () => loadExpertModeExport());
+
+  // Test to verify that date picker selection styles are applied in all modes (single, first-and-last, ranges)
+  it("loads date picker selection styles across modes", () =>
+    loadDatePickerSelectionModes());
 });
