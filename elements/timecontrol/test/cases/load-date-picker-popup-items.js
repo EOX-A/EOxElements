@@ -70,31 +70,36 @@ const loadDatePickerPopupItems = () => {
   cy.get(".vc", { timeout: 10000 }).should("exist").and("be.visible");
 
   // find our test date
-  cy.get(".vc").within(() => {
-    // it probably needs a second to render all days/dots
-    cy.get(`[data-vc-date="${utcTestDate}"]`, { timeout: 10000 }).should(
-      "exist",
-    );
-    // it probably needs a second to render all days/dots
-    cy.get(".vc-day__dots", { timeout: 10000 }).should("exist");
-  });
+  cy.get(".vc")
+    .last()
+    .within(() => {
+      // it probably needs a second to render all days/dots
+      cy.get(`[data-vc-date="${utcTestDate}"]`, { timeout: 10000 }).should(
+        "exist",
+      );
+      // it probably needs a second to render all days/dots
+      cy.get(".vc-day__dots", { timeout: 10000 }).should("exist");
+    });
 
   // verify the test date has dots (data from multiple layers)
   // we first need to ensure the calendar is fully loaded and items are rendered
-  cy.get(".vc").within(() => {
-    cy.get(`[data-vc-date="${utcTestDate}"]`, { timeout: 10000 })
-      .should("have.class", "vc-data-available")
-      .within(() => {
-        // should have the dots container
-        cy.get(".vc-day__dots").should("exist");
+  cy.get(".vc")
+    .last()
+    .within(() => {
+      cy.get(`[data-vc-date="${utcTestDate}"]`, { timeout: 10000 })
+        .first()
+        .should("have.class", "vc-data-available")
+        .within(() => {
+          // should have the dots container
+          cy.get(".vc-day__dots").should("exist");
 
-        // count the number of dots (should be >= 1)
-        cy.get(".vc-day__dot", { timeout: 10000 }).should(
-          "have.length.at.least",
-          expectedDotCount,
-        );
-      });
-  });
+          // count the number of dots (should be >= 1)
+          cy.get(".vc-day__dot", { timeout: 10000 }).should(
+            "have.length.at.least",
+            expectedDotCount,
+          );
+        });
+    });
 
   // verify the date popup element exists with opacity: 0 by default
   cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`)
@@ -116,8 +121,15 @@ const loadDatePickerPopupItems = () => {
   );
 
   // verify the popup contains content (visible when opacity is 1)
-  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`).then(($popup) => {
-    expect($popup.html()).to.not.be.empty;
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`).should(($popup) => {
+    const htmlContent = $popup.html();
+    expect(htmlContent).to.not.be.empty;
+    // verify primary line shows layer title and does NOT have the hardcoded "ID: " prefix
+    expect(htmlContent).to.include("Wind Visualisation 10M");
+    expect(htmlContent).to.include("NO2 Visualisation");
+    expect(htmlContent).to.not.include("ID: ");
+    // verify no misleading "00:00" for date-only items
+    expect(htmlContent).to.not.include("00:00");
   });
 
   // reset opacity back to 0 (simulating mouse leave)
@@ -135,19 +147,113 @@ const loadDatePickerPopupItems = () => {
   // verify a date with only one layer has only one dot
   // use the last date which should only be in layer 2
   const singleLayerDate = "2023-04-24";
-  cy.get(".vc").within(() => {
-    // navigate to April 2023 by clicking on the test date first
-    // this ensures we're in the right month
-    cy.get(`[data-vc-date="${singleLayerDate}"]`, { timeout: 5000 })
-      .should("exist")
-      .within(() => {
-        // should have dots container
-        cy.get(".vc-day__dots").should("exist");
+  cy.get(".vc")
+    .last()
+    .within(() => {
+      // navigate to April 2023 by clicking on the test date first
+      // this ensures we're in the right month
+      cy.get(`[data-vc-date="${singleLayerDate}"]`, { timeout: 5000 })
+        .first()
+        .should("exist")
+        .within(() => {
+          // should have dots container
+          cy.get(".vc-day__dots").should("exist");
 
-        // should have only 1 dot (only in layer 2)
-        cy.get(".vc-day__dot").should("have.length", 1);
-      });
-  });
+          // should have only 1 dot (only in layer 2)
+          cy.get(".vc-day__dot").should("have.length", 1);
+        });
+    });
+
+  // mount with custom itemTitleKey and propertyTransform
+  cy.mount(html`
+    <eox-map
+      id="picker-custom-popup-test"
+      style="width: 400px; height: 300px;"
+      .zoom=${STORY_ARGS.zoom}
+      .center=${STORY_ARGS.center}
+      .layers=${STORY_ARGS.layers}
+    ></eox-map>
+    <eox-timecontrol for="eox-map#picker-custom-popup-test">
+      <eox-timecontrol-date
+        format="${STORY_ARGS.format}"
+        .navigation=${true}
+      ></eox-timecontrol-date>
+      <eox-timecontrol-picker
+        item-title-key="cloudCoverage"
+        .showDots=${true}
+        .popup=${true}
+        .showItems=${true}
+        .propertyTransform=${(item) => ({
+          title: `Transformed: ${item.cloudCoverage}%`,
+          subtitle: "Custom Meta",
+        })}
+      ></eox-timecontrol-picker>
+    </eox-timecontrol>
+  `);
+
+  // open calendar in custom configuration
+  cy.get("eox-timecontrol")
+    .last()
+    .find("eox-timecontrol-date")
+    .shadow()
+    .within(() => {
+      cy.get("#date-container input[type='text']").click();
+    });
+
+  cy.get(".vc").last().should("exist").and("be.visible");
+
+  // verify propertyTransform custom object rendering
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`)
+    .last()
+    .should(($popup) => {
+      const htmlContent = $popup.html();
+      expect(htmlContent).to.include("Transformed: 74%");
+      expect(htmlContent).to.include("Custom Meta");
+    });
+
+  // mount with custom HTML propertyTransform
+  cy.mount(html`
+    <eox-map
+      id="picker-html-popup-test"
+      style="width: 400px; height: 300px;"
+      .zoom=${STORY_ARGS.zoom}
+      .center=${STORY_ARGS.center}
+      .layers=${STORY_ARGS.layers}
+    ></eox-map>
+    <eox-timecontrol for="eox-map#picker-html-popup-test">
+      <eox-timecontrol-date
+        format="${STORY_ARGS.format}"
+        .navigation=${true}
+      ></eox-timecontrol-date>
+      <eox-timecontrol-picker
+        .showDots=${true}
+        .popup=${true}
+        .showItems=${true}
+        .propertyTransform=${(item) =>
+          `<div class="custom-card">Custom ${item.cloudCoverage}</div>`}
+      ></eox-timecontrol-picker>
+    </eox-timecontrol>
+  `);
+
+  // open calendar in HTML custom configuration
+  cy.get("eox-timecontrol")
+    .last()
+    .find("eox-timecontrol-date")
+    .shadow()
+    .within(() => {
+      cy.get("#date-container input[type='text']").click();
+    });
+
+  cy.get(".vc").last().should("exist").and("be.visible");
+
+  // verify propertyTransform custom HTML rendering
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`)
+    .last()
+    .should(($popup) => {
+      const htmlContent = $popup.html();
+      expect(htmlContent).to.include("custom-card");
+      expect(htmlContent).to.include("Custom 74");
+    });
 };
 
 export default loadDatePickerPopupItems;

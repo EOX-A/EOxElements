@@ -46,6 +46,10 @@ export class EOxTimeControlPicker extends LitElement {
       showItems: { type: Boolean, attribute: "show-items" },
       showDots: { type: Boolean, attribute: "show-dots" },
       position: { type: Array, attribute: false },
+      itemTitleKey: { type: String, attribute: "item-title-key" },
+      showTime: { type: Boolean, attribute: "show-time" },
+      timeFormat: { type: String, attribute: "time-format" },
+      propertyTransform: { attribute: false, type: Function },
     };
   }
 
@@ -117,6 +121,35 @@ export class EOxTimeControlPicker extends LitElement {
      * @type {Array<string>}
      */
     this.position = ["top", "left"];
+
+    /**
+     * Property key used to select the primary line in the popup items card.
+     * Defaults to undefined (falls back to timecontrol's titleKey or 'name').
+     *
+     * @type {string | undefined}
+     */
+    this.itemTitleKey = undefined;
+
+    /**
+     * Whether to show time in the popup items card.
+     *
+     * @type {boolean}
+     */
+    this.showTime = true;
+
+    /**
+     * Format string for time display in the popup items card (dayjs format).
+     *
+     * @type {string}
+     */
+    this.timeFormat = "HH:mm";
+
+    /**
+     * Custom transformation function for popup items.
+     *
+     * @type {((item: Object) => Object | string | null | false) | null}
+     */
+    this.propertyTransform = null;
   }
 
   /**
@@ -129,10 +162,35 @@ export class EOxTimeControlPicker extends LitElement {
   }
 
   /**
+   * Updates component when properties change.
+   *
+   * @param {Map<string, any>} changedProperties - Changed properties map.
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (
+      this.cal &&
+      (changedProperties.has("showItems") ||
+        changedProperties.has("showDots") ||
+        changedProperties.has("range") ||
+        changedProperties.has("itemTitleKey") ||
+        changedProperties.has("showTime") ||
+        changedProperties.has("timeFormat") ||
+        changedProperties.has("propertyTransform"))
+    ) {
+      this.initCalendar({ selectedDateRange: this.#selectedDateRange });
+    }
+  }
+
+  /**
    * Lifecycle method called when the component is disconnected from the DOM.
    * Cleans up calendar styles to prevent memory leaks.
    */
   disconnectedCallback() {
+    if (this.cal) {
+      this.cal.destroy();
+      this.cal = null;
+    }
     super.disconnectedCallback();
     cleanCalendarStyles();
   }
@@ -218,6 +276,10 @@ export class EOxTimeControlPicker extends LitElement {
       this.closest("eox-timecontrol")
     );
     setTimeout(() => {
+      if (this.cal) {
+        this.cal.destroy();
+        this.cal = null;
+      }
       const defaultCalendarSelector = /** @type {HTMLElement} */ (
         this.renderRoot.querySelector("#cal")
       );
@@ -232,7 +294,10 @@ export class EOxTimeControlPicker extends LitElement {
         : externalCalendarSelector || defaultCalendarSelector;
       if (calendarSelector) {
         defaultCalendarSelector.innerHTML = "";
-        this.#selectedDateRange = options.selectedDateRange;
+        this.#selectedDateRange =
+          options.selectedDateRange ||
+          this.#selectedDateRange ||
+          EOxTimeControl?.selectedDateRange;
         const showUTC = EOxTimeControl.showUTC;
         const selectedDates = getSelectedDatesMethod(
           this.#selectedDateRange,
@@ -247,10 +312,14 @@ export class EOxTimeControlPicker extends LitElement {
         let popups = {};
 
         if (this.showItems) {
+          const titleKey =
+            this.itemTitleKey || EOxTimeControl?.titleKey || "name";
+          const groupsList = Object.keys(groupBy(data, "group"));
+
           for (const date of Object.keys(itemGroups)) {
             const items = itemGroups[date];
 
-            // Get top 5 items
+            // Get top 3 items
             const topItems = items.slice(0, 3);
             const remainingCount = items.length - 3;
 
@@ -258,32 +327,117 @@ export class EOxTimeControlPicker extends LitElement {
             let listHTML = "";
 
             topItems.forEach((item) => {
-              const id = item.id || "";
-              const utcTime = showUTC
-                ? dayjs(item.utc).utc().format("HH:mm")
-                : dayjs(item.utc).format("HH:mm");
+              const hasTime =
+                item.originalDate &&
+                (item.originalDate.includes("T") ||
+                  item.originalDate.includes(":") ||
+                  (item.originalDate.includes(" ") &&
+                    item.originalDate.length > 10));
+
+              const formattedTime =
+                this.showTime && hasTime
+                  ? showUTC
+                    ? dayjs(item.utc)
+                        .utc()
+                        .format(this.timeFormat || "HH:mm")
+                    : dayjs(item.utc).format(this.timeFormat || "HH:mm")
+                  : "";
+
               const group = item.group || "";
-              const groupsList = Object.keys(groupBy(data, "group"));
+              const groupObj = /** @type {any} */ (
+                EOxTimeControl?.groups?.get(group)
+              );
+              const groupContent = Array.isArray(groupObj)
+                ? groupObj[0]?.content
+                : groupObj?.content;
+              const layerTitle = item.layerName || groupContent || "";
 
-              // Truncate ID if too long
-              const truncatedId =
-                id.length > 30 ? id.substring(0, 30) + "..." : id;
+              let title =
+                item[titleKey] ||
+                (titleKey === "id" ? item.itemId || item.id : null) ||
+                layerTitle ||
+                item.name ||
+                item.title ||
+                item.itemId ||
+                group;
 
-              listHTML += `
+              let subtitle = "";
+              if (item[titleKey] && item[titleKey] !== layerTitle) {
+                subtitle = layerTitle || group;
+              } else if (
+                titleKey !== "id" &&
+                item.itemId &&
+                item.itemId !== item.id
+              ) {
+                subtitle = item.itemId;
+              }
+
+              const dotColor = `var(--dot-color-${groupsList.indexOf(group) + 1}, var(--primary))`;
+
+              let itemData = {
+                title: String(title || ""),
+                subtitle: String(subtitle || ""),
+                time: formattedTime,
+                dotColor: dotColor,
+                ...item,
+              };
+
+              let customHtml = null;
+
+              if (typeof this.propertyTransform === "function") {
+                const transformed = this.propertyTransform(itemData);
+                if (transformed === false || transformed === null) {
+                  return;
+                }
+                if (typeof transformed === "string") {
+                  customHtml = transformed;
+                } else if (
+                  typeof transformed === "object" &&
+                  transformed !== null
+                ) {
+                  itemData = {
+                    ...itemData,
+                    ...transformed,
+                  };
+                }
+              }
+
+              if (customHtml !== null) {
+                listHTML += `
+                <div class="vc-item-popup__item">
+                  ${customHtml}
+                </div>
+              `;
+              } else {
+                const displayTitle = itemData.title || "";
+                const truncatedTitle =
+                  displayTitle.length > 30
+                    ? displayTitle.substring(0, 30) + "..."
+                    : displayTitle;
+
+                const metaParts = [itemData.time, itemData.subtitle].filter(
+                  Boolean,
+                );
+                const metaText = metaParts.join(" ");
+
+                listHTML += `
                 <div class="vc-item-popup__item">
                   <div class="vc-item-popup__item-content">
-                    <div class="vc-item-popup__dot" style="background-color: var(--dot-color-${groupsList.indexOf(group) + 1}, var(--primary))"></div>
+                    <div class="vc-item-popup__dot" style="background-color: ${itemData.dotColor || dotColor}"></div>
                     <div class="vc-item-popup__text-container">
-                      <div class="vc-item-popup__id">
-                        ID: ${truncatedId}
+                      <div class="vc-item-popup__id vc-item-popup__title">
+                        ${truncatedTitle}
                       </div>
-                      <div class="vc-item-popup__meta">
-                        ${utcTime} ${group}
-                      </div>
+                      ${
+                        metaText
+                          ? `<div class="vc-item-popup__meta">${metaText}</div>`
+                          : ""
+                      }
                     </div>
                   </div>
                 </div>
               `;
+              }
             });
 
             // Add "more" indicator if there are remaining items
@@ -303,6 +457,30 @@ export class EOxTimeControlPicker extends LitElement {
               },
             };
           }
+        }
+
+        if (this.cal) {
+          const wasOpen = Boolean(this.cal.context?.isShowInInputMode);
+          const selectedYear =
+            this.cal.context?.selectedYear ?? this.cal.selectedYear;
+          const selectedMonth =
+            this.cal.context?.selectedMonth ?? this.cal.selectedMonth;
+          this.cal.set({
+            popups: popups,
+            selectionDatesMode: this.range ? "multiple-ranged" : "single",
+            ...(options.min
+              ? { dateMin: options.min, displayDateMin: options.min }
+              : {}),
+            ...(options.max
+              ? { dateMax: options.max, displayDateMax: options.max }
+              : {}),
+            ...(selectedYear !== undefined ? { selectedYear } : {}),
+            ...(selectedMonth !== undefined ? { selectedMonth } : {}),
+          });
+          if (wasOpen) {
+            this.cal.show();
+          }
+          return;
         }
 
         this.cal = new Calendar(calendarSelector || "#cal", {

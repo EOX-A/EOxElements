@@ -35,6 +35,8 @@ const DatePickerPopupItemsStory = {
         showDots: true,
         popup: true,
         showItems: true,
+        itemTitleKey: undefined,
+        showTime: true,
       },
     },
   },
@@ -67,6 +69,13 @@ const DatePickerPopupItemsStory = {
         .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"].popup}
         .showItems=${args.storyAdditionalComponents["eox-timecontrol-picker"]
           .showItems}
+        .itemTitleKey=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .itemTitleKey}
+        .showTime=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .showTime}
+        .propertyTransform=${args.storyAdditionalComponents[
+          "eox-timecontrol-picker"
+        ].propertyTransform}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,

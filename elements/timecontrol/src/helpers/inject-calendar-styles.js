@@ -178,7 +178,8 @@ export const calendarStyle = `
   .vc-item-popup__text-container {
     flex: 1;
   }
-  .vc-item-popup__id {
+  .vc-item-popup__id,
+  .vc-item-popup__title {
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
