@@ -119,6 +119,17 @@ const loadDatePickerStandalone = () => {
         .should("not.equal", getDate(initialDate));
     });
 
+  // verify the clicked date has primary background fill
+  cy.get("eox-timecontrol-picker")
+    .shadow()
+    .within(() => {
+      cy.get(`[data-vc-date="${testDate}"] .vc-date__btn`).should(
+        "have.css",
+        "background-color",
+        "rgb(0, 65, 112)",
+      );
+    });
+
   // verify calendar is still visible after date selection (doesn't close)
   cy.get("body").then(($body) => {
     const vcInBody = $body.find(".vc").length > 0;
