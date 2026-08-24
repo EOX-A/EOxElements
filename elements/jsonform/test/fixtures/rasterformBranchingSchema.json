@@ -1,0 +1,107 @@
+{
+  "type": "object",
+  "title": "Asset",
+  "options": {
+    "no_additional_properties": true
+  },
+  "anyOf": [
+    {
+      "title": "HH",
+      "type": "object",
+      "properties": {
+        "assets": {
+          "type": "string",
+          "enum": ["HH"],
+          "default": "HH",
+          "options": { "hidden": true }
+        },
+        "vminmax": {
+          "type": "object",
+          "title": "Value Range",
+          "properties": {
+            "vmin": {
+              "type": "number",
+              "default": 0,
+              "format": "range",
+              "minimum": 0,
+              "step": 0.005
+            },
+            "vmax": {
+              "type": "number",
+              "default": 0.05,
+              "format": "range",
+              "maximum": 0.075
+            }
+          },
+          "format": "minmax"
+        },
+        "rescale": {
+          "type": "string",
+          "template": "{{vminmax.vmin}},{{vminmax.vmax}}",
+          "watch": {
+            "vminmax": "vminmax"
+          },
+          "options": {
+            "hidden": true
+          }
+        },
+        "colormap_name": {
+          "type": "string",
+          "title": "Colormap",
+          "default": "gray",
+          "enum": ["gray", "viridis"]
+        }
+      },
+      "required": ["vminmax", "assets"]
+    },
+    {
+      "title": "HV",
+      "type": "object",
+      "properties": {
+        "assets": {
+          "type": "string",
+          "enum": ["HV"],
+          "default": "HV",
+          "options": { "hidden": true }
+        },
+        "vminmax": {
+          "type": "object",
+          "title": "Value Range",
+          "properties": {
+            "vmin": {
+              "type": "number",
+              "default": 0,
+              "format": "range",
+              "minimum": 0,
+              "step": 0.0005
+            },
+            "vmax": {
+              "type": "number",
+              "default": 0.005,
+              "format": "range",
+              "maximum": 0.0075
+            }
+          },
+          "format": "minmax"
+        },
+        "rescale": {
+          "type": "string",
+          "template": "{{vminmax.vmin}},{{vminmax.vmax}}",
+          "watch": {
+            "vminmax": "vminmax"
+          },
+          "options": {
+            "hidden": true
+          }
+        },
+        "colormap_name": {
+          "type": "string",
+          "title": "Colormap",
+          "default": "gray",
+          "enum": ["gray", "viridis"]
+        }
+      },
+      "required": ["vminmax", "assets"]
+    }
+  ]
+}

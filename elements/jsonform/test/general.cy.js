@@ -30,6 +30,7 @@ import {
   loadStepsEditorCascadingResetTest,
   loadStepsEditorConditionalTest,
   loadMinMaxEditorTest,
+  loadMinMaxBranchSwitchTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -69,4 +70,6 @@ describe("Jsonform", () => {
     loadStepsEditorConditionalTest());
   it("loads the minmax editor with correct precision", () =>
     loadMinMaxEditorTest());
+  it("applies branch defaults when switching anyOf branches with minmax slider", () =>
+    loadMinMaxBranchSwitchTest());
 });
