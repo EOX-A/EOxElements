@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.2...jsonform-v1.12.3) (2026-08-24)
+
+
+### Bug Fixes
+
+* Make agents more aware about jsonform and some of relevant options ([#2493](https://github.com/EOX-A/EOxElements/issues/2493)) ([319a043](https://github.com/EOX-A/EOxElements/commit/319a04388a1e81658efd196e9ece7a526a92ceca))
+
 ## [1.12.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.1...jsonform-v1.12.2) (2026-08-07)
 
 
