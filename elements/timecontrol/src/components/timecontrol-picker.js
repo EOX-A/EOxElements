@@ -123,29 +123,34 @@ export class EOxTimeControlPicker extends LitElement {
     this.position = ["top", "left"];
 
     /**
-     * Property key used to select the primary line in the popup items card.
-     * Defaults to undefined (falls back to timecontrol's titleKey or 'name').
+     * Property key on the timeline item used to select the primary title line in the popup items card.
+     * Available item properties include `layerName` (display name of the layer), `group` (layer ID),
+     * `itemId` (item identifier), `originalDate` (date string), plus any custom properties defined on the
+     * layer's `timeControlValues` objects (e.g., `cloudCoverage`).
+     * Defaults to undefined (falls back to timecontrol's titleKey or 'name', resolving to the layer title).
      *
      * @type {string | undefined}
      */
     this.itemTitleKey = undefined;
 
     /**
-     * Whether to show time in the popup items card.
+     * Whether to show time in the popup items card. Defaults to true (omitted if item has no time component).
      *
      * @type {boolean}
      */
     this.showTime = true;
 
     /**
-     * Format string for time display in the popup items card (dayjs format).
+     * Format string for time display in the popup items card (dayjs format). Defaults to "HH:mm".
      *
      * @type {string}
      */
     this.timeFormat = "HH:mm";
 
     /**
-     * Custom transformation function for popup items.
+     * Custom transformation function for popup items. Receives an item object containing
+     * `{ title, subtitle, time, dotColor, layerName, group, itemId, originalDate, ...customItemProps }`.
+     * Can return an updated item object, an HTML string, or null/false to hide the item.
      *
      * @type {((item: Object) => Object | string | null | false) | null}
      */
@@ -276,10 +281,6 @@ export class EOxTimeControlPicker extends LitElement {
       this.closest("eox-timecontrol")
     );
     setTimeout(() => {
-      if (this.cal) {
-        this.cal.destroy();
-        this.cal = null;
-      }
       const defaultCalendarSelector = /** @type {HTMLElement} */ (
         this.renderRoot.querySelector("#cal")
       );
@@ -352,17 +353,24 @@ export class EOxTimeControlPicker extends LitElement {
                 : groupObj?.content;
               const layerTitle = item.layerName || groupContent || "";
 
-              let title =
-                item[titleKey] ||
-                (titleKey === "id" ? item.itemId || item.id : null) ||
-                layerTitle ||
-                item.name ||
-                item.title ||
-                item.itemId ||
-                group;
+              const hasItemValue =
+                item[titleKey] !== undefined && item[titleKey] !== null;
+
+              let title = hasItemValue
+                ? item[titleKey]
+                : (titleKey === "id" ? item.itemId || item.id : null) ||
+                  (titleKey === "name" ? layerTitle : null) ||
+                  layerTitle ||
+                  item.name ||
+                  item.title ||
+                  item.itemId ||
+                  group;
 
               let subtitle = "";
-              if (item[titleKey] && item[titleKey] !== layerTitle) {
+              if (
+                hasItemValue &&
+                String(item[titleKey]) !== String(layerTitle)
+              ) {
                 subtitle = layerTitle || group;
               } else if (
                 titleKey !== "id" &&
@@ -375,7 +383,7 @@ export class EOxTimeControlPicker extends LitElement {
               const dotColor = `var(--dot-color-${groupsList.indexOf(group) + 1}, var(--primary))`;
 
               let itemData = {
-                title: String(title || ""),
+                title: String(title ?? ""),
                 subtitle: String(subtitle || ""),
                 time: formattedTime,
                 dotColor: dotColor,

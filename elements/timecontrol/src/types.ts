@@ -133,7 +133,8 @@ export type TimeControlPickerOptions = {
    */
   showItems?: boolean;
   /**
-   * Property key used to select the primary line in the popup items card.
+   * Property key on the timeline item used to select the primary line in the popup items card
+   * (e.g., `layerName`, `group`, `itemId`, `originalDate`, or custom properties on `timeControlValues`).
    */
   itemTitleKey?: string;
   /**
@@ -147,7 +148,67 @@ export type TimeControlPickerOptions = {
   /**
    * Custom transformation function for popup items.
    */
-  propertyTransform?: (item: any) => any;
+  propertyTransform?: (
+    item: TimeControlPopupItem,
+  ) => TimeControlPopupItem | string | null | false;
+};
+
+/**
+ * Timeline item data object passed to the popup card renderer or `propertyTransform` function.
+ */
+export type TimeControlPopupItem = {
+  /**
+   * Primary title line displayed in bold.
+   */
+  title: string;
+  /**
+   * Subtitle text displayed in the metadata line.
+   */
+  subtitle: string;
+  /**
+   * Formatted time string (if `showTime` is true and item has time).
+   */
+  time: string;
+  /**
+   * CSS color variable or color string for the indicator dot.
+   */
+  dotColor: string;
+  /**
+   * Layer display name (from `layer.properties[titleKey]`).
+   */
+  layerName?: string;
+  /**
+   * Layer identifier (from `layer.properties[layerIdKey]`).
+   */
+  group?: string;
+  /**
+   * Unique item identifier (from `timeControlValues[i].id` or generated uuid).
+   */
+  itemId?: string;
+  /**
+   * Generated unique UUID for timeline tracking.
+   */
+  id?: string;
+  /**
+   * Original date string from layer configuration.
+   */
+  originalDate?: string;
+  /**
+   * Formatted date string (YYYY-MM-DD).
+   */
+  date?: string;
+  /**
+   * ISO UTC date string.
+   */
+  utc?: string;
+  /**
+   * ISO local timezone string.
+   */
+  local?: string;
+  /**
+   * Additional custom metadata properties defined on `timeControlValues` entries.
+   */
+  [key: string]: any;
 };
 
 /**
@@ -540,7 +601,8 @@ declare global {
      */
     showItems: boolean;
     /**
-     * Property key used to select the primary line in the popup items card.
+     * Property key on the timeline item used to select the primary line in the popup items card
+     * (e.g., `layerName`, `group`, `itemId`, `originalDate`, or custom properties on `timeControlValues`).
      */
     itemTitleKey: string;
     /**
@@ -554,7 +616,11 @@ declare global {
     /**
      * Custom transformation function for popup items.
      */
-    propertyTransform: ((item: any) => any) | null;
+    propertyTransform:
+      | ((
+          item: TimeControlPopupItem,
+        ) => TimeControlPopupItem | string | null | false)
+      | null;
     /**
      * Position of the calendar picker.
      */
