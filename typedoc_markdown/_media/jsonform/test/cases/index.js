@@ -29,3 +29,4 @@ export {
   loadStepsEditorConditionalTest,
 } from "./load-steps-editor";
 export { default as loadMinMaxEditorTest } from "./load-minmax-editor";
+export { default as loadMinMaxBranchSwitchTest } from "./load-minmax-branch-switch";
