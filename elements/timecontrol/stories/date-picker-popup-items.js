@@ -7,10 +7,36 @@ import { STORY_ARGS } from "../src/enums";
  * @returns {Object} The story configuration with arguments for the component.
  */
 const DatePickerPopupItemsStory = {
+  argTypes: {
+    showItems: {
+      control: { type: "boolean" },
+      description:
+        "Whether to show the items popup card when hovering over available dates.",
+    },
+    itemTitleKey: {
+      control: { type: "select" },
+      options: [undefined, "cloudCoverage", "layerName", "itemId", "id"],
+      description:
+        "Property key on the timeline item used as the primary title in the card (e.g. `cloudCoverage`, `layerName`, `itemId`, `id`).",
+    },
+    showTime: {
+      control: { type: "boolean" },
+      description:
+        "Whether to show time in the popup items card (automatically omitted for date-only items).",
+    },
+    timeFormat: {
+      control: { type: "text" },
+      description: "Format string for time display in the popup items card.",
+    },
+  },
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
     navigation: true,
     popup: true,
+    showItems: true,
+    itemTitleKey: undefined,
+    showTime: true,
+    timeFormat: "HH:mm",
     for: "eox-map#date-picker-popup",
     select: (e) => {
       console.log(e.detail);
@@ -37,6 +63,7 @@ const DatePickerPopupItemsStory = {
         showItems: true,
         itemTitleKey: undefined,
         showTime: true,
+        timeFormat: "HH:mm",
       },
     },
   },
@@ -67,15 +94,17 @@ const DatePickerPopupItemsStory = {
         .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
           .showDots}
         .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"].popup}
-        .showItems=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-          .showItems}
-        .itemTitleKey=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-          .itemTitleKey}
-        .showTime=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-          .showTime}
-        .propertyTransform=${args.storyAdditionalComponents[
-          "eox-timecontrol-picker"
-        ].propertyTransform}
+        .showItems=${args.showItems ??
+        args.storyAdditionalComponents["eox-timecontrol-picker"].showItems}
+        .itemTitleKey=${args.itemTitleKey ??
+        args.storyAdditionalComponents["eox-timecontrol-picker"].itemTitleKey}
+        .showTime=${args.showTime ??
+        args.storyAdditionalComponents["eox-timecontrol-picker"].showTime}
+        .timeFormat=${args.timeFormat ??
+        args.storyAdditionalComponents["eox-timecontrol-picker"].timeFormat}
+        .propertyTransform=${args.propertyTransform ??
+        args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .propertyTransform}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
