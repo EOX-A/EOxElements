@@ -183,6 +183,64 @@ const loadDatePickerPopupItems = () => {
         .showDots=${true}
         .popup=${true}
         .showItems=${true}
+      ></eox-timecontrol-picker>
+    </eox-timecontrol>
+  `);
+
+  // open calendar in custom configuration
+  cy.get("eox-timecontrol")
+    .last()
+    .find("eox-timecontrol-date")
+    .shadow()
+    .within(() => {
+      cy.get("#date-container input[type='text']").click();
+    });
+
+  cy.get(".vc").last().should("exist").and("be.visible");
+
+  // verify itemTitleKey displays the cloudCoverage value on primary line and layerName in metadata
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`)
+    .last()
+    .should(($popup) => {
+      const htmlContent = $popup.html();
+      expect(htmlContent).to.include("74");
+      expect(htmlContent).to.include("Wind Visualisation 10M");
+    });
+
+  // dynamically update property on the picker element
+  cy.get("eox-timecontrol-picker")
+    .last()
+    .then(($picker) => {
+      /** @type {any} */ ($picker[0]).itemTitleKey = "layerName";
+    });
+
+  // verify dynamic property update re-renders popup content in-place
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`)
+    .last()
+    .should(($popup) => {
+      const htmlContent = $popup.html();
+      expect(htmlContent).to.include("Wind Visualisation 10M");
+    });
+
+  // mount with custom propertyTransform (object)
+  cy.mount(html`
+    <eox-map
+      id="picker-transform-popup-test"
+      style="width: 400px; height: 300px;"
+      .zoom=${STORY_ARGS.zoom}
+      .center=${STORY_ARGS.center}
+      .layers=${STORY_ARGS.layers}
+    ></eox-map>
+    <eox-timecontrol for="eox-map#picker-transform-popup-test">
+      <eox-timecontrol-date
+        format="${STORY_ARGS.format}"
+        .navigation=${true}
+      ></eox-timecontrol-date>
+      <eox-timecontrol-picker
+        item-title-key="cloudCoverage"
+        .showDots=${true}
+        .popup=${true}
+        .showItems=${true}
         .propertyTransform=${(item) => ({
           title: `Transformed: ${item.cloudCoverage}%`,
           subtitle: "Custom Meta",
@@ -191,7 +249,7 @@ const loadDatePickerPopupItems = () => {
     </eox-timecontrol>
   `);
 
-  // open calendar in custom configuration
+  // open calendar in transform configuration
   cy.get("eox-timecontrol")
     .last()
     .find("eox-timecontrol-date")
