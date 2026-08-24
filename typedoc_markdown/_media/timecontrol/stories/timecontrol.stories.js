@@ -73,11 +73,37 @@ export const DateWithNavigation = DateWithNavigationStory;
 export const DatePickerPopup = DatePickerPopupStory;
 
 /**
- * Calendar date picker displayed in popup mode and shows items in the popup
+ * Calendar date picker displayed in popup mode with configurable items popup card
  *
  * This example demonstrates the `<eox-timecontrol-picker>` component with `showItems` enabled.
  * The calendar appears as a popup overlay when clicking on the date input field (provided by
- * `<eox-timecontrol-date>`). The picker shows items in the popup.
+ * `<eox-timecontrol-date>`). Hovering over a date with available data displays a popup card.
+ *
+ * Card content is configurable using:
+ * - `itemTitleKey` / `item-title-key`: Selects which property on the timeline item to display on the primary line.
+ *   - Available item properties include:
+ *     - `layerName`: The layer title/name (from `layer.properties[titleKey]`).
+ *     - `group`: The layer ID (from `layer.properties[layerIdKey]`).
+ *     - `itemId`: The item identifier (from `timeControlValues[i].id` or generated UUID).
+ *     - `originalDate`: The raw date string from `timeControlValues[i].date`.
+ *     - Any custom properties defined on `timeControlValues` objects (e.g., `cloudCoverage`).
+ *   - Defaults to `undefined` (which falls back to the layer title `layerName`).
+ * - `showTime` / `show-time`: Controls whether time is shown in the card metadata (defaults to `true`; time is automatically omitted for date-only items).
+ * - `timeFormat` / `time-format`: Dayjs format string for displaying item time (defaults to `"HH:mm"`).
+ * - `propertyTransform`: Optional function to customize or transform item rendering (receives `{ title, subtitle, time, dotColor, layerName, group, itemId, originalDate, ...customItemProps }` and returns transformed object or custom HTML string).
+ *
+ * ```html
+ * <eox-timecontrol for="eox-map#my-map">
+ *   <eox-timecontrol-date navigation></eox-timecontrol-date>
+ *   <eox-timecontrol-picker
+ *     popup
+ *     show-dots
+ *     show-items
+ *     item-title-key="layerName"
+ *     show-time
+ *   ></eox-timecontrol-picker>
+ * </eox-timecontrol>
+ * ```
  */
 export const DatePickerPopupItems = DatePickerPopupItemsStory;
 

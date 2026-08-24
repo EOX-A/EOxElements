@@ -8,7 +8,7 @@
 
 > **TimeControlTimelapseOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:183](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L183)
+Defined in: [elements/timecontrol/src/types.ts:264](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L264)
 
 Configuration options for the time control timelapse component.
 
@@ -18,7 +18,7 @@ Configuration options for the time control timelapse component.
 
 > `optional` **format?**: `"gif"` \| `"mp4"`
 
-Defined in: [elements/timecontrol/src/types.ts:195](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L195)
+Defined in: [elements/timecontrol/src/types.ts:276](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L276)
 
 Export format: "gif" or "mp4" (default: "gif").
 
@@ -28,7 +28,7 @@ Export format: "gif" or "mp4" (default: "gif").
 
 > `optional` **speed?**: `number`
 
-Defined in: [elements/timecontrol/src/types.ts:191](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L191)
+Defined in: [elements/timecontrol/src/types.ts:272](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L272)
 
 Animation speed in frames per second (default: 1).
 
@@ -38,6 +38,6 @@ Animation speed in frames per second (default: 1).
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:187](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L187)
+Defined in: [elements/timecontrol/src/types.ts:268](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L268)
 
 Whether to disable default styling.

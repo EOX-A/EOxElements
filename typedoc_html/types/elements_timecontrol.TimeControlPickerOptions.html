@@ -14,9 +14,9 @@
 <section class="tsd-panel tsd-comment">
 <div class="tsd-comment tsd-typography"><p>Configuration options for the time control picker component.</p>
 </div></section>
-<div class="tsd-signature"><span class="tsd-signature-keyword">type</span> <span class="tsd-kind-type-alias">TimeControlPickerOptions</span> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#popup">popup</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#range">range</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#showdots">showDots</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#unstyled">unstyled</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-signature-keyword">type</span> <span class="tsd-kind-type-alias">TimeControlPickerOptions</span> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#itemtitlekey">itemTitleKey</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#popup">popup</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#propertytransform">propertyTransform</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><br/>        <span class="tsd-kind-parameter">item</span><span class="tsd-signature-symbol">:</span> <a href="elements_timecontrol.TimeControlPopupItem.html" class="tsd-signature-type tsd-kind-type-alias">TimeControlPopupItem</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <a href="elements_timecontrol.TimeControlPopupItem.html" class="tsd-signature-type tsd-kind-type-alias">TimeControlPopupItem</a> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">false</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#range">range</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#showdots">showDots</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#showitems">showItems</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#showtime">showTime</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#timeformat">timeFormat</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#unstyled">unstyled</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L114">elements/timecontrol/src/types.ts:114</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L114">elements/timecontrol/src/types.ts:114</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -24,42 +24,83 @@
 <div class="tsd-accordion-details">
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="properties">Properties<a href="#properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-index-list"><a href="#popup" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>popup?</span></a>
+<div class="tsd-index-list"><a href="#itemtitlekey" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>item<wbr/>Title<wbr/>Key?</span></a>
+<a href="#popup" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>popup?</span></a>
+<a href="#propertytransform" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>property<wbr/>Transform?</span></a>
 <a href="#range" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>range?</span></a>
 <a href="#showdots" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>show<wbr/>Dots?</span></a>
+<a href="#showitems" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>show<wbr/>Items?</span></a>
+<a href="#showtime" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>show<wbr/>Time?</span></a>
+<a href="#timeformat" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>time<wbr/>Format?</span></a>
 <a href="#unstyled" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>unstyled?</span></a>
 </div></section></div></details></section></section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
 <section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="itemtitlekey"><code class="tsd-tag">Optional</code><span>item<wbr/>Title<wbr/>Key</span><a href="#itemtitlekey" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">itemTitleKey</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>Property key on the timeline item used to select the primary line in the popup items card
+(e.g., <code>layerName</code>, <code>group</code>, <code>itemId</code>, <code>originalDate</code>, or custom properties on <code>timeControlValues</code>).</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L139">elements/timecontrol/src/types.ts:139</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="popup"><code class="tsd-tag">Optional</code><span>popup</span><a href="#popup" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">popup</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether to display the calendar in a popup mode.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L118">elements/timecontrol/src/types.ts:118</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L118">elements/timecontrol/src/types.ts:118</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="propertytransform"><code class="tsd-tag">Optional</code><span>property<wbr/>Transform</span><a href="#propertytransform" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">propertyTransform</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">item</span><span class="tsd-signature-symbol">:</span> <a href="elements_timecontrol.TimeControlPopupItem.html" class="tsd-signature-type tsd-kind-type-alias">TimeControlPopupItem</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <a href="elements_timecontrol.TimeControlPopupItem.html" class="tsd-signature-type tsd-kind-type-alias">TimeControlPopupItem</a> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">false</span></div>
+<div class="tsd-comment tsd-typography"><p>Custom transformation function for popup items.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L151">elements/timecontrol/src/types.ts:151</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="range"><code class="tsd-tag">Optional</code><span>range</span><a href="#range" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">range</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether to enable date range selection.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L126">elements/timecontrol/src/types.ts:126</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L126">elements/timecontrol/src/types.ts:126</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="showdots"><code class="tsd-tag">Optional</code><span>show<wbr/>Dots</span><a href="#showdots" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">showDots</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether to show dots indicating available data on calendar dates.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L130">elements/timecontrol/src/types.ts:130</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L130">elements/timecontrol/src/types.ts:130</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="showitems"><code class="tsd-tag">Optional</code><span>show<wbr/>Items</span><a href="#showitems" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">showItems</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
+<div class="tsd-comment tsd-typography"><p>Whether to show items in the calendar popup.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L134">elements/timecontrol/src/types.ts:134</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="showtime"><code class="tsd-tag">Optional</code><span>show<wbr/>Time</span><a href="#showtime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">showTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
+<div class="tsd-comment tsd-typography"><p>Whether to show time in the popup items card.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L143">elements/timecontrol/src/types.ts:143</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="timeformat"><code class="tsd-tag">Optional</code><span>time<wbr/>Format</span><a href="#timeformat" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">timeFormat</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>Format string for time display in the popup items card.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L147">elements/timecontrol/src/types.ts:147</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="unstyled"><code class="tsd-tag">Optional</code><span>unstyled</span><a href="#unstyled" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">unstyled</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether to disable default styling.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L122">elements/timecontrol/src/types.ts:122</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L122">elements/timecontrol/src/types.ts:122</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -76,7 +117,7 @@
 <h3>On This Page</h3></summary>
 <div class="tsd-accordion-details">
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
-<div><a href="#popup"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>popup</span></a><a href="#range"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>range</span></a><a href="#showdots"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>show<wbr/>Dots</span></a><a href="#unstyled"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>unstyled</span></a></div></details></div></details></div>
+<div><a href="#itemtitlekey"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>item<wbr/>Title<wbr/>Key</span></a><a href="#popup"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>popup</span></a><a href="#propertytransform"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>property<wbr/>Transform</span></a><a href="#range"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>range</span></a><a href="#showdots"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>show<wbr/>Dots</span></a><a href="#showitems"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>show<wbr/>Items</span></a><a href="#showtime"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>show<wbr/>Time</span></a><a href="#timeformat"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>time<wbr/>Format</span></a><a href="#unstyled"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>unstyled</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../modules.html">@eox/elements</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">

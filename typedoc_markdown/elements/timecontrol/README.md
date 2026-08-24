@@ -26,6 +26,7 @@
 - [TimeControlConfig](type-aliases/TimeControlConfig.md)
 - [TimeControlDateOptions](type-aliases/TimeControlDateOptions.md)
 - [TimeControlPickerOptions](type-aliases/TimeControlPickerOptions.md)
+- [TimeControlPopupItem](type-aliases/TimeControlPopupItem.md)
 - [TimeControlSliderOptions](type-aliases/TimeControlSliderOptions.md)
 - [TimeControlTimelapseOptions](type-aliases/TimeControlTimelapseOptions.md)
 - [TimeControlTimelineOptions](type-aliases/TimeControlTimelineOptions.md)

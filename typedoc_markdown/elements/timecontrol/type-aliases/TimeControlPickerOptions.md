@@ -8,19 +8,50 @@
 
 > **TimeControlPickerOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:114](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L114)
+Defined in: [elements/timecontrol/src/types.ts:114](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L114)
 
 Configuration options for the time control picker component.
 
 ## Properties
 
+### itemTitleKey?
+
+> `optional` **itemTitleKey?**: `string`
+
+Defined in: [elements/timecontrol/src/types.ts:139](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L139)
+
+Property key on the timeline item used to select the primary line in the popup items card
+(e.g., `layerName`, `group`, `itemId`, `originalDate`, or custom properties on `timeControlValues`).
+
+***
+
 ### popup?
 
 > `optional` **popup?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:118](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L118)
+Defined in: [elements/timecontrol/src/types.ts:118](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L118)
 
 Whether to display the calendar in a popup mode.
+
+***
+
+### propertyTransform?
+
+> `optional` **propertyTransform?**: (`item`) => [`TimeControlPopupItem`](TimeControlPopupItem.md) \| `string` \| `null` \| `false`
+
+Defined in: [elements/timecontrol/src/types.ts:151](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L151)
+
+Custom transformation function for popup items.
+
+#### Parameters
+
+##### item
+
+[`TimeControlPopupItem`](TimeControlPopupItem.md)
+
+#### Returns
+
+[`TimeControlPopupItem`](TimeControlPopupItem.md) \| `string` \| `null` \| `false`
 
 ***
 
@@ -28,7 +59,7 @@ Whether to display the calendar in a popup mode.
 
 > `optional` **range?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:126](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L126)
+Defined in: [elements/timecontrol/src/types.ts:126](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L126)
 
 Whether to enable date range selection.
 
@@ -38,9 +69,39 @@ Whether to enable date range selection.
 
 > `optional` **showDots?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:130](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L130)
+Defined in: [elements/timecontrol/src/types.ts:130](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L130)
 
 Whether to show dots indicating available data on calendar dates.
+
+***
+
+### showItems?
+
+> `optional` **showItems?**: `boolean`
+
+Defined in: [elements/timecontrol/src/types.ts:134](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L134)
+
+Whether to show items in the calendar popup.
+
+***
+
+### showTime?
+
+> `optional` **showTime?**: `boolean`
+
+Defined in: [elements/timecontrol/src/types.ts:143](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L143)
+
+Whether to show time in the popup items card.
+
+***
+
+### timeFormat?
+
+> `optional` **timeFormat?**: `string`
+
+Defined in: [elements/timecontrol/src/types.ts:147](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L147)
+
+Format string for time display in the popup items card.
 
 ***
 
@@ -48,6 +109,6 @@ Whether to show dots indicating available data on calendar dates.
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:122](https://github.com/EOX-A/EOxElements/blob/9dd6f803da559336d8535fa083fc910ea961eb22/elements/timecontrol/src/types.ts#L122)
+Defined in: [elements/timecontrol/src/types.ts:122](https://github.com/EOX-A/EOxElements/blob/85f6f3187aeb1d34eb26207fc737816e4aedb79d/elements/timecontrol/src/types.ts#L122)
 
 Whether to disable default styling.

@@ -31,6 +31,7 @@
 - [TimeControlConfig](../../../elements/timecontrol/type-aliases/TimeControlConfig.md)
 - [TimeControlDateOptions](../../../elements/timecontrol/type-aliases/TimeControlDateOptions.md)
 - [TimeControlPickerOptions](../../../elements/timecontrol/type-aliases/TimeControlPickerOptions.md)
+- [TimeControlPopupItem](../../../elements/timecontrol/type-aliases/TimeControlPopupItem.md)
 - [TimeControlSliderOptions](../../../elements/timecontrol/type-aliases/TimeControlSliderOptions.md)
 - [TimeControlTimelapseOptions](../../../elements/timecontrol/type-aliases/TimeControlTimelapseOptions.md)
 - [TimeControlTimelineOptions](../../../elements/timecontrol/type-aliases/TimeControlTimelineOptions.md)
