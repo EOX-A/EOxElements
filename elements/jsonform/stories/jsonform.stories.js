@@ -22,6 +22,7 @@ import {
   ShowOptInPropertiesStory,
   ValidationStory,
   CodeStory,
+  CodeMarkdownDisableUndoRedoStory,
   OptionalPropertiesStory,
   FlexLayoutStory,
   DefaultsStory,
@@ -69,6 +70,12 @@ export const Validation = ValidationStory;
  * Demonstrates integration of external editors via schema configuration.
  */
 export const Code = CodeStory;
+
+/**
+ * Ace editor with disabled undo/redo example.
+ * Demonstrates how to disable keyboard shortcuts for undo/redo in the markdown Ace editor.
+ */
+export const CodeMarkdownDisableUndoRedo = CodeMarkdownDisableUndoRedoStory;
 
 /**
  * Opt-in properties example. Shows how to display and interact with opt-in properties in the form.
