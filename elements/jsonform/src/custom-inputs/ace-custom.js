@@ -25,6 +25,7 @@ export class AceCustomEditor extends aceEditor {
         name: "undo",
         bindKey: { win: "Ctrl-Z", mac: "Command-Z", linux: "Ctrl-Z" },
         exec: () => {},
+        passEvent: true,
       });
       // @ts-expect-error - ace_editor_instance is not defined in the ace-builds type
       this.ace_editor_instance.commands.addCommand({
@@ -35,6 +36,7 @@ export class AceCustomEditor extends aceEditor {
           linux: "Ctrl-Y|Ctrl-Shift-Z",
         },
         exec: () => {},
+        passEvent: true,
       });
     }
   }
