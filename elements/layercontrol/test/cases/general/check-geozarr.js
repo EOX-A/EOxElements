@@ -54,8 +54,8 @@ const checkGeoZarr = () => {
         properties: {
           variable: {
             type: "string",
-            enum: ["vv", "vh"],
-            default: "vv",
+            enum: ["sss"],
+            default: "sss",
           },
           min: { type: "number", default: 0 },
           max: { type: "number", default: 40 },
