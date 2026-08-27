@@ -257,7 +257,11 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
 
-    const initDateRange = getInitDate(EOxTimeControl.initDate, items, EOxTimeControl.showUTC);
+    const initDateRange = getInitDate(
+      EOxTimeControl.initDate,
+      items,
+      EOxTimeControl.showUTC,
+    );
     const { start, end } = getDateRange(EOxTimeControl, items, initDateRange);
 
     const options = {
