@@ -404,6 +404,13 @@ export class EOxTimeControl extends LitElement {
       changedProperties.has("initDate")
     ) {
       firstUpdatedMethod(this, this.#emitUpdateEvent);
+      this.#cleanupLayersListener?.();
+      this.#cleanupLayersListener = null;
+      this.#cleanupLayersListener = firstUpdatedMethod(
+        this,
+        this.#emitUpdateEvent,
+      );
+      this.requestUpdate();
     }
   }
 

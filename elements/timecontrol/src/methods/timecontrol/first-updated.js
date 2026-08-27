@@ -166,6 +166,7 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
           const initDateRange = getInitDate(
             EOxTimeControl.initDate,
             itemValues,
+            EOxTimeControl.showUTC,
           );
           if (itemValues && itemValues.length) {
             const { dateRange } = getDateRange(
