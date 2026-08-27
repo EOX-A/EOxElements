@@ -12,3 +12,4 @@ export { default as showCorrectLayerTitle } from "./show-layer-title";
 export { default as colorSwatch } from "./color-swatch";
 export { default as checkLayerDatetime } from "./check-layer-datetime";
 export { default as toolsAutoExpand } from "./tools-auto-expand";
+export { default as checkGeoZarr } from "./check-geozarr";

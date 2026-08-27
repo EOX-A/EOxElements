@@ -18,7 +18,7 @@ export function getStartVals(layer, layerConfig) {
         (layer)["style_"]?.variables
       : layerConfig.style?.variables;
   if ((layerConfig.type === "style" || layerConfig.style) && styleVars) {
-    nestedValues = styleVars;
+    nestedValues = { ...styleVars };
   } else if (/** @type {any} */ (layer.getSource())?.getParams?.()) {
     nestedValues = /** @type {any} */ (layer.getSource()).getParams();
   } else if (
@@ -52,6 +52,7 @@ export function getStartVals(layer, layerConfig) {
     Object.keys(fieldSchemas).length ? fieldSchemas : layerConfig.schema,
     nestedValues,
     layerConfig.schema,
+    layer,
   );
 
   return Object.keys(startVals).length ? startVals : null;
@@ -106,9 +107,15 @@ function collectFieldSchemas(
  * @param {{[key: string]: any}} schema - The schema object to traverse.
  * @param {{[key: string]: any}} nestedValues - values of nested properties to extract startVals.
  * @param {{[key: string]: any}} [rootSchema] - The root schema `$ref`s resolve against.
+ * @param {import("ol/layer/Base").default | any} [layer] - The layer object.
  * @returns {object} - Object containing the startVals.
  */
-export function getNestedStartVals(schema, nestedValues, rootSchema = schema) {
+export function getNestedStartVals(
+  schema,
+  nestedValues,
+  rootSchema = schema,
+  layer = null,
+) {
   let startVals = {};
 
   for (const key in schema) {
@@ -120,12 +127,39 @@ export function getNestedStartVals(schema, nestedValues, rootSchema = schema) {
         : nestedValues[key];
       // keep the raw URL value instead of NaN (e.g. "auto" on a number field)
       startVals[key] = Number.isNaN(value) ? nestedValues[key] : value;
+    } else if (
+      type &&
+      type !== "object" &&
+      schema[key]?.default !== undefined
+    ) {
+      startVals[key] = schema[key].default;
+    } else if (
+      type &&
+      type !== "object" &&
+      Array.isArray(schema[key]?.enum) &&
+      schema[key].enum.length > 0
+    ) {
+      startVals[key] = schema[key].enum[0];
+    } else if (key === "variable" && type && type !== "object" && layer) {
+      const source = /** @type {any} */ (
+        layer.getSource ? layer.getSource() : null
+      );
+      const bands =
+        (typeof source?.getBands === "function" ? source.getBands() : null) ||
+        source?.bands_ ||
+        layer.get?.("_lastVariable") ||
+        layer.get?.("_jsonDefinition")?.source?.bands ||
+        layer.get?.("source")?.bands;
+      if (bands) {
+        startVals[key] = Array.isArray(bands) ? bands[0] : bands;
+      }
     } else {
       // Recursively traverse nested properties
       const nestedStartVals = getNestedStartVals(
         collectFieldSchemas(schema[key], rootSchema),
         nestedValues,
         rootSchema,
+        layer,
       );
       if (Object.keys(nestedStartVals).length > 0) {
         startVals[key] = nestedStartVals;
