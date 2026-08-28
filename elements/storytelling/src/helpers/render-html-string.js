@@ -344,6 +344,18 @@ function assignNewAttrValue(
   if (!element) return;
   const attrs = section.steps[index];
 
+  // Collect all property keys used across every step of this section.
+  // Any key that existed in a previous step but is absent from the current
+  // step must be explicitly reset so stale values (e.g. animationOptions
+  // with a pitch from a later step) don't bleed through when navigating back.
+  const allStepKeys = new Set(
+    section.steps.flatMap((step) => Object.keys(step)),
+  );
+  allStepKeys.forEach((key) => {
+    if (key === "id" || key === "layers" || key in attrs) return;
+    element[key] = undefined;
+  });
+
   Object.keys(attrs).forEach((attr) => {
     if (attr === "id") return;
     if (attr === "layers" && allLayers.length && Array.isArray(attrs[attr])) {
