@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.3...jsonform-v1.13.0) (2026-09-03)
+
+
+### Features
+
+* Disable undo and redo in ace editor ([#2508](https://github.com/EOX-A/EOxElements/issues/2508)) ([a4dd2e3](https://github.com/EOX-A/EOxElements/commit/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c))
+
+
+### Bug Fixes
+
+* Minmax slider precision rounding and branch defaults ([#2492](https://github.com/EOX-A/EOxElements/issues/2492)) ([1cc1ef8](https://github.com/EOX-A/EOxElements/commit/1cc1ef87e70c57799fb383ad83acfca445839e9f))
+
 ## [1.12.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.2...jsonform-v1.12.3) (2026-08-24)
 
 
