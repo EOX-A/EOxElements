@@ -18,6 +18,7 @@ export { default as GeoJSONStory } from "./geojson"; // Input form based on Draw
 export { default as CustomEditorInterfacesStory } from "./custom-editor-interfaces"; // Custom editor interfaces
 export { default as ValidationStory } from "./validation"; // Validate input
 export { default as CodeStory } from "./code"; // Show code editor as input
+export { default as CodeMarkdownDisableUndoRedoStory } from "./code-markdown-disable-undo-redo"; // Markdown editor with disabled undo/redo
 export { default as OptionalPropertiesStory } from "./optional-properties"; // Hide optional properties
 export { default as ShowOptInPropertiesStory } from "./show-opt-in-properties"; // Show opt-in properties
 export { default as DefaultsStory } from "./defaults"; // Configure defaults

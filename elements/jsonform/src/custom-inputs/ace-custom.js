@@ -17,5 +17,27 @@ export class AceCustomEditor extends aceEditor {
     if (this.options.markdownToolbar && this.ace_editor_instance) {
       createMarkdownToolbar(this);
     }
+
+    // @ts-expect-error - options is not defined in the ace-builds type
+    if (this.options.disableUndoRedo && this.ace_editor_instance) {
+      // @ts-expect-error - ace_editor_instance is not defined in the ace-builds type
+      this.ace_editor_instance.commands.addCommand({
+        name: "undo",
+        bindKey: { win: "Ctrl-Z", mac: "Command-Z", linux: "Ctrl-Z" },
+        exec: () => {},
+        passEvent: true,
+      });
+      // @ts-expect-error - ace_editor_instance is not defined in the ace-builds type
+      this.ace_editor_instance.commands.addCommand({
+        name: "redo",
+        bindKey: {
+          win: "Ctrl-Y|Ctrl-Shift-Z",
+          mac: "Command-Y|Command-Shift-Z",
+          linux: "Ctrl-Y|Ctrl-Shift-Z",
+        },
+        exec: () => {},
+        passEvent: true,
+      });
+    }
   }
 }
