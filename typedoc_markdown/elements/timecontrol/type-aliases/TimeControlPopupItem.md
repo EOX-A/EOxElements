@@ -8,7 +8,7 @@
 
 > **TimeControlPopupItem** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:159](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L159)
+Defined in: [elements/timecontrol/src/types.ts:159](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L159)
 
 Timeline item data object passed to the popup card renderer or `propertyTransform` function.
 
@@ -24,7 +24,7 @@ Additional custom metadata properties defined on `timeControlValues` entries.
 
 > `optional` **date?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:199](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L199)
+Defined in: [elements/timecontrol/src/types.ts:199](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L199)
 
 Formatted date string (YYYY-MM-DD).
 
@@ -34,7 +34,7 @@ Formatted date string (YYYY-MM-DD).
 
 > **dotColor**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:175](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L175)
+Defined in: [elements/timecontrol/src/types.ts:175](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L175)
 
 CSS color variable or color string for the indicator dot.
 
@@ -44,7 +44,7 @@ CSS color variable or color string for the indicator dot.
 
 > `optional` **group?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:183](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L183)
+Defined in: [elements/timecontrol/src/types.ts:183](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L183)
 
 Layer identifier (from `layer.properties[layerIdKey]`).
 
@@ -54,7 +54,7 @@ Layer identifier (from `layer.properties[layerIdKey]`).
 
 > `optional` **id?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:191](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L191)
+Defined in: [elements/timecontrol/src/types.ts:191](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L191)
 
 Generated unique UUID for timeline tracking.
 
@@ -64,7 +64,7 @@ Generated unique UUID for timeline tracking.
 
 > `optional` **itemId?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:187](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L187)
+Defined in: [elements/timecontrol/src/types.ts:187](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L187)
 
 Unique item identifier (from `timeControlValues[i].id` or generated uuid).
 
@@ -74,7 +74,7 @@ Unique item identifier (from `timeControlValues[i].id` or generated uuid).
 
 > `optional` **layerName?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:179](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L179)
+Defined in: [elements/timecontrol/src/types.ts:179](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L179)
 
 Layer display name (from `layer.properties[titleKey]`).
 
@@ -84,7 +84,7 @@ Layer display name (from `layer.properties[titleKey]`).
 
 > `optional` **local?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:207](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L207)
+Defined in: [elements/timecontrol/src/types.ts:207](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L207)
 
 ISO local timezone string.
 
@@ -94,7 +94,7 @@ ISO local timezone string.
 
 > `optional` **originalDate?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:195](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L195)
+Defined in: [elements/timecontrol/src/types.ts:195](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L195)
 
 Original date string from layer configuration.
 
@@ -104,7 +104,7 @@ Original date string from layer configuration.
 
 > **subtitle**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L167)
+Defined in: [elements/timecontrol/src/types.ts:167](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L167)
 
 Subtitle text displayed in the metadata line.
 
@@ -114,7 +114,7 @@ Subtitle text displayed in the metadata line.
 
 > **time**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:171](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L171)
+Defined in: [elements/timecontrol/src/types.ts:171](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L171)
 
 Formatted time string (if `showTime` is true and item has time).
 
@@ -124,7 +124,7 @@ Formatted time string (if `showTime` is true and item has time).
 
 > **title**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:163](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L163)
+Defined in: [elements/timecontrol/src/types.ts:163](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L163)
 
 Primary title line displayed in bold.
 
@@ -134,6 +134,6 @@ Primary title line displayed in bold.
 
 > `optional` **utc?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:203](https://github.com/EOX-A/EOxElements/blob/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c/elements/timecontrol/src/types.ts#L203)
+Defined in: [elements/timecontrol/src/types.ts:203](https://github.com/EOX-A/EOxElements/blob/26427c9805802a623b4006d7f985e93916964177/elements/timecontrol/src/types.ts#L203)
 
 ISO UTC date string.
