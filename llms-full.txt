@@ -9681,6 +9681,46 @@ Demonstrates integration of external editors via schema configuration.
 
 ```
 
+#### CodeMarkdownDisableUndoRedo
+
+Ace editor with disabled undo/redo example.
+Demonstrates how to disable keyboard shortcuts for undo/redo in the markdown Ace editor.
+
+```html
+<eox-jsonform></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      properties: {
+        markdown: {
+          type: "string",
+          format: "markdown",
+          options: {
+            resolver: "ace",
+            markdownToolbar: true,
+            disableUndoRedo: true,
+          },
+          description:
+            "This is a markdown field rendered with a custom ace editor with a toolbar. The undo and redo keyboard shortcuts have been disabled for this editor.",
+        },
+      },
+    },
+    value: {
+      markdown:
+        "# Try to edit this and then use Ctrl-Z / Cmd-Z or Ctrl-Y / Cmd-Y\nYou will see that undo/redo keybindings are disabled.\n* This is a markdown list\n* Undo and Redo disabled here.",
+    },
+  });
+</script>
+
+```
+
 #### CodeMarkdownToolbar
 
 Code Markdown editor example. This story demonstrates a custom configuration option that extends the
@@ -12542,7 +12582,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-08-24T14:20:53.037Z",
+              default: "2026-09-03T06:27:21.838Z",
               options: {
                 hidden: true,
               },
