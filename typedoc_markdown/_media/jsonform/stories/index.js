@@ -7,6 +7,7 @@ export { default as CollectionStory } from "./collection"; // Input form based o
 export { default as ExternalStory } from "./external"; // Input form based on External URL
 export { default as MarkdownStory } from "./markdown"; // Input form based on Markdown Editor config
 export { default as CodeMarkdownToolbarStory } from "./code-markdown-toolbar"; // Input form based on Code Markdown Toolbar config
+export { default as CodeMarkdownToolbarUploadStory } from "./code-markdown-toolbar-upload"; // Input form based on Code Markdown Toolbar with upload config
 export { default as UnStyledStory } from "./unstyled"; // Unstyled input form
 export { default as BoundingBoxStory } from "./bounding-box"; // Input form based on drawtools - Box
 export { default as PolygonStory } from "./polygons"; // Input form based on drawtools - Polygon

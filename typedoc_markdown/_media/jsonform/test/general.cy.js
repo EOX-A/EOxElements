@@ -9,6 +9,10 @@ import {
   loadReRenderFormOnChangeTest,
   loadMarkdownTest,
   loadCodeMarkdownToolbarTest,
+  loadCodeMarkdownToolbarUploadTest,
+  loadCodeMarkdownToolbarPdfUploadTest,
+  loadCodeMarkdownToolbarVideoUploadTest,
+  loadCodeMarkdownToolbarCustomHandlerTest,
   loadAceMarkdownDisableUndoRedoTest,
   triggerChangeEventTest,
   loadValuesTest,
@@ -45,6 +49,14 @@ describe("Jsonform", () => {
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
   it("loads the binary checkbox", () => loadBinaryCheckboxTest());
   it("loads the code markdown toolbar", () => loadCodeMarkdownToolbarTest());
+  it("handles image upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarUploadTest());
+  it("handles non-image file upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarPdfUploadTest());
+  it("handles video file upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarVideoUploadTest());
+  it("handles custom upload handler in markdown toolbar", () =>
+    loadCodeMarkdownToolbarCustomHandlerTest());
   it("disables undo and redo in the markdown editor", () =>
     loadAceMarkdownDisableUndoRedoTest());
   it("loads the markdown editor", () => loadMarkdownTest());
