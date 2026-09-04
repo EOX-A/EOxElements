@@ -26,7 +26,7 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
  * - **Custom & Advanced Inputs**:
  *   - `format: "minmax"`: Dual-handle range slider (via `tc-range-slider`) for selecting min/max bounds with automatic precision detection based on `step`.
  *   - `format: "range"`: Single range slider with `minimum`, `maximum`, and `step`.
- *   - `format: "markdown"` / `format: "ace"`: Markdown and Ace code editor integration.
+ *   - `format: "markdown"` / `format: "ace"`: Markdown and Ace code editor integration. Supports `options.markdownToolbar` with optional file upload (`options.markdownToolbar.upload` / `options.uploadEndpoint`) and custom buttons.
  *   - `format: "spatial"`: Bounding box, polygon, point, and line drawing integrated with `eox-map` / `eox-drawtools`.
  * - **URL Parameter Filtering (`removeProperties`)**:
  *   - Use `options.removeProperties: ["vminmax"]` to drop intermediate form/slider properties from consumers and tile URL updates.

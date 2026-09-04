@@ -51,6 +51,7 @@ const loadAceMarkdownTest = () => {
       cy.get("button[title='Image']").should("exist");
       cy.get("button[title='Bulleted List']").should("exist");
       cy.get("button[title='Numbered List']").should("exist");
+      cy.get("button[title='Attach file']").should("not.exist");
     });
 };
 

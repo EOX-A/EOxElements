@@ -55,7 +55,8 @@ export const createEditor = (element) => {
       target.tagName === "TEXTAREA" ||
       (target.tagName === "INPUT" &&
         target.getAttribute("type") !== "checkbox" &&
-        target.getAttribute("type") !== "radio")
+        target.getAttribute("type") !== "radio" &&
+        target.getAttribute("type") !== "file")
     ) {
       e.target.dispatchEvent(new Event("change", { bubbles: true }));
     }
@@ -216,7 +217,7 @@ export const createEditor = (element) => {
     // TEMP - see https://github.com/json-editor/json-editor/issues/1445
     /** @type {NodeListOf<HTMLInputElement>} */
     const inputElements = element.renderRoot.querySelectorAll(
-      "[data-schematype=string] input",
+      "[data-schematype=string] input:not([type=file]):not([type=checkbox]):not([type=radio])",
     );
     inputElements.forEach((element) => {
       element.addEventListener("input", () => {
