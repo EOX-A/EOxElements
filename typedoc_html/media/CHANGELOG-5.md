@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.13.0...jsonform-v1.14.0) (2026-09-04)
+
+
+### Features
+
+* Add file attachment and custom button to markdown toolbar ([#2511](https://github.com/EOX-A/EOxElements/issues/2511)) ([ffa416d](https://github.com/EOX-A/EOxElements/commit/ffa416ddbc6e2b9202f2c1686718aa2422f08f4f))
+
 ## [1.13.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.3...jsonform-v1.13.0) (2026-09-03)
 
 
