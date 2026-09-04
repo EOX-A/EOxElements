@@ -6,6 +6,7 @@ import {
   ExternalStory,
   MarkdownStory,
   CodeMarkdownToolbarStory,
+  CodeMarkdownToolbarUploadStory,
   PrimaryStory,
   ButtonsEditorStory,
   BinaryCheckboxEditorStory,
@@ -139,6 +140,85 @@ export const Markdown = MarkdownStory;
  * `format: "markdown"`, `options.resolver: "ace"` and `options.markdownToolbar: true` in the schema.
  */
 export const CodeMarkdownToolbar = CodeMarkdownToolbarStory;
+
+/**
+ * Code Markdown editor with file attachment support.
+ * Shows how to enable the paperclip ("Attach file") button in the markdown toolbar.
+ * When uploading an image, it smartly inserts an image tag `![alt](url)`, for videos it inserts
+ * `<video src="url" controls></video>`, and for other files it inserts a link `[name](url)`.
+ * If upload is not configured, the attach file button is not displayed.
+ *
+ * ### Configuration Options
+ *
+ * **1. HTTP Endpoint**:
+ * ```json
+ * {
+ *   "type": "string",
+ *   "format": "markdown",
+ *   "options": {
+ *     "resolver": "ace",
+ *     "markdownToolbar": {
+ *       "upload": {
+ *         "endpoint": "https://api.example.com/upload",
+ *         "fieldName": "file"
+ *       }
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * **2. Custom Async Upload Function** (e.g. GitHub API, S3 presigned URL):
+ * ```javascript
+ * const schema = {
+ *   type: "object",
+ *   properties: {
+ *     markdown: {
+ *       type: "string",
+ *       format: "markdown",
+ *       options: {
+ *         resolver: "ace",
+ *         markdownToolbar: {
+ *           upload: async (file, editorInstance) => {
+ *             // Custom upload logic (e.g. GitHub contents API or cloud storage)
+ *             const uploadedUrl = await myCustomUploader(file);
+ *             return uploadedUrl; // or { fileUrl: uploadedUrl }
+ *           }
+ *         }
+ *       }
+ *     }
+ *   }
+ * };
+ * ```
+ *
+ * **3. Using `defaults.callbacks.upload`** (for pure JSON schemas referencing handlers by name):
+ * ```json
+ * // In schema:
+ * "options": {
+ *   "resolver": "ace",
+ *   "markdownToolbar": {
+ *     "upload": { "upload_handler": "myUploadHandler" }
+ *   }
+ * }
+ * ```
+ * ```javascript
+ * // In element .defaults:
+ * const defaults = {
+ *   callbacks: {
+ *     upload: {
+ *       myUploadHandler: async (jseditor, path, file, cbs) => {
+ *         try {
+ *           const url = await uploadToStorage(file);
+ *           cbs.success(url);
+ *         } catch (err) {
+ *           cbs.failure(err.message);
+ *         }
+ *       }
+ *     }
+ *   }
+ * };
+ * ```
+ */
+export const CodeMarkdownToolbarUpload = CodeMarkdownToolbarUploadStory;
 
 /**
  * Buttons Editor example. Renders a custom button group input based on enum values.

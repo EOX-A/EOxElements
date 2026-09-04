@@ -7,6 +7,12 @@ export { default as loadExternalValueTest } from "./load-external-value";
 export { default as loadReRenderFormOnChangeTest } from "./re-render-form-on-change";
 export { default as loadMarkdownTest } from "./load-markdown";
 export { default as loadCodeMarkdownToolbarTest } from "./load-code-markdown-toolbar";
+export {
+  default as loadCodeMarkdownToolbarUploadTest,
+  loadCodeMarkdownToolbarPdfUploadTest,
+  loadCodeMarkdownToolbarVideoUploadTest,
+  loadCodeMarkdownToolbarCustomHandlerTest,
+} from "./load-code-markdown-toolbar-upload";
 export { default as loadAceMarkdownDisableUndoRedoTest } from "./load-code-markdown-disable-undo-redo";
 export { default as loadCodeTest } from "./load-code";
 export { default as loadCodeHTMLTest } from "./load-code-html";
