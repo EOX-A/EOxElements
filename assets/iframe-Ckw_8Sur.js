@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-BMI_lPSg.js";e();
