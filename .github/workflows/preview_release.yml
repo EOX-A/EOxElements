@@ -14,6 +14,7 @@ on:
 jobs:
   create-previews:
     runs-on: ${{ matrix.os }}
+    if: github.actor != 'dependabot[bot]'
 
     strategy:
       matrix:
