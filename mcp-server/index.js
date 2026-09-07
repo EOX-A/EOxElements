@@ -114,7 +114,7 @@ async function main() {
         name: pkg.name || "eox-elements-mcp-server",
         version: pkg.version || "1.0.0",
         instructions:
-          "These tools provide information about EOxElements custom elements. You can list all elements, get details about a specific element, and more.",
+          "Query EOxElements custom element metadata, members, and story examples.",
       },
       {
         capabilities: {
@@ -128,7 +128,7 @@ async function main() {
     server.registerTool(
       "list_elements",
       {
-        description: "List all available EOxElements custom elements.",
+        description: "List available custom element tag names.",
         inputSchema: z.object({}),
       },
       async () => ({
@@ -149,9 +149,9 @@ async function main() {
       "get_element_details",
       {
         description:
-          "Get the full details for a specific EOxElements custom element.",
+          "Full element manifest (attrs, props, events, slots, css).",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => ({
@@ -167,10 +167,9 @@ async function main() {
     server.registerTool(
       "get_element_stories",
       {
-        description:
-          "Get the stories (examples/snippets) for a specific EOxElements custom element. This includes descriptions and vanilla JS code snippets.",
+        description: "Usage examples and vanilla JS code snippets.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -189,10 +188,9 @@ async function main() {
     server.registerTool(
       "get_element_attributes",
       {
-        description:
-          "Get the attributes for a specific EOxElements custom element.",
+        description: "HTML attributes and accepted types.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -211,10 +209,9 @@ async function main() {
     server.registerTool(
       "get_element_properties",
       {
-        description:
-          "Get the properties for a specific EOxElements custom element.",
+        description: "JS properties and field members.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -237,10 +234,9 @@ async function main() {
     server.registerTool(
       "get_element_events",
       {
-        description:
-          "Get the events for a specific EOxElements custom element.",
+        description: "Dispatched CustomEvents and payload types.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -259,10 +255,9 @@ async function main() {
     server.registerTool(
       "get_element_methods",
       {
-        description:
-          "Get the methods for a specific EOxElements custom element.",
+        description: "Public element methods.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -285,9 +280,9 @@ async function main() {
     server.registerTool(
       "get_element_slots",
       {
-        description: "Get the slots for a specific EOxElements custom element.",
+        description: "Named and default Shadow DOM slots.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -306,10 +301,9 @@ async function main() {
     server.registerTool(
       "get_element_css_properties",
       {
-        description:
-          "Get the CSS custom properties for a specific EOxElements custom element.",
+        description: "CSS variables (--*).",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -328,10 +322,9 @@ async function main() {
     server.registerTool(
       "get_element_css_parts",
       {
-        description:
-          "Get the CSS shadow parts for a specific EOxElements custom element.",
+        description: "CSS ::part selectors.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
