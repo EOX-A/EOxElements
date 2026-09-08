@@ -114,7 +114,7 @@ async function main() {
         name: pkg.name || "eox-elements-mcp-server",
         version: pkg.version || "1.0.0",
         instructions:
-          "These tools provide information about EOxElements custom elements. You can list all elements, get details about a specific element, and more.",
+          "Query EOxElements custom element metadata, members, and story examples.",
       },
       {
         capabilities: {
@@ -128,7 +128,7 @@ async function main() {
     server.registerTool(
       "list_elements",
       {
-        description: "List all available EOxElements custom elements.",
+        description: "List available custom element tag names.",
         inputSchema: z.object({}),
       },
       async () => ({
@@ -149,28 +149,85 @@ async function main() {
       "get_element_details",
       {
         description:
-          "Get the full details for a specific EOxElements custom element.",
+          "Get custom element manifest details or a specific section (attributes, properties, events, methods, slots, CSS).",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
+          section: z
+            .enum([
+              "all",
+              "attributes",
+              "properties",
+              "events",
+              "methods",
+              "slots",
+              "css_properties",
+              "css_parts",
+            ])
+            .optional()
+            .describe("Optional section filter. Default: 'all'"),
         }),
       },
-      async ({ tagName }) => ({
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(getElementData(tagName), null, 2),
-          },
-        ],
-      }),
+      async ({ tagName, section = "all" }) => {
+        const element = getElementData(tagName);
+        if (!element) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify({
+                  error: `Element <${tagName}> not found`,
+                }),
+              },
+            ],
+          };
+        }
+
+        let result;
+        switch (section) {
+          case "attributes":
+            result = element.attributes || [];
+            break;
+          case "properties":
+            result = element.members?.filter((m) => m.kind === "field") || [];
+            break;
+          case "events":
+            result = element.events || [];
+            break;
+          case "methods":
+            result = element.members?.filter((m) => m.kind === "method") || [];
+            break;
+          case "slots":
+            result = element.slots || [];
+            break;
+          case "css_properties":
+            result = element.cssProperties || [];
+            break;
+          case "css_parts":
+            result = element.cssParts || [];
+            break;
+          case "all":
+          default:
+            result = element;
+            break;
+        }
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(result, null, 2),
+            },
+          ],
+        };
+      },
     );
 
     server.registerTool(
       "get_element_stories",
       {
-        description:
-          "Get the stories (examples/snippets) for a specific EOxElements custom element. This includes descriptions and vanilla JS code snippets.",
+        description: "Usage examples and vanilla JS code snippets.",
         inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
+          tagName: z.string().describe("e.g. 'eox-map'"),
         }),
       },
       async ({ tagName }) => {
@@ -180,167 +237,6 @@ async function main() {
             {
               type: "text",
               text: JSON.stringify(stories, null, 2),
-            },
-          ],
-        };
-      },
-    );
-
-    server.registerTool(
-      "get_element_attributes",
-      {
-        description:
-          "Get the attributes for a specific EOxElements custom element.",
-        inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
-        }),
-      },
-      async ({ tagName }) => {
-        const element = getElementData(tagName);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(element?.attributes || [], null, 2),
-            },
-          ],
-        };
-      },
-    );
-
-    server.registerTool(
-      "get_element_properties",
-      {
-        description:
-          "Get the properties for a specific EOxElements custom element.",
-        inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
-        }),
-      },
-      async ({ tagName }) => {
-        const element = getElementData(tagName);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(
-                element?.members?.filter((m) => m.kind === "field") || [],
-                null,
-                2,
-              ),
-            },
-          ],
-        };
-      },
-    );
-
-    server.registerTool(
-      "get_element_events",
-      {
-        description:
-          "Get the events for a specific EOxElements custom element.",
-        inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
-        }),
-      },
-      async ({ tagName }) => {
-        const element = getElementData(tagName);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(element?.events || [], null, 2),
-            },
-          ],
-        };
-      },
-    );
-
-    server.registerTool(
-      "get_element_methods",
-      {
-        description:
-          "Get the methods for a specific EOxElements custom element.",
-        inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
-        }),
-      },
-      async ({ tagName }) => {
-        const element = getElementData(tagName);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(
-                element?.members?.filter((m) => m.kind === "method") || [],
-                null,
-                2,
-              ),
-            },
-          ],
-        };
-      },
-    );
-
-    server.registerTool(
-      "get_element_slots",
-      {
-        description: "Get the slots for a specific EOxElements custom element.",
-        inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
-        }),
-      },
-      async ({ tagName }) => {
-        const element = getElementData(tagName);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(element?.slots || [], null, 2),
-            },
-          ],
-        };
-      },
-    );
-
-    server.registerTool(
-      "get_element_css_properties",
-      {
-        description:
-          "Get the CSS custom properties for a specific EOxElements custom element.",
-        inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
-        }),
-      },
-      async ({ tagName }) => {
-        const element = getElementData(tagName);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(element?.cssProperties || [], null, 2),
-            },
-          ],
-        };
-      },
-    );
-
-    server.registerTool(
-      "get_element_css_parts",
-      {
-        description:
-          "Get the CSS shadow parts for a specific EOxElements custom element.",
-        inputSchema: z.object({
-          tagName: z.string().describe("The tag name of the element."),
-        }),
-      },
-      async ({ tagName }) => {
-        const element = getElementData(tagName);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(element?.cssParts || [], null, 2),
             },
           ],
         };
@@ -576,30 +472,18 @@ function generateLandingPage(elementsData, snippetsData) {
     <!-- Registered Tools -->
     <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
       <h2 class="text-lg font-semibold text-slate-950 mb-4">Supported MCP Tools</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="border border-slate-100 bg-slate-50/50 rounded-lg p-4">
           <span class="font-mono text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">list_elements</span>
-          <p class="text-xs text-slate-600 mt-2">List all available EOxElements custom elements.</p>
+          <p class="text-xs text-slate-600 mt-2">List available custom element tag names.</p>
         </div>
         <div class="border border-slate-100 bg-slate-50/50 rounded-lg p-4">
           <span class="font-mono text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">get_element_details</span>
-          <p class="text-xs text-slate-600 mt-2">Get the full custom-elements-manifest details for a specific tag name.</p>
+          <p class="text-xs text-slate-600 mt-2">Get full manifest or specific section (attributes, properties, events, methods, slots, CSS).</p>
         </div>
         <div class="border border-slate-100 bg-slate-50/50 rounded-lg p-4">
           <span class="font-mono text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">get_element_stories</span>
-          <p class="text-xs text-slate-600 mt-2">Get stories/snippets (descriptions and functional code) for an element.</p>
-        </div>
-        <div class="border border-slate-100 bg-slate-50/50 rounded-lg p-4">
-          <span class="font-mono text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">get_element_attributes</span>
-          <p class="text-xs text-slate-600 mt-2">Get the HTML attributes supported by a specific element.</p>
-        </div>
-        <div class="border border-slate-100 bg-slate-50/50 rounded-lg p-4">
-          <span class="font-mono text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">get_element_properties</span>
-          <p class="text-xs text-slate-600 mt-2">Get reactive JS properties (and their type JSDocs) for an element.</p>
-        </div>
-        <div class="border border-slate-100 bg-slate-50/50 rounded-lg p-4">
-          <span class="font-mono text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">get_element_events</span>
-          <p class="text-xs text-slate-600 mt-2">Get all custom events dispatched by a specific element.</p>
+          <p class="text-xs text-slate-600 mt-2">Get usage examples and vanilla JS code snippets.</p>
         </div>
       </div>
     </div>
