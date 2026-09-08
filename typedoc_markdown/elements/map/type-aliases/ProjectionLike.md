@@ -8,4 +8,4 @@
 
 > **ProjectionLike** = `ProjectionLike`
 
-Defined in: [elements/map/src/types.ts:224](https://github.com/EOX-A/EOxElements/blob/e4c7dce96631697c7d0d285204a27c2850469fd2/elements/map/src/types.ts#L224)
+Defined in: [elements/map/src/types.ts:224](https://github.com/EOX-A/EOxElements/blob/267faca9da2b9b228a4fde933baf1e1f0590a8a9/elements/map/src/types.ts#L224)
