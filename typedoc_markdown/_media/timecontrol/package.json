@@ -44,7 +44,7 @@
     "@eox/ui": "^1.1.0",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
-    "dayjs": "^1.11.21",
+    "dayjs": "^1.11.23",
     "gifshot": "^0.4.5",
     "lit": "^3.3.3",
     "lodash.filter": "^4.6.0",
@@ -55,6 +55,6 @@
     "uuid": "^14.0.1",
     "vanilla-calendar-pro": "^3.0.5",
     "vis-data": "^8.0.4",
-    "vis-timeline": "^8.5.1"
+    "vis-timeline": "^8.5.4"
   }
 }
