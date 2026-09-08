@@ -149,7 +149,7 @@ async function main() {
       "get_element_details",
       {
         description:
-          "Get custom element manifest details or a specific section (attributes, properties, events, methods, slots, CSS).",
+          "Full element manifest (attrs, props, events, slots, css).",
         inputSchema: z.object({
           tagName: z.string().describe("e.g. 'eox-map'"),
           section: z
