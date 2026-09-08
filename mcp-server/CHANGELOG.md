@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.2.1...elements-mcp-server-v1.3.0) (2026-09-08)
+
+
+### Features
+
+* Mcp server/consolidate tools ([#2522](https://github.com/EOX-A/EOxElements/issues/2522)) ([0dcd839](https://github.com/EOX-A/EOxElements/commit/0dcd839d79196a63a76cfbd900878fadf5442042))
+
 ## [1.2.1](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.2.0...elements-mcp-server-v1.2.1) (2026-05-21)
 
 
