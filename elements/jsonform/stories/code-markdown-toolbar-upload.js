@@ -14,6 +14,7 @@ export const CodeMarkdownToolbarUpload = {
               upload: {
                 endpoint: "https://httpbin.org/post",
                 fieldName: "file",
+                tooltip: "Upload media",
               },
             },
           },
