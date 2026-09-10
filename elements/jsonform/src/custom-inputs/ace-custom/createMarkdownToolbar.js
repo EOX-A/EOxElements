@@ -20,6 +20,7 @@ const getUploadConfig = (editorInstance) => {
   if (!rawConfig) {
     return null;
   }
+  const tooltip = "Attach file";
 
   if (typeof rawConfig === "string") {
     if (
@@ -27,17 +28,17 @@ const getUploadConfig = (editorInstance) => {
       rawConfig.startsWith("https://") ||
       rawConfig.startsWith("/")
     ) {
-      return { endpoint: rawConfig };
+      return { endpoint: rawConfig, tooltip };
     }
-    return { upload_handler: rawConfig };
+    return { upload_handler: rawConfig, tooltip };
   }
 
   if (typeof rawConfig === "function") {
-    return { uploadHandler: rawConfig };
+    return { uploadHandler: rawConfig, tooltip };
   }
 
   if (typeof rawConfig === "object") {
-    return rawConfig;
+    return { tooltip, ...rawConfig };
   }
 
   return null;
@@ -164,7 +165,6 @@ export const createMarkdownToolbar = (editorInstance) => {
     (Boolean(uploadConfig.endpoint) ||
       Boolean(uploadConfig.upload_handler) ||
       typeof uploadConfig.uploadHandler === "function");
-
   const toolbar = document.createElement("nav");
   toolbar.className =
     "surface-container no-round no-margin tiny-padding no-space markdown-toolbar";
@@ -258,7 +258,7 @@ export const createMarkdownToolbar = (editorInstance) => {
           ? `
       <button type="button" class="transparent no-round small" id="md-upload" title="Attach file">
         <i class="small">${icon(paperclipIcon)}</i>
-        <span class="tooltip">Attach file</span>
+        <span class="tooltip">${uploadConfig.tooltip}</span>
       </button>`
           : ""
       }
