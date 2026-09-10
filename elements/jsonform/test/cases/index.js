@@ -12,6 +12,7 @@ export {
   loadCodeMarkdownToolbarPdfUploadTest,
   loadCodeMarkdownToolbarVideoUploadTest,
   loadCodeMarkdownToolbarCustomHandlerTest,
+  loadCodeMarkdownToolbarCustomTooltipTest,
 } from "./load-code-markdown-toolbar-upload";
 export { default as loadAceMarkdownDisableUndoRedoTest } from "./load-code-markdown-disable-undo-redo";
 export { default as loadCodeTest } from "./load-code";

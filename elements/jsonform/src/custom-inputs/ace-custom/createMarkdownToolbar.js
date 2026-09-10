@@ -256,7 +256,7 @@ export const createMarkdownToolbar = (editorInstance) => {
       ${
         hasUpload
           ? `
-      <button type="button" class="transparent no-round small" id="md-upload" title="Attach file">
+      <button type="button" class="transparent no-round small" id="md-upload" title="${uploadConfig.tooltip}">
         <i class="small">${icon(paperclipIcon)}</i>
         <span class="tooltip">${uploadConfig.tooltip}</span>
       </button>`

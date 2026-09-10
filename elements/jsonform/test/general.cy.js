@@ -13,6 +13,7 @@ import {
   loadCodeMarkdownToolbarPdfUploadTest,
   loadCodeMarkdownToolbarVideoUploadTest,
   loadCodeMarkdownToolbarCustomHandlerTest,
+  loadCodeMarkdownToolbarCustomTooltipTest,
   loadAceMarkdownDisableUndoRedoTest,
   triggerChangeEventTest,
   loadValuesTest,
@@ -55,6 +56,8 @@ describe("Jsonform", () => {
     loadCodeMarkdownToolbarPdfUploadTest());
   it("handles video file upload in markdown toolbar", () =>
     loadCodeMarkdownToolbarVideoUploadTest());
+  it("handles custom upload icon tooltip in markdown toolbar", () =>
+    loadCodeMarkdownToolbarCustomTooltipTest());
   it("handles custom upload handler in markdown toolbar", () =>
     loadCodeMarkdownToolbarCustomHandlerTest());
   it("disables undo and redo in the markdown editor", () =>
