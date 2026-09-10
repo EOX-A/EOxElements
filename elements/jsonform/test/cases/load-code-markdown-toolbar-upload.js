@@ -283,4 +283,43 @@ export const loadCodeMarkdownToolbarVideoUploadTest = () => {
     });
 };
 
+/**
+ * Test to verify that the tooltip of the upload button can be configured.
+ */
+export const loadCodeMarkdownToolbarCustomTooltipTest = () => {
+  const customTooltip = "Custom Upload Tooltip";
+  cy.mount(
+    html`<eox-jsonform
+      .schema=${{
+        type: "object",
+        properties: {
+          [testVals.key]: {
+            type: "string",
+            format: "markdown",
+            options: {
+              resolver: "ace",
+              markdownToolbar: {
+                upload: {
+                  endpoint: "/api/upload",
+                  tooltip: customTooltip,
+                },
+              },
+            },
+          },
+        },
+      }}
+      .value=${{
+        [testVals.key]: "",
+      }}
+    ></eox-jsonform>`,
+  ).as(jsonForm);
+
+  cy.get(jsonForm)
+    .shadow()
+    .within(() => {
+      cy.get("button#md-upload").should("have.attr", "title", customTooltip);
+      cy.get("button#md-upload .tooltip").should("contain.text", customTooltip);
+    });
+};
+
 export default loadCodeMarkdownToolbarUploadTest;
