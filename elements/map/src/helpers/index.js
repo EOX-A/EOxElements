@@ -17,3 +17,9 @@ export { addClusterExplode } from "./cluster-explode";
 export { generateTileGrid } from "./tile-grid";
 export { getLayerById, getFlatLayersArray } from "./layer";
 export { createLayer, updateLayer } from "./generate";
+export {
+  isGeoZarrLayer,
+  getGeoZarrRootUrl,
+  getGeoZarrSourceUrl,
+  setupGeoZarrLayer,
+} from "./geozarr";
