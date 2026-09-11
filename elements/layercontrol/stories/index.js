@@ -18,3 +18,4 @@ export { default as unstyledStory } from "./unstyled";
 export { default as toolsAsListStory } from "./tools-as-list";
 export { default as toolsAutoExpandStory } from "./tools-auto-expand";
 export { default as layerColorStory } from "./layer-color";
+export { default as geozarrStory } from "./geozarr";
