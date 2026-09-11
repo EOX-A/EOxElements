@@ -68,7 +68,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   });
 
   let instances = {};
-  selectedRangeItems.forEach((item) => {
+  selectedRangeItems.forEach((item, index) => {
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
       // @ts-expect-error Property 'getSource' does not exist on type 'BaseLayer'.
@@ -79,9 +79,28 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
       };
 
       if (!EOxTimeControl.externalMapRendering) {
-        source.updateParams({
-          [item.property]: item.originalDate,
-        });
+        if (typeof source.updateParams === "function") {
+          source.updateParams({
+            [item.property]: item.date,
+          });
+        } else if (typeof source?.updateDimensions === "function") {
+          const sliceMap = layer?.get ? layer.get("_geozarrSliceMap") : null;
+          const targetDate = item.originalDate || item.utc || item.date;
+          let sliceIndex = index;
+          if (sliceMap) {
+            if (targetDate in sliceMap) {
+              sliceIndex = sliceMap[targetDate];
+            } else {
+              const matchedKey = Object.keys(sliceMap).find(
+                (k) => k.startsWith(targetDate) || targetDate.startsWith(k),
+              );
+              if (matchedKey !== undefined) sliceIndex = sliceMap[matchedKey];
+            }
+          }
+          source.updateDimensions({
+            time: sliceIndex,
+          });
+        }
       }
     }
   });

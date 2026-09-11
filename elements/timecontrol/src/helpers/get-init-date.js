@@ -10,20 +10,39 @@ dayjs.extend(timezone);
 
 /**
  * Gets the initial date range from the initDate property.
- * @param {DateRange} initDate - The initial date range as [startDate, endDate] in ISO format.
+ * @param {DateRange | string | Array<string>} initDate - The initial date range, date string, or keyword ("first" | "last").
+ * @param {Array<any>} [items] - The available timeline items array.
+ * @param {boolean} [showUTC=false] - Whether to return the date range in UTC format.
  * @returns {DateRange | null} The initial date range as [startDate, endDate] in ISO format.
  */
-export default function getInitDate(initDate) {
-  if (!Array.isArray(initDate) || !initDate.length) {
+export default function getInitDate(initDate, items, showUTC = false) {
+  if (!initDate) {
+    return null;
+  }
+
+  let rawVal = Array.isArray(initDate) ? initDate[0] : initDate;
+  if (!rawVal) {
     return null;
   }
 
   let start, end;
 
-  if (initDate.length < 2) {
-    start = end = initDate[0];
-  } else {
+  if (rawVal === "first" || rawVal === "last") {
+    if (items && items.length) {
+      const utc = dayjs(
+        rawVal === "first" ? items[0].utc : items[items.length - 1].utc,
+      );
+      start = showUTC ? utc.utc().format() : utc.format();
+      end = showUTC
+        ? utc.utc().endOf("day").format()
+        : utc.endOf("day").format();
+    } else {
+      return null;
+    }
+  } else if (Array.isArray(initDate) && initDate.length >= 2) {
     [start, end] = initDate;
+  } else {
+    start = end = rawVal;
   }
 
   start = dayjs(start).utc().format();
