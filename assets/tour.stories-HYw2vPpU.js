@@ -247,7 +247,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
       show-every-time
       .config=${e.config}
     ></eox-tour>
-  `}})))()}function d(){return(d=e((()=>{i(),o(),c(),u()})))()}var f,p,m,h,g,_;function v(){return(v=e((()=>{d(),f={title:`Elements/eox-tour`,tags:[`autodocs`],component:`eox-tour`},p=r,m=a,h=s,g=l,p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`PrimaryStory`,...p.parameters?.docs?.source},description:{story:`Basic tour example.
+  `}})))()}function d(){return(d=e((()=>{i(),o(),c(),u()})))()}var f,p,m,h,g,_;function v(){return(v=e((()=>{d(),f={title:`Elements/eox-tour`,tags:[`autodocs`],component:`eox-tour`},p=r,m=a,h=s,g=l,_=[`Primary`,`IframeHandoff`,`IframeHandoffAdvanced`,`ShowEveryTime`],p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`PrimaryStory`,...p.parameters?.docs?.source},description:{story:`Basic tour example.
 
 The Primary story demonstrates the basic usage of the \`eox-tour\` element.
 It shows how to define a simple tour with steps targeting DOM elements
@@ -301,4 +301,4 @@ testing or for critical information that should be shown on every visit.
     ]
   }}
 ></eox-tour>
-\`\`\``,...g.parameters?.docs?.description}}},_=[`Primary`,`IframeHandoff`,`IframeHandoffAdvanced`,`ShowEveryTime`]})))()}v();export{m as IframeHandoff,h as IframeHandoffAdvanced,p as Primary,g as ShowEveryTime,_ as __namedExportsOrder,f as default};
+\`\`\``,...g.parameters?.docs?.description}}}})))()}v();export{m as IframeHandoff,h as IframeHandoffAdvanced,p as Primary,g as ShowEveryTime,_ as __namedExportsOrder,f as default};
