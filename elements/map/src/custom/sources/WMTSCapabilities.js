@@ -1,5 +1,5 @@
 import TileImage from "ol/source/TileImage.js";
-import { optionsFromCapabilities } from "ol/source/WMTS";
+import { optionsFromCapabilities } from "../../helpers/tile-grid";
 import WMTSCapabilitiesFormat from "ol/format/WMTSCapabilities";
 import { createFromTileUrlFunctions } from "ol/tileurlfunction";
 import { appendParams } from "ol/uri";
