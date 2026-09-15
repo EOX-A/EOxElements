@@ -405,63 +405,6 @@
       ],
       "unevaluatedProperties": false
     },
-    "EOxJsonform": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "common_types.json#/$defs/ComponentCommon"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "component": {
-              "const": "EOxJsonform"
-            },
-            "schema": {
-              "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
-              "type": "string"
-            },
-            "value": {
-              "description": "JSON value of the form editor",
-              "type": "string"
-            },
-            "defaults": {
-              "description": "Default values for the JSONEditor instance",
-              "type": "string"
-            },
-            "options": {
-              "description": "Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).\nSee JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md",
-              "type": "string"
-            },
-            "customEditorInterfaces": {
-              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "type": "array",
-              "items": {}
-            },
-            "noShadow": {
-              "description": "Renders the element without a shadow root",
-              "type": "boolean"
-            },
-            "propertiesToggle": {
-              "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
-              "type": "boolean"
-            },
-            "unstyled": {
-              "description": "Render the element without additional styles",
-              "type": "boolean"
-            },
-            "editor": {
-              "description": "Getter for the JSONEditor instance",
-              "type": "string"
-            }
-          },
-          "required": [
-            "component"
-          ]
-        }
-      ],
-      "unevaluatedProperties": false
-    },
     "EOxLayercontrol": {
       "type": "object",
       "allOf": [
@@ -534,6 +477,63 @@
             },
             "colormapRegistry": {
               "description": "",
+              "type": "string"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxJsonform": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxJsonform"
+            },
+            "schema": {
+              "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
+              "type": "string"
+            },
+            "value": {
+              "description": "JSON value of the form editor",
+              "type": "string"
+            },
+            "defaults": {
+              "description": "Default values for the JSONEditor instance",
+              "type": "string"
+            },
+            "options": {
+              "description": "Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).\nSee JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md",
+              "type": "string"
+            },
+            "customEditorInterfaces": {
+              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "type": "array",
+              "items": {}
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "propertiesToggle": {
+              "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "editor": {
+              "description": "Getter for the JSONEditor instance",
               "type": "string"
             }
           },

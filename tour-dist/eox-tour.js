@@ -561,7 +561,7 @@ var we = `
 //#region src/methods/tour/handle-message.js
 async function Te(e, t) {
 	let n = e.data;
-	if (!(!n || n.tourId !== t.id)) {
+	if (n && n.tourId === t.id) {
 		if (n.type === "EOX_TOUR_HANDOFF") {
 			let e = !0;
 			t.config?.steps?.length > 0 && !n.forceConfigOverride && (e = !1), e && n.config && (t.config = n.config, await t.updateComplete);

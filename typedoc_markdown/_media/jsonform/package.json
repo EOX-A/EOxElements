@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@eox/map": "*",
-    "vite": "^8.2.1"
+    "vite": "^8.2.2"
   },
   "engines": {
     "npm": ">=8.0.0",

@@ -8,4 +8,4 @@
 
 > **OLSources** = [`OLBasicSources`](OLBasicSources.md) & [`OLAdvancedSources`](OLAdvancedSources.md)
 
-Defined in: [elements/map/src/layers.ts:86](https://github.com/EOX-A/EOxElements/blob/77278fec4f7d55ffcbd10747461011f7019a6916/elements/map/src/layers.ts#L86)
+Defined in: [elements/map/src/layers.ts:86](https://github.com/EOX-A/EOxElements/blob/922b306c7a7d437c88a31ee801a38ada80ffd98a/elements/map/src/layers.ts#L86)
