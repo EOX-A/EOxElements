@@ -1,4 +1,141 @@
 /**
+ * Resolves upload configuration from editor instance options.
+ * @param {any} editorInstance - The ace editor instance wrapper
+ * @returns {object | null}
+ */
+const getUploadConfig = (editorInstance) => {
+  const mdToolbar = editorInstance.options?.markdownToolbar;
+  const rawConfig =
+    (typeof mdToolbar === "object" && mdToolbar !== null
+      ? mdToolbar.upload
+      : null) ??
+    editorInstance.options?.markdownToolbarUpload ??
+    editorInstance.options?.uploadEndpoint ??
+    (typeof editorInstance.options?.upload === "string" ||
+    (typeof editorInstance.options?.upload === "object" &&
+      editorInstance.options?.upload !== null)
+      ? editorInstance.options.upload
+      : null);
+
+  if (!rawConfig) {
+    return null;
+  }
+
+  if (typeof rawConfig === "string") {
+    if (
+      rawConfig.startsWith("http://") ||
+      rawConfig.startsWith("https://") ||
+      rawConfig.startsWith("/")
+    ) {
+      return { endpoint: rawConfig };
+    }
+    return { upload_handler: rawConfig };
+  }
+
+  if (typeof rawConfig === "function") {
+    return { uploadHandler: rawConfig };
+  }
+
+  if (typeof rawConfig === "object") {
+    return rawConfig;
+  }
+
+  return null;
+};
+
+/**
+ * Checks if a file or URL represents an image.
+ * @param {File | null | undefined} file
+ * @param {string} url
+ * @returns {boolean}
+ */
+const isImage = (file, url) => {
+  if (file?.type?.startsWith("image/")) {
+    return true;
+  }
+  const imageExtensions = [
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".webp",
+    ".svg",
+    ".bmp",
+    ".avif",
+    ".ico",
+    ".tiff",
+    ".tif",
+  ];
+  const cleanTarget = (url || file?.name || "")
+    .split("?")[0]
+    .split("#")[0]
+    .toLowerCase();
+  return imageExtensions.some((ext) => cleanTarget.endsWith(ext));
+};
+
+/**
+ * Checks if a file or URL represents a video.
+ * @param {File | null | undefined} file
+ * @param {string} url
+ * @returns {boolean}
+ */
+const isVideo = (file, url) => {
+  if (file?.type?.startsWith("video/")) {
+    return true;
+  }
+  const videoExtensions = [
+    ".mp4",
+    ".webm",
+    ".ogg",
+    ".mov",
+    ".mkv",
+    ".avi",
+    ".m4v",
+    ".wmv",
+    ".flv",
+  ];
+  const cleanTarget = (url || file?.name || "")
+    .split("?")[0]
+    .split("#")[0]
+    .toLowerCase();
+  return videoExtensions.some((ext) => cleanTarget.endsWith(ext));
+};
+
+/**
+ * Generates the inserted markdown / HTML for an uploaded file.
+ * @param {File} file
+ * @param {string} fileUrl
+ * @param {string} selectedText
+ * @param {object | null} uploadConfig
+ * @returns {string}
+ */
+const getInsertedText = (file, fileUrl, selectedText, uploadConfig) => {
+  const altOrLabel = selectedText || file?.name || "file";
+
+  // If a custom template function is provided in upload config
+  if (
+    uploadConfig &&
+    typeof (/** @type {any} */ (uploadConfig).template) === "function"
+  ) {
+    return /** @type {any} */ (uploadConfig).template(
+      fileUrl,
+      file,
+      altOrLabel,
+    );
+  }
+
+  if (isImage(file, fileUrl)) {
+    return `![${altOrLabel}](${fileUrl})`;
+  }
+
+  if (isVideo(file, fileUrl)) {
+    return `<video src="${fileUrl}" controls></video>`;
+  }
+
+  return `[${altOrLabel}](${fileUrl})`;
+};
+
+/**
  * Creates a markdown toolbar for the ace editor instance.
  * @param {any} editorInstance - The ace editor instance wrapper
  */
@@ -20,6 +157,13 @@ export const createMarkdownToolbar = (editorInstance) => {
   const parent = aceContainer.parentNode;
 
   if (!parent) return;
+
+  const uploadConfig = getUploadConfig(editorInstance);
+  const hasUpload =
+    uploadConfig &&
+    (Boolean(uploadConfig.endpoint) ||
+      Boolean(uploadConfig.upload_handler) ||
+      typeof uploadConfig.uploadHandler === "function");
 
   const toolbar = document.createElement("nav");
   toolbar.className =
@@ -66,6 +210,8 @@ export const createMarkdownToolbar = (editorInstance) => {
     "M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z";
   const imageIcon =
     "M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z";
+  const paperclipIcon =
+    "M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z";
   const listIcon =
     "M7 5h14v2H7V5m0 6h14v2H7v-2m0 6h14v2H7v-2M4 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z";
   const numberedListIcon =
@@ -107,6 +253,15 @@ export const createMarkdownToolbar = (editorInstance) => {
         <i class="small">${icon(imageIcon)}</i>
         <span class="tooltip">Image</span>
       </button>
+      ${
+        hasUpload
+          ? `
+      <button type="button" class="transparent no-round small" id="md-upload" title="Attach file">
+        <i class="small">${icon(paperclipIcon)}</i>
+        <span class="tooltip">Attach file</span>
+      </button>`
+          : ""
+      }
       <button type="button" class="transparent no-round small" id="md-list" title="Bulleted List">
         <i class="small">${icon(listIcon)}</i>
         <span class="tooltip">Bulleted List</span>
@@ -143,6 +298,226 @@ export const createMarkdownToolbar = (editorInstance) => {
   /** @type {HTMLButtonElement} */ (
     toolbar.querySelector("#md-numbered-list")
   ).onclick = () => insertList("1. ", true);
+
+  if (hasUpload && uploadConfig) {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.style.display = "none";
+    if (uploadConfig.accept) {
+      fileInput.accept = uploadConfig.accept;
+    }
+    toolbar.appendChild(fileInput);
+
+    fileInput.addEventListener("input", (e) => e.stopPropagation());
+
+    const uploadButton = /** @type {HTMLButtonElement | null} */ (
+      toolbar.querySelector("#md-upload")
+    );
+
+    if (uploadButton) {
+      uploadButton.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.click();
+      };
+
+      let isUploading = false;
+      fileInput.onchange = async (e) => {
+        e.stopPropagation();
+        if (isUploading) return;
+
+        const file = fileInput.files?.[0];
+        if (!file) return;
+
+        isUploading = true;
+        try {
+          uploadButton.disabled = true;
+
+          let fileUrl = "";
+
+          if (typeof uploadConfig.uploadHandler === "function") {
+            const res = await uploadConfig.uploadHandler(file, editorInstance);
+            if (typeof res === "string") {
+              fileUrl = res;
+            } else if (res && typeof res === "object") {
+              fileUrl =
+                res.fileUrl ||
+                res.url ||
+                res.link ||
+                res.file ||
+                res.fallbackUrl ||
+                res.location ||
+                "";
+            }
+          } else if (uploadConfig.upload_handler) {
+            const handlerName = uploadConfig.upload_handler;
+            const callbackFn =
+              // @ts-expect-error JSONEditor global defaults lookup
+              window.JSONEditor?.defaults?.callbacks?.upload?.[handlerName] ||
+              editorInstance.defaults?.callbacks?.upload?.[handlerName] ||
+              editorInstance.jsoneditor?.defaults?.callbacks?.upload?.[
+                handlerName
+              ] ||
+              /** @type {any} */ (window)[handlerName];
+
+            if (typeof callbackFn === "function") {
+              const res = await new Promise((resolve, reject) => {
+                const cbs = {
+                  /** @param {string | { url?: string, fileUrl?: string }} url */
+                  success: (url) => resolve(url),
+                  /** @param {any} err */
+                  failure: (err) =>
+                    reject(
+                      new Error(
+                        typeof err === "string" ? err : "Upload failed",
+                      ),
+                    ),
+                  updateProgress: () => {},
+                };
+                try {
+                  const result = callbackFn.call(
+                    editorInstance,
+                    editorInstance.jsoneditor || editorInstance,
+                    editorInstance.path,
+                    file,
+                    cbs,
+                  );
+                  if (result instanceof Promise) {
+                    result.then(resolve).catch(reject);
+                  } else if (typeof result === "string") {
+                    resolve(result);
+                  } else if (
+                    result &&
+                    typeof result === "object" &&
+                    (result.url || result.fileUrl)
+                  ) {
+                    resolve(result.fileUrl || result.url);
+                  }
+                } catch (err) {
+                  reject(err);
+                }
+              });
+
+              if (typeof res === "string") {
+                fileUrl = res;
+              } else if (res && typeof res === "object") {
+                fileUrl =
+                  res.fileUrl ||
+                  res.url ||
+                  res.link ||
+                  res.file ||
+                  res.fallbackUrl ||
+                  res.location ||
+                  "";
+              }
+            } else {
+              console.error(
+                `Upload handler "${handlerName}" not found in defaults.callbacks.upload`,
+              );
+            }
+          } else if (uploadConfig.endpoint) {
+            const formData = new FormData();
+            formData.append(uploadConfig.fieldName || "file", file);
+
+            if (uploadConfig.data && typeof uploadConfig.data === "object") {
+              Object.entries(uploadConfig.data).forEach(([key, value]) => {
+                formData.append(key, value);
+              });
+            }
+
+            const response = await fetch(uploadConfig.endpoint, {
+              method: uploadConfig.method || "POST",
+              headers: uploadConfig.headers || {},
+              body: formData,
+            });
+
+            if (!response.ok) {
+              throw new Error(`Upload failed with status ${response.status}`);
+            }
+
+            const contentType = response.headers.get("content-type") || "";
+            if (contentType.includes("application/json")) {
+              const data = await response.json();
+              if (typeof data === "string") {
+                fileUrl = data;
+              } else if (data && typeof data === "object") {
+                const propName = uploadConfig.propertyName;
+                if (propName && data[propName]) {
+                  fileUrl = data[propName];
+                } else {
+                  fileUrl =
+                    data.fileUrl ||
+                    data.url ||
+                    data.link ||
+                    data.file ||
+                    data.fallbackUrl ||
+                    data.location ||
+                    data.path ||
+                    data.data?.url ||
+                    (Array.isArray(data) && data[0]?.url) ||
+                    "";
+                }
+              }
+            } else {
+              fileUrl = (await response.text()).trim();
+            }
+          }
+
+          if (fileUrl) {
+            const selected = aceInstance.getSelectedText();
+            const textToInsert = getInsertedText(
+              file,
+              fileUrl,
+              selected,
+              uploadConfig,
+            );
+            aceInstance.insert(textToInsert);
+            aceInstance.focus();
+          }
+        } catch (err) {
+          console.error("Markdown toolbar file upload failed:", err);
+        } finally {
+          uploadButton.disabled = false;
+          fileInput.value = "";
+          isUploading = false;
+        }
+      };
+    }
+  }
+
+  // Support additional custom buttons if specified
+  const customButtons =
+    editorInstance.options?.markdownToolbar?.customButtons ||
+    editorInstance.options?.customButtons;
+
+  if (Array.isArray(customButtons)) {
+    customButtons.forEach((btn, index) => {
+      if (!btn || !btn.title) return;
+      const btnId = btn.id || `md-custom-${index}`;
+      const btnElement = document.createElement("button");
+      btnElement.type = "button";
+      btnElement.className = "transparent no-round small";
+      btnElement.id = btnId;
+      btnElement.title = btn.title;
+      const btnIcon = btn.icon
+        ? btn.icon.startsWith("<")
+          ? btn.icon
+          : icon(btn.icon)
+        : `<span style="font-weight:bold;font-size:12px;">${btn.title.charAt(0)}</span>`;
+      btnElement.innerHTML = `
+        <i class="small">${btnIcon}</i>
+        <span class="tooltip">${btn.title}</span>
+      `;
+      btnElement.onclick = () => {
+        if (typeof btn.action === "function") {
+          btn.action(aceInstance, editorInstance);
+        } else if (typeof btn.insert === "string") {
+          insertText(btn.insert, btn.placeholder || "");
+        }
+      };
+      toolbar.appendChild(btnElement);
+    });
+  }
 
   // Insert the toolbar before the ace editor container
   if (parent && parent.contains(aceContainer)) {

@@ -14,13 +14,13 @@
     "lit": "^3.3.3",
     "ol": "^10.10.0",
     "ol-mapbox-style": "^13.4.1",
-    "ol-stac": "^1.5.1",
+    "ol-stac": "^1.7.0",
     "proj4": "^2.20.9",
     "serialize-javascript": "^7.0.1"
   },
   "devDependencies": {
     "@types/proj4": "^2.5.4",
-    "vite": "^8.2.1"
+    "vite": "^8.2.2"
   },
   "engines": {
     "npm": ">=8.0.0",

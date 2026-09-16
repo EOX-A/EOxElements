@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.6.0...timecontrol-v2.7.0) (2026-08-24)
+
+
+### Features
+
+* Customizable show-items tooltip ([#2495](https://github.com/EOX-A/EOxElements/issues/2495)) ([85f6f31](https://github.com/EOX-A/EOxElements/commit/85f6f3187aeb1d34eb26207fc737816e4aedb79d))
+
+
+### Bug Fixes
+
+* **style:** Fill selected date with primary color across all selection modes ([#2494](https://github.com/EOX-A/EOxElements/issues/2494)) ([9dd6f80](https://github.com/EOX-A/EOxElements/commit/9dd6f803da559336d8535fa083fc910ea961eb22))
+
 ## [2.6.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.5.1...timecontrol-v2.6.0) (2026-06-29)
 
 

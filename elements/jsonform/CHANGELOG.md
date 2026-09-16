@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.13.0...jsonform-v1.14.0) (2026-09-04)
+
+
+### Features
+
+* Add file attachment and custom button to markdown toolbar ([#2511](https://github.com/EOX-A/EOxElements/issues/2511)) ([ffa416d](https://github.com/EOX-A/EOxElements/commit/ffa416ddbc6e2b9202f2c1686718aa2422f08f4f))
+
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.3...jsonform-v1.13.0) (2026-09-03)
+
+
+### Features
+
+* Disable undo and redo in ace editor ([#2508](https://github.com/EOX-A/EOxElements/issues/2508)) ([a4dd2e3](https://github.com/EOX-A/EOxElements/commit/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c))
+
+
+### Bug Fixes
+
+* Minmax slider precision rounding and branch defaults ([#2492](https://github.com/EOX-A/EOxElements/issues/2492)) ([1cc1ef8](https://github.com/EOX-A/EOxElements/commit/1cc1ef87e70c57799fb383ad83acfca445839e9f))
+
+## [1.12.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.2...jsonform-v1.12.3) (2026-08-24)
+
+
+### Bug Fixes
+
+* Make agents more aware about jsonform and some of relevant options ([#2493](https://github.com/EOX-A/EOxElements/issues/2493)) ([319a043](https://github.com/EOX-A/EOxElements/commit/319a04388a1e81658efd196e9ece7a526a92ceca))
+
 ## [1.12.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.1...jsonform-v1.12.2) (2026-08-07)
 
 
