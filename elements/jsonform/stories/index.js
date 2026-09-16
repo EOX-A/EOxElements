@@ -7,6 +7,7 @@ export { default as CollectionStory } from "./collection"; // Input form based o
 export { default as ExternalStory } from "./external"; // Input form based on External URL
 export { default as MarkdownStory } from "./markdown"; // Input form based on Markdown Editor config
 export { default as CodeMarkdownToolbarStory } from "./code-markdown-toolbar"; // Input form based on Code Markdown Toolbar config
+export { default as CodeMarkdownToolbarUploadStory } from "./code-markdown-toolbar-upload"; // Input form based on Code Markdown Toolbar with upload config
 export { default as UnStyledStory } from "./unstyled"; // Unstyled input form
 export { default as BoundingBoxStory } from "./bounding-box"; // Input form based on drawtools - Box
 export { default as PolygonStory } from "./polygons"; // Input form based on drawtools - Polygon
@@ -18,6 +19,7 @@ export { default as GeoJSONStory } from "./geojson"; // Input form based on Draw
 export { default as CustomEditorInterfacesStory } from "./custom-editor-interfaces"; // Custom editor interfaces
 export { default as ValidationStory } from "./validation"; // Validate input
 export { default as CodeStory } from "./code"; // Show code editor as input
+export { default as CodeMarkdownDisableUndoRedoStory } from "./code-markdown-disable-undo-redo"; // Markdown editor with disabled undo/redo
 export { default as OptionalPropertiesStory } from "./optional-properties"; // Hide optional properties
 export { default as ShowOptInPropertiesStory } from "./show-opt-in-properties"; // Show opt-in properties
 export { default as DefaultsStory } from "./defaults"; // Configure defaults

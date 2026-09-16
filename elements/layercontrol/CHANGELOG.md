@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.2...layercontrol-v1.8.3) (2026-08-24)
+
+
+### Bug Fixes
+
+* Jsonform round based on step for minmaxslider ([#2472](https://github.com/EOX-A/EOxElements/issues/2472)) ([8f766be](https://github.com/EOX-A/EOxElements/commit/8f766be8e337025fdc67c0190418cd4e41a64bd7))
+
 ## [1.8.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.1...layercontrol-v1.8.2) (2026-07-27)
 
 

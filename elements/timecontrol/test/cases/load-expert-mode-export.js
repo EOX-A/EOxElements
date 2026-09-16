@@ -20,9 +20,94 @@ const loadExpertModeExport = () => {
     return true;
   });
 
+  const todayDate = dayjs().format("YYYY-MM-DD");
+  const pastDate = dayjs().subtract(30, "day").format("YYYY-MM-DD");
+
   // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+
+  cy.intercept(/^.*planetarycomputer.*search.*$/, {
+    body: {
+      features: [
+        {
+          id: "S2_CURRENT",
+          properties: {
+            datetime: `${todayDate}T10:00:00Z`,
+            "eo:cloud_cover": 10,
+          },
+        },
+        {
+          id: "S2_PAST",
+          properties: {
+            datetime: `${pastDate}T10:00:00Z`,
+            "eo:cloud_cover": 15,
+          },
+        },
+      ],
+    },
+  });
+
+  cy.intercept(/^.*planetarycomputer.*mosaic\/register.*$/, {
+    body: {
+      links: [
+        {
+          rel: "tilejson",
+          href: "https://example.com/mock-tilejson",
+        },
+      ],
+    },
+  });
+
+  const mockItems = [
+    {
+      id: "S2_PAST",
+      properties: {
+        datetime: `${pastDate}T10:00:00Z`,
+        "eo:cloud_cover": 15,
+      },
+    },
+    {
+      id: "S2_CURRENT",
+      properties: {
+        datetime: `${todayDate}T10:00:00Z`,
+        "eo:cloud_cover": 10,
+      },
+    },
+  ];
+
+  const osmLayer = {
+    type: "Tile",
+    properties: {
+      id: "OSM",
+    },
+    source: {
+      type: "OSM",
+    },
+  };
+
+  // mosaic layer factory - creates sentinel-2 mosaic layer from STAC items
+  const createMosaicLayer = (items, _tileJson = "") => ({
+    type: "Tile",
+    source: {
+      type: "OSM",
+    },
+    properties: {
+      id: "sentinel-2",
+      name: "sentinel-2",
+      title: items.length
+        ? items[0].properties?.datetime || "dummy"
+        : "dummy title",
+      // map STAC items to timeControlValues format
+      timeControlValues:
+        items?.map((f) => ({
+          date: f.properties?.datetime || f.date,
+          itemId: f.id || f.itemId,
+          cloudCoverage: f.properties?.["eo:cloud_cover"] ?? f.cloudCoverage,
+        })) || [],
+      timeControlProperty: "dummy",
+    },
   });
 
   // mount - mount expert mode components with external map rendering
@@ -32,6 +117,7 @@ const loadExpertModeExport = () => {
       id="external-map-rendering-mosaic"
       .zoom=${10}
       .center=${[12, 42]}
+      .layers=${[osmLayer, createMosaicLayer(mockItems, "")]}
     ></eox-map>
     <eox-timecontrol
       .for=${"eox-map#external-map-rendering-mosaic"}
@@ -80,112 +166,6 @@ const loadExpertModeExport = () => {
     const eoxMap = $eoxMap[0];
     const exportMode = eoxMap.parentElement;
 
-    // initialize data variables for STAC items and mosaic layers
-    let items = [];
-    let tileJson = "";
-    let startDate = "2025-09-01T00:00:00Z";
-    let endDate = new Date().toISOString();
-
-    // layer configuration - define base OSM layer
-    const osmLayer = {
-      type: "Tile",
-      properties: {
-        id: "OSM",
-      },
-      source: {
-        type: "OSM",
-      },
-    };
-
-    // mosaic layer factory - creates sentinel-2 mosaic layer from STAC items
-    const createMosaicLayer = (items, tileJson) => ({
-      type: "Tile",
-      source: {
-        type: "TileJSON",
-        url:
-          tileJson +
-          "?&tile_scale=2&assets=B04&assets=B03&assets=B02&color_formula=Gamma%20RGB%203.2%20Saturation%200.8%20Sigmoidal%20RGB%2025%200.35&nodata=0&minzoom=9&collection=sentinel-2-l2a&format=png",
-        crossOrigin: "anonymous",
-      },
-      properties: {
-        id: "sentinel-2",
-        title: items.length ? items[0].properties.datetime : "dummy title",
-        // map STAC items to timeControlValues format
-        timeControlValues:
-          items?.map((f) => ({
-            date: f.properties.datetime,
-            itemId: f.id,
-            cloudCoverage: f.properties["eo:cloud_cover"],
-          })) || [],
-        timeControlProperty: "dummy",
-      },
-    });
-
-    // async function - fetch STAC items from planetary computer API
-    const fetchItems = async (extent, dateStart, dateEnd) => {
-      const url =
-        "https://planetarycomputer.microsoft.com/api/stac/v1/search?collections=sentinel-2-l2a&bbox=" +
-        eoxMap.lonLatExtent +
-        "&limit=200&datetime=" +
-        dateStart +
-        "/" +
-        dateEnd +
-        "&sortby=-datetime";
-      const searchResponse = await fetch(url);
-      const { features } = await searchResponse.json();
-      return features;
-    };
-
-    // async function - register mosaic with planetary computer for tile generation
-    const registerMosaic = async (dateStart, dateEnd) => {
-      const registerResponse = await fetch(
-        "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/register",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            "filter-lang": "cql2-json",
-            filter: {
-              op: "and",
-              args: [
-                {
-                  op: "=",
-                  args: [{ property: "collection" }, "sentinel-2-l2a"],
-                },
-                {
-                  op: "anyinteracts",
-                  args: [
-                    { property: "datetime" },
-                    { interval: [dateStart, dateEnd] },
-                  ],
-                },
-              ],
-            },
-            sortby: [{ field: "datetime", direction: "desc" }],
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const { links } = await registerResponse.json();
-      return links.find((l) => l.rel === "tilejson").href;
-    };
-
-    // event listener - handle date range selection from timecontrol
-    const timeControl = exportMode.querySelector("eox-timecontrol");
-    timeControl.addEventListener("select", async (e) => {
-      // skip if no items loaded yet
-      if (!items.length) return;
-
-      // extract date range from event detail
-      const start = new Date(e.detail.date[0]);
-      const end = new Date(e.detail.date[1]);
-
-      // register mosaic for selected date range and update map layers
-      tileJson = await registerMosaic(start.toISOString(), end.toISOString());
-      eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
-    });
-
     // event listener - handle timelapse export functionality
     const timelapse = exportMode.querySelector("eox-timecontrol-timelapse");
     timelapse.addEventListener("export", async (e) => {
@@ -198,12 +178,6 @@ const loadExpertModeExport = () => {
       // iterate through selected date range items for export
       for (const dateKey in e.detail.selectedRangeItems) {
         const date = e.detail.selectedRangeItems[dateKey][0].originalDate;
-        const start = new Date(date);
-        // create end date as next day for single-day mosaic
-        const end = new Date(
-          new Date(start).setDate(new Date(start).getDate() + 1),
-        );
-
         // filter items by cloud coverage and create mosaic layers
         if (
           date &&
@@ -214,14 +188,8 @@ const loadExpertModeExport = () => {
               o.cloudCoverage < minCloudCover,
           )
         ) {
-          // register mosaic for this specific date
-          const currentTileJson = await registerMosaic(
-            start.toISOString(),
-            end.toISOString(),
-          );
-          // add layer configuration for this date to export
           mapLayers.push({
-            layers: [osmLayer, createMosaicLayer([], currentTileJson)],
+            layers: [osmLayer, createMosaicLayer([], "")],
             date: dateKey,
           });
         }
@@ -231,17 +199,6 @@ const loadExpertModeExport = () => {
         mapLayers,
       });
     });
-
-    // initialize map with base OSM layer
-    eoxMap.layers = [osmLayer];
-
-    // map event listener - fetch new items when map extent changes
-    if (eoxMap.map) {
-      eoxMap.map.on("moveend", async () => {
-        items = await fetchItems(eoxMap.lonLatExtent, startDate, endDate);
-        eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
-      });
-    }
   });
 
   // setup - stub window functions for download testing

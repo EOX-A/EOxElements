@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "markdown": {
+      "type": "string",
+      "format": "markdown",
+      "options": {
+        "resolver": "ace",
+        "markdownToolbar": true,
+        "disableUndoRedo": true
+      },
+      "description": "This is a markdown field rendered with a custom ace editor with a toolbar. The undo and redo keyboard shortcuts have been disabled for this editor."
+    }
+  }
+}
