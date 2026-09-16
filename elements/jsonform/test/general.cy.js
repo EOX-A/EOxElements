@@ -9,6 +9,11 @@ import {
   loadReRenderFormOnChangeTest,
   loadMarkdownTest,
   loadCodeMarkdownToolbarTest,
+  loadCodeMarkdownToolbarUploadTest,
+  loadCodeMarkdownToolbarPdfUploadTest,
+  loadCodeMarkdownToolbarVideoUploadTest,
+  loadCodeMarkdownToolbarCustomHandlerTest,
+  loadAceMarkdownDisableUndoRedoTest,
   triggerChangeEventTest,
   loadValuesTest,
   loadMisMatchingValuesTest,
@@ -30,6 +35,7 @@ import {
   loadStepsEditorCascadingResetTest,
   loadStepsEditorConditionalTest,
   loadMinMaxEditorTest,
+  loadMinMaxBranchSwitchTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -43,6 +49,16 @@ describe("Jsonform", () => {
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
   it("loads the binary checkbox", () => loadBinaryCheckboxTest());
   it("loads the code markdown toolbar", () => loadCodeMarkdownToolbarTest());
+  it("handles image upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarUploadTest());
+  it("handles non-image file upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarPdfUploadTest());
+  it("handles video file upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarVideoUploadTest());
+  it("handles custom upload handler in markdown toolbar", () =>
+    loadCodeMarkdownToolbarCustomHandlerTest());
+  it("disables undo and redo in the markdown editor", () =>
+    loadAceMarkdownDisableUndoRedoTest());
   it("loads the markdown editor", () => loadMarkdownTest());
   it("loads the code editor", () => loadCodeTest());
   it("preserves HTML markup inside code editor", () => loadCodeHTMLTest());
@@ -69,4 +85,6 @@ describe("Jsonform", () => {
     loadStepsEditorConditionalTest());
   it("loads the minmax editor with correct precision", () =>
     loadMinMaxEditorTest());
+  it("applies branch defaults when switching anyOf branches with minmax slider", () =>
+    loadMinMaxBranchSwitchTest());
 });

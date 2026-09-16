@@ -19,14 +19,14 @@
   "author": "EOX",
   "dependencies": {
     "@a2ui/lit": "^0.10.3",
-    "@a2ui/markdown-it": "0.1.0",
-    "@a2ui/web_core": "^0.10.5",
+    "@a2ui/markdown-it": "0.1.1",
+    "@a2ui/web_core": "^0.10.7",
     "lit": "^3.0.0"
   },
   "peerDependencies": {
     "lit": "^3.0.0"
   },
   "devDependencies": {
-    "vite": "^8.2.1"
+    "vite": "^8.2.2"
   }
 }
