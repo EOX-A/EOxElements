@@ -11,26 +11,54 @@ export default function (jsonformOutput, layer, layerConfig) {
   const styles = isTile
     ? /** @type {import('ol/layer/WebGLTile').default} */ (layer)["style_"]
     : layerConfig.style;
-  let styleVars = styles?.variables;
-  if (styleVars) {
-    const updatedValues = flattenObject(jsonformOutput);
+  const updatedValues = flattenObject(jsonformOutput);
+
+  if (styles) {
+    const styleVars = styles.variables || {};
     /** @type {Record<string,any>} */
     styles.variables = {
       ...styleVars,
       ...updatedValues,
     };
+  }
 
-    // check if it supports updating the variables using ol first
-    if (isTile) {
-      /** @type {import('ol/layer/WebGLTile').default} */ (
-        layer
-      ).updateStyleVariables(updatedValues);
-    } else if (isVector) {
-      const updatedStyles = updateVectorLayerStyle(styles);
-      /** @type {import('ol/layer/Vector').default} */ (layer).setStyle(
-        updatedStyles,
+  // check if it supports updating the variables using ol first
+  if (isTile) {
+    if (jsonformOutput?.variable) {
+      const sourceUrl =
+        layer.get("_geozarrSourceUrl") ||
+        layer.get("_jsonDefinition")?.source?.url ||
+        layer.get("source")?.url ||
+        layer.get("_geozarrRootUrl");
+      const source = /** @type {any} */ (
+        layer.getSource ? layer.getSource() : null
       );
+      if (source) {
+        if (typeof source.setBands === "function") {
+          source.setBands([jsonformOutput.variable]);
+        } else if (sourceUrl && source.constructor) {
+          const GeoZarrClass = /** @type {any} */ (source.constructor);
+          const newSource = new GeoZarrClass({
+            url: sourceUrl,
+            bands: [jsonformOutput.variable],
+            crossOrigin: "anonymous",
+          });
+          layer.setSource(newSource);
+        }
+      }
+      const lastVar = layer.get("_lastVariable");
+      if (jsonformOutput.variable !== lastVar) {
+        layer.set("_lastVariable", jsonformOutput.variable);
+      }
     }
+    /** @type {import('ol/layer/WebGLTile').default} */ (
+      layer
+    ).updateStyleVariables(updatedValues);
+  } else if (isVector && styles) {
+    const updatedStyles = updateVectorLayerStyle(styles);
+    /** @type {import('ol/layer/Vector').default} */ (layer).setStyle(
+      updatedStyles,
+    );
   }
 }
 
