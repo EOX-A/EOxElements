@@ -5,6 +5,7 @@ import {
   CanvasTiles,
   XYZ,
   WMS,
+  GeoTIFFLayer,
   OpenStreetMap,
   Vector,
   Entity,
@@ -18,10 +19,12 @@ import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
+import GeoTIFF_ol from "ol/source/GeoTIFF.js";
 import { get as getProjection, equivalent } from "ol/proj";
 import FullScreen from "ol/control/FullScreen";
 import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
+import { translateOLColorExpression } from "./colorScale.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
@@ -134,6 +137,7 @@ export const refreshGlobe = () => {
 };
 
 export const createGlobusLayer = (olLayer, mapPool) => {
+  const jsonDef = olLayer.get("_jsonDefinition");
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
 
@@ -232,6 +236,32 @@ export const createGlobusLayer = (olLayer, mapPool) => {
     if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
       return undefined;
     }
+  }
+
+  // Check if GeoTIFF layer can be natively rendered in OpenGlobus
+  const isGeoTIFF =
+    source instanceof GeoTIFF_ol &&
+    jsonDef?.source.sources &&
+    jsonDef?.source.sources.length === 1;
+
+  if (isGeoTIFF) {
+    const style = jsonDef?.style || olLayer.style_ || {};
+
+    const renderOptions =
+      /** @type {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions} */ (
+        translateOLColorExpression(style, olLayer.styleVariables_)
+      );
+    const url =
+      jsonDef?.source?.sources?.[0]?.url ||
+      jsonDef?.source?.url ||
+      (source && /** @type {any} */ (source).urls?.[0]);
+
+    return new GeoTIFFLayer(id, {
+      url,
+      opacity: olLayer.getOpacity(),
+      visibility: olLayer.getVisible(),
+      renderOptions,
+    });
   }
 
   // Fallback to CanvasTiles for other layer types
@@ -619,6 +649,16 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
           layerInTileMap.updateStyleVariables(newStyleVariables);
         }
       });
+
+      const globusLayer = /** @type {any} */ (
+        globe.planet.getLayerByName(layerId)
+      );
+      if (globusLayer && typeof globusLayer.setRenderOptions === "function") {
+        globusLayer.setRenderOptions(
+          translateOLColorExpression(olLayer, newStyleVariables),
+        );
+      }
+
       debouncedRefresh();
     }
   });
