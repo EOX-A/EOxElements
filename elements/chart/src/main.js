@@ -120,10 +120,29 @@ export class EOxChart extends LitElement {
     }
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+    }
+  }
+
   /**
    * Append custom styling for vega tooltip
    */
   firstUpdated() {
+    if (typeof ResizeObserver !== "undefined" && !this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(() => {
+        if (this._vegaView) {
+          this._vegaView.resize().runAsync();
+        }
+      });
+      this._resizeObserver.observe(this);
+      if (this.parentElement) {
+        this._resizeObserver.observe(this.parentElement);
+      }
+    }
+
     if (!this.unstyled) {
       const style = document.createElement("style");
       style.innerHTML = `
