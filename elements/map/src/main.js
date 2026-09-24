@@ -17,6 +17,8 @@ import {
   registerProjectionFromCode,
   getLayerById,
   getFlatLayersArray,
+  isGeoZarrLayer,
+  setupGeoZarrLayer,
 } from "./helpers";
 import {
   animateToStateMethod,
@@ -840,6 +842,12 @@ export class EOxMap extends LitElement {
 }
 
 // Export Additional Helper Methods
-export { buffer, transform, transformExtent };
+export {
+  buffer,
+  transform,
+  transformExtent,
+  isGeoZarrLayer,
+  setupGeoZarrLayer,
+};
 
 customElements.define("eox-map", EOxMap);
