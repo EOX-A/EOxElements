@@ -231,7 +231,6 @@ export async function setupGeoZarrLayer(layer) {
       ...existingDatetime,
     };
 
-    layer.set("_geozarrSliceMap", sliceMap);
     layer.set("layerDatetime", layerDatetime);
     layer.set(
       "timeControlValues",

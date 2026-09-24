@@ -84,7 +84,9 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
             [item.property]: item.date,
           });
         } else if (typeof source?.updateDimensions === "function") {
-          const sliceMap = layer?.get ? layer.get("layerDatetime")?.sliceMap : null;
+          const sliceMap = layer?.get
+            ? layer.get("layerDatetime")?.sliceMap
+            : null;
           const targetDate = item.originalDate || item.utc || item.date;
           let sliceIndex = index;
           if (sliceMap) {
