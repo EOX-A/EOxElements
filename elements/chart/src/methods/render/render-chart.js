@@ -34,6 +34,8 @@ const renderChartMethod = (EOxChart, spec, opt, dataValues) => {
       // @ts-expect-error using private method defined on EOxChart
       EOxChart._dispatchItemClickEvent({ event, item });
     });
+    // @ts-expect-error using private method defined on EOxChart
+    EOxChart._vegaView = res.view;
   });
 };
 
