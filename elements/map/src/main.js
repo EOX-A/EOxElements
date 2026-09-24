@@ -695,11 +695,22 @@ export class EOxMap extends LitElement {
     firstUpdatedMethod(this.#zoomExtent, this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    window.__eoxMapRegistry = window.__eoxMapRegistry || {};
+    if (this.id) {
+      window.__eoxMapRegistry[this.id] = this;
+    }
+  }
+
   /**
    * Lifecycle method called when the component is removed from the DOM.
    * Ensures that any associated event listeners or observers are properly disconnected.
    */
   disconnectedCallback() {
+    if (this.id && window.__eoxMapRegistry) {
+      delete window.__eoxMapRegistry[this.id];
+    }
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
     }

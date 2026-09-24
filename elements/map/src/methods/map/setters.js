@@ -425,9 +425,16 @@ export function setSyncMethod(sync, EOxMap) {
   if (sync) {
     // Use a timeout to ensure the target map is ready before syncing views
     setTimeout(() => {
-      const originMap = /** @type {import("../../main").EOxMap} **/ (
-        /** @type {any} **/ (getElement(sync))
-      );
+      let originMap = null;
+      if (window.__eoxMapRegistry) {
+        const cleanId = sync.replace(/^eox-map/, "").replace(/^#/, "");
+        originMap = window.__eoxMapRegistry[cleanId];
+      }
+      if (!originMap) {
+        originMap = /** @type {import("../../main").EOxMap} **/ (
+          /** @type {any} **/ (getElement(sync))
+        );
+      }
 
       // Set the view of the current map to match the view of the origin map
       if (originMap) {
