@@ -75,6 +75,22 @@ export class EOxChart extends LitElement {
      * @type {Boolean}
      */
     this.unstyled = false;
+
+    /**
+     * ResizeObserver instance to handle auto-resizing
+     *
+     * @type {ResizeObserver | null}
+     * @private
+     */
+    this._resizeObserver = null;
+
+    /**
+     * Vega view instance
+     *
+     * @type {any}
+     * @private
+     */
+    this._vegaView = null;
   }
 
   /**
@@ -134,6 +150,7 @@ export class EOxChart extends LitElement {
     if (typeof ResizeObserver !== "undefined" && !this._resizeObserver) {
       this._resizeObserver = new ResizeObserver(() => {
         if (this._vegaView) {
+          window.dispatchEvent(new Event("resize"));
           this._vegaView.resize().runAsync();
         }
       });
