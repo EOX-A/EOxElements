@@ -227,6 +227,7 @@ export async function setupGeoZarrLayer(layer) {
       navigation: true,
       currentStep: existingDatetime.currentStep || controlValues[0],
       controlValues,
+      sliceMap,
       ...existingDatetime,
     };
 

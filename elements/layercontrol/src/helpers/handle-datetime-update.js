@@ -6,7 +6,7 @@
 export function handleDatetimeUpdate(evt, element) {
   const { datetime, layer } = evt.detail || {};
   if (layer && datetime) {
-    const sliceMap = layer.get("_geozarrSliceMap");
+    const sliceMap = layer.get("layerDatetime")?.sliceMap;
     if (sliceMap && datetime in sliceMap) {
       const sliceIndex = sliceMap[datetime];
       const source = layer.getSource ? layer.getSource() : null;
