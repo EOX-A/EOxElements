@@ -2,6 +2,7 @@ import "../src/main";
 import {
   syncOneMapToAnother,
   syncOneMapToAnotherUsingMapEle,
+  syncCrossShadowDom,
 } from "./cases/sync/index.js";
 
 /**
@@ -18,4 +19,9 @@ describe("map syncing", () => {
    */
   it("supports passing an eox-map to the sync property", () =>
     syncOneMapToAnotherUsingMapEle());
+
+  /**
+   * Test case to sync maps across shadow DOM boundaries
+   */
+  it("syncs map across shadow DOM boundaries", () => syncCrossShadowDom());
 });

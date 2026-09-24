@@ -426,7 +426,7 @@ export function setSyncMethod(sync, EOxMap) {
     // Use a timeout to ensure the target map is ready before syncing views
     setTimeout(() => {
       let originMap = null;
-      if (window.__eoxMapRegistry) {
+      if (typeof sync === "string" && window.__eoxMapRegistry) {
         const cleanId = sync.replace(/^eox-map/, "").replace(/^#/, "");
         originMap = window.__eoxMapRegistry[cleanId];
       }
