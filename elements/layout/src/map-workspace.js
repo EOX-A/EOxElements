@@ -76,7 +76,7 @@ export class EOxMapWorkspace extends HTMLElement {
   }
 
   _setupSlots() {
-    const children = Array.from(this.children);
+    const children = /** @type {HTMLElement[]} */ (Array.from(this.children));
     if (children.length === 0) return;
 
     // First child is map if not already slotted
@@ -95,7 +95,9 @@ export class EOxMapWorkspace extends HTMLElement {
       mapChild.style.zIndex = "0";
 
       // If mapChild has child maps (e.g. side-by-side)
-      const subChildren = Array.from(mapChild.children || []);
+      const subChildren = /** @type {HTMLElement[]} */ (
+        Array.from(mapChild.children || [])
+      );
       if (subChildren.length >= 2) {
         subChildren.forEach((sub) => {
           sub.style.flex = "1 1 50%";
@@ -104,11 +106,16 @@ export class EOxMapWorkspace extends HTMLElement {
           sub.style.position = "relative";
           sub.style.display = "block";
 
-          const innerMaps = sub.querySelectorAll ? Array.from(sub.querySelectorAll("eox-map")) : [];
+          const innerMaps = sub.querySelectorAll
+            ? /** @type {HTMLElement[]} */ (
+                Array.from(sub.querySelectorAll("eox-map"))
+              )
+            : [];
           innerMaps.forEach((m) => {
             m.style.width = "100%";
             m.style.height = "100%";
             m.style.display = "block";
+            // @ts-expect-error OpenLayers map property on eox-map
             if (m.map) m.map.updateSize();
           });
         });
@@ -125,7 +132,13 @@ export class EOxMapWorkspace extends HTMLElement {
       sidebarChild.style.height = "auto";
       sidebarChild.style.boxSizing = "border-box";
 
-      const cards = sidebarChild.querySelectorAll ? Array.from(sidebarChild.querySelectorAll("a2ui-card, a2ui-basic-card")) : [];
+      const cards = sidebarChild.querySelectorAll
+        ? /** @type {HTMLElement[]} */ (
+            Array.from(
+              sidebarChild.querySelectorAll("a2ui-card, a2ui-basic-card"),
+            )
+          )
+        : [];
       cards.forEach((card) => {
         card.style.margin = "0";
         card.style.width = "100%";
