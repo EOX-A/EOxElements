@@ -40,6 +40,11 @@ export class EOxA2uiElement extends A2uiLitElement {
     this._appliedProps = {};
   }
 
+  get map() {
+    const eoxMap = this.querySelector("eox-map");
+    return eoxMap ? eoxMap.map : undefined;
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -58,8 +63,22 @@ export class EOxA2uiElement extends A2uiLitElement {
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
     const element = this._elementRef.value;
+    const type = this.context?.componentModel?.type;
+
+    if (type === "EOxMapWorkspace") {
+      this.style.cssText = "display: block; width: 100%; height: 100%; flex: 1 1 100%; position: relative;";
+      const host = this.parentElement || (this.parentNode && this.parentNode.host ? this.parentNode.host : null);
+      if (host) {
+        host.style.cssText = "height: 100%; flex: 1 1 100%; display: flex; flex-direction: column;";
+      }
+    } else if (type === "EOxMapSideBySide") {
+      this.style.cssText = "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
+      if (element) {
+        element.style.cssText = "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
+      }
+    }
+
     if (element) {
-      const type = this.context.componentModel.type;
       const api = eoxCatalog.components.get(type);
       const eventsToForward = api?.events || [];
 
@@ -206,6 +225,25 @@ export class EOxA2uiElement extends A2uiLitElement {
         if (key === "children") {
           continue;
         }
+        if (key === "slot") {
+          this.setAttribute("slot", value);
+        }
+        if (key === "class") {
+          if (typeof value === "string") {
+            value.split(" ").forEach(c => c && this.classList.add(c));
+          }
+        }
+        if (key === "style") {
+          if (typeof value === "string") {
+            this.style.cssText = value;
+            if (type === "EOxMapSideBySide") {
+              element.style.cssText = "width: 100%; height: 100%; position: relative; display: flex; flex-direction: row;";
+            } else {
+              element.style.cssText = "width: 100%; height: 100%; position: relative; display: block;";
+            }
+          }
+          continue;
+        }
         if (!isEqual(this._appliedProps[key], value)) {
           element[key] = value;
           this._appliedProps[key] = safeClone(value);
@@ -226,6 +264,16 @@ export class EOxA2uiElement extends A2uiLitElement {
     const children = Array.isArray(this.controller?.props?.children)
       ? this.controller.props.children
       : [];
+
+    const slotVal = this.controller?.props?.slot;
+
+    if (slotVal) {
+      return html`<${targetTag}
+        id=${this.context.componentModel.id}
+        slot=${slotVal}
+        ${ref(this._elementRef)}
+      >${hasTransformer ? nothing : children.map((child) => this.renderNode(child))}</${targetTag}>`;
+    }
 
     return html`<${targetTag}
       id=${this.context.componentModel.id}
