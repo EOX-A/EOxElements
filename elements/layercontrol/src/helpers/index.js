@@ -22,9 +22,3 @@ export {
 } from "./layer-tools";
 export { hideLayersBasedOnProperties } from "./hide-layers-based-on-property";
 export { handleDatetimeUpdate } from "./handle-datetime-update";
-export {
-  isGeoZarrLayer,
-  getGeoZarrRootUrl,
-  getGeoZarrSourceUrl,
-  setupGeoZarrLayer,
-} from "./geozarr";

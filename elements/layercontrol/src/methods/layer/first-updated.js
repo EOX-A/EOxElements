@@ -1,10 +1,8 @@
 import {
   isLayerVisibleBasedOnZoomState,
   isLayerZoomStateRequired,
-  isGeoZarrLayer,
-  setupGeoZarrLayer,
 } from "../../helpers";
-
+import { isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";
 /**
  * Check and update layer zoom visibility at beginning
  * and register "change:resolution" ones at the beginning if `showLayerZoomState` is present
