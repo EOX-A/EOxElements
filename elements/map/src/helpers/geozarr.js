@@ -173,10 +173,10 @@ export async function setupGeoZarrLayer(layer) {
       navigation: true,
       currentStep: existingDatetime.currentStep || controlValues[0],
       controlValues,
+      sliceMap,
       ...existingDatetime,
     };
 
-    layer.set("_geozarrSliceMap", sliceMap);
     layer.set("layerDatetime", layerDatetime);
     layer.set(
       "timeControlValues",
