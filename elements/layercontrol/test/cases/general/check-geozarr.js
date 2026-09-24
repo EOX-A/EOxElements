@@ -1,9 +1,5 @@
-import {
-  setupGeoZarrLayer,
-  isGeoZarrLayer,
-  getStartVals,
-} from "../../../src/helpers";
-
+import { getStartVals } from "../../../src/helpers";
+import { isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";
 /**
  * Cypress test logic to check GeoZarr layer metadata setup.
  */
