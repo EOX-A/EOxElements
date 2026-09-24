@@ -66,15 +66,21 @@ export class EOxA2uiElement extends A2uiLitElement {
     const type = this.context?.componentModel?.type;
 
     if (type === "EOxMapWorkspace") {
-      this.style.cssText = "display: block; width: 100%; height: 100%; flex: 1 1 100%; position: relative;";
-      const host = this.parentElement || (this.parentNode && this.parentNode.host ? this.parentNode.host : null);
+      this.style.cssText =
+        "display: block; width: 100%; height: 100%; flex: 1 1 100%; position: relative;";
+      const host =
+        this.parentElement ||
+        (this.parentNode && this.parentNode.host ? this.parentNode.host : null);
       if (host) {
-        host.style.cssText = "height: 100%; flex: 1 1 100%; display: flex; flex-direction: column;";
+        host.style.cssText =
+          "height: 100%; flex: 1 1 100%; display: flex; flex-direction: column;";
       }
     } else if (type === "EOxMapSideBySide") {
-      this.style.cssText = "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
+      this.style.cssText =
+        "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
       if (element) {
-        element.style.cssText = "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
+        element.style.cssText =
+          "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
       }
     }
 
@@ -230,16 +236,18 @@ export class EOxA2uiElement extends A2uiLitElement {
         }
         if (key === "class") {
           if (typeof value === "string") {
-            value.split(" ").forEach(c => c && this.classList.add(c));
+            value.split(" ").forEach((c) => c && this.classList.add(c));
           }
         }
         if (key === "style") {
           if (typeof value === "string") {
             this.style.cssText = value;
             if (type === "EOxMapSideBySide") {
-              element.style.cssText = "width: 100%; height: 100%; position: relative; display: flex; flex-direction: row;";
+              element.style.cssText =
+                "width: 100%; height: 100%; position: relative; display: flex; flex-direction: row;";
             } else {
-              element.style.cssText = "width: 100%; height: 100%; position: relative; display: block;";
+              element.style.cssText =
+                "width: 100%; height: 100%; position: relative; display: block;";
             }
           }
           continue;

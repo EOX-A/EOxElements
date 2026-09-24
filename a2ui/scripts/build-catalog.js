@@ -304,18 +304,18 @@ for (const vc of virtualComponents) {
     };
   } else if (vc.name === "EOxMapWorkspace") {
     properties = {
-      slot: { type: "string" }
+      slot: { type: "string" },
     };
   } else if (vc.name === "EOxMapCompare") {
     properties = {
       slot: { type: "string" },
       sync: { type: "string" },
       enabled: { type: "string" },
-      value: { type: "number" }
+      value: { type: "number" },
     };
   } else if (vc.name === "EOxMapSideBySide") {
     properties = {
-      slot: { type: "string" }
+      slot: { type: "string" },
     };
   }
 
