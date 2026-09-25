@@ -302,6 +302,21 @@ for (const vc of virtualComponents) {
           "Configuration object or string containing layers/zoom/center settings for the step",
       },
     };
+  } else if (vc.name === "EOxMapWorkspace") {
+    properties = {
+      slot: { type: "string" },
+    };
+  } else if (vc.name === "EOxMapCompare") {
+    properties = {
+      slot: { type: "string" },
+      sync: { type: "string" },
+      enabled: { type: "string" },
+      value: { type: "number" },
+    };
+  } else if (vc.name === "EOxMapSideBySide") {
+    properties = {
+      slot: { type: "string" },
+    };
   }
 
   eoxCatalogJson.components[vc.name] = {

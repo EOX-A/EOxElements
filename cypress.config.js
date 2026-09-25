@@ -13,12 +13,18 @@ if (pathsChanged) {
     const filteredElementsFolders = changed
       .filter((filePath) => filePath.startsWith("elements/"))
       .map((filePath) => filePath.split("/")[1]);
+    const hasA2ui = changed.some((filePath) => filePath.startsWith("a2ui/"));
     const uniqueElementFolders = [...new Set(filteredElementsFolders)];
     // if only one folder was modified update spec
     if (uniqueElementFolders.length > 0) {
       specPatternComponentTests = uniqueElementFolders.map(
         (item) => `elements/${item}/**/*.cy.{js,jsx,ts,tsx}`,
       );
+      if (hasA2ui) {
+        specPatternComponentTests.push("a2ui/**/*.cy.{js,jsx,ts,tsx}");
+      }
+    } else if (hasA2ui) {
+      specPatternComponentTests = ["a2ui/**/*.cy.{js,jsx,ts,tsx}"];
     }
   }
 }
