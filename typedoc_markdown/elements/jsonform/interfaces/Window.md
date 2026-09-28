@@ -26,7 +26,7 @@ The **`Window`** interface represents a window containing a DOM document; the `d
 
 > **ace**: `__module`
 
-Defined in: [elements/storytelling/src/types.ts:19](https://github.com/EOX-A/EOxElements/blob/7a4c0e71b331cf052e7d69b65717dd06ab0419ce/elements/storytelling/src/types.ts#L19)
+Defined in: [elements/storytelling/src/types.ts:19](https://github.com/EOX-A/EOxElements/blob/0d9bbd9b1d6f8915d96e66f9a7f2376a5f105770/elements/storytelling/src/types.ts#L19)
 
 ***
 
@@ -240,7 +240,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:36394
 
 > **eoxMapAdvancedOlFormats**: [`OLAdvancedFormats`](../../map/type-aliases/OLAdvancedFormats.md)
 
-Defined in: [elements/map/src/types.ts:291](https://github.com/EOX-A/EOxElements/blob/7a4c0e71b331cf052e7d69b65717dd06ab0419ce/elements/map/src/types.ts#L291)
+Defined in: [elements/map/src/types.ts:291](https://github.com/EOX-A/EOxElements/blob/0d9bbd9b1d6f8915d96e66f9a7f2376a5f105770/elements/map/src/types.ts#L291)
 
 ***
 
@@ -248,7 +248,7 @@ Defined in: [elements/map/src/types.ts:291](https://github.com/EOX-A/EOxElements
 
 > **eoxMapAdvancedOlLayers**: [`OLAdvancedLayers`](../../map/type-aliases/OLAdvancedLayers.md)
 
-Defined in: [elements/map/src/types.ts:292](https://github.com/EOX-A/EOxElements/blob/7a4c0e71b331cf052e7d69b65717dd06ab0419ce/elements/map/src/types.ts#L292)
+Defined in: [elements/map/src/types.ts:292](https://github.com/EOX-A/EOxElements/blob/0d9bbd9b1d6f8915d96e66f9a7f2376a5f105770/elements/map/src/types.ts#L292)
 
 ***
 
@@ -256,7 +256,7 @@ Defined in: [elements/map/src/types.ts:292](https://github.com/EOX-A/EOxElements
 
 > **eoxMapAdvancedOlSources**: [`OLAdvancedSources`](../../map/type-aliases/OLAdvancedSources.md)
 
-Defined in: [elements/map/src/types.ts:293](https://github.com/EOX-A/EOxElements/blob/7a4c0e71b331cf052e7d69b65717dd06ab0419ce/elements/map/src/types.ts#L293)
+Defined in: [elements/map/src/types.ts:293](https://github.com/EOX-A/EOxElements/blob/0d9bbd9b1d6f8915d96e66f9a7f2376a5f105770/elements/map/src/types.ts#L293)
 
 ***
 
@@ -264,7 +264,7 @@ Defined in: [elements/map/src/types.ts:293](https://github.com/EOX-A/EOxElements
 
 > **eoxMapGlobe**: `object`
 
-Defined in: [elements/map/src/types.ts:294](https://github.com/EOX-A/EOxElements/blob/7a4c0e71b331cf052e7d69b65717dd06ab0419ce/elements/map/src/types.ts#L294)
+Defined in: [elements/map/src/types.ts:294](https://github.com/EOX-A/EOxElements/blob/0d9bbd9b1d6f8915d96e66f9a7f2376a5f105770/elements/map/src/types.ts#L294)
 
 #### create
 
@@ -4267,7 +4267,7 @@ https://mochajs.org/api/global.html#beforeEach
 
 > **SimpleMDE**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:18](https://github.com/EOX-A/EOxElements/blob/7a4c0e71b331cf052e7d69b65717dd06ab0419ce/elements/storytelling/src/types.ts#L18)
+Defined in: [elements/storytelling/src/types.ts:18](https://github.com/EOX-A/EOxElements/blob/0d9bbd9b1d6f8915d96e66f9a7f2376a5f105770/elements/storytelling/src/types.ts#L18)
 
 ***
 

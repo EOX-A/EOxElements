@@ -5091,7 +5091,7 @@
               },
               "description": "The initial date range as [startDate, endDate] in ISO/UTC format.",
               "default": "null",
-              "attribute": "initDate"
+              "attribute": "init-date"
             }
           ],
           "attributes": [
@@ -5168,7 +5168,7 @@
               "fieldName": "controlValues"
             },
             {
-              "name": "initDate",
+              "name": "init-date",
               "type": {
                 "text": "DateRange"
               },

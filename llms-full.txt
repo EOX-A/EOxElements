@@ -12695,7 +12695,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-09-15T07:34:42.721Z",
+              default: "2026-09-28T11:57:00.747Z",
               options: {
                 hidden: true,
               },
@@ -19199,7 +19199,7 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `external-map-rendering` (boolean): Whether external map rendering is enabled for timelapse export.
 - `selectedDateRange` (SelectedDateRange): The currently selected date range as [startDate, endDate] in ISO format.
 - `controlValues` (Array<Object>): Array of control values.
-- `initDate` (DateRange): The initial date range as [startDate, endDate] in ISO/UTC format.
+- `init-date` (DateRange): The initial date range as [startDate, endDate] in ISO/UTC format.
 
 ### Properties
 
@@ -21306,7 +21306,7 @@ This example shows the `<eox-timecontrol-date>` component with the `initDate` pr
 which sets the initial date range. Also, it uses the date `format` of `D. MMMM YYYY`.
 
 ```html
-<eox-timecontrol for="eox-map#date-with-init-date" initDate='["2021-02-28"]'>
+<eox-timecontrol for="eox-map#date-with-init-date">
   <eox-timecontrol-date></eox-timecontrol-date>
 </eox-timecontrol>
 <eox-map id="date-with-init-date"></eox-map>
@@ -21321,6 +21321,7 @@ which sets the initial date range. Also, it uses the date `format` of `D. MMMM Y
 
   // Assign properties
   Object.assign(eoxTimecontrol, {
+    initDate: ["2021-02-28"],
     select: (e) => {
       console.log(e.detail);
     },
