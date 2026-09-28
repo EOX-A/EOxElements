@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.3...layercontrol-v1.9.0) (2026-09-28)
+
+
+### Features
+
+* GeoZarr support ([#2497](https://github.com/EOX-A/EOxElements/issues/2497)) ([193e619](https://github.com/EOX-A/EOxElements/commit/193e619a4c3af9b9c390d309958ccb9367e4ff63))
+
 ## [1.8.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.2...layercontrol-v1.8.3) (2026-08-24)
 
 
