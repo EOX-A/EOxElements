@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.7.0...timecontrol-v2.8.0) (2026-09-28)
+
+
+### Features
+
+* GeoZarr support ([#2497](https://github.com/EOX-A/EOxElements/issues/2497)) ([193e619](https://github.com/EOX-A/EOxElements/commit/193e619a4c3af9b9c390d309958ccb9367e4ff63))
+
 ## [2.7.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.6.0...timecontrol-v2.7.0) (2026-08-24)
 
 
