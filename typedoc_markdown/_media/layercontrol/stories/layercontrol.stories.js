@@ -16,6 +16,7 @@ import {
   layerLegendStory,
   layerLegendDynamicStory,
   layerColorStory,
+  geozarrStory,
 } from ".";
 
 export default {
@@ -121,3 +122,8 @@ export const ColoredLayers = layerColorStory;
  * Demonstrates the unstyled version of the element. By setting the `unstyled` property, the layer control is rendered without default styles, allowing for custom styling and integration into different design systems.
  */
 export const Unstyled = unstyledStory;
+
+/**
+ * Demonstrates multi-dimensional GeoZarr layer support in eox-layercontrol. Connects to zarr.json and GeoZarr dimensions to dynamically populate time controls, band/variable selection, and value ranges.
+ */
+export const GeoZarr = geozarrStory;

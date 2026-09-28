@@ -14,7 +14,14 @@ import VectorTileSource from "ol/source/VectorTile.js";
 import WMTS from "ol/source/WMTS.js";
 import XYZ from "ol/source/XYZ.js";
 import Collection from "ol/Collection.js";
-import { addDraw, addSelect, addClusterExplode, generateTileGrid } from "./";
+import {
+  addDraw,
+  addSelect,
+  addClusterExplode,
+  generateTileGrid,
+  isGeoZarrLayer,
+  setupGeoZarrLayer,
+} from "./";
 import { get as getProjection } from "ol/proj";
 import serialize from "serialize-javascript";
 
@@ -93,7 +100,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
     ...(layer.type !== "MapboxStyle" &&
       "source" in layer &&
       layer.source && {
-        source: createOlSourceFromDefinition(layer.source, EOxMap),
+        source: createOlSourceFromDefinition(layer.source, EOxMap, layer),
       }),
     ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
     ...layer.properties,
@@ -132,6 +139,11 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
 
   // Add interactions (e.g., draw, select) to the layer if requested
   setSyncListeners(olLayer, layer);
+
+  if (isGeoZarrLayer(olLayer)) {
+    setupGeoZarrLayer(olLayer);
+  }
+
   return olLayer;
 }
 
@@ -139,8 +151,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
  *
  * @param {import("../layers").EoxSource<any>} eoxSource
  * @param {import("../main").EOxMap} [EOxMap]
+ * @param {EoxLayer} [layer]
  */
-function createOlSourceFromDefinition(eoxSource, EOxMap) {
+function createOlSourceFromDefinition(eoxSource, EOxMap, layer) {
   const availableSources = {
     ...window.eoxMapAdvancedOlSources,
     ...basicOlSources,
@@ -160,6 +173,49 @@ function createOlSourceFromDefinition(eoxSource, EOxMap) {
   };
 
   const tileGrid = generateTileGrid(eoxSource);
+
+  const eoxSourceAny = /** @type {any} */ (eoxSource);
+  let bands =
+    eoxSource && "bands" in eoxSource ? eoxSourceAny.bands : undefined;
+  if (
+    !bands &&
+    eoxSource &&
+    "band" in eoxSource &&
+    eoxSourceAny.band !== undefined
+  ) {
+    bands = [eoxSourceAny.band];
+  }
+  if (!bands && eoxSource && "config" in eoxSource && eoxSourceAny.config) {
+    const config = /** @type {any} */ (eoxSourceAny.config);
+    bands =
+      config.bands || (config.band !== undefined ? [config.band] : undefined);
+  }
+  if (!bands && layer) {
+    const layerAny = /** @type {any} */ (layer);
+    const config =
+      layerAny.config ||
+      layer.properties?.config ||
+      layer.properties?.layerConfig;
+    if (config) {
+      bands =
+        config.bands || (config.band !== undefined ? [config.band] : undefined);
+    }
+    if (!bands && layer.properties?.bands) {
+      bands = layer.properties.bands;
+    }
+    if (!bands && layer.properties?.band !== undefined) {
+      bands = [layer.properties.band];
+    }
+  }
+  if (bands && !Array.isArray(bands)) {
+    bands = [bands];
+  }
+  if (!bands && eoxSource?.type === "GeoZarr") {
+    bands = [];
+  }
+  if (bands && eoxSource) {
+    eoxSourceAny.bands = bands;
+  }
 
   let features;
   if (eoxSource && eoxSource.features) {
@@ -186,6 +242,7 @@ function createOlSourceFromDefinition(eoxSource, EOxMap) {
 
   return new NewSource({
     ...eoxSource,
+    ...(bands !== undefined && { bands }),
     ...(features && { features }),
     ...("format" in eoxSource &&
       eoxSource.type !== "WMTS" && {
@@ -205,6 +262,7 @@ function createOlSourceFromDefinition(eoxSource, EOxMap) {
       source: createOlSourceFromDefinition(
         /** @type {import("../layers").EoxSource<any>} */ (eoxSource.source),
         EOxMap,
+        layer,
       ),
     }),
     // Set the format (e.g., GeoJSON, MVT) for the source
@@ -274,9 +332,6 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     throw new Error(`Layers are not compatible to be updated`);
   }
 
-  // Create a new layer to update properties, source, and interactions if needed
-  const newLayer = createLayer(EOxMap, newLayerDefinition, false);
-
   // Update source if different
   if (
     newLayerDefinition.type !== "MapboxStyle" &&
@@ -288,9 +343,11 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
       /** @type {any} **/ existingLayer
     ).setSource(
-      /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
-        /** @type {any} **/ newLayer
-      ).getSource(),
+      createOlSourceFromDefinition(
+        newLayerDefinition.source,
+        EOxMap,
+        newLayerDefinition,
+      ),
     );
   }
 
@@ -321,10 +378,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   ) {
     // @ts-expect-error TODO
     existingLayer.setStyle(
-      newLayerDefinition.type === "WebGLTile"
-        ? newLayerDefinition.style
-        : // @ts-expect-error TODO
-          newLayer.getStyle(),
+      /** @type {import("ol/style/Style").StyleLike} */ (
+        newLayerDefinition.style
+      ),
     );
   }
 
