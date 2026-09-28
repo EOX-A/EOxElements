@@ -182,13 +182,30 @@ export class EOxA2uiWrapper extends LitElement {
 
     const styleId = "custom-a2ui-style";
     const css = `
+      :host(a2ui-surface), a2ui-surface {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
       a2ui-basic-column {
         position: relative !important;
         z-index: 1 !important;
         pointer-events: auto !important;
       }
-      a2ui-basic-card {
+      a2ui-card, a2ui-basic-card {
         pointer-events: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-wrap: break-word !important;
+        word-break: break-word !important;
+      }
+      eox-a2ui-element:has(eox-map-workspace), eox-map-workspace {
+        width: 100% !important;
+        height: 100% !important;
+        flex: 1 1 100% !important;
+        display: block !important;
       }
       eox-a2ui-element {
         pointer-events: auto !important;
