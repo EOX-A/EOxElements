@@ -167,4 +167,14 @@ export class EOxLayoutItem extends HTMLElement {
 }
 
 customElements.define("eox-layout", EOxLayout);
+import "./map-workspace.js";
+import "./map-side-by-side.js";
+/**
+ * @element eox-map-workspace
+ */
+export { EOxMapWorkspace } from "./map-workspace.js";
+/**
+ * @element eox-map-side-by-side
+ */
+export { EOxMapSideBySide } from "./map-side-by-side.js";
 customElements.define("eox-layout-item", EOxLayoutItem);
