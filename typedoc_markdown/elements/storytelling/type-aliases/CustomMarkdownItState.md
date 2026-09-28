@@ -8,7 +8,7 @@
 
 > **CustomMarkdownItState** = `InstanceType`\<`MarkdownIt`\[`"core"`\]\[`"State"`\]\> & `object`
 
-Defined in: [elements/storytelling/src/types.ts:10](https://github.com/EOX-A/EOxElements/blob/f47703d9f111e4bda1e9a85a1de085d657b44365/elements/storytelling/src/types.ts#L10)
+Defined in: [elements/storytelling/src/types.ts:10](https://github.com/EOX-A/EOxElements/blob/b25222b4105d302a6baf77c8686e930431a3cd03/elements/storytelling/src/types.ts#L10)
 
 ## Type Declaration
 

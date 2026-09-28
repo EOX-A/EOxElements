@@ -9,3 +9,9 @@
 ## Type Aliases
 
 - [EOxMap](../../../elements/map/type-aliases/EOxMap.md)
+
+## References
+
+### Window
+
+Re-exports [Window](../../../elements/jsonform/variables/Window.md)
