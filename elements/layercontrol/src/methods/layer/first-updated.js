@@ -2,7 +2,7 @@ import {
   isLayerVisibleBasedOnZoomState,
   isLayerZoomStateRequired,
 } from "../../helpers";
-import { isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";
+
 /**
  * Check and update layer zoom visibility at beginning
  * and register "change:resolution" ones at the beginning if `showLayerZoomState` is present
@@ -61,11 +61,13 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
       .on("change:resolution", () => updateLayerZoomVisibility());
   }
 
-  if (isGeoZarrLayer(EOxLayerControlLayer.layer)) {
-    setupGeoZarrLayer(EOxLayerControlLayer.layer).then(() => {
+  // Trigger re-render if layerDatetime or layerConfig are updated asynchronously
+  EOxLayerControlLayer.layer?.on?.("propertychange", (e) => {
+    const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
+    if (propEvent.key === "layerDatetime" || propEvent.key === "layerConfig") {
       EOxLayerControlLayer.requestUpdate();
-    });
-  }
+    }
+  });
 };
 
 export default firstUpdatedMethod;
