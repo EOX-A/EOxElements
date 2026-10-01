@@ -2,7 +2,7 @@ import { getStartVals } from "../../../src/helpers";
 import {
   isGeoZarrLayer,
   setupGeoZarrLayer,
-} from "../../../src/helpers/geozarr";
+} from "../../../../map/src/helpers/geozarr";
 /**
  * Cypress test logic to check GeoZarr layer metadata setup.
  */
