@@ -2,6 +2,7 @@
 import { html } from "lit";
 import {
   OnlyDateStory,
+  EditableDateStory,
   DateWithNavigationStory,
   DatePickerPopupStory,
   DatePickerStandaloneStory,
@@ -45,6 +46,15 @@ export default {
  * selector string (e.g., `"eox-map#primary"`) or a direct reference to the map element.
  */
 export const OnlyDate = OnlyDateStory;
+
+/**
+ * Editable date field with map navigation and a popup picker
+ *
+ * Set `editable` to enter dates using the assigned `format`. Press Enter or leave the field
+ * to apply valid edits; invalid input restores the previous date without firing a change.
+ * The picker enables editing automatically, and time is shown only when included in `format`.
+ */
+export const EditableDate = EditableDateStory;
 
 /**
  * Date display component with init date

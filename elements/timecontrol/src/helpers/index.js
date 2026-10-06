@@ -18,3 +18,4 @@ export { default as getInitDate } from "./get-init-date";
 export { default as getWrongLocalFormatToUTCFormat } from "./get-wrong-local-to-utc";
 export { default as getUTCLocalDateTime } from "./get-utc-local";
 export { default as getDateRange } from "./get-date-range";
+export { default as hasTimeFormat } from "./has-time-format.js";
