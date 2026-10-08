@@ -362,9 +362,9 @@ export type FilterConfig = {
  */
 export type TimeControlConfig = {
   /**
-   * Reference to the eox-map element (can be a selector string or element instance).
+   * Map or comparison selector/reference, or an array of map selectors/references.
    */
-  for?: string | EOxMap;
+  for?: string | HTMLElement | Array<string | HTMLElement>;
   /**
    * Property key used to identify layers (default: "id").
    */

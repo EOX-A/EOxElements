@@ -42,14 +42,6 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   );
   const selectedDateRange = dayjs(dateRange[0]);
   if (Number.isNaN(selectedDateRange.unix())) return;
-  const flatLayers = eoxMap
-    ? eoxMap.getFlatLayersArray(
-        /** @type {import('ol/layer/Base').default[]} */ (
-          eoxMap.map.getLayers().getArray()
-        ),
-      )
-    : [];
-
   let selectedRangeItems = [];
   const dayjsDateRange = [dayjs(dateRange[0]), dayjs(dateRange[1])];
 
@@ -70,7 +62,9 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   let instances = {};
   selectedRangeItems.forEach((item, index) => {
     if (item.group && eoxMap) {
-      const layer = flatLayers.find((l) => l.get("id") === item.group);
+      const layer = EOxTimeControl.sliderValues.find(
+        (slider) => slider.layer === item.group,
+      )?.layerInstance;
       // @ts-expect-error Property 'getSource' does not exist on type 'BaseLayer'.
       const source = layer?.getLayers ? null : layer?.getSource();
       instances = {
@@ -79,7 +73,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
       };
 
       if (!EOxTimeControl.externalMapRendering) {
-        if (typeof source.updateParams === "function") {
+        if (typeof source?.updateParams === "function") {
           source.updateParams({
             [item.property]: item.date,
           });
