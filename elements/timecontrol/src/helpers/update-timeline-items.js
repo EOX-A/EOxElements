@@ -32,6 +32,7 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
       ".vis-foreground .vis-group",
     )[i]
   );
+  if (!labelEle || !dataEle) return;
   if (visibility) {
     labelEle.classList.remove("vis-label-hide");
     dataEle.classList.remove("vis-group-hide");
@@ -50,6 +51,7 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
  * @param {import("vis-data/standalone").DataSet} items - Timeline items DataSet to populate.
  * @param {EOxTimeControlTimeline | null} EOxTimeControlTimeline - The timeline component instance, or null if not present.
  * @param {boolean} showUTC - Whether to show UTC dates in the timeline.
+ * @returns {() => void} Removes visibility listeners when layers or maps change.
  */
 export default function updateTimelineItems(
   sliderValues,
@@ -58,6 +60,7 @@ export default function updateTimelineItems(
   EOxTimeControlTimeline,
   showUTC,
 ) {
+  const visibilityListenerRemovers = [];
   groups.clear();
   items.clear();
 
@@ -69,8 +72,11 @@ export default function updateTimelineItems(
         updateVisibility(EOxTimeControlTimeline, visibility, i);
       }
     };
-    slider.layerInstance?.un("change:visible", visibilityFunc);
+
     slider.layerInstance?.on("change:visible", visibilityFunc);
+    visibilityListenerRemovers.push(() =>
+      slider.layerInstance?.un("change:visible", visibilityFunc),
+    );
     groups.add({
       id: slider.layer,
       content: slider.name,
@@ -98,4 +104,6 @@ export default function updateTimelineItems(
       });
     }
   }
+  return () =>
+    visibilityListenerRemovers.forEach((removeListener) => removeListener());
 }
