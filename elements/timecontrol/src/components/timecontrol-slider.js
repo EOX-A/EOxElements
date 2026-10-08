@@ -3,6 +3,7 @@ import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import "toolcool-range-slider";
 import { sliderStyle } from "../styles/style.slider.js";
+import { updateYearLabelsMethod } from "../methods/slider/index.js";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -245,6 +246,9 @@ export class EOxTimeControlSlider extends LitElement {
    * Lifecycle method called after the first update.
    */
   firstUpdated() {
+    this.ownerDocument.fonts.ready.then(() => {
+      if (this.isConnected) this.requestUpdate();
+    });
     // Set up ResizeObserver to regenerate ticks when slider width changes
     const slider = this.getSliderInstance();
     if (slider && window.ResizeObserver) {
@@ -256,6 +260,10 @@ export class EOxTimeControlSlider extends LitElement {
       });
       this.#resizeObserver.observe(slider);
     }
+  }
+
+  updated() {
+    updateYearLabelsMethod(this);
   }
 
   /**

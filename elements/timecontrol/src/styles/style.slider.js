@@ -14,7 +14,7 @@ export const sliderStyle = `
   }
 
   :host {
-    --track-bg: #cfd4dd;
+    --track-bg: var(--surface-variant, #cfd4dd);
   }
 
   /* Base track */
@@ -45,15 +45,20 @@ export const sliderStyle = `
   .custom-mark-year {
     height: 12px;
     width: 2px;
-    background-color: var(--mark-color, #666);
+    background-color: var(--mark-color, var(--outline, #666));
     top: 0;
   }
 
-  .custom-mark-empty {
+  .custom-mark-empty,
+  .custom-mark[data-minor] {
     height: 4px;
     width: 1px;
-    background-color: var(--mark-color, #ccc);
+    background-color: var(--mark-color, var(--outline, #666));
     top: 10px;
+  }
+
+  .custom-mark[data-hidden] {
+    visibility: hidden;
   }
 
   .custom-mark-label {
@@ -84,8 +89,12 @@ export const sliderStyle = `
   }
 
   .custom-mark-year-label {
-    color: var(--mark-text-color, #666);
+    color: var(--mark-text-color, var(--on-surface-variant, #666));
     top: 16px;
+  }
+
+  .custom-mark-year-label[data-overlapping] {
+    visibility: hidden;
   }
 
   /* Custom tooltips */
