@@ -1,77 +1,50 @@
 import { html } from "lit";
-import { STORY_ARGS } from "../src/enums";
 
 /**
- * Range slider for selecting date ranges with visual indicators for years and months
- *
- * @returns {Object} The story configuration with arguments for the component.
+ * Creates monthly observations for a standalone slider.
+ * @param {number} startYear - First year, starting in October.
+ * @param {number} monthCount - Number of monthly observations.
+ * @returns {Array<Object>} Timecontrol values.
  */
+function createControlValues(startYear, monthCount) {
+  return [
+    {
+      id: "monthly-observations",
+      timeControlValues: Array.from({ length: monthCount }, (_, index) => ({
+        date: new Date(Date.UTC(startYear, 9 + index, 4)).toISOString(),
+      })),
+    },
+  ];
+}
+
+/** Two independently resizable sliders demonstrating automatic year label spacing. */
 const SliderStory = {
   args: {
-    layerIdKey: STORY_ARGS.layerIdKey,
-    for: "eox-map#slider",
-    storyAdditionalComponents: {
-      "eox-map": {
-        id: "slider",
-        zoom: STORY_ARGS.zoom,
-        center: STORY_ARGS.center,
-        layers: STORY_ARGS.layers,
-      },
-      "eox-timecontrol-date": {
-        storyImport: false,
-        storySlot: true,
-        format: STORY_ARGS.format,
-        navigation: true,
-      },
-      "eox-timecontrol-picker": {
-        storyImport: false,
-        storySlot: true,
-        showDots: true,
-        popup: true,
-      },
-      "eox-timecontrol-slider": {
-        storyImport: false,
-        storySlot: true,
-        animateOnClickInterval: "0.3s",
-      },
-    },
+    narrowControlValues: createControlValues(2018, 90),
+    manyYearsControlValues: createControlValues(1900, 1506),
   },
-  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
-    <eox-map
-      style="width: 100%; height: 500px;"
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
-      .center=${args.storyAdditionalComponents["eox-map"].center}
-      .layers=${args.storyAdditionalComponents["eox-map"].layers}
-    ></eox-map>
-    <eox-timecontrol
-      .for=${args.for}
-      .layerIdKey=${args.layerIdKey}
-      .titleKey=${args.titleKey}
-      .filters=${args.filters}
-      .externalMapRendering=${args.externalMapRendering}
+  render: (args) => html`
+    <p>Drag either panel's bottom-right corner to resize its slider.</p>
+    <h3>Partial first and last years (2018–2026)</h3>
+    <div
+      class="border round"
+      style="width: 320px; min-width: 320px; max-width: 100%; resize: horizontal; overflow: auto; padding: 16px; box-sizing: border-box;"
     >
-      <div style="display: flex; gap: 10px;align-items: center;">
-        <eox-timecontrol-date
-          .format=${args.storyAdditionalComponents["eox-timecontrol-date"]
-            .format}
-          .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
-            .navigation}
-        ></eox-timecontrol-date>
-        <eox-timecontrol-picker
-          .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-            .showDots}
-          .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-            .popup}
-        ></eox-timecontrol-picker>
-      </div>
-      <eox-timecontrol-slider
-        style="width: 600px;"
-        .animateOnClickInterval=${args.storyAdditionalComponents[
-          "eox-timecontrol-slider"
-        ].animateOnClickInterval}
-      ></eox-timecontrol-slider>
-    </eox-timecontrol>
+      <eox-timecontrol .controlValues=${args.narrowControlValues} show-utc>
+        <eox-timecontrol-date navigation></eox-timecontrol-date>
+        <eox-timecontrol-slider></eox-timecontrol-slider>
+      </eox-timecontrol>
+    </div>
+    <h3>Many years (1900–2026)</h3>
+    <div
+      class="border round"
+      style="width: 320px; min-width: 320px; max-width: 100%; resize: horizontal; overflow: auto; padding: 16px; box-sizing: border-box;"
+    >
+      <eox-timecontrol .controlValues=${args.manyYearsControlValues} show-utc>
+        <eox-timecontrol-date navigation></eox-timecontrol-date>
+        <eox-timecontrol-slider></eox-timecontrol-slider>
+      </eox-timecontrol>
+    </div>
   `,
 };
 
