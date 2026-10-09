@@ -143,6 +143,19 @@ export class EOxLayerControlLayerTools extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  firstUpdated() {
+    this.layer?.on?.("propertychange", (e) => {
+      const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
+      if (
+        propEvent.key === "layerConfig" ||
+        propEvent.key === "layerDatetime" ||
+        propEvent.key === "timeControlValues"
+      ) {
+        this.requestUpdate();
+      }
+    });
+  }
+
   updated(changedProperties) {
     if (
       this.toolsAutoExpand &&

@@ -17,6 +17,7 @@ import {
   layerLegendDynamicStory,
   layerColorStory,
   geozarrStory,
+  geozarrMultibandStory,
 } from ".";
 
 export default {
@@ -127,3 +128,27 @@ export const Unstyled = unstyledStory;
  * Demonstrates multi-dimensional GeoZarr layer support in eox-layercontrol. Connects to zarr.json and GeoZarr dimensions to dynamically populate time controls, band/variable selection, and value ranges.
  */
 export const GeoZarr = geozarrStory;
+
+/**
+ * Demonstrates dynamic multi-band, multi-dimensional GeoZarr datacube controls with eox-layercontrol and eox-timecontrol.
+ *
+ * Visualizes the Sea Ice GeoZarr datacube in a polar stereographic projection (EPSG:6932).
+ * Shows how selecting a band (e.g. Sea Surface Salinity, Floes Density, Sea Ice Thickness) dynamically switches
+ * the active band, updates the layerConfig min and max ranges from the variable's valid_range (falling back to defaults when omitted),
+ * and seamlessly updates the timeline in both eox-layercontrol and eox-timecontrol.
+ *
+ * ```html
+ * <div style="display: flex; gap: 16px;">
+ *   <eox-layercontrol for="eox-map#geozarr-multiband" tools='["datetime","config","opacity"]'></eox-layercontrol>
+ *   <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+ *     <eox-map id="geozarr-multiband" projection="EPSG:6932"></eox-map>
+ *     <eox-timecontrol for="eox-map#geozarr-multiband">
+ *       <eox-timecontrol-date navigation="true"></eox-timecontrol-date>
+ *       <eox-timecontrol-picker showDots="true" popup="true"></eox-timecontrol-picker>
+ *       <eox-timecontrol-slider></eox-timecontrol-slider>
+ *     </eox-timecontrol>
+ *   </div>
+ * </div>
+ * ```
+ */
+export const GeoZarrMultiband = geozarrMultibandStory;
