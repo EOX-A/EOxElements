@@ -102,6 +102,7 @@ export const geozarrStory = {
               layerConfig: {
                 type: "style",
                 style: true,
+                autofill: false,
                 schema: {
                   type: "object",
                   title: "Visualization Settings",

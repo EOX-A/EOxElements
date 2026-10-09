@@ -1,9 +1,11 @@
+import { getGeoZarrBandRange, updateGeoZarrBand } from "../../helpers";
+
 /**
  * @param {Record<string,number>} jsonformOutput
  * @param { import("ol/layer/Layer").default} layer
  * @param { import("../../components/layer-config").EOxLayerControlLayerConfig['layerConfig']} layerConfig
  * */
-export default function (jsonformOutput, layer, layerConfig) {
+export default async function (jsonformOutput, layer, layerConfig) {
   // check whether the layer is Vector or Tile
   const isTile = "updateStyleVariables" in layer;
   const isVector = "setStyle" in layer;
@@ -24,33 +26,68 @@ export default function (jsonformOutput, layer, layerConfig) {
 
   // check if it supports updating the variables using ol first
   if (isTile) {
-    if (jsonformOutput?.variable) {
-      const sourceUrl =
-        layer.get("_geozarrSourceUrl") ||
-        layer.get("_jsonDefinition")?.source?.url ||
-        layer.get("source")?.url ||
-        layer.get("_geozarrRootUrl");
-      const source = /** @type {any} */ (
-        layer.getSource ? layer.getSource() : null
-      );
-      if (source) {
-        if (typeof source.setBands === "function") {
-          source.setBands([jsonformOutput.variable]);
-        } else if (sourceUrl && source.constructor) {
-          const GeoZarrClass = /** @type {any} */ (source.constructor);
-          const newSource = new GeoZarrClass({
-            url: sourceUrl,
-            bands: [jsonformOutput.variable],
-            crossOrigin: "anonymous",
-          });
-          layer.setSource(newSource);
+    const selectedVar = jsonformOutput?.variable ?? jsonformOutput?.band;
+    if (selectedVar !== undefined) {
+      const lastVar = layer.get("_lastVariable");
+      if (selectedVar !== lastVar) {
+        const rangeResult = await updateGeoZarrBand(layer, String(selectedVar));
+
+        const targetMin =
+          rangeResult?.targetMin ??
+          getGeoZarrBandRange(layer, String(selectedVar), layerConfig)
+            .targetMin;
+        const targetMax =
+          rangeResult?.targetMax ??
+          getGeoZarrBandRange(layer, String(selectedVar), layerConfig)
+            .targetMax;
+
+        const isAutofill =
+          layerConfig?.autofill === true ||
+          layerConfig?.schema?.autofill === true;
+        const hasMinMaxStyle =
+          isAutofill ||
+          styles?.variables?.min !== undefined ||
+          styles?.variables?.max !== undefined ||
+          layerConfig?.schema?.properties?.min !== undefined ||
+          layerConfig?.schema?.properties?.max !== undefined;
+
+        if (hasMinMaxStyle) {
+          if (jsonformOutput) {
+            if ("min" in jsonformOutput) jsonformOutput.min = targetMin;
+            if ("max" in jsonformOutput) jsonformOutput.max = targetMax;
+          }
+          updatedValues.min = targetMin;
+          updatedValues.max = targetMax;
+          if (styles?.variables) {
+            styles.variables.min = targetMin;
+            styles.variables.max = targetMax;
+          }
         }
       }
-      const lastVar = layer.get("_lastVariable");
-      if (jsonformOutput.variable !== lastVar) {
-        layer.set("_lastVariable", jsonformOutput.variable);
+    }
+
+    // Check and update non-temporal GeoZarr dimensions if present
+    const geozarrDims = layer.get("_geozarrDimensions");
+    const source = /** @type {any} */ (
+      layer.getSource ? layer.getSource() : null
+    );
+    if (
+      source &&
+      typeof source.updateDimensions === "function" &&
+      geozarrDims
+    ) {
+      /** @type {Record<string, number>} */
+      const dimUpdates = {};
+      for (const dimName of Object.keys(geozarrDims)) {
+        if (jsonformOutput[dimName] !== undefined) {
+          dimUpdates[dimName] = Number(jsonformOutput[dimName]);
+        }
+      }
+      if (Object.keys(dimUpdates).length > 0) {
+        source.updateDimensions(dimUpdates);
       }
     }
+
     /** @type {import('ol/layer/WebGLTile').default} */ (
       layer
     ).updateStyleVariables(updatedValues);

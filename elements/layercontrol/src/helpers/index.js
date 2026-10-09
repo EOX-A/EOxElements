@@ -22,3 +22,9 @@ export {
 } from "./layer-tools";
 export { hideLayersBasedOnProperties } from "./hide-layers-based-on-property";
 export { handleDatetimeUpdate } from "./handle-datetime-update";
+export {
+  getGeoZarrBandRange,
+  updateGeoZarrBand,
+  computeStep,
+  buildMinMaxProperties,
+} from "./update-geozarr-band";
