@@ -43,7 +43,11 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   const selectedDateRange = dayjs(dateRange[0]);
   if (Number.isNaN(selectedDateRange.unix())) return;
   let selectedRangeItems = [];
-  const dayjsDateRange = [dayjs(dateRange[0]), dayjs(dateRange[1])];
+  const isUtc = EOxTimeControl.showUTC;
+  const dayjsDateRange = [
+    isUtc ? dayjs.utc(dateRange[0]) : dayjs(dateRange[0]),
+    isUtc ? dayjs.utc(dateRange[1]) : dayjs(dateRange[1]),
+  ];
 
   const [start, end] = dayjsDateRange[0].isBefore(dayjsDateRange[1])
     ? [dayjsDateRange[0], dayjsDateRange[1]]
@@ -52,12 +56,28 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   selectedRangeItems = EOxTimeControl.items.get().filter((item) => {
     const itemDate = item.utc;
     if (!itemDate) return false;
-    const d = dayjs(itemDate);
+    const d = isUtc ? dayjs.utc(itemDate) : dayjs(itemDate);
     return (
       (d.isSame(start, "day") || d.isAfter(start, "day")) &&
       (d.isSame(end, "day") || d.isBefore(end, "day"))
     );
   });
+
+  if (
+    selectedRangeItems.length === 0 &&
+    EOxTimeControl.items.get().length > 0
+  ) {
+    const allItems = EOxTimeControl.items.get();
+    const matched = allItems.find(
+      (item) =>
+        item.utc === dateRange[0] ||
+        item.date === dateRange[0] ||
+        dayjs(item.utc).isSame(dayjs(dateRange[0]), "day"),
+    );
+    if (matched) {
+      selectedRangeItems = [matched];
+    }
+  }
 
   let instances = {};
   selectedRangeItems.forEach((item, index) => {
