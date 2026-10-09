@@ -141,6 +141,16 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   setSyncListeners(olLayer, layer);
 
   if (isGeoZarrLayer(olLayer)) {
+    const layerAny = /** @type {any} */ (layer);
+    const initialBand =
+      layerAny.source?.bands?.[0] ||
+      (layer.properties &&
+        (layer.properties.band || layer.properties.variable)) ||
+      layerAny.properties?.layerConfig?.schema?.properties?.variable?.default ||
+      layerAny.properties?.layerConfig?.schema?.properties?.band?.default;
+    if (initialBand) {
+      olLayer.set("_lastVariable", initialBand);
+    }
     setupGeoZarrLayer(olLayer);
   }
 
