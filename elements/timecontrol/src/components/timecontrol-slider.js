@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import "toolcool-range-slider";
@@ -379,6 +379,12 @@ export class EOxTimeControlSlider extends LitElement {
       <div class="date-range-slider-wrapper">
         <tc-range-slider
           animate-onclick="${this.animateOnClickInterval}"
+          data="${this.#items && this.#items.length
+            ? this.#items.join(",")
+            : nothing}"
+          value1="${this.#sliderValue ||
+          (this.#filteredItems && this.#filteredItems[0]) ||
+          nothing}"
           @change="${(/** @type {CustomEvent} */ evt) =>
             this.handleChange(evt)}"
         ></tc-range-slider>
