@@ -20,7 +20,24 @@ export default function getInitDate(initDate, items, showUTC = false) {
     return null;
   }
 
-  let rawVal = Array.isArray(initDate) ? initDate[0] : initDate;
+  let parsedInitDate = initDate;
+  if (typeof parsedInitDate === "string") {
+    const trimmed = parsedInitDate.trim();
+    if (
+      (trimmed.startsWith("[") && trimmed.endsWith("]")) ||
+      (trimmed.startsWith("{") && trimmed.endsWith("}"))
+    ) {
+      try {
+        parsedInitDate = JSON.parse(trimmed);
+      } catch {
+        // retain original string if JSON parsing fails
+      }
+    }
+  }
+
+  let rawVal = Array.isArray(parsedInitDate)
+    ? parsedInitDate[0]
+    : parsedInitDate;
   if (!rawVal) {
     return null;
   }
@@ -29,9 +46,18 @@ export default function getInitDate(initDate, items, showUTC = false) {
 
   if (rawVal === "first" || rawVal === "last") {
     if (items && items.length) {
-      const utc = dayjs(
-        rawVal === "first" ? items[0].utc : items[items.length - 1].utc,
-      );
+      const sorted = [...items].sort((a, b) => {
+        const dateA = a.utc || a.date || a.start;
+        const dateB = b.utc || b.date || b.start;
+        return new Date(dateA).getTime() - new Date(dateB).getTime();
+      });
+      const targetItem =
+        rawVal === "first" ? sorted[0] : sorted[sorted.length - 1];
+      const targetUtc = targetItem?.utc || targetItem?.date;
+      if (!targetUtc) {
+        return null;
+      }
+      const utc = dayjs(targetUtc);
       start = showUTC ? utc.utc().format() : utc.format();
       end = showUTC
         ? utc.utc().endOf("day").format()
@@ -39,14 +65,22 @@ export default function getInitDate(initDate, items, showUTC = false) {
     } else {
       return null;
     }
-  } else if (Array.isArray(initDate) && initDate.length >= 2) {
-    [start, end] = initDate;
+  } else if (Array.isArray(parsedInitDate) && parsedInitDate.length >= 2) {
+    [start, end] = parsedInitDate;
   } else {
     start = end = rawVal;
   }
 
-  start = dayjs(start).utc().format();
-  end = dayjs(end).endOf("day").utc().format();
+  const startDayjs = dayjs(start);
+  const endDayjs = dayjs(end);
+  if (Number.isNaN(startDayjs.unix()) || Number.isNaN(endDayjs.unix())) {
+    return null;
+  }
+
+  start = showUTC ? startDayjs.utc().format() : startDayjs.format();
+  end = showUTC
+    ? endDayjs.utc().endOf("day").format()
+    : endDayjs.endOf("day").format();
 
   return [start, end];
 }

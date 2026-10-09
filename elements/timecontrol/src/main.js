@@ -97,7 +97,24 @@ export class EOxTimeControl extends LitElement {
       },
       selectedDateRange: { type: Array },
       controlValues: { type: Array },
-      initDate: { attribute: "init-date" },
+      initDate: {
+        attribute: "init-date",
+        converter: {
+          fromAttribute(value) {
+            if (!value) return null;
+            try {
+              return JSON.parse(value);
+            } catch {
+              return value;
+            }
+          },
+          toAttribute(value) {
+            return typeof value === "object"
+              ? JSON.stringify(value)
+              : String(value);
+          },
+        },
+      },
     };
   }
 
@@ -200,9 +217,10 @@ export class EOxTimeControl extends LitElement {
     this.controlValues = [];
 
     /**
-     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     * The initial date range as [startDate, endDate] in ISO/UTC format,
+     * or a date/keyword string, or array.
      *
-     * @type {DateRange}
+     * @type {DateRange | string | Array<string> | null}
      */
     this.initDate = null;
   }
@@ -392,6 +410,54 @@ export class EOxTimeControl extends LitElement {
   }
 
   /**
+   * Extends observed attributes to support lowercase "initdate" attribute.
+   *
+   * @returns {string[]} List of observed attribute names.
+   */
+  static get observedAttributes() {
+    const attrs = super.observedAttributes;
+    if (!attrs.includes("initdate")) {
+      return [...attrs, "initdate"];
+    }
+    return attrs;
+  }
+
+  /**
+   * Handles attribute changes, supporting "initdate" as an alias for "init-date".
+   *
+   * @param {string} name - Attribute name.
+   * @param {string | null} oldVal - Old attribute value.
+   * @param {string | null} newVal - New attribute value.
+   */
+  attributeChangedCallback(name, oldVal, newVal) {
+    super.attributeChangedCallback(name, oldVal, newVal);
+    if (name === "initdate" && newVal !== oldVal && newVal !== null) {
+      try {
+        this.initDate = JSON.parse(newVal);
+      } catch {
+        this.initDate = newVal;
+      }
+    }
+  }
+
+  /**
+   * Lifecycle method called when the component is connected to the DOM.
+   */
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.hasAttribute("initdate") && !this.initDate) {
+      const val = this.getAttribute("initdate");
+      if (val) {
+        try {
+          this.initDate = JSON.parse(val);
+        } catch {
+          this.initDate = val;
+        }
+      }
+    }
+  }
+
+  /**
    * Lifecycle method called after property updates.
    *
    * @param {import("lit").PropertyValues} changedProperties
@@ -403,7 +469,6 @@ export class EOxTimeControl extends LitElement {
       changedProperties.has("for") ||
       changedProperties.has("initDate")
     ) {
-      firstUpdatedMethod(this, this.#emitUpdateEvent);
       this.#cleanupLayersListener?.();
       this.#cleanupLayersListener = null;
       this.#cleanupLayersListener = firstUpdatedMethod(

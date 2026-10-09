@@ -537,9 +537,10 @@ declare global {
      */
     controlValues: Array<any>;
     /**
-     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     * The initial date range as [startDate, endDate] in ISO/UTC format,
+     * or a date/keyword string, or array.
      */
-    initDate: DateRange | null;
+    initDate: DateRange | string | Array<string> | null;
     /**
      * Handler for date changes.
      */
