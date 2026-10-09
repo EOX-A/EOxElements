@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import "toolcool-range-slider";
@@ -63,6 +63,13 @@ export class EOxTimeControlSlider extends LitElement {
    * @type {Array<string>}
    */
   #filteredItems = null;
+
+  /**
+   * Currently active slider value1 date string.
+   *
+   * @type {string | null}
+   */
+  #sliderValue = null;
 
   /**
    * Generated ticks for the slider.
@@ -218,10 +225,16 @@ export class EOxTimeControlSlider extends LitElement {
       );
     }
     if (this.#items && this.#selectedDateRange) {
-      const start = dayjs(this.#selectedDateRange[0]);
-      const end = dayjs(this.#selectedDateRange[1]);
+      const tc = this.getEOxTimeControl();
+      const isUtc = tc?.showUTC;
+      const start = isUtc
+        ? dayjs.utc(this.#selectedDateRange[0])
+        : dayjs(this.#selectedDateRange[0]);
+      const end = isUtc
+        ? dayjs.utc(this.#selectedDateRange[1])
+        : dayjs(this.#selectedDateRange[1]);
       const filteredItems = this.#items.filter((utc) => {
-        const date = dayjs(utc);
+        const date = isUtc ? dayjs.utc(utc) : dayjs(utc);
         if (date.isSame(start)) exactMatch = utc;
         return (
           (date.isAfter(start) || date.isSame(start, "day")) &&
@@ -230,15 +243,45 @@ export class EOxTimeControlSlider extends LitElement {
       });
       this.#filteredItems = filteredItems;
     }
-    if (slider) {
+    this.#sliderValue =
+      exactMatch || (this.#filteredItems && this.#filteredItems[0]) || null;
+    if (slider && this.#items && this.#items.length) {
       slider.setAttribute("data", this.#items.join(","));
-      slider.setAttribute("value1", exactMatch || this.#filteredItems[0]);
+      if (this.#sliderValue) {
+        slider.setAttribute("value1", this.#sliderValue);
+        /** @type {any} */ (slider).value1 = this.#sliderValue;
+      }
     }
 
     // Generate ticks after items are set
     this.#ticks = this.#generateTicks();
 
     this.requestUpdate();
+  }
+
+  /**
+   * Lifecycle method called after each component update.
+   * Ensures the range slider custom element attributes stay synchronized.
+   *
+   * @param {import("lit").PropertyValues} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    const slider = this.getSliderInstance();
+    if (slider && this.#items && this.#items.length) {
+      const dataStr = this.#items.join(",");
+      const valStr =
+        this.#sliderValue ||
+        (this.#filteredItems && this.#filteredItems[0]) ||
+        "";
+      if (slider.getAttribute("data") !== dataStr) {
+        slider.setAttribute("data", dataStr);
+      }
+      if (valStr && slider.getAttribute("value1") !== valStr) {
+        slider.setAttribute("value1", valStr);
+        /** @type {any} */ (slider).value1 = valStr;
+      }
+    }
   }
 
   /**
@@ -255,6 +298,10 @@ export class EOxTimeControlSlider extends LitElement {
         }
       });
       this.#resizeObserver.observe(slider);
+    }
+    const tc = this.getEOxTimeControl();
+    if (tc?.selectedDateRange && tc?.items?.get) {
+      this.setDateRange(tc.selectedDateRange, tc.items.get());
     }
   }
 
@@ -330,6 +377,12 @@ export class EOxTimeControlSlider extends LitElement {
       <div class="date-range-slider-wrapper">
         <tc-range-slider
           animate-onclick="${this.animateOnClickInterval}"
+          data="${this.#items && this.#items.length
+            ? this.#items.join(",")
+            : nothing}"
+          value1="${this.#sliderValue ||
+          (this.#filteredItems && this.#filteredItems[0]) ||
+          nothing}"
           @change="${(/** @type {CustomEvent} */ evt) =>
             this.handleChange(evt)}"
         ></tc-range-slider>
