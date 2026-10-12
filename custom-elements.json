@@ -215,6 +215,227 @@
     },
     {
       "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "return": {
+                "type": {
+                  "text": "JsonSchema|null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema|null"
+                  }
+                }
+              ],
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
+            },
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onTextareaInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onJsonFormChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_endpoint",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_schema",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_submitted",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "name": "unstyled",
+              "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -769,227 +990,6 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ],
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "kind": "field",
-              "name": "schema",
-              "return": {
-                "type": {
-                  "text": "JsonSchema|null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newSchema",
-                  "type": {
-                    "text": "JsonSchema|null"
-                  }
-                }
-              ],
-              "type": {
-                "text": "JsonSchema"
-              },
-              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
-            },
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onTextareaInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onJsonFormChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_endpoint",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_schema",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_submitted",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "name": "unstyled",
-              "kind": "field"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles."
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -5741,7 +5741,7 @@
           "type": {
             "text": "string"
           },
-          "default": "\"1.2.0\""
+          "default": "\"1.3.0\""
         },
         {
           "kind": "variable",
@@ -5754,21 +5754,21 @@
         },
         {
           "kind": "variable",
-          "name": "EOxFeedback",
-          "type": {
-            "text": "object"
-          },
-          "default": "{ name: \"EOxFeedback\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-feedback\", events: [\"submit\", \"close\"], schema: z.object({ /** The endpoint to send the feedback to as POST message. */ endpoint: z.string().optional(), /** If provided, the element will not be styled with EOX styles. */ unstyled: z.string().optional(), /** The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported. */ schema: z.any().optional(), }), }",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email)."
-        },
-        {
-          "kind": "variable",
           "name": "EOxDrawtools",
           "type": {
             "text": "object"
           },
           "default": "{ name: \"EOxDrawtools\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-drawtools\", events: [\"drawupdate\"], schema: z.object({ /** Allow modifying the drawn feature(s) */ allowModify: z.boolean().optional(), /** Query selector of an `eox-map` (`String`, passed as an attribute or property) or an `eox-map` DOM element (`HTMLElement`, passed as property) */ for: z.any().optional(), /** Enables the user to draw continuously one feature after another without having to discard previous ones manually */ continuous: z.boolean().optional(), /** The display name of drawn features, shown e.g. in the feature list. */ featureName: z.string().optional(), /** The key of the property to display in the feature list. */ featureNameKey: z.any().optional(), /** The ID of the Vector/Vector Tile Layer that contains features to be selected */ layerId: z.string().optional(), /** Flat styles for the drawn/selected features */ featureStyles: z.any().optional(), /** Allow adding more than one feature at a time */ multipleFeatures: z.boolean().optional(), /** Display area/line measurement for the drawn features. When enabled, a \"measure\" property is added to each drawn feature\\'s properties, containing the calculated area (for Polygons and Circles) or length (for LineStrings). This measurement is also displayed as a text label on the map using OpenLayers flat styles. */ measure: z.boolean().optional(), /** Allow import features using drag-drop and upload button */ importFeatures: z.boolean().optional(), /** Show geo-json editor for draw tool */ showEditor: z.boolean().optional(), /** Show list of features */ showList: z.boolean().optional(), /** Projection of the emitted drawn features */ projection: z.string().optional(), /** Renders the element without a shadow root */ noShadow: z.boolean().optional(), /** The format in which the drawn features should be emitted */ format: z.any().optional(), /** Type of the drawn feature */ type: z.any().optional(), /** Render the element without additional styles */ unstyled: z.boolean().optional(), /** The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled. Pass features to be drawn on the map by setting this property. The features should be in the same projection as the map, or a projection should be specified via the `projection` property for proper transformation. */ drawnFeatures: z.array(z.any()).optional(), /** The eox-map instance associated with the draw tools */ eoxMap: z.any().optional(), /** Whether the user is currently in the process of drawing or not */ currentlyDrawing: z.boolean().optional(), /** The current native OpenLayers `draw` interaction */ draw: z.any().optional(), /** The current native OpenLayers draw `layer` (initialized with a `zIndex` of 100) */ drawLayer: z.any().optional(), /** The current native OpenLayers `modify` interaction */ modify: z.any().optional(), /** */ selectionEvents: z.any().optional(), }), }",
           "description": "The `eox-drawtools` element provides a comprehensive set of drawing, editing, selection, and import tools for vector features on an `eox-map`. It supports drawing multiple feature types (Polygon, Box, Point, Circle, LineString), continuous drawing, feature modification, selection from existing layers, and import/export in various formats (GeoJSON, WKT, native OL feature).\n\nKey features:\n- Draw polygons, boxes, points, circles, and lines on the map\n- Draw multiple features at once (set `multiple-features`)\n- Continuous drawing mode (set `continuous`)\n- Modify drawn features (set `allow-modify`)\n- Select features from a specified layer (`layer-id`)\n- Display a list of drawn/selected features (`show-list`)\n- Edit features as GeoJSON in a text editor (`show-editor`)\n- Import features via drag-and-drop or file upload (`import-features`)\n- Emit drawn features in different formats (`format`: `feature`, `geojson`, `wkt`)\n- Emit features in a specified projection (`projection`)\n- Customizable feature styles (`featureStyles`)\n- Unstyled and no-shadow variants for easy integration\n\nUsage examples and visual demos are available in Storybook stories, including scenarios for multi-feature drawing, feature modification, selection, import/export, continuous drawing, format and projection control, and style customization.\n\n## Methods\n\n- `startDrawing`: Triggers starting the drawing interaction on the map.\n- `stopDrawing`: Triggers stopping the drawing interaction on the map (same as pressing the Escape key).\n- `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.\n- `removeFeature`: Removes a feature from the drawn features.\n- `removeFeatureByIndex`: Removes a feature from the drawn features by its index.\n\nUsage: `document.querySelector(\"eox-drawtools\").startDrawing();`"
+        },
+        {
+          "kind": "variable",
+          "name": "EOxFeedback",
+          "type": {
+            "text": "object"
+          },
+          "default": "{ name: \"EOxFeedback\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-feedback\", events: [\"submit\", \"close\"], schema: z.object({ /** The endpoint to send the feedback to as POST message. */ endpoint: z.string().optional(), /** If provided, the element will not be styled with EOX styles. */ unstyled: z.string().optional(), /** The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported. */ schema: z.any().optional(), }), }",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email)."
         },
         {
           "kind": "variable",
@@ -5790,21 +5790,21 @@
         },
         {
           "kind": "variable",
-          "name": "EOxLayercontrol",
-          "type": {
-            "text": "object"
-          },
-          "default": "{ name: \"EOxLayercontrol\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-layercontrol\", events: [\"layerchange\", \"layerConfig:change\"], schema: z.object({ /** Query selector of an `eox-map` (`String`, passed as an attribute or property) or an `eox-map` DOM element (`HTMLElement`, passed as property) */ for: z.any().optional(), /** Layer id property */ idProperty: z.string().optional(), /** Layer title property */ titleProperty: z.string().optional(), /** Show layer state based on zoom level or not */ showLayerZoomState: z.boolean().optional(), /** Layer tools */ tools: z.array(z.any()).optional(), /** Enable-disable external layer */ addExternalLayers: z.boolean().optional(), /** Render the element without additional styles */ unstyled: z.boolean().optional(), /** Overrides elements current CSS. */ styleOverride: z.string().optional(), /** If enabled, the tools section will be rendered as list. */ toolsAsList: z.boolean().optional(), /** If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group). */ globallyExclusiveLayers: z.boolean().optional(), /** If enabled, toggling the layer visibility will also open/close the layer tools. */ toolsAutoExpand: z.boolean().optional(), /** List of custom editor interfaces for layer config eox-jsonforms Read more about the implementation of custom editor interfaces here: https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html */ customEditorInterfaces: z.array(z.any()).optional(), /** */ eoxMap: z.any().optional(), /** The native OL map instance */ map: z.any().optional(), /** */ colormapRegistry: z.any().optional(), }), }",
-          "description": "The `eox-layercontrol` element provides a user interface for managing and configuring layers of an `eox-map`. It connects to the underlying OpenLayers map instance and displays a list of layers, supporting advanced features such as optional layers, exclusive layers, layer tools, dynamic legends, time controls, and external layer addition.\n\n## Usage\nPlace `<eox-layercontrol></eox-layercontrol>` next to an `<eox-map></eox-map>` element. If there is only one `eox-map` present, `eox-layercontrol` will automatically connect to it. This can be configured\nvia the `for` attribute/property in order to support connecting to a specific map.\n\n## Layer Properties\nTo be displayed and managed correctly, the map layers should have custom properties set (e.g. using `properties.<property>` inside the `eox-map` layer json, or by doing `layer.set(property, value)` on the native OpenLayers layers).\n\n- `id?: string` — Unique identifier for the layer. Recommended for referencing and managing layers; also used for `eox-map` smart layer updating.\n- `title?: string` — Human-readable title for the layer, displayed in the control. Recommended for usability.\n- `layerControlHide?: boolean` — If true, hides the layer from the control UI.\n- `layerControlOptional?: boolean` — If true, the layer is initially hidden and can be added from the optional list.\n- `layerControlExclusive?: boolean` — If true, only one exclusive layer can be visualized at a time (taking into account all other layers on the same level with this property).\n- `layerControlExpand?: boolean` — If true, the layer is \"expanded\" by default, showing description, tools etc. (if available).\n- `layerControlToolsExpand?: boolean` — If true, the layer tools section is expanded by default.\n- `layerConfig?: object` — Configuration for the \"config\" tool, consisting of a JSON schema (rendered by `eox-jsonform`) for editable settings.\n- `layerDatetime?: object` — Configuration for the \"datetime\" tool, supporting time-based controls and playback.\n- `layerLegend?: object` — Configuration for the \"legend\" tool, supporting dynamic color legends.\n\nFor `eox-map` attributes/properties and emitted events, see below.\n\n## Additional Helper Methods\n\n- `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `[\"var\", \"<key>\"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`.\n\nUsage: `import { updateVectorLayerStyle } from \"@eox/layercontrol\";`"
-        },
-        {
-          "kind": "variable",
           "name": "EOxJsonform",
           "type": {
             "text": "object"
           },
           "default": "{ name: \"EOxJsonform\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-jsonform\", events: [\"ready\", \"change\", \"submit\"], schema: z.object({ /** Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`). */ schema: z.any().optional(), /** JSON value of the form editor */ value: z.any().optional(), /** Default values for the JSONEditor instance */ defaults: z.any().optional(), /** Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`). See JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md */ options: z.any().optional(), /** List of custom editor interface Read more about the implementation of custom editor interfaces here: https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html */ customEditorInterfaces: z.array(z.any()).optional(), /** Renders the element without a shadow root */ noShadow: z.boolean().optional(), /** Shows a toggle for showing/hiding object properties editing buttons To be used in combination with `options.disable_properties = false` */ propertiesToggle: z.boolean().optional(), /** Render the element without additional styles */ unstyled: z.boolean().optional(), /** Getter for the JSONEditor instance */ editor: z.any().optional(), }), }",
           "description": "`eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.\nIt is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.\nAlso check out the [JSON Editor Documentation](https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md) for full details on schema syntax, options, and built-in editors.\n\nCore JSON-Editor Features & Options Reference:\n- **Branching (`anyOf` / `oneOf`)**:\n  - Use `\"keep_oneof_values\": false` in `options` when variants define different defaults, types (e.g., string vs array), or numeric ranges/steps. By default, JSON-Editor carries over values (`keep_oneof_values: true`), corrupting branch defaults and slider ranges.\n  - Example: `\"options\": { \"no_additional_properties\": true, \"keep_oneof_values\": false }`\n- **Dynamic Field Dependencies & Templates**:\n  - `watch`: Watch other form fields (e.g. `\"watch\": { \"vminmax\": \"vminmax\" }`).\n  - `template`: Interpolate watched values into string templates (e.g. `\"template\": \"{{vminmax.vmin}},{{vminmax.vmax}}\"`).\n- **Custom & Advanced Inputs**:\n  - `format: \"minmax\"`: Dual-handle range slider (via `tc-range-slider`) for selecting min/max bounds with automatic precision detection based on `step`.\n  - `format: \"range\"`: Single range slider with `minimum`, `maximum`, and `step`.\n  - `format: \"markdown\"` / `format: \"ace\"`: Markdown and Ace code editor integration. Supports `options.markdownToolbar` with optional file upload (`options.markdownToolbar.upload` / `options.uploadEndpoint`) and custom buttons.\n  - `format: \"spatial\"`: Bounding box, polygon, point, and line drawing integrated with `eox-map` / `eox-drawtools`.\n- **URL Parameter Filtering (`removeProperties`)**:\n  - Use `options.removeProperties: [\"vminmax\"]` to drop intermediate form/slider properties from consumers and tile URL updates.\n- **Configuration Options**:\n  - `no_additional_properties: true`: Restrict output strictly to defined schema properties.\n  - `disable_collapse`, `disable_edit_json`, `disable_properties`: Standard JSON-Editor UI toggles.\n\nFeatures:\n- Renders forms from JSON schema, supporting complex nested structures, branching (`anyOf`/`oneOf`), and custom validation.\n- All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).\n- Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).\n- Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).\n- Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.\n- Can load schema and values from external URLs, supporting async loading and ready events.\n- Integrates with `eox-map` for spatial feature selection when required.\n- Supports unstyled rendering for custom design integration.\n\nSee the stories for usage examples covering validation, custom editors, branching variants, spatial inputs, opt-in/optional properties, external loading, and more."
+        },
+        {
+          "kind": "variable",
+          "name": "EOxLayercontrol",
+          "type": {
+            "text": "object"
+          },
+          "default": "{ name: \"EOxLayercontrol\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-layercontrol\", events: [\"layerchange\", \"layerConfig:change\"], schema: z.object({ /** Query selector of an `eox-map` (`String`, passed as an attribute or property) or an `eox-map` DOM element (`HTMLElement`, passed as property) */ for: z.any().optional(), /** Layer id property */ idProperty: z.string().optional(), /** Layer title property */ titleProperty: z.string().optional(), /** Show layer state based on zoom level or not */ showLayerZoomState: z.boolean().optional(), /** Layer tools */ tools: z.array(z.any()).optional(), /** Enable-disable external layer */ addExternalLayers: z.boolean().optional(), /** Render the element without additional styles */ unstyled: z.boolean().optional(), /** Overrides elements current CSS. */ styleOverride: z.string().optional(), /** If enabled, the tools section will be rendered as list. */ toolsAsList: z.boolean().optional(), /** If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group). */ globallyExclusiveLayers: z.boolean().optional(), /** If enabled, toggling the layer visibility will also open/close the layer tools. */ toolsAutoExpand: z.boolean().optional(), /** List of custom editor interfaces for layer config eox-jsonforms Read more about the implementation of custom editor interfaces here: https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html */ customEditorInterfaces: z.array(z.any()).optional(), /** */ eoxMap: z.any().optional(), /** The native OL map instance */ map: z.any().optional(), /** */ colormapRegistry: z.any().optional(), }), }",
+          "description": "The `eox-layercontrol` element provides a user interface for managing and configuring layers of an `eox-map`. It connects to the underlying OpenLayers map instance and displays a list of layers, supporting advanced features such as optional layers, exclusive layers, layer tools, dynamic legends, time controls, and external layer addition.\n\n## Usage\nPlace `<eox-layercontrol></eox-layercontrol>` next to an `<eox-map></eox-map>` element. If there is only one `eox-map` present, `eox-layercontrol` will automatically connect to it. This can be configured\nvia the `for` attribute/property in order to support connecting to a specific map.\n\n## Layer Properties\nTo be displayed and managed correctly, the map layers should have custom properties set (e.g. using `properties.<property>` inside the `eox-map` layer json, or by doing `layer.set(property, value)` on the native OpenLayers layers).\n\n- `id?: string` — Unique identifier for the layer. Recommended for referencing and managing layers; also used for `eox-map` smart layer updating.\n- `title?: string` — Human-readable title for the layer, displayed in the control. Recommended for usability.\n- `layerControlHide?: boolean` — If true, hides the layer from the control UI.\n- `layerControlOptional?: boolean` — If true, the layer is initially hidden and can be added from the optional list.\n- `layerControlExclusive?: boolean` — If true, only one exclusive layer can be visualized at a time (taking into account all other layers on the same level with this property).\n- `layerControlExpand?: boolean` — If true, the layer is \"expanded\" by default, showing description, tools etc. (if available).\n- `layerControlToolsExpand?: boolean` — If true, the layer tools section is expanded by default.\n- `layerConfig?: object` — Configuration for the \"config\" tool, consisting of a JSON schema (rendered by `eox-jsonform`) for editable settings.\n- `layerDatetime?: object` — Configuration for the \"datetime\" tool, supporting time-based controls and playback.\n- `layerLegend?: object` — Configuration for the \"legend\" tool, supporting dynamic color legends.\n\nFor `eox-map` attributes/properties and emitted events, see below.\n\n## Additional Helper Methods\n\n- `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `[\"var\", \"<key>\"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`.\n\nUsage: `import { updateVectorLayerStyle } from \"@eox/layercontrol\";`"
         },
         {
           "kind": "variable",
@@ -5826,12 +5826,12 @@
         },
         {
           "kind": "variable",
-          "name": "EOxMap",
+          "name": "EOxStacinfo",
           "type": {
             "text": "object"
           },
-          "default": "{ name: \"EOxMap\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-map\", events: [ \"resize\", \"clusterSelect\", \"loadend\", \"mapmounted\", \"select\", \"layerschanged\", ], schema: z.object({ /** Gets the current configuration of the map. */ config: z.any().optional(), /** Gets the current center coordinates of the map. */ center: z.array(z.any()).optional(), /** Gets the current layers of the map */ layers: z.array(z.any()).optional(), /** Gets the current zoom level of the map. */ zoom: z.number().optional(), /** Gets the current animation options. */ animationOptions: z.any().optional(), /** Gets the current map controls. */ controls: z.any().optional(), /** Object to store various map interactions (e.g., drag, zoom). */ interactions: z.any().optional(), /** Gets the current center of the map in longitude and latitude. */ lonLatCenter: z.array(z.any()).optional(), /** Gets the current extent of the map in longitude and latitude. */ lonLatExtent: z.array(z.any()).optional(), /** Gets the current scroll interaction state. */ preventScroll: z.boolean().optional(), /** Gets the current map projection. */ projection: z.any().optional(), /** Gets the current sync state of the map. */ sync: z.string().optional(), /** Gets the current extent of the map. */ zoomExtent: z.array(z.any()).optional(), /** Gets the current globe configuration properties. */ globeConfig: z.any().optional(), /** Stores the last 2D projection to switch back from globe view. */ last2dProjection: z.any().optional(), /** Gets the openlayer map projection. */ OLprojection: z.any().optional(), /** Sets the Whether the globe is enabled. */ globeEnabled: z.boolean().optional(), /** The OpenLayers map instance. */ map: z.any().optional(), /** Object to store selection interactions for the map. */ selectInteractions: z.any().optional(), /** Object to store map controls (e.g., custom buttons, geolocation). */ mapControls: z.any().optional(), /** The globe instance when using globe projection. todo: define proper type */ globe: z.any().optional(), }), }",
-          "description": "The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.\n\n## Basic usage:\n\n```\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\n\nSome basic layers, sources and formats are included in the default bundle, for advanced usage it is\nrequired to import the `advancedLayersAndSources` plugin.\n\nIncluded in the base bundle:\n- Formats: `GeoJSON`, `MVT`\n- Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`\n- Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`\n\nIn order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:\n\n```\nimport \"@eox/map/src/plugins/advancedLayersAndSources\"\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\nIncluded in the advanced plugin bundle:\n- Layers:\n  - All OpenLayers layer types\n  - [`STAC`](https://github.com/m-mohr/ol-stac)\n- Sources:\n  - All OpenLayers source types\n  - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)\n- Reprojection through [proj4](https://github.com/proj4js/proj4js)\n\nFor usage and story examples, see the Storybook stories in `/elements/map/stories`.\n\n## Features\n\n- **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.\n- **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.\n- **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured with `position`, `target`, and `orientation` for flexible UI layouts. Developers can also inject custom HTML tools via Shadow DOM `<slot>`s mapped to specific regions.\n- **Responsive Design:** The map emits a `resize` event providing current dimensions and a mobile breakpoint flag (`isSmall`), allowing dynamic adjustment of control layouts and map properties.\n- **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.\n- **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.\n- **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.\n- **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.\n- **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.\n- **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.\n- **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.\n- **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.\n- **Globe View:** Interactive 3D globe by using \"globe\" projection property. Configure via the `globeConfig` object.\n\n## Events\n\n- `clusterSelect`: Fired when a cluster is selected.\n- `loadend`: Fired when the map has finished loading.\n- `mapmounted`: Fired when the map is successfully mounted.\n- `select`: Fired when a feature is selected.\n- `layerschanged`: Fired when the layers have been changed.\n\n## Methods\n\n- `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.\n- `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.\n- `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.\n- `parseFeature`: Parses a feature from the input data.\n- `parseTextToFeature`: Parses text into a feature.\n\nUsage: `document.querySelector(\"eox-map\").registerProjection([...]);`\n\n## Additional Helper Methods\n\n- `buffer`: Applies a buffer around an extent\n- `transform`, `transformExtent`: Transform coordinates and extents between projections.\n\nUsage: `import { buffer, transform, transformExtent } from \"@eox/map\";`"
+          "default": "{ name: \"EOxStacinfo\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-stacinfo\", events: [], schema: z.object({ /** Whether to allow HTML in the property display */ allowHtml: z.boolean().optional(), /** Whether to use unstyled mode */ unstyled: z.boolean().optional(), /** The identifier for the STAC resource to fetch */ for: z.string().optional(), /** Keys of properties to display in the header */ header: z.array(z.any()).optional(), /** Keys of properties to display to display as tags */ tags: z.array(z.any()).optional(), /** Keys of properties to display to display in the main body */ body: z.array(z.any()).optional(), /** Keys of properties to display in the featured section */ featured: z.array(z.any()).optional(), /** Keys of properties to display in the footer */ footer: z.array(z.any()).optional(), /** The state object containing the fetched STAC information */ stacInfo: z.array(z.any()).optional(), /** The state object containing the parsed STAC properties */ stacProperties: z.array(z.any()).optional(), }), }",
+          "description": "### Introduction\nWorking with STAC catalogs, collections and items often times requires\nto fetch a JSON file, parse its contents and display some of its fields\nin some formatted way. To make these steps reusable, the `eox-stacinfo`\nelement offers a set of functionalities:\n- **automatically fetch a STAC file** as soon as the element loads\n- offer a **property whitelist** functionality to choose which properties to display\n- display the properties in **configurable sections** (header, body, featured, footer)\n- allow to **override** any property display for application-specific custom needs\n\nThe use case for this element is alongside a map which displays STAC files\nor in a catalog browsing scenario where a quick look at the most important properties\nis needed.\n\n#### Technology\nUnder the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.\n\n#### Usage\nPlace `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.\n\nEach section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.\n\nA `Filter` object has the following structure:\n```javascript\n{\n  key: \"links\",\n  filter: (link) => {\n    // Return true/false to include/exclude items from a list (e.g. assets, links)\n    return link.rel === \"example\";\n  }\n}\n```\n\nSections:\n- `header`: Array of property keys or Filters to display at the top\n- `tags`: Array of property keys or Filters to display as tags\n- `body`: Array of property keys or Filters for the main content\n- `featured`: Array of property keys or Filters for prominent display\n- `footer`: Array of property keys or Filters for the bottom section\n\n#### Customization\n- **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.\n- **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems."
         },
         {
           "kind": "variable",
@@ -5844,12 +5844,12 @@
         },
         {
           "kind": "variable",
-          "name": "EOxStacinfo",
+          "name": "EOxMap",
           "type": {
             "text": "object"
           },
-          "default": "{ name: \"EOxStacinfo\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-stacinfo\", events: [], schema: z.object({ /** Whether to allow HTML in the property display */ allowHtml: z.boolean().optional(), /** Whether to use unstyled mode */ unstyled: z.boolean().optional(), /** The identifier for the STAC resource to fetch */ for: z.string().optional(), /** Keys of properties to display in the header */ header: z.array(z.any()).optional(), /** Keys of properties to display to display as tags */ tags: z.array(z.any()).optional(), /** Keys of properties to display to display in the main body */ body: z.array(z.any()).optional(), /** Keys of properties to display in the featured section */ featured: z.array(z.any()).optional(), /** Keys of properties to display in the footer */ footer: z.array(z.any()).optional(), /** The state object containing the fetched STAC information */ stacInfo: z.array(z.any()).optional(), /** The state object containing the parsed STAC properties */ stacProperties: z.array(z.any()).optional(), }), }",
-          "description": "### Introduction\nWorking with STAC catalogs, collections and items often times requires\nto fetch a JSON file, parse its contents and display some of its fields\nin some formatted way. To make these steps reusable, the `eox-stacinfo`\nelement offers a set of functionalities:\n- **automatically fetch a STAC file** as soon as the element loads\n- offer a **property whitelist** functionality to choose which properties to display\n- display the properties in **configurable sections** (header, body, featured, footer)\n- allow to **override** any property display for application-specific custom needs\n\nThe use case for this element is alongside a map which displays STAC files\nor in a catalog browsing scenario where a quick look at the most important properties\nis needed.\n\n#### Technology\nUnder the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.\n\n#### Usage\nPlace `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.\n\nEach section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.\n\nA `Filter` object has the following structure:\n```javascript\n{\n  key: \"links\",\n  filter: (link) => {\n    // Return true/false to include/exclude items from a list (e.g. assets, links)\n    return link.rel === \"example\";\n  }\n}\n```\n\nSections:\n- `header`: Array of property keys or Filters to display at the top\n- `tags`: Array of property keys or Filters to display as tags\n- `body`: Array of property keys or Filters for the main content\n- `featured`: Array of property keys or Filters for prominent display\n- `footer`: Array of property keys or Filters for the bottom section\n\n#### Customization\n- **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.\n- **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems."
+          "default": "{ name: \"EOxMap\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-map\", events: [ \"resize\", \"clusterSelect\", \"loadend\", \"mapmounted\", \"select\", \"layerschanged\", ], schema: z.object({ /** Gets the current configuration of the map. */ config: z.any().optional(), /** Gets the current center coordinates of the map. */ center: z.array(z.any()).optional(), /** Gets the current layers of the map */ layers: z.array(z.any()).optional(), /** Gets the current zoom level of the map. */ zoom: z.number().optional(), /** Gets the current animation options. */ animationOptions: z.any().optional(), /** Gets the current map controls. */ controls: z.any().optional(), /** Object to store various map interactions (e.g., drag, zoom). */ interactions: z.any().optional(), /** Gets the current center of the map in longitude and latitude. */ lonLatCenter: z.array(z.any()).optional(), /** Gets the current extent of the map in longitude and latitude. */ lonLatExtent: z.array(z.any()).optional(), /** Gets the current scroll interaction state. */ preventScroll: z.boolean().optional(), /** Gets the current map projection. */ projection: z.any().optional(), /** Gets the current sync state of the map. */ sync: z.string().optional(), /** Gets the current extent of the map. */ zoomExtent: z.array(z.any()).optional(), /** Gets the current globe configuration properties. */ globeConfig: z.any().optional(), /** Stores the last 2D projection to switch back from globe view. */ last2dProjection: z.any().optional(), /** Gets the openlayer map projection. */ OLprojection: z.any().optional(), /** Sets the Whether the globe is enabled. */ globeEnabled: z.boolean().optional(), /** The OpenLayers map instance. */ map: z.any().optional(), /** Object to store selection interactions for the map. */ selectInteractions: z.any().optional(), /** Object to store map controls (e.g., custom buttons, geolocation). */ mapControls: z.any().optional(), /** The globe instance when using globe projection. todo: define proper type */ globe: z.any().optional(), }), }",
+          "description": "The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.\n\n## Basic usage:\n\n```\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\n\nSome basic layers, sources and formats are included in the default bundle, for advanced usage it is\nrequired to import the `advancedLayersAndSources` plugin.\n\nIncluded in the base bundle:\n- Formats: `GeoJSON`, `MVT`\n- Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`\n- Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`\n\nIn order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:\n\n```\nimport \"@eox/map/src/plugins/advancedLayersAndSources\"\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\nIncluded in the advanced plugin bundle:\n- Layers:\n  - All OpenLayers layer types\n  - [`STAC`](https://github.com/m-mohr/ol-stac)\n- Sources:\n  - All OpenLayers source types\n  - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)\n- Reprojection through [proj4](https://github.com/proj4js/proj4js)\n\nFor usage and story examples, see the Storybook stories in `/elements/map/stories`.\n\n## Features\n\n- **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.\n- **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.\n- **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured with `position`, `target`, and `orientation` for flexible UI layouts. Developers can also inject custom HTML tools via Shadow DOM `<slot>`s mapped to specific regions.\n- **Responsive Design:** The map emits a `resize` event providing current dimensions and a mobile breakpoint flag (`isSmall`), allowing dynamic adjustment of control layouts and map properties.\n- **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.\n- **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.\n- **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.\n- **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.\n- **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.\n- **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.\n- **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.\n- **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.\n- **Globe View:** Interactive 3D globe by using \"globe\" projection property. Configure via the `globeConfig` object.\n\n## Events\n\n- `clusterSelect`: Fired when a cluster is selected.\n- `loadend`: Fired when the map has finished loading.\n- `mapmounted`: Fired when the map is successfully mounted.\n- `select`: Fired when a feature is selected.\n- `layerschanged`: Fired when the layers have been changed.\n\n## Methods\n\n- `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.\n- `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.\n- `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.\n- `parseFeature`: Parses a feature from the input data.\n- `parseTextToFeature`: Parses text into a feature.\n\nUsage: `document.querySelector(\"eox-map\").registerProjection([...]);`\n\n## Additional Helper Methods\n\n- `buffer`: Applies a buffer around an extent\n- `transform`, `transformExtent`: Transform coordinates and extents between projections.\n- `isGeoZarrLayer`: Checks if a layer is a GeoZarr layer.\n- `setupGeoZarrLayer`: Sets up a GeoZarr layer with the necessary configurations.\n\nUsage: `import { buffer, transform, transformExtent, isGeoZarrLayer, setupGeoZarrLayer } from \"@eox/map\";`"
         },
         {
           "kind": "variable",
@@ -5875,7 +5875,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{ name: \"EOxA2uiElement\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-a2ui-element\", events: [\"eventName\"], schema: z.object({ /** */ _elementRef: z.any().optional(), /** */ _appliedProps: z.any().optional(), }), }",
+          "default": "{ name: \"EOxA2uiElement\", tagName: \"eox-a2ui-element\", targetTagName: \"eox-a2ui-element\", events: [\"eventName\"], schema: z.object({ /** */ map: z.any().optional(), /** */ _elementRef: z.any().optional(), /** */ _appliedProps: z.any().optional(), }), }",
           "description": "A2UI wrapper for eox-a2ui-element"
         },
         {
@@ -5893,7 +5893,7 @@
           "type": {
             "text": "array"
           },
-          "default": "[ EOxChart, EOxFeedback, EOxDrawtools, EOxGeosearch, EOxItemfilter, EOxLayercontrol, EOxJsonform, EOxLayout, EOxLayoutItem, EOxMap, EOxStorytelling, EOxStacinfo, EOxTimecontrol, EOxTour, EOxA2uiElement, EOxA2uiWrapper, ]"
+          "default": "[ EOxChart, EOxDrawtools, EOxFeedback, EOxGeosearch, EOxItemfilter, EOxJsonform, EOxLayercontrol, EOxLayout, EOxLayoutItem, EOxStacinfo, EOxStorytelling, EOxMap, EOxTimecontrol, EOxTour, EOxA2uiElement, EOxA2uiWrapper, ]"
         }
       ],
       "exports": [
@@ -5915,17 +5915,17 @@
         },
         {
           "kind": "js",
-          "name": "EOxFeedback",
+          "name": "EOxDrawtools",
           "declaration": {
-            "name": "EOxFeedback",
+            "name": "EOxDrawtools",
             "module": "a2ui/src/generated-catalog.js"
           }
         },
         {
           "kind": "js",
-          "name": "EOxDrawtools",
+          "name": "EOxFeedback",
           "declaration": {
-            "name": "EOxDrawtools",
+            "name": "EOxFeedback",
             "module": "a2ui/src/generated-catalog.js"
           }
         },
@@ -5947,17 +5947,17 @@
         },
         {
           "kind": "js",
-          "name": "EOxLayercontrol",
+          "name": "EOxJsonform",
           "declaration": {
-            "name": "EOxLayercontrol",
+            "name": "EOxJsonform",
             "module": "a2ui/src/generated-catalog.js"
           }
         },
         {
           "kind": "js",
-          "name": "EOxJsonform",
+          "name": "EOxLayercontrol",
           "declaration": {
-            "name": "EOxJsonform",
+            "name": "EOxLayercontrol",
             "module": "a2ui/src/generated-catalog.js"
           }
         },
@@ -5979,9 +5979,9 @@
         },
         {
           "kind": "js",
-          "name": "EOxMap",
+          "name": "EOxStacinfo",
           "declaration": {
-            "name": "EOxMap",
+            "name": "EOxStacinfo",
             "module": "a2ui/src/generated-catalog.js"
           }
         },
@@ -5995,9 +5995,9 @@
         },
         {
           "kind": "js",
-          "name": "EOxStacinfo",
+          "name": "EOxMap",
           "declaration": {
-            "name": "EOxStacinfo",
+            "name": "EOxMap",
             "module": "a2ui/src/generated-catalog.js"
           }
         },
