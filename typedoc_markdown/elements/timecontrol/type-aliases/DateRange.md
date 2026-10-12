@@ -8,6 +8,6 @@
 
 > **DateRange** = \[`string`, `string`\]
 
-Defined in: [elements/timecontrol/src/types.ts:86](https://github.com/EOX-A/EOxElements/blob/d7388720cbfa7147ac926fa82884ad79aa1deb70/elements/timecontrol/src/types.ts#L86)
+Defined in: [elements/timecontrol/src/types.ts:86](https://github.com/EOX-A/EOxElements/blob/1660396e143009c6475d0a3833e1cb1a5845bf25/elements/timecontrol/src/types.ts#L86)
 
 Represents a date range as an array of two ISO date strings.
