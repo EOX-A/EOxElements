@@ -8,4 +8,4 @@
 
 > **EOxMap** = `eoxMap`
 
-Defined in: [elements/map/src/typings.d.ts:3](https://github.com/EOX-A/EOxElements/blob/e13ce5264818bd7ced917df6c9d34e11f915899e/elements/map/src/typings.d.ts#L3)
+Defined in: [elements/map/src/typings.d.ts:3](https://github.com/EOX-A/EOxElements/blob/00ec533f7d2db92b906807f4f36402891b2eedaa/elements/map/src/typings.d.ts#L3)
