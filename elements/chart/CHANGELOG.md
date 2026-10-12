@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/chart-v1.2.1...chart-v1.3.0) (2026-10-12)
+
+
+### Features
+
+* Add overview and zoom chart story with drag handles ([#2573](https://github.com/EOX-A/EOxElements/issues/2573)) ([7125703](https://github.com/EOX-A/EOxElements/commit/7125703f48e1971886363c3bb5ed1a327b79c334))
+
 ## [1.2.1](https://github.com/EOX-A/EOxElements/compare/chart-v1.2.0...chart-v1.2.1) (2026-09-28)
 
 
