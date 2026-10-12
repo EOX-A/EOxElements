@@ -8,4 +8,4 @@
 
 > **AnyLayerWithSource** = `default` \| `default` \| `default` \| [`VectorOrVectorTileLayer`](VectorOrVectorTileLayer.md)
 
-Defined in: [elements/map/src/types.ts:26](https://github.com/EOX-A/EOxElements/blob/7125703f48e1971886363c3bb5ed1a327b79c334/elements/map/src/types.ts#L26)
+Defined in: [elements/map/src/types.ts:26](https://github.com/EOX-A/EOxElements/blob/18ce9e6c9f10fe1dc47c6d133150092d99916cf7/elements/map/src/types.ts#L26)
