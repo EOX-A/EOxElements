@@ -5,7 +5,7 @@
   "elements/map": "2.8.0",
   "elements/stacinfo": "1.2.0",
   "elements/timecontrol": "2.8.0",
-  "elements/jsonform": "1.14.0",
+  "elements/jsonform": "1.14.1",
   "elements/layout": "1.2.0",
   "elements/storytelling": "1.13.0",
   "elements/geosearch": "1.2.0",
@@ -14,5 +14,5 @@
   "utils": "1.2.0",
   "mcp-server": "1.3.0",
   "elements/tour": "1.1.0",
-  "a2ui": "1.3.0"
+  "a2ui": "1.4.0"
 }

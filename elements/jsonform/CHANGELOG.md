@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.14.0...jsonform-v1.14.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* Sticky ace toolbar ([#2556](https://github.com/EOX-A/EOxElements/issues/2556)) ([d738872](https://github.com/EOX-A/EOxElements/commit/d7388720cbfa7147ac926fa82884ad79aa1deb70))
+
 ## [1.14.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.13.0...jsonform-v1.14.0) (2026-09-04)
 
 
