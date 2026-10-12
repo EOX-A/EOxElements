@@ -1,10 +1,13 @@
 const OverviewZoom = {
   args: {
     style: "width: 100%; height: 450px;",
+    opt: {
+      renderer: "svg",
+    },
     spec: {
       $schema: "https://vega.github.io/schema/vega/v5.json",
       description:
-        "Overview + detail chart with individually draggable left and right zoom handles.",
+        "Overview + detail chart with individually draggable left and right zoom handles, styled consistently with eox-timecontrol and supporting dark mode.",
       width: 640,
       height: 350,
       padding: 10,
@@ -153,8 +156,24 @@ const OverviewZoom = {
             },
           ],
           axes: [
-            { orient: "bottom", scale: "xDetail" },
-            { orient: "left", scale: "yDetail", title: "Price ($)" },
+            {
+              orient: "bottom",
+              scale: "xDetail",
+              domainColor: "var(--outline, #74777f)",
+              tickColor: "var(--outline, #74777f)",
+              labelColor: "var(--on-surface, #1a1c1e)",
+              titleColor: "var(--on-surface, #1a1c1e)",
+            },
+            {
+              orient: "left",
+              scale: "yDetail",
+              title: "Price ($)",
+              domainColor: "var(--outline, #74777f)",
+              tickColor: "var(--outline, #74777f)",
+              labelColor: "var(--on-surface, #1a1c1e)",
+              titleColor: "var(--on-surface, #1a1c1e)",
+              gridColor: "var(--outline-variant, #e0e2ec)",
+            },
           ],
           marks: [
             {
@@ -175,7 +194,7 @@ const OverviewZoom = {
                       x: { scale: "xDetail", field: "date" },
                       y: { scale: "yDetail", field: "price" },
                       y2: { scale: "yDetail", value: 0 },
-                      fill: { value: "#004170" },
+                      fill: { value: "var(--primary, #004170)" },
                     },
                   },
                 },
@@ -204,7 +223,17 @@ const OverviewZoom = {
               zero: true,
             },
           ],
-          axes: [{ orient: "bottom", scale: "xOverview", title: "Date" }],
+          axes: [
+            {
+              orient: "bottom",
+              scale: "xOverview",
+              title: "Date",
+              domainColor: "var(--outline, #74777f)",
+              tickColor: "var(--outline, #74777f)",
+              labelColor: "var(--on-surface, #1a1c1e)",
+              titleColor: "var(--on-surface, #1a1c1e)",
+            },
+          ],
           marks: [
             {
               type: "rect",
@@ -229,7 +258,7 @@ const OverviewZoom = {
                   x: { scale: "xOverview", field: "date" },
                   y: { scale: "yOverview", field: "price" },
                   y2: { scale: "yOverview", value: 0 },
-                  fill: { value: "#94b8d7" },
+                  fill: { value: "var(--primary-container, #94b8d7)" },
                   opacity: { value: 0.7 },
                 },
               },
@@ -241,8 +270,8 @@ const OverviewZoom = {
                 enter: {
                   y: { value: 0 },
                   height: { field: { group: "height" } },
-                  fill: { value: "#004170" },
-                  fillOpacity: { value: 0.15 },
+                  fill: { value: "var(--primary, #004170)" },
+                  fillOpacity: { value: 0.2 },
                   cursor: { value: "grab" },
                 },
                 update: {
@@ -258,8 +287,8 @@ const OverviewZoom = {
                 enter: {
                   y: { value: 0 },
                   height: { field: { group: "height" } },
-                  width: { value: 2 },
-                  fill: { value: "#004170" },
+                  width: { value: 3 },
+                  fill: { value: "var(--primary, #004170)" },
                 },
                 update: {
                   x: { signal: "brush[0]" },
@@ -273,11 +302,11 @@ const OverviewZoom = {
                 enter: {
                   y: { value: 0 },
                   height: { field: { group: "height" } },
-                  width: { value: 2 },
-                  fill: { value: "#004170" },
+                  width: { value: 3 },
+                  fill: { value: "var(--primary, #004170)" },
                 },
                 update: {
-                  x: { signal: "brush[1] - 2" },
+                  x: { signal: "brush[1] - 3" },
                 },
               },
             },
@@ -290,10 +319,10 @@ const OverviewZoom = {
                   width: { value: 10 },
                   height: { value: 28 },
                   cornerRadius: { value: 5 },
-                  fill: { value: "#ffffff" },
-                  stroke: { value: "#004170" },
+                  fill: { value: "var(--surface, #ffffff)" },
+                  stroke: { value: "var(--primary, #004170)" },
                   strokeWidth: { value: 2 },
-                  cursor: { value: "ew-resize" },
+                  cursor: { value: "w-resize" },
                 },
                 update: {
                   x: { signal: "brush[0] - 5" },
@@ -309,10 +338,10 @@ const OverviewZoom = {
                   width: { value: 10 },
                   height: { value: 28 },
                   cornerRadius: { value: 5 },
-                  fill: { value: "#ffffff" },
-                  stroke: { value: "#004170" },
+                  fill: { value: "var(--surface, #ffffff)" },
+                  stroke: { value: "var(--primary, #004170)" },
                   strokeWidth: { value: 2 },
-                  cursor: { value: "ew-resize" },
+                  cursor: { value: "e-resize" },
                 },
                 update: {
                   x: { signal: "brush[1] - 5" },

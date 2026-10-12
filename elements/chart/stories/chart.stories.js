@@ -20,6 +20,7 @@ export default {
       .spec=${args.spec}
       .specbase64=${args.specbase64}
       .dataValues=${args.dataValues}
+      .opt=${args.opt}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
       .style=${args.style}
@@ -65,14 +66,16 @@ export const Base64EncodedSpec = Base64EncodedStory;
  * This example demonstrates a dual-view time series chart:
  * - **Detail View (top)**: A detailed area chart showing the zoomed time range, with its x-axis domain dynamically bound to the overview brush selection.
  * - **Overview View (bottom)**: A compact summary timeline displaying the full dataset extent with a draggable zoom window.
- * - **Individually Draggable Handles**: The left and right handles can be dragged individually to adjust the zoom range boundaries from either side (`ew-resize` cursor).
+ * - **Individually Draggable Handles**: The left and right handles can be dragged individually to adjust the zoom range boundaries from either side (`w-resize` / `e-resize` cursor, consistent with `eox-timecontrol`).
  * - **Panning & Redrawing**: The central shaded area can be dragged to pan the active window across time (`grab` cursor), and clicking/dragging on the overview background creates a new zoom window (`crosshair` cursor). Mouse wheel scrolling over the active window also zooms the range.
+ * - **Dark Mode & EOxUI Theme Support**: Rendered via SVG (`opt: { renderer: "svg" }`) using EOxUI CSS custom properties (`--primary`, `--primary-container`, `--surface`, `--on-surface`, `--outline`) with fallbacks so the chart, handles, text, and axes dynamically respond to dark mode.
  *
  * Fully functional example:
  *
  * ```html
  * <eox-chart
  *   style="width: 100%; height: 450px;"
+ *   .opt=${{ renderer: "svg" }}
  *   .spec=${{
  *     $schema: "https://vega.github.io/schema/vega/v5.json",
  *     description:
@@ -221,8 +224,24 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *           },
  *         ],
  *         axes: [
- *           { orient: "bottom", scale: "xDetail" },
- *           { orient: "left", scale: "yDetail", title: "Price ($)" },
+ *           {
+ *             orient: "bottom",
+ *             scale: "xDetail",
+ *             domainColor: "var(--outline, #74777f)",
+ *             tickColor: "var(--outline, #74777f)",
+ *             labelColor: "var(--on-surface, #1a1c1e)",
+ *             titleColor: "var(--on-surface, #1a1c1e)",
+ *           },
+ *           {
+ *             orient: "left",
+ *             scale: "yDetail",
+ *             title: "Price ($)",
+ *             domainColor: "var(--outline, #74777f)",
+ *             tickColor: "var(--outline, #74777f)",
+ *             labelColor: "var(--on-surface, #1a1c1e)",
+ *             titleColor: "var(--on-surface, #1a1c1e)",
+ *             gridColor: "var(--outline-variant, #e0e2ec)",
+ *           },
  *         ],
  *         marks: [
  *           {
@@ -243,7 +262,7 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *                     x: { scale: "xDetail", field: "date" },
  *                     y: { scale: "yDetail", field: "price" },
  *                     y2: { scale: "yDetail", value: 0 },
- *                     fill: { value: "#004170" },
+ *                     fill: { value: "var(--primary, #004170)" },
  *                   },
  *                 },
  *               },
@@ -272,7 +291,17 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *             zero: true,
  *           },
  *         ],
- *         axes: [{ orient: "bottom", scale: "xOverview", title: "Date" }],
+ *         axes: [
+ *           {
+ *             orient: "bottom",
+ *             scale: "xOverview",
+ *             title: "Date",
+ *             domainColor: "var(--outline, #74777f)",
+ *             tickColor: "var(--outline, #74777f)",
+ *             labelColor: "var(--on-surface, #1a1c1e)",
+ *             titleColor: "var(--on-surface, #1a1c1e)",
+ *           },
+ *         ],
  *         marks: [
  *           {
  *             type: "rect",
@@ -297,7 +326,7 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *                 x: { scale: "xOverview", field: "date" },
  *                 y: { scale: "yOverview", field: "price" },
  *                 y2: { scale: "yOverview", value: 0 },
- *                 fill: { value: "#94b8d7" },
+ *                 fill: { value: "var(--primary-container, #94b8d7)" },
  *                 opacity: { value: 0.7 },
  *               },
  *             },
@@ -309,8 +338,8 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *               enter: {
  *                 y: { value: 0 },
  *                 height: { field: { group: "height" } },
- *                 fill: { value: "#004170" },
- *                 fillOpacity: { value: 0.15 },
+ *                 fill: { value: "var(--primary, #004170)" },
+ *                 fillOpacity: { value: 0.2 },
  *                 cursor: { value: "grab" },
  *               },
  *               update: {
@@ -326,8 +355,8 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *               enter: {
  *                 y: { value: 0 },
  *                 height: { field: { group: "height" } },
- *                 width: { value: 2 },
- *                 fill: { value: "#004170" },
+ *                 width: { value: 3 },
+ *                 fill: { value: "var(--primary, #004170)" },
  *               },
  *               update: {
  *                 x: { signal: "brush[0]" },
@@ -341,11 +370,11 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *               enter: {
  *                 y: { value: 0 },
  *                 height: { field: { group: "height" } },
- *                 width: { value: 2 },
- *                 fill: { value: "#004170" },
+ *                 width: { value: 3 },
+ *                 fill: { value: "var(--primary, #004170)" },
  *               },
  *               update: {
- *                 x: { signal: "brush[1] - 2" },
+ *                 x: { signal: "brush[1] - 3" },
  *               },
  *             },
  *           },
@@ -358,10 +387,10 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *                 width: { value: 10 },
  *                 height: { value: 28 },
  *                 cornerRadius: { value: 5 },
- *                 fill: { value: "#ffffff" },
- *                 stroke: { value: "#004170" },
+ *                 fill: { value: "var(--surface, #ffffff)" },
+ *                 stroke: { value: "var(--primary, #004170)" },
  *                 strokeWidth: { value: 2 },
- *                 cursor: { value: "ew-resize" },
+ *                 cursor: { value: "w-resize" },
  *               },
  *               update: {
  *                 x: { signal: "brush[0] - 5" },
@@ -377,10 +406,10 @@ export const Base64EncodedSpec = Base64EncodedStory;
  *                 width: { value: 10 },
  *                 height: { value: 28 },
  *                 cornerRadius: { value: 5 },
- *                 fill: { value: "#ffffff" },
- *                 stroke: { value: "#004170" },
+ *                 fill: { value: "var(--surface, #ffffff)" },
+ *                 stroke: { value: "var(--primary, #004170)" },
  *                 strokeWidth: { value: 2 },
- *                 cursor: { value: "ew-resize" },
+ *                 cursor: { value: "e-resize" },
  *               },
  *               update: {
  *                 x: { signal: "brush[1] - 5" },
