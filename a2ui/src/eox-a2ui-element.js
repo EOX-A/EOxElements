@@ -41,8 +41,11 @@ export class EOxA2uiElement extends A2uiLitElement {
   }
 
   get map() {
-    const eoxMap = this.querySelector("eox-map");
-    return eoxMap ? eoxMap.map : undefined;
+    return (
+      this._elementRef?.value?.map ||
+      this.querySelector("eox-map")?.map ||
+      undefined
+    );
   }
 
   createRenderRoot() {
@@ -81,6 +84,71 @@ export class EOxA2uiElement extends A2uiLitElement {
       if (element) {
         element.style.cssText =
           "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
+      }
+    } else if (type === "EOxMap" && element) {
+      if (!element.controls) {
+        element.controls = { LoadingIndicator: { type: "small" } };
+      } else if (
+        typeof element.controls === "object" &&
+        !Array.isArray(element.controls) &&
+        !element.controls.LoadingIndicator
+      ) {
+        element.controls = {
+          ...element.controls,
+          LoadingIndicator: { type: "small" },
+        };
+      }
+    } else if (type === "EOxTimeControl" && element) {
+      if (!element.querySelector("eox-timecontrol-date")) {
+        const dateEl = document.createElement("eox-timecontrol-date");
+        dateEl.setAttribute("navigation", "");
+        element.appendChild(dateEl);
+      }
+      if (
+        !element.querySelector("eox-timecontrol-slider") &&
+        !element.querySelector("eox-timecontrol-picker")
+      ) {
+        const sliderEl = document.createElement("eox-timecontrol-slider");
+        element.appendChild(sliderEl);
+      }
+      if (!element.eoxMap && !element.for) {
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const mapEl = root.querySelector("eox-map");
+        if (mapEl) {
+          element.eoxMap = mapEl;
+          element.for = mapEl;
+        }
+      }
+    } else if (type === "EOxLayerControl" && element) {
+      if (!element.tools || element.tools.length === 0) {
+        element.tools = ["legend"];
+        element.setAttribute("tools", '["legend"]');
+      }
+      if (!element.hasAttribute("tools-auto-expand")) {
+        element.toolsAutoExpand = true;
+        element.setAttribute("tools-auto-expand", "");
+      }
+      if (!element.eoxMap && !element.for) {
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const mapEl = root.querySelector("eox-map");
+        if (mapEl) {
+          element.eoxMap = mapEl;
+          element.for = mapEl;
+        }
+      }
+    } else if (type === "EOxDrawTools" && element) {
+      if (!element.eoxMap && !element.for) {
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const mapEl = root.querySelector("eox-map");
+        if (mapEl) {
+          element.eoxMap = mapEl;
+          element.for = mapEl;
+          if (typeof element.updateLayer === "function") {
+            try {
+              element.updateLayer();
+            } catch (e) {}
+          }
+        }
       }
     }
 
@@ -227,6 +295,20 @@ export class EOxA2uiElement extends A2uiLitElement {
 
       // Pass all properties to the EOxElement
       const mergedProps = { ...this.controller.props, ...transformedProps };
+      if (type === "EOxMap") {
+        if (!mergedProps.controls) {
+          mergedProps.controls = { LoadingIndicator: { type: "small" } };
+        } else if (
+          typeof mergedProps.controls === "object" &&
+          !Array.isArray(mergedProps.controls) &&
+          !mergedProps.controls.LoadingIndicator
+        ) {
+          mergedProps.controls = {
+            ...mergedProps.controls,
+            LoadingIndicator: { type: "small" },
+          };
+        }
+      }
       for (const [key, value] of Object.entries(mergedProps)) {
         if (key === "children") {
           continue;

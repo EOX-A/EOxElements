@@ -2,7 +2,7 @@
 // Generated automatically from custom-elements.json. Do not edit.
 import { z } from "zod";
 
-export const version = "1.2.0";
+export const version = "1.3.0";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
@@ -42,44 +42,6 @@ export const EOxChart = {
     noShadow: z.boolean().optional(),
     /** Render the element without additional styles */
     unstyled: z.boolean().optional(),
-  }),
-};
-
-/**
- * The `eox-feedback` element provides a modal dialog for collecting user feedback.
- * It supports screenshot capture, customizable endpoint, and flexible styling.
- * The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM
- * directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),
- * which can be positioned in any corner of the viewport.
- *
- * On submit, the element sends a `POST` request with `FormData` to the configured
- * `endpoint`. The payload includes the feedback message (or custom form fields when
- * using a `schema`), the current page URL, the browser's user agent, screen resolution and optionally
- * a screenshot file. This makes it straightforward to connect to any backend — for
- * example a service that creates issues in a Git platform (GitLab, GitHub, …), sends
- * notifications, or stores feedback in a database.
- *
- * The backend only needs to accept a `multipart/form-data` POST request, extract the
- * fields and the optional file attachment, and then forward them to whatever system
- * you use for tracking or processing feedback. Because all authentication and API
- * tokens live on the server side, the browser never sees sensitive credentials.
- * Typical backend responsibilities include input sanitization, CORS configuration to
- * restrict which origins may submit feedback, and mapping the received fields into the
- * format expected by the target system (e.g. composing an issue title and body, or
- * building an email).
- */
-export const EOxFeedback = {
-  name: "EOxFeedback",
-  tagName: "eox-a2ui-element",
-  targetTagName: "eox-feedback",
-  events: ["submit", "close"],
-  schema: z.object({
-    /** The endpoint to send the feedback to as POST message. */
-    endpoint: z.string().optional(),
-    /** If provided, the element will not be styled with EOX styles. */
-    unstyled: z.string().optional(),
-    /** The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported. */
-    schema: z.any().optional(),
   }),
 };
 
@@ -166,6 +128,44 @@ export const EOxDrawtools = {
     modify: z.any().optional(),
     /**  */
     selectionEvents: z.any().optional(),
+  }),
+};
+
+/**
+ * The `eox-feedback` element provides a modal dialog for collecting user feedback.
+ * It supports screenshot capture, customizable endpoint, and flexible styling.
+ * The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM
+ * directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),
+ * which can be positioned in any corner of the viewport.
+ *
+ * On submit, the element sends a `POST` request with `FormData` to the configured
+ * `endpoint`. The payload includes the feedback message (or custom form fields when
+ * using a `schema`), the current page URL, the browser's user agent, screen resolution and optionally
+ * a screenshot file. This makes it straightforward to connect to any backend — for
+ * example a service that creates issues in a Git platform (GitLab, GitHub, …), sends
+ * notifications, or stores feedback in a database.
+ *
+ * The backend only needs to accept a `multipart/form-data` POST request, extract the
+ * fields and the optional file attachment, and then forward them to whatever system
+ * you use for tracking or processing feedback. Because all authentication and API
+ * tokens live on the server side, the browser never sees sensitive credentials.
+ * Typical backend responsibilities include input sanitization, CORS configuration to
+ * restrict which origins may submit feedback, and mapping the received fields into the
+ * format expected by the target system (e.g. composing an issue title and body, or
+ * building an email).
+ */
+export const EOxFeedback = {
+  name: "EOxFeedback",
+  tagName: "eox-a2ui-element",
+  targetTagName: "eox-feedback",
+  events: ["submit", "close"],
+  schema: z.object({
+    /** The endpoint to send the feedback to as POST message. */
+    endpoint: z.string().optional(),
+    /** If provided, the element will not be styled with EOX styles. */
+    unstyled: z.string().optional(),
+    /** The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported. */
+    schema: z.any().optional(),
   }),
 };
 
@@ -310,6 +310,68 @@ export const EOxItemfilter = {
 };
 
 /**
+ * `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.
+ * It is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.
+ * Also check out the [JSON Editor Documentation](https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md) for full details on schema syntax, options, and built-in editors.
+ *
+ * Core JSON-Editor Features & Options Reference:
+ * - **Branching (`anyOf` / `oneOf`)**:
+ *   - Use `"keep_oneof_values": false` in `options` when variants define different defaults, types (e.g., string vs array), or numeric ranges/steps. By default, JSON-Editor carries over values (`keep_oneof_values: true`), corrupting branch defaults and slider ranges.
+ *   - Example: `"options": { "no_additional_properties": true, "keep_oneof_values": false }`
+ * - **Dynamic Field Dependencies & Templates**:
+ *   - `watch`: Watch other form fields (e.g. `"watch": { "vminmax": "vminmax" }`).
+ *   - `template`: Interpolate watched values into string templates (e.g. `"template": "{{vminmax.vmin}},{{vminmax.vmax}}"`).
+ * - **Custom & Advanced Inputs**:
+ *   - `format: "minmax"`: Dual-handle range slider (via `tc-range-slider`) for selecting min/max bounds with automatic precision detection based on `step`.
+ *   - `format: "range"`: Single range slider with `minimum`, `maximum`, and `step`.
+ *   - `format: "markdown"` / `format: "ace"`: Markdown and Ace code editor integration. Supports `options.markdownToolbar` with optional file upload (`options.markdownToolbar.upload` / `options.uploadEndpoint`) and custom buttons.
+ *   - `format: "spatial"`: Bounding box, polygon, point, and line drawing integrated with `eox-map` / `eox-drawtools`.
+ * - **URL Parameter Filtering (`removeProperties`)**:
+ *   - Use `options.removeProperties: ["vminmax"]` to drop intermediate form/slider properties from consumers and tile URL updates.
+ * - **Configuration Options**:
+ *   - `no_additional_properties: true`: Restrict output strictly to defined schema properties.
+ *   - `disable_collapse`, `disable_edit_json`, `disable_properties`: Standard JSON-Editor UI toggles.
+ *
+ * Features:
+ * - Renders forms from JSON schema, supporting complex nested structures, branching (`anyOf`/`oneOf`), and custom validation.
+ * - All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).
+ * - Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).
+ * - Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).
+ * - Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.
+ * - Can load schema and values from external URLs, supporting async loading and ready events.
+ * - Integrates with `eox-map` for spatial feature selection when required.
+ * - Supports unstyled rendering for custom design integration.
+ *
+ * See the stories for usage examples covering validation, custom editors, branching variants, spatial inputs, opt-in/optional properties, external loading, and more.
+ */
+export const EOxJsonform = {
+  name: "EOxJsonform",
+  tagName: "eox-a2ui-element",
+  targetTagName: "eox-jsonform",
+  events: ["ready", "change", "submit"],
+  schema: z.object({
+    /** Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: "minmax"`). */
+    schema: z.any().optional(),
+    /** JSON value of the form editor */
+    value: z.any().optional(),
+    /** Default values for the JSONEditor instance */
+    defaults: z.any().optional(),
+    /** Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`). See JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md */
+    options: z.any().optional(),
+    /** List of custom editor interface Read more about the implementation of custom editor interfaces here: https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html */
+    customEditorInterfaces: z.array(z.any()).optional(),
+    /** Renders the element without a shadow root */
+    noShadow: z.boolean().optional(),
+    /** Shows a toggle for showing/hiding object properties editing buttons To be used in combination with `options.disable_properties = false` */
+    propertiesToggle: z.boolean().optional(),
+    /** Render the element without additional styles */
+    unstyled: z.boolean().optional(),
+    /** Getter for the JSONEditor instance */
+    editor: z.any().optional(),
+  }),
+};
+
+/**
  * The `eox-layercontrol` element provides a user interface for managing and configuring layers of an `eox-map`. It connects to the underlying OpenLayers map instance and displays a list of layers, supporting advanced features such as optional layers, exclusive layers, layer tools, dynamic legends, time controls, and external layer addition.
  *
  * ## Usage
@@ -378,68 +440,6 @@ export const EOxLayercontrol = {
 };
 
 /**
- * `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.
- * It is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.
- * Also check out the [JSON Editor Documentation](https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md) for full details on schema syntax, options, and built-in editors.
- *
- * Core JSON-Editor Features & Options Reference:
- * - **Branching (`anyOf` / `oneOf`)**:
- *   - Use `"keep_oneof_values": false` in `options` when variants define different defaults, types (e.g., string vs array), or numeric ranges/steps. By default, JSON-Editor carries over values (`keep_oneof_values: true`), corrupting branch defaults and slider ranges.
- *   - Example: `"options": { "no_additional_properties": true, "keep_oneof_values": false }`
- * - **Dynamic Field Dependencies & Templates**:
- *   - `watch`: Watch other form fields (e.g. `"watch": { "vminmax": "vminmax" }`).
- *   - `template`: Interpolate watched values into string templates (e.g. `"template": "{{vminmax.vmin}},{{vminmax.vmax}}"`).
- * - **Custom & Advanced Inputs**:
- *   - `format: "minmax"`: Dual-handle range slider (via `tc-range-slider`) for selecting min/max bounds with automatic precision detection based on `step`.
- *   - `format: "range"`: Single range slider with `minimum`, `maximum`, and `step`.
- *   - `format: "markdown"` / `format: "ace"`: Markdown and Ace code editor integration. Supports `options.markdownToolbar` with optional file upload (`options.markdownToolbar.upload` / `options.uploadEndpoint`) and custom buttons.
- *   - `format: "spatial"`: Bounding box, polygon, point, and line drawing integrated with `eox-map` / `eox-drawtools`.
- * - **URL Parameter Filtering (`removeProperties`)**:
- *   - Use `options.removeProperties: ["vminmax"]` to drop intermediate form/slider properties from consumers and tile URL updates.
- * - **Configuration Options**:
- *   - `no_additional_properties: true`: Restrict output strictly to defined schema properties.
- *   - `disable_collapse`, `disable_edit_json`, `disable_properties`: Standard JSON-Editor UI toggles.
- *
- * Features:
- * - Renders forms from JSON schema, supporting complex nested structures, branching (`anyOf`/`oneOf`), and custom validation.
- * - All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).
- * - Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).
- * - Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).
- * - Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.
- * - Can load schema and values from external URLs, supporting async loading and ready events.
- * - Integrates with `eox-map` for spatial feature selection when required.
- * - Supports unstyled rendering for custom design integration.
- *
- * See the stories for usage examples covering validation, custom editors, branching variants, spatial inputs, opt-in/optional properties, external loading, and more.
- */
-export const EOxJsonform = {
-  name: "EOxJsonform",
-  tagName: "eox-a2ui-element",
-  targetTagName: "eox-jsonform",
-  events: ["ready", "change", "submit"],
-  schema: z.object({
-    /** Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: "minmax"`). */
-    schema: z.any().optional(),
-    /** JSON value of the form editor */
-    value: z.any().optional(),
-    /** Default values for the JSONEditor instance */
-    defaults: z.any().optional(),
-    /** Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`). See JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md */
-    options: z.any().optional(),
-    /** List of custom editor interface Read more about the implementation of custom editor interfaces here: https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html */
-    customEditorInterfaces: z.array(z.any()).optional(),
-    /** Renders the element without a shadow root */
-    noShadow: z.boolean().optional(),
-    /** Shows a toggle for showing/hiding object properties editing buttons To be used in combination with `options.disable_properties = false` */
-    propertiesToggle: z.boolean().optional(),
-    /** Render the element without additional styles */
-    unstyled: z.boolean().optional(),
-    /** Getter for the JSONEditor instance */
-    editor: z.any().optional(),
-  }),
-};
-
-/**
  * The `eox-layout` element provides a flexible grid-based layout system for web applications, based on a 12x12 grid. It consists of two elements:
  * - `eox-layout`: the container holding all layout items
  * - `eox-layout-item`: the individual items placed on the grid, with defined x/y coordinates and w(idth)/h(eight) dimensions
@@ -500,6 +500,135 @@ export const EOxLayoutItem = {
     w: z.string().optional(),
     /** The height (in grid slots) of the layout item. */
     h: z.string().optional(),
+  }),
+};
+
+/**
+ * ### Introduction
+ * Working with STAC catalogs, collections and items often times requires
+ * to fetch a JSON file, parse its contents and display some of its fields
+ * in some formatted way. To make these steps reusable, the `eox-stacinfo`
+ * element offers a set of functionalities:
+ * - **automatically fetch a STAC file** as soon as the element loads
+ * - offer a **property whitelist** functionality to choose which properties to display
+ * - display the properties in **configurable sections** (header, body, featured, footer)
+ * - allow to **override** any property display for application-specific custom needs
+ *
+ * The use case for this element is alongside a map which displays STAC files
+ * or in a catalog browsing scenario where a quick look at the most important properties
+ * is needed.
+ *
+ * #### Technology
+ * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
+ *
+ * #### Usage
+ * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
+ *
+ * Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.
+ *
+ * A `Filter` object has the following structure:
+ * ```javascript
+ * {
+ *   key: "links",
+ *   filter: (link) => {
+ *     // Return true/false to include/exclude items from a list (e.g. assets, links)
+ *     return link.rel === "example";
+ *   }
+ * }
+ * ```
+ *
+ * Sections:
+ * - `header`: Array of property keys or Filters to display at the top
+ * - `tags`: Array of property keys or Filters to display as tags
+ * - `body`: Array of property keys or Filters for the main content
+ * - `featured`: Array of property keys or Filters for prominent display
+ * - `footer`: Array of property keys or Filters for the bottom section
+ *
+ * #### Customization
+ * - **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.
+ * - **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
+ */
+export const EOxStacinfo = {
+  name: "EOxStacinfo",
+  tagName: "eox-a2ui-element",
+  targetTagName: "eox-stacinfo",
+  events: [],
+  schema: z.object({
+    /** Whether to allow HTML in the property display */
+    allowHtml: z.boolean().optional(),
+    /** Whether to use unstyled mode */
+    unstyled: z.boolean().optional(),
+    /** The identifier for the STAC resource to fetch */
+    for: z.string().optional(),
+    /** Keys of properties to display in the header */
+    header: z.array(z.any()).optional(),
+    /** Keys of properties to display to display as tags */
+    tags: z.array(z.any()).optional(),
+    /** Keys of properties to display to display in the main body */
+    body: z.array(z.any()).optional(),
+    /** Keys of properties to display in the featured section */
+    featured: z.array(z.any()).optional(),
+    /** Keys of properties to display in the footer */
+    footer: z.array(z.any()).optional(),
+    /** The state object containing the fetched STAC information */
+    stacInfo: z.array(z.any()).optional(),
+    /** The state object containing the parsed STAC properties */
+    stacProperties: z.array(z.any()).optional(),
+  }),
+};
+
+/**
+ * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, and custom initialization logic via events.
+ *
+ * ## Usage
+ * Place `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.
+ *
+ * ## Features
+ * - **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.
+ * - **Slot Content:** Accepts Markdown via slot for flexible content injection.
+ * - **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.
+ * - **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.
+ * - **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup).
+ *
+ * ## Custom Markdown Extensions
+ * In order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key="value" }-->`. Here are some of the supported extensions:
+ * - **Section Configuration:** Define sections with attributes like `as`, `id`, `class`, `style`, and more.
+ * - **Hero Section:** Create a full-screen hero section using `#` (Header 1) with additional attributes for images or videos.
+ * - **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.
+ * - **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.
+ *
+ * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
+ */
+export const EOxStorytelling = {
+  name: "EOxStorytelling",
+  tagName: "eox-a2ui-element",
+  targetTagName: "eox-storytelling",
+  events: ["init", "upload:file", "changed"],
+  schema: z.object({
+    /** Markdown Content */
+    markdown: z.string().optional(),
+    /** Markdown Content URL */
+    markdownURL: z.string().optional(),
+    /** Enable or disable navigation */
+    showNav: z.boolean().optional(),
+    /** Enable or disable editor */
+    showEditor: z.any().optional(),
+    /** Enable or disable hero scroll indicator */
+    showHeroScrollIndicator: z.boolean().optional(),
+    /** Enable or disable map loading indicator by default */
+    showMapLoadingIndicator: z.boolean().optional(),
+    /** Renders the element without a shadow root */
+    noShadow: z.boolean().optional(),
+    /** Disable auto save */
+    disableAutosave: z.boolean().optional(),
+    /** Render the element without additional styles */
+    unstyled: z.boolean().optional(),
+    /** custom section index */
+    addCustomSectionIndex: z.number().optional(),
+    /** Selected custom element object */
+    selectedCustomElement: z.any().optional(),
+    /** List of items in navigation */
+    nav: z.array(z.any()).optional(),
   }),
 };
 
@@ -579,8 +708,10 @@ export const EOxLayoutItem = {
  *
  * - `buffer`: Applies a buffer around an extent
  * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
+ * - `isGeoZarrLayer`: Checks if a layer is a GeoZarr layer.
+ * - `setupGeoZarrLayer`: Sets up a GeoZarr layer with the necessary configurations.
  *
- * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
+ * Usage: `import { buffer, transform, transformExtent, isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";`
  */
 export const EOxMap = {
   name: "EOxMap",
@@ -637,135 +768,6 @@ export const EOxMap = {
     mapControls: z.any().optional(),
     /** The globe instance when using globe projection. todo: define proper type */
     globe: z.any().optional(),
-  }),
-};
-
-/**
- * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, and custom initialization logic via events.
- *
- * ## Usage
- * Place `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.
- *
- * ## Features
- * - **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.
- * - **Slot Content:** Accepts Markdown via slot for flexible content injection.
- * - **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.
- * - **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.
- * - **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup).
- *
- * ## Custom Markdown Extensions
- * In order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key="value" }-->`. Here are some of the supported extensions:
- * - **Section Configuration:** Define sections with attributes like `as`, `id`, `class`, `style`, and more.
- * - **Hero Section:** Create a full-screen hero section using `#` (Header 1) with additional attributes for images or videos.
- * - **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.
- * - **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.
- *
- * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
- */
-export const EOxStorytelling = {
-  name: "EOxStorytelling",
-  tagName: "eox-a2ui-element",
-  targetTagName: "eox-storytelling",
-  events: ["init", "upload:file", "changed"],
-  schema: z.object({
-    /** Markdown Content */
-    markdown: z.string().optional(),
-    /** Markdown Content URL */
-    markdownURL: z.string().optional(),
-    /** Enable or disable navigation */
-    showNav: z.boolean().optional(),
-    /** Enable or disable editor */
-    showEditor: z.any().optional(),
-    /** Enable or disable hero scroll indicator */
-    showHeroScrollIndicator: z.boolean().optional(),
-    /** Enable or disable map loading indicator by default */
-    showMapLoadingIndicator: z.boolean().optional(),
-    /** Renders the element without a shadow root */
-    noShadow: z.boolean().optional(),
-    /** Disable auto save */
-    disableAutosave: z.boolean().optional(),
-    /** Render the element without additional styles */
-    unstyled: z.boolean().optional(),
-    /** custom section index */
-    addCustomSectionIndex: z.number().optional(),
-    /** Selected custom element object */
-    selectedCustomElement: z.any().optional(),
-    /** List of items in navigation */
-    nav: z.array(z.any()).optional(),
-  }),
-};
-
-/**
- * ### Introduction
- * Working with STAC catalogs, collections and items often times requires
- * to fetch a JSON file, parse its contents and display some of its fields
- * in some formatted way. To make these steps reusable, the `eox-stacinfo`
- * element offers a set of functionalities:
- * - **automatically fetch a STAC file** as soon as the element loads
- * - offer a **property whitelist** functionality to choose which properties to display
- * - display the properties in **configurable sections** (header, body, featured, footer)
- * - allow to **override** any property display for application-specific custom needs
- *
- * The use case for this element is alongside a map which displays STAC files
- * or in a catalog browsing scenario where a quick look at the most important properties
- * is needed.
- *
- * #### Technology
- * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
- *
- * #### Usage
- * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
- *
- * Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.
- *
- * A `Filter` object has the following structure:
- * ```javascript
- * {
- *   key: "links",
- *   filter: (link) => {
- *     // Return true/false to include/exclude items from a list (e.g. assets, links)
- *     return link.rel === "example";
- *   }
- * }
- * ```
- *
- * Sections:
- * - `header`: Array of property keys or Filters to display at the top
- * - `tags`: Array of property keys or Filters to display as tags
- * - `body`: Array of property keys or Filters for the main content
- * - `featured`: Array of property keys or Filters for prominent display
- * - `footer`: Array of property keys or Filters for the bottom section
- *
- * #### Customization
- * - **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.
- * - **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
- */
-export const EOxStacinfo = {
-  name: "EOxStacinfo",
-  tagName: "eox-a2ui-element",
-  targetTagName: "eox-stacinfo",
-  events: [],
-  schema: z.object({
-    /** Whether to allow HTML in the property display */
-    allowHtml: z.boolean().optional(),
-    /** Whether to use unstyled mode */
-    unstyled: z.boolean().optional(),
-    /** The identifier for the STAC resource to fetch */
-    for: z.string().optional(),
-    /** Keys of properties to display in the header */
-    header: z.array(z.any()).optional(),
-    /** Keys of properties to display to display as tags */
-    tags: z.array(z.any()).optional(),
-    /** Keys of properties to display to display in the main body */
-    body: z.array(z.any()).optional(),
-    /** Keys of properties to display in the featured section */
-    featured: z.array(z.any()).optional(),
-    /** Keys of properties to display in the footer */
-    footer: z.array(z.any()).optional(),
-    /** The state object containing the fetched STAC information */
-    stacInfo: z.array(z.any()).optional(),
-    /** The state object containing the parsed STAC properties */
-    stacProperties: z.array(z.any()).optional(),
   }),
 };
 
@@ -907,6 +909,8 @@ export const EOxA2uiElement = {
   events: ["eventName"],
   schema: z.object({
     /**  */
+    map: z.any().optional(),
+    /**  */
     _elementRef: z.any().optional(),
     /**  */
     _appliedProps: z.any().optional(),
@@ -937,17 +941,17 @@ export const EOxA2uiWrapper = {
 
 export const eoxComponents = [
   EOxChart,
-  EOxFeedback,
   EOxDrawtools,
+  EOxFeedback,
   EOxGeosearch,
   EOxItemfilter,
-  EOxLayercontrol,
   EOxJsonform,
+  EOxLayercontrol,
   EOxLayout,
   EOxLayoutItem,
-  EOxMap,
-  EOxStorytelling,
   EOxStacinfo,
+  EOxStorytelling,
+  EOxMap,
   EOxTimecontrol,
   EOxTour,
   EOxA2uiElement,
