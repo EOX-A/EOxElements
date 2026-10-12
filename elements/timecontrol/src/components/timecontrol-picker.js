@@ -3,7 +3,11 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { style } from "../styles/style.js";
-import { firstUpdatedMethod, getSelectedDatesMethod } from "../methods/picker";
+import {
+  firstUpdatedMethod,
+  getSelectedDatesMethod,
+  selectDateRangeMethod,
+} from "../methods/picker";
 import {
   cleanCalendarStyles,
   extractISOFromCalendar,
@@ -535,14 +539,11 @@ export class EOxTimeControlPicker extends LitElement {
 
               if (this.range) {
                 if (lengthOfDates || lastClickDate === start) {
-                  EOxTimeControl.dateChange(
-                    [startDate, endDate],
-                    EOxTimeControl,
-                  );
+                  selectDateRangeMethod([startDate, endDate], this);
                   lastClickDate = null;
                 } else lastClickDate = start;
               } else {
-                EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+                selectDateRangeMethod([startDate, endDate], this);
               }
             }
           },
