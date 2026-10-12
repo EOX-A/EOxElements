@@ -8,7 +8,7 @@
 
 > **selectionDuration** = `string` \| `number` \| `Record`\<`string`, `number`\>
 
-Defined in: [elements/timecontrol/src/types.ts:239](https://github.com/EOX-A/EOxElements/blob/b12a745cf2212736c2eb88d676992162258cd7a1/elements/timecontrol/src/types.ts#L239)
+Defined in: [elements/timecontrol/src/types.ts:239](https://github.com/EOX-A/EOxElements/blob/d06a55db230ff135240e79950fa009f4f46a5f51/elements/timecontrol/src/types.ts#L239)
 
 Defines the possible time ranges for selection in the time control components.
 Strictly supports what dayjs.duration() supports:
