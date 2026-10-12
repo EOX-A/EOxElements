@@ -112,8 +112,7 @@ export class EOxA2uiElement extends A2uiLitElement {
         element.appendChild(sliderEl);
       }
       if (!element.eoxMap && !element.for) {
-        const root =
-          this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
         const mapEl = root.querySelector("eox-map");
         if (mapEl) {
           element.eoxMap = mapEl;
@@ -130,8 +129,7 @@ export class EOxA2uiElement extends A2uiLitElement {
         element.setAttribute("tools-auto-expand", "");
       }
       if (!element.eoxMap && !element.for) {
-        const root =
-          this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
         const mapEl = root.querySelector("eox-map");
         if (mapEl) {
           element.eoxMap = mapEl;
@@ -140,8 +138,7 @@ export class EOxA2uiElement extends A2uiLitElement {
       }
     } else if (type === "EOxDrawTools" && element) {
       if (!element.eoxMap && !element.for) {
-        const root =
-          this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
         const mapEl = root.querySelector("eox-map");
         if (mapEl) {
           element.eoxMap = mapEl;
