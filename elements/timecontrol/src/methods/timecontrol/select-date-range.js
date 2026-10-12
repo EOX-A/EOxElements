@@ -1,13 +1,10 @@
 /**
- * Applies a calendar selection and centers each timeline without changing zoom.
+ * Applies a calendar or navigation selection and centers each timeline without changing zoom.
  *
  * @param {import("../../types").DateRange} dateRange - Selected start and end dates.
- * @param {import("../../components/timecontrol-picker").EOxTimeControlPicker} EOxTimeControlPicker - The calendar component instance.
+ * @param {import("../../main").EOxTimeControl} timeControl - The parent timecontrol instance.
  */
-export default function selectDateRangeMethod(dateRange, EOxTimeControlPicker) {
-  const timeControl = /** @type {import("../../main").EOxTimeControl} */ (
-    EOxTimeControlPicker.closest("eox-timecontrol")
-  );
+export default function selectDateRangeMethod(dateRange, timeControl) {
   if (!timeControl) return;
 
   timeControl.dateChange(dateRange, timeControl);

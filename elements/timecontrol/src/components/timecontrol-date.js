@@ -6,6 +6,7 @@ import { when } from "lit/directives/when.js";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
+import { selectDateRangeMethod } from "../methods/timecontrol";
 import findIndex from "lodash.findindex";
 import groupBy from "lodash.groupby";
 dayjs.extend(utc);
@@ -163,7 +164,7 @@ export class EOxTimeControlDate extends LitElement {
     const endDate = EOxTimeControl.showUTC
       ? dayjs(nextDate).utc().endOf("day").format()
       : dayjs(nextDate).endOf("day").utc().format();
-    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+    selectDateRangeMethod([startDate, endDate], EOxTimeControl);
   }
 
   /**
