@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/layout-v1.1.0...layout-v1.2.0) (2026-09-29)
+
+
+### Features
+
+* Add right sidebar panel support to map workspace ([#2553](https://github.com/EOX-A/EOxElements/issues/2553)) ([356e94f](https://github.com/EOX-A/EOxElements/commit/356e94fd48f57c98a7beb0ff1e20fe9cacaf8363))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/layout-v1.0.0...layout-v1.1.0) (2026-09-28)
 
 

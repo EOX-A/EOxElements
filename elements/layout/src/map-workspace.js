@@ -29,7 +29,7 @@ export class EOxMapWorkspace extends HTMLElement {
           z-index: 0 !important;
           display: block !important;
         }
-        .sidebar {
+        .sidebar, .sidebar-left {
           position: absolute;
           top: 1rem;
           left: 1rem;
@@ -45,14 +45,39 @@ export class EOxMapWorkspace extends HTMLElement {
           overflow-x: hidden;
           padding: 4px;
         }
-        .sidebar::-webkit-scrollbar {
+        .sidebar-right {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          width: 400px;
+          max-width: calc(100% - 2rem);
+          max-height: calc(100% - 2rem);
+          z-index: 10;
+          pointer-events: none;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding: 4px;
+        }
+        @media (max-width: 900px) {
+          .sidebar, .sidebar-left, .sidebar-right {
+            width: min(320px, calc(50% - 1.5rem));
+            max-width: calc(50% - 1.5rem);
+          }
+        }
+        .sidebar::-webkit-scrollbar, .sidebar-left::-webkit-scrollbar, .sidebar-right::-webkit-scrollbar {
           width: 6px;
         }
-        .sidebar::-webkit-scrollbar-thumb {
+        .sidebar::-webkit-scrollbar-thumb, .sidebar-left::-webkit-scrollbar-thumb, .sidebar-right::-webkit-scrollbar-thumb {
           background-color: rgba(0,0,0,0.2);
           border-radius: 4px;
         }
-        ::slotted([slot="sidebar"]) {
+        ::slotted([slot="sidebar"]),
+        ::slotted([slot="sidebar-left"]),
+        ::slotted([slot="sidebar-right"]),
+        ::slotted([slot="right"]) {
           pointer-events: auto !important;
           width: 100% !important;
           height: auto !important;
@@ -60,8 +85,13 @@ export class EOxMapWorkspace extends HTMLElement {
         }
       </style>
       <slot name="map"></slot>
-      <div class="sidebar">
+      <div class="sidebar sidebar-left">
         <slot name="sidebar"></slot>
+        <slot name="sidebar-left"></slot>
+      </div>
+      <div class="sidebar-right">
+        <slot name="sidebar-right"></slot>
+        <slot name="right"></slot>
       </div>
       <slot></slot>
     `;
@@ -122,12 +152,34 @@ export class EOxMapWorkspace extends HTMLElement {
       }
     }
 
-    // Remaining children are sidebar
+    let hasRightSidebar = false;
+
+    // Remaining children are sidebars
     for (let i = 1; i < children.length; i++) {
       const sidebarChild = children[i];
-      if (!sidebarChild.hasAttribute("slot")) {
-        sidebarChild.setAttribute("slot", "sidebar");
+      const isRight =
+        sidebarChild.id === "right_col" ||
+        sidebarChild.getAttribute("slot") === "sidebar-right" ||
+        sidebarChild.getAttribute("slot") === "right" ||
+        (children.length >= 3 && i >= 2 && sidebarChild.id !== "left_col");
+
+      if (isRight) {
+        hasRightSidebar = true;
+        if (
+          !sidebarChild.hasAttribute("slot") ||
+          sidebarChild.getAttribute("slot") !== "sidebar-right"
+        ) {
+          sidebarChild.setAttribute("slot", "sidebar-right");
+        }
+      } else {
+        if (
+          !sidebarChild.hasAttribute("slot") ||
+          sidebarChild.getAttribute("slot") !== "sidebar"
+        ) {
+          sidebarChild.setAttribute("slot", "sidebar");
+        }
       }
+
       sidebarChild.style.width = "100%";
       sidebarChild.style.height = "auto";
       sidebarChild.style.boxSizing = "border-box";
@@ -148,6 +200,15 @@ export class EOxMapWorkspace extends HTMLElement {
         card.style.wordBreak = "break-word";
         card.style.overflowWrap = "break-word";
       });
+    }
+
+    if (this.shadowRoot) {
+      const rightSidebarEl = /** @type {HTMLElement|null} */ (
+        this.shadowRoot.querySelector(".sidebar-right")
+      );
+      if (rightSidebarEl) {
+        rightSidebarEl.style.display = hasRightSidebar ? "flex" : "none";
+      }
     }
   }
 }
