@@ -295,6 +295,9 @@ export const styleEOX = `
     font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
   }
   .markdown-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
