@@ -66,6 +66,12 @@ export const eoxA2uiElementMapGetterTest = () => {
   const el = /** @type {any} */ (document.createElement("eox-a2ui-element"));
   expect(el.map).to.be.undefined;
 
+  // Test proxy via _elementRef.value
+  el._elementRef = { value: { map: { isMockRef: true } } };
+  expect(el.map).to.deep.eq({ isMockRef: true });
+
+  // Test fallback via querySelector
+  el._elementRef = { value: null };
   const mapElement = document.createElement("eox-map");
   // @ts-expect-error Mock openlayers map
   mapElement.map = { isMock: true };

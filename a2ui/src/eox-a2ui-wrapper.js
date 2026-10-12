@@ -186,6 +186,13 @@ export class EOxA2uiWrapper extends LitElement {
         display: block !important;
         width: 100% !important;
         height: 100% !important;
+        color-scheme: light !important;
+        color: #0f172a !important;
+        --a2ui-text-color-text: #0f172a !important;
+        --a2ui-color-on-background: #0f172a !important;
+        --a2ui-color-on-surface: #0f172a !important;
+        --_a2ui-text-color: #0f172a !important;
+        --a2ui-text-caption-color: #475569 !important;
       }
       a2ui-basic-column {
         position: relative !important;
@@ -200,6 +207,8 @@ export class EOxA2uiWrapper extends LitElement {
         box-sizing: border-box !important;
         overflow-wrap: break-word !important;
         word-break: break-word !important;
+        background: #ffffffee !important;
+        color: #0f172a !important;
       }
       eox-a2ui-element:has(eox-map-workspace), eox-map-workspace {
         width: 100% !important;
