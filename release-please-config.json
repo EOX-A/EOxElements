@@ -2,7 +2,7 @@
   "bootstrap-sha": "8c7afca91c115c4a2db2054c3b604beb290f0015",
   "packages": {
     "elements/chart": {
-      "exclude-paths": ["elements/drawtools/stories", "elements/drawtools/test"]
+      "exclude-paths": ["elements/chart/stories", "elements/chart/test"]
     },
     "elements/drawtools": {
       "exclude-paths": ["elements/drawtools/stories", "elements/drawtools/test"]
