@@ -85,6 +85,19 @@ export class EOxA2uiElement extends A2uiLitElement {
         element.style.cssText =
           "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
       }
+    } else if (type === "EOxMap" && element) {
+      if (!element.controls) {
+        element.controls = { LoadingIndicator: { type: "small" } };
+      } else if (
+        typeof element.controls === "object" &&
+        !Array.isArray(element.controls) &&
+        !element.controls.LoadingIndicator
+      ) {
+        element.controls = {
+          ...element.controls,
+          LoadingIndicator: { type: "small" },
+        };
+      }
     } else if (type === "EOxTimeControl" && element) {
       if (!element.querySelector("eox-timecontrol-date")) {
         const dateEl = document.createElement("eox-timecontrol-date");
@@ -285,6 +298,20 @@ export class EOxA2uiElement extends A2uiLitElement {
 
       // Pass all properties to the EOxElement
       const mergedProps = { ...this.controller.props, ...transformedProps };
+      if (type === "EOxMap") {
+        if (!mergedProps.controls) {
+          mergedProps.controls = { LoadingIndicator: { type: "small" } };
+        } else if (
+          typeof mergedProps.controls === "object" &&
+          !Array.isArray(mergedProps.controls) &&
+          !mergedProps.controls.LoadingIndicator
+        ) {
+          mergedProps.controls = {
+            ...mergedProps.controls,
+            LoadingIndicator: { type: "small" },
+          };
+        }
+      }
       for (const [key, value] of Object.entries(mergedProps)) {
         if (key === "children") {
           continue;
