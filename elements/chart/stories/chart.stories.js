@@ -60,12 +60,13 @@ export const GeoDB = GeoDBStory;
 export const Base64EncodedSpec = Base64EncodedStory;
 
 /**
- * Overview + detail (focus + context) chart with interactive zoom brush and prominent drag handles.
+ * Overview + detail (focus + context) chart with interactive zoom brush and individually draggable handles.
  *
- * This example demonstrates a dual-view time series chart using vertical concatenation (`vconcat`):
- * - **Detail View (top)**: A large detailed area chart showing the zoomed time range, with its x-axis domain dynamically bound to the overview brush parameter (`"scale": {"domain": {"param": "brush"}}`).
- * - **Overview View (bottom)**: A compact summary timeline displaying the full dataset extent with an interval selection (`brush`) allowing users to click and drag to pan or select time ranges.
- * - **Visible Drag Handles**: Obvious handle visualizers are added at the boundaries of the interval selection using layered `rule` marks and pill-shaped `point` grip tabs bound to `brush.date[0]` and `brush.date[1]`, with conditional opacity so they appear cleanly whenever an active selection exists.
+ * This example demonstrates a dual-view time series chart:
+ * - **Detail View (top)**: A detailed area chart showing the zoomed time range, with its x-axis domain dynamically bound to the overview brush selection.
+ * - **Overview View (bottom)**: A compact summary timeline displaying the full dataset extent with a draggable zoom window.
+ * - **Individually Draggable Handles**: The left and right handles can be dragged individually to adjust the zoom range boundaries from either side (`ew-resize` cursor).
+ * - **Panning & Redrawing**: The central shaded area can be dragged to pan the active window across time (`grab` cursor), and clicking/dragging on the overview background creates a new zoom window (`crosshair` cursor). Mouse wheel scrolling over the active window also zooms the range.
  *
  * Fully functional example:
  *
@@ -73,161 +74,316 @@ export const Base64EncodedSpec = Base64EncodedStory;
  * <eox-chart
  *   style="width: 100%; height: 450px;"
  *   .spec=${{
- *     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
- *     data: {
- *       url: "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/sp500.csv",
- *       format: { type: "csv", parse: { price: "number", date: "date" } },
- *     },
- *     vconcat: [
+ *     $schema: "https://vega.github.io/schema/vega/v5.json",
+ *     description:
+ *       "Overview + detail chart with individually draggable left and right zoom handles.",
+ *     width: 640,
+ *     height: 350,
+ *     padding: 10,
+ *     autosize: "pad",
+ *     data: [
  *       {
- *         width: 640,
- *         height: 220,
- *         mark: {
- *           type: "area",
- *           color: "#004170",
- *           line: { color: "#002847", width: 1.5 },
- *         },
- *         encoding: {
- *           x: {
- *             field: "date",
- *             type: "temporal",
- *             scale: { domain: { param: "brush" } },
- *             axis: { title: "" },
+ *         name: "sp500",
+ *         url: "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/sp500.csv",
+ *         format: { type: "csv", parse: { price: "number", date: "date" } },
+ *       },
+ *     ],
+ *     scales: [
+ *       {
+ *         name: "xOverview",
+ *         type: "time",
+ *         range: [0, 640],
+ *         domain: { data: "sp500", field: "date" },
+ *       },
+ *     ],
+ *     signals: [
+ *       {
+ *         name: "brush",
+ *         value: [220, 440],
+ *         on: [
+ *           {
+ *             events: "@overviewBg:pointerdown",
+ *             update: "[clamp(x(), 0, 640), clamp(x(), 0, 640)]",
  *           },
- *           y: {
- *             field: "price",
- *             type: "quantitative",
- *             axis: { title: "Price ($)" },
+ *           {
+ *             events:
+ *               "[@overviewBg:pointerdown, window:pointerup] > window:pointermove!",
+ *             update:
+ *               "[min(bgAnchor[0], clamp(x(), 0, 640)), max(bgAnchor[0], clamp(x(), 0, 640))]",
  *           },
- *         },
+ *           {
+ *             events:
+ *               "[@handleLeft:pointerdown, window:pointerup] > window:pointermove!",
+ *             update: "[min(clamp(x(), 0, 640), brush[1] - 10), brush[1]]",
+ *           },
+ *           {
+ *             events:
+ *               "[@handleRight:pointerdown, window:pointerup] > window:pointermove!",
+ *             update: "[brush[0], max(clamp(x(), 0, 640), brush[0] + 10)]",
+ *           },
+ *           {
+ *             events: { signal: "panDelta" },
+ *             update:
+ *               "clampRange([panAnchor[0] + panDelta, panAnchor[1] + panDelta], 0, 640)",
+ *           },
+ *           {
+ *             events: { signal: "zoomDelta" },
+ *             update:
+ *               "clampRange(zoomLinear(brush, zoomAnchor, zoomDelta), 0, 640)",
+ *           },
+ *         ],
  *       },
  *       {
- *         width: 640,
- *         height: 70,
- *         layer: [
+ *         name: "bgAnchor",
+ *         value: [0, 0],
+ *         on: [
  *           {
- *             mark: {
- *               type: "area",
- *               color: "#94b8d7",
- *               opacity: 0.7,
+ *             events: "@overviewBg:pointerdown",
+ *             update: "[clamp(x(), 0, 640), clamp(x(), 0, 640)]",
+ *           },
+ *         ],
+ *       },
+ *       {
+ *         name: "panAnchor",
+ *         value: null,
+ *         on: [{ events: "@brushBody:pointerdown", update: "slice(brush)" }],
+ *       },
+ *       {
+ *         name: "panDownX",
+ *         value: 0,
+ *         on: [{ events: "@brushBody:pointerdown", update: "x()" }],
+ *       },
+ *       {
+ *         name: "panDelta",
+ *         value: 0,
+ *         on: [
+ *           {
+ *             events:
+ *               "[@brushBody:pointerdown, window:pointerup] > window:pointermove!",
+ *             update: "x() - panDownX",
+ *           },
+ *         ],
+ *       },
+ *       {
+ *         name: "zoomAnchor",
+ *         value: 0,
+ *         on: [{ events: "@brushBody:wheel", update: "x()" }],
+ *       },
+ *       {
+ *         name: "zoomDelta",
+ *         on: [
+ *           {
+ *             events: "@brushBody:wheel",
+ *             consume: true,
+ *             force: true,
+ *             update: "pow(1.001, event.deltaY * pow(16, event.deltaMode))",
+ *           },
+ *         ],
+ *       },
+ *       {
+ *         name: "detailDomain",
+ *         init: 'invert("xOverview", [220, 440])',
+ *         on: [
+ *           {
+ *             events: { signal: "brush" },
+ *             update: 'span(brush) ? invert("xOverview", brush) : null',
+ *           },
+ *         ],
+ *       },
+ *     ],
+ *     marks: [
+ *       {
+ *         type: "group",
+ *         name: "detail",
+ *         encode: {
+ *           enter: {
+ *             x: { value: 0 },
+ *             y: { value: 0 },
+ *             height: { value: 230 },
+ *             width: { value: 640 },
+ *           },
+ *         },
+ *         scales: [
+ *           {
+ *             name: "xDetail",
+ *             type: "time",
+ *             range: "width",
+ *             domain: { data: "sp500", field: "date" },
+ *             domainRaw: { signal: "detailDomain" },
+ *           },
+ *           {
+ *             name: "yDetail",
+ *             type: "linear",
+ *             range: [230, 0],
+ *             domain: { data: "sp500", field: "price" },
+ *             nice: true,
+ *             zero: true,
+ *           },
+ *         ],
+ *         axes: [
+ *           { orient: "bottom", scale: "xDetail" },
+ *           { orient: "left", scale: "yDetail", title: "Price ($)" },
+ *         ],
+ *         marks: [
+ *           {
+ *             type: "group",
+ *             encode: {
+ *               enter: {
+ *                 height: { field: { group: "height" } },
+ *                 width: { field: { group: "width" } },
+ *                 clip: { value: true },
+ *               },
  *             },
- *             params: [
+ *             marks: [
  *               {
- *                 name: "brush",
- *                 select: {
- *                   type: "interval",
- *                   encodings: ["x"],
- *                   mark: {
- *                     fill: "#004170",
- *                     fillOpacity: 0.15,
- *                     stroke: "#004170",
- *                     strokeWidth: 1.5,
- *                     cursor: "ew-resize",
+ *                 type: "area",
+ *                 from: { data: "sp500" },
+ *                 encode: {
+ *                   update: {
+ *                     x: { scale: "xDetail", field: "date" },
+ *                     y: { scale: "yDetail", field: "price" },
+ *                     y2: { scale: "yDetail", value: 0 },
+ *                     fill: { value: "#004170" },
  *                   },
- *                 },
- *                 value: {
- *                   date: [{ year: 2004 }, { year: 2007 }],
  *                 },
  *               },
  *             ],
- *             encoding: {
- *               x: {
- *                 field: "date",
- *                 type: "temporal",
- *                 axis: { title: "Date" },
- *               },
- *               y: {
- *                 field: "price",
- *                 type: "quantitative",
- *                 axis: { tickCount: 3, grid: false, title: "" },
+ *           },
+ *         ],
+ *       },
+ *       {
+ *         type: "group",
+ *         name: "overview",
+ *         encode: {
+ *           enter: {
+ *             x: { value: 0 },
+ *             y: { value: 275 },
+ *             height: { value: 70 },
+ *             width: { value: 640 },
+ *           },
+ *         },
+ *         scales: [
+ *           {
+ *             name: "yOverview",
+ *             type: "linear",
+ *             range: [70, 0],
+ *             domain: { data: "sp500", field: "price" },
+ *             nice: true,
+ *             zero: true,
+ *           },
+ *         ],
+ *         axes: [{ orient: "bottom", scale: "xOverview", title: "Date" }],
+ *         marks: [
+ *           {
+ *             type: "rect",
+ *             name: "overviewBg",
+ *             encode: {
+ *               enter: {
+ *                 x: { value: 0 },
+ *                 y: { value: 0 },
+ *                 width: { field: { group: "width" } },
+ *                 height: { field: { group: "height" } },
+ *                 fill: { value: "transparent" },
+ *                 cursor: { value: "crosshair" },
  *               },
  *             },
  *           },
  *           {
- *             data: { values: [{}] },
- *             mark: { type: "rule", color: "#004170", size: 2 },
- *             encoding: {
- *               x: {
- *                 datum: { expr: "brush.date ? brush.date[0] : null" },
- *                 type: "temporal",
- *               },
- *               opacity: {
- *                 condition: {
- *                   test: "brush.date && isArray(brush.date) && brush.date[0] != null",
- *                   value: 1,
- *                 },
- *                 value: 0,
+ *             type: "area",
+ *             interactive: false,
+ *             from: { data: "sp500" },
+ *             encode: {
+ *               update: {
+ *                 x: { scale: "xOverview", field: "date" },
+ *                 y: { scale: "yOverview", field: "price" },
+ *                 y2: { scale: "yOverview", value: 0 },
+ *                 fill: { value: "#94b8d7" },
+ *                 opacity: { value: 0.7 },
  *               },
  *             },
  *           },
  *           {
- *             data: { values: [{}] },
- *             mark: { type: "rule", color: "#004170", size: 2 },
- *             encoding: {
- *               x: {
- *                 datum: { expr: "brush.date ? brush.date[1] : null" },
- *                 type: "temporal",
+ *             type: "rect",
+ *             name: "brushBody",
+ *             encode: {
+ *               enter: {
+ *                 y: { value: 0 },
+ *                 height: { field: { group: "height" } },
+ *                 fill: { value: "#004170" },
+ *                 fillOpacity: { value: 0.15 },
+ *                 cursor: { value: "grab" },
  *               },
- *               opacity: {
- *                 condition: {
- *                   test: "brush.date && isArray(brush.date) && brush.date[1] != null",
- *                   value: 1,
- *                 },
- *                 value: 0,
- *               },
- *             },
- *           },
- *           {
- *             data: { values: [{}] },
- *             mark: {
- *               type: "point",
- *               y: 35,
- *               shape:
- *                 "M -0.5 -1.5 A 0.5 0.5 0 0 1 0.5 -1.5 L 0.5 1.5 A 0.5 0.5 0 0 1 -0.5 1.5 Z",
- *               filled: true,
- *               fill: "#ffffff",
- *               stroke: "#004170",
- *               strokeWidth: 2,
- *               size: 220,
- *             },
- *             encoding: {
- *               x: {
- *                 datum: { expr: "brush.date ? brush.date[0] : null" },
- *                 type: "temporal",
- *               },
- *               opacity: {
- *                 condition: {
- *                   test: "brush.date && isArray(brush.date) && brush.date[0] != null",
- *                   value: 1,
- *                 },
- *                 value: 0,
+ *               update: {
+ *                 x: { signal: "brush[0]" },
+ *                 x2: { signal: "brush[1]" },
  *               },
  *             },
  *           },
  *           {
- *             data: { values: [{}] },
- *             mark: {
- *               type: "point",
- *               y: 35,
- *               shape:
- *                 "M -0.5 -1.5 A 0.5 0.5 0 0 1 0.5 -1.5 L 0.5 1.5 A 0.5 0.5 0 0 1 -0.5 1.5 Z",
- *               filled: true,
- *               fill: "#ffffff",
- *               stroke: "#004170",
- *               strokeWidth: 2,
- *               size: 220,
- *             },
- *             encoding: {
- *               x: {
- *                 datum: { expr: "brush.date ? brush.date[1] : null" },
- *                 type: "temporal",
+ *             type: "rect",
+ *             interactive: false,
+ *             encode: {
+ *               enter: {
+ *                 y: { value: 0 },
+ *                 height: { field: { group: "height" } },
+ *                 width: { value: 2 },
+ *                 fill: { value: "#004170" },
  *               },
- *               opacity: {
- *                 condition: {
- *                   test: "brush.date && isArray(brush.date) && brush.date[1] != null",
- *                   value: 1,
- *                 },
- *                 value: 0,
+ *               update: {
+ *                 x: { signal: "brush[0]" },
+ *               },
+ *             },
+ *           },
+ *           {
+ *             type: "rect",
+ *             interactive: false,
+ *             encode: {
+ *               enter: {
+ *                 y: { value: 0 },
+ *                 height: { field: { group: "height" } },
+ *                 width: { value: 2 },
+ *                 fill: { value: "#004170" },
+ *               },
+ *               update: {
+ *                 x: { signal: "brush[1] - 2" },
+ *               },
+ *             },
+ *           },
+ *           {
+ *             type: "rect",
+ *             name: "handleLeft",
+ *             encode: {
+ *               enter: {
+ *                 y: { value: 21 },
+ *                 width: { value: 10 },
+ *                 height: { value: 28 },
+ *                 cornerRadius: { value: 5 },
+ *                 fill: { value: "#ffffff" },
+ *                 stroke: { value: "#004170" },
+ *                 strokeWidth: { value: 2 },
+ *                 cursor: { value: "ew-resize" },
+ *               },
+ *               update: {
+ *                 x: { signal: "brush[0] - 5" },
+ *               },
+ *             },
+ *           },
+ *           {
+ *             type: "rect",
+ *             name: "handleRight",
+ *             encode: {
+ *               enter: {
+ *                 y: { value: 21 },
+ *                 width: { value: 10 },
+ *                 height: { value: 28 },
+ *                 cornerRadius: { value: 5 },
+ *                 fill: { value: "#ffffff" },
+ *                 stroke: { value: "#004170" },
+ *                 strokeWidth: { value: 2 },
+ *                 cursor: { value: "ew-resize" },
+ *               },
+ *               update: {
+ *                 x: { signal: "brush[1] - 5" },
  *               },
  *             },
  *           },
