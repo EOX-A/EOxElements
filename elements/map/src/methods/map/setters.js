@@ -17,6 +17,7 @@ import View from "ol/View";
 import { getElement } from "@eox/elements-utils";
 import serialize from "serialize-javascript";
 import { GlobusRgbTerrain, EmptyTerrain } from "@openglobus/og";
+import { flyGlobeToState } from "../../plugins/globe/openglobus";
 
 /**
  * @typedef {import("../../layers").EoxLayer} EoxLayer
@@ -73,6 +74,11 @@ export function setZoomExtentMethod(extent, EOxMap) {
 
     // Cancel any ongoing animations on the map view to ensure a smooth transition
     cancelAnimation(view);
+
+    if (EOxMap.globeEnabled) {
+      flyGlobeToState(EOxMap, EOxMap.animationOptions);
+    }
+
     view.fit(extent, EOxMap.animationOptions);
   }, 0);
 
