@@ -19,6 +19,12 @@ export default {
 };
 
 export const KitchenSink = {
+  beforeEach: () => {
+    // Other stories use Storybook's default light canvas background.
+    return () => {
+      window.ui("mode", "light");
+    };
+  },
   render: () => html`
     <nav class="small-padding surface-container">
       <div class="max">
