@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import "toolcool-range-slider";
@@ -73,6 +73,13 @@ export class EOxTimeControlSlider extends LitElement {
   #sliderValue = null;
 
   /**
+   * Prevents programmatic slider updates from triggering date changes.
+   *
+   * @type {boolean}
+   */
+  #syncingSlider = false;
+
+  /**
    * Generated ticks for the slider.
    *
    * @type {Array<{type: 'year' | 'empty', position: number, label?: string, date?: string}>}
@@ -109,7 +116,7 @@ export class EOxTimeControlSlider extends LitElement {
   /**
    * Gets the toolcool-range-slider instance.
    *
-   * @returns {HTMLElement} The slider element.
+   * @returns {(HTMLElement & { data?: any; value1?: any }) | null} The slider element.
    */
   getSliderInstance() {
     return this.renderRoot.querySelector("tc-range-slider");
@@ -219,7 +226,6 @@ export class EOxTimeControlSlider extends LitElement {
   setDateRange(dateRange, data) {
     this.#selectedDateRange = dateRange;
     let exactMatch = null;
-    const slider = this.getSliderInstance();
     if (data && data.length) {
       this.#items = Object.keys(groupBy(data, "utc")).sort((a, b) =>
         dayjs(a).diff(dayjs(b), "day"),
@@ -246,13 +252,6 @@ export class EOxTimeControlSlider extends LitElement {
     }
     this.#sliderValue =
       exactMatch || (this.#filteredItems && this.#filteredItems[0]) || null;
-    if (slider && this.#items && this.#items.length) {
-      slider.setAttribute("data", this.#items.join(","));
-      if (this.#sliderValue) {
-        slider.setAttribute("value1", this.#sliderValue);
-        /** @type {any} */ (slider).value1 = this.#sliderValue;
-      }
-    }
 
     // Generate ticks after items are set
     this.#ticks = this.#generateTicks();
@@ -262,25 +261,23 @@ export class EOxTimeControlSlider extends LitElement {
 
   /**
    * Lifecycle method called after each component update.
-   * Ensures the range slider custom element attributes stay synchronized.
+   * Ensures the range slider custom element attributes stay synchronized and year labels are updated.
    *
    * @param {import("lit").PropertyValues} changedProperties
    */
   updated(changedProperties) {
     super.updated(changedProperties);
+    updateYearLabelsMethod(this);
     const slider = this.getSliderInstance();
     if (slider && this.#items && this.#items.length) {
-      const dataStr = this.#items.join(",");
-      const valStr =
-        this.#sliderValue ||
-        (this.#filteredItems && this.#filteredItems[0]) ||
-        "";
-      if (slider.getAttribute("data") !== dataStr) {
-        slider.setAttribute("data", dataStr);
-      }
-      if (valStr && slider.getAttribute("value1") !== valStr) {
-        slider.setAttribute("value1", valStr);
-        /** @type {any} */ (slider).value1 = valStr;
+      this.#syncingSlider = true;
+      try {
+        if (slider.data !== this.#items) slider.data = this.#items;
+        if (this.#sliderValue && slider.value1 !== this.#sliderValue) {
+          slider.value1 = this.#sliderValue;
+        }
+      } finally {
+        this.#syncingSlider = false;
       }
     }
   }
@@ -309,10 +306,6 @@ export class EOxTimeControlSlider extends LitElement {
     }
   }
 
-  updated() {
-    updateYearLabelsMethod(this);
-  }
-
   /**
    * Lifecycle method called when the component is disconnected.
    */
@@ -325,6 +318,7 @@ export class EOxTimeControlSlider extends LitElement {
   }
 
   handleChange(evt) {
+    if (this.#syncingSlider) return;
     const EOxTimeControl = this.getEOxTimeControl();
     if (!EOxTimeControl) return;
     const start = dayjs(evt.detail.value1).utc().format();
@@ -385,12 +379,6 @@ export class EOxTimeControlSlider extends LitElement {
       <div class="date-range-slider-wrapper">
         <tc-range-slider
           animate-onclick="${this.animateOnClickInterval}"
-          data="${this.#items && this.#items.length
-            ? this.#items.join(",")
-            : nothing}"
-          value1="${this.#sliderValue ||
-          (this.#filteredItems && this.#filteredItems[0]) ||
-          nothing}"
           @change="${(/** @type {CustomEvent} */ evt) =>
             this.handleChange(evt)}"
         ></tc-range-slider>
