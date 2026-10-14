@@ -563,6 +563,10 @@ declare global {
      */
     navigation: boolean;
     /**
+     * Whether date navigation wraps at the first and last dates (default: true).
+     */
+    dateWrap: boolean;
+    /**
      * Whether default styling is disabled.
      */
     unstyled: boolean;

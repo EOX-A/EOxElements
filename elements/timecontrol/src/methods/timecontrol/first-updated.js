@@ -154,6 +154,11 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
 
           EOxTimeControl.groups = groups;
           EOxTimeControl.items = items;
+          const EOxTimeControlDate =
+            /** @type {import("../../components/timecontrol-date.js").EOxTimeControlDate} */ (
+              EOxTimeControl.getTimeControlDate()
+            );
+          EOxTimeControlDate?.requestUpdate();
 
           if (EOxTimeControlTimeline) {
             EOxTimeControlTimeline.initTimeline();
