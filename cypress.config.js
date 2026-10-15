@@ -46,6 +46,7 @@ export default defineConfig({
   },
   expose: {
     CI_PATHS_CHANGED: pathsChanged,
+    codeCoverageTasksRegistered: true,
     codeCoverage: {
       exclude: [
         "cypress/**/*.*",
@@ -62,6 +63,7 @@ export default defineConfig({
     numTestsKeptInMemory: 1,
   },
   component: {
+    numTestsKeptInMemory: 1,
     supportFile: "cypress/support/component.js",
     setupNodeEvents(on, config) {
       require("@cypress/code-coverage/task")(on, config);
