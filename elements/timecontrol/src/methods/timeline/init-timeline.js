@@ -15,6 +15,7 @@ import timezone from "dayjs/plugin/timezone.js";
 import duration from "dayjs/plugin/duration";
 import groupBy from "lodash.groupby";
 import filter from "lodash.filter";
+import updateGridClipMethod from "./update-grid-clip.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -350,6 +351,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
     visTimeline.fit();
+    updateGridClipMethod(EOxTimeControlTimeline);
     EOxTimeControlTimeline.requestUpdate();
 
     if (drawInterval) {
@@ -382,6 +384,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       }, 50);
 
     visTimeline.on("changed", () => {
+      updateGridClipMethod(EOxTimeControlTimeline);
       updateRangeElements(EOxTimeControlTimeline);
       handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl);
     });
