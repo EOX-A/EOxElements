@@ -42,12 +42,12 @@
     "@eox/ui": "^1.1.0",
     "@sindresorhus/slugify": "^3.0.1",
     "glightbox": "^3.3.0",
-    "isomorphic-dompurify": "^4.4.0",
+    "isomorphic-dompurify": "^4.5.0",
     "joi": "^18.2.9",
-    "js-yaml": "^4.2.0",
+    "js-yaml": "^5.4.3",
     "lit": "^3.3.3",
     "lodash.debounce": "^4.0.8",
-    "markdown-it": "^14.0.0",
+    "markdown-it": "^15.0.2",
     "markdown-it-footnote": "^4.0.0"
   },
   "peerDependencies": {

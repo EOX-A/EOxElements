@@ -8,6 +8,8 @@ import {
   loadOnlyDates,
   loadDateWithInitDate,
   loadDateWithFormat,
+  editDate,
+  loadDateRangeWithTime,
   loadDateWithNavigation,
   loadDateWrap,
   loadDatePickerPopup,
@@ -15,6 +17,7 @@ import {
   loadDatePickerStandalone,
   loadDatePickerSelectEvent,
   loadSlider,
+  loadCompareMaps,
   loadTimeline,
   loadTimelineWithClustering,
   loadTimelineOnLayersChange,
@@ -44,6 +47,14 @@ describe("TimeControl", () => {
   // Test to verify that timecontrol-date correctly formats dates using custom format strings
   it("loads date with custom format", () => loadDateWithFormat());
 
+  // Test to verify that timecontrol-date correctly formats dates using custom format strings
+  it("edits dates, resets wrong formats, and commits on Enter", () =>
+    editDate());
+
+  // Test to verify that timecontrol-date correctly formats dates using custom format strings
+  it("shows date range hours according to the format", () =>
+    loadDateRangeWithTime());
+
   // Test to verify that navigation buttons work correctly and update dates
   it("loads date with navigation", () => loadDateWithNavigation());
 
@@ -61,6 +72,9 @@ describe("TimeControl", () => {
 
   // Test to verify that slider component loads with year ticks and custom marks
   it("loads slider", () => loadSlider());
+
+  it("updates both comparison maps when the date changes", () =>
+    loadCompareMaps());
 
   // Test to verify that timeline component loads with vis-timeline visualization
   it("loads timeline", () => loadTimeline());

@@ -3,10 +3,15 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { when } from "lit/directives/when.js";
+import { live } from "lit/directives/live.js";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
-import { getStepDateMethod, updateStepMethod } from "../methods/date/index.js";
+import {
+  commitInputMethod,
+  getStepDateMethod,
+  updateStepMethod,
+} from "../methods/date/index.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -33,16 +38,10 @@ export class EOxTimeControlDate extends LitElement {
       format: { type: String, attribute: "format" },
       navigation: { type: Boolean, attribute: "navigation" },
       dateWrap: { type: Boolean, attribute: "date-wrap" },
+      editable: { type: Boolean, attribute: "editable" },
       unstyled: { type: Boolean, attribute: "unstyled" },
     };
   }
-
-  /**
-   * Whether the component is rendered as an input field (when used with popup picker).
-   *
-   * @type {boolean}
-   */
-  #isInput = false;
 
   /**
    * The currently selected date range.
@@ -80,6 +79,12 @@ export class EOxTimeControlDate extends LitElement {
     this.dateWrap = true;
 
     /**
+     * Whether the date text can be edited. Defaults to false (disabled input)
+     * @type {boolean}
+     */
+    this.editable = false;
+
+    /**
      * Whether default styling is disabled.
      *
      * @type {boolean}
@@ -100,6 +105,7 @@ export class EOxTimeControlDate extends LitElement {
    * Updates the selected date by stepping forward or backward through available dates.
    *
    * @param {number} [step=1] - Number of steps to move (positive for forward, negative for backward).
+   * @returns {void}
    */
   updateStep(step = 1) {
     updateStepMethod(step, this);
@@ -117,7 +123,7 @@ export class EOxTimeControlDate extends LitElement {
 
   /**
    * Lifecycle method called after the component's first update.
-   * Checks if a popup picker is present and sets the input mode accordingly.
+   * Enables editing when a timecontrol picker is present.
    */
   firstUpdated() {
     const EOxTimeControl = this.getEOxTimeControl();
@@ -125,8 +131,8 @@ export class EOxTimeControlDate extends LitElement {
       /** @type {import("./timecontrol-picker.js").EOxTimeControlPicker} */ (
         EOxTimeControl.querySelector("eox-timecontrol-picker")
       );
-    if (EOxTimeControlPicker && EOxTimeControlPicker.popup) {
-      this.#isInput = true;
+    if (EOxTimeControlPicker) {
+      this.editable = true;
       this.requestUpdate();
     }
   }
@@ -155,6 +161,31 @@ export class EOxTimeControlDate extends LitElement {
     return dayDifference === 0
       ? start.format(format)
       : start.format(format) + " - " + end.format(format);
+  }
+
+  /**
+   * Validates edited text when focus leaves the input or Enter is pressed
+   * @param {Event} event - Input event requesting a commit
+   * @returns {void}
+   */
+  #commitInput(event) {
+    commitInputMethod(
+      /** @type {HTMLInputElement} */ (event.currentTarget),
+      this.#selectedDateRange,
+      this.#getFormattedDate(this.#selectedDateRange, this.format),
+      this,
+    );
+  }
+
+  /**
+   * Commits on Enter while retaining focus and avoiding implicit form submission
+   * @param {KeyboardEvent} event - Input keydown event
+   * @returns {void}
+   */
+  #handleKeyDown(event) {
+    if (event.key !== "Enter" || event.isComposing) return;
+    event.preventDefault();
+    this.#commitInput(event);
   }
 
   render() {
@@ -190,12 +221,15 @@ export class EOxTimeControlDate extends LitElement {
         ${when(this.#selectedDateRange, () => {
           return html`
             <input
-              readonly
-              class=${this.#isInput ? "input-field" : ""}
-              value=${this.#getFormattedDate(
-                this.#selectedDateRange,
-                this.format,
+              class=${this.editable ? "input-field" : ""}
+              ?disabled=${!this.editable}
+              .value=${live(
+                this.#getFormattedDate(this.#selectedDateRange, this.format),
               )}
+              aria-label="Selected date"
+              @blur=${this.#commitInput}
+              @keydown=${this.#handleKeyDown}
+              @change=${(event) => event.stopPropagation()}
               type="text"
               style="width: ${this.#getFormattedDate(
                 this.#selectedDateRange,

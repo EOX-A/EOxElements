@@ -2,6 +2,7 @@
 // Export different stories
 
 export { default as OnlyDateStory } from "./only-date"; // Only date story
+export { default as EditableDateStory } from "./editable-date.js"; // Editable date story
 export { default as DateWithNavigationStory } from "./date-with-navigation"; // Date with navigation story
 export { default as DatePickerPopupStory } from "./date-picker-popup"; // Date picker story
 export { default as DatePickerStandaloneStory } from "./date-picker-standalone"; // Date picker story
@@ -10,6 +11,7 @@ export { default as ExternalMapRenderingStory } from "./external-map-rendering";
 export { default as DateFilterStory } from "./date-filter"; // Date filter story
 export { default as ExpertStory } from "./expert"; // Expert story
 export { default as SliderStory } from "./slider"; // Slider story
+export { default as SliderWithMapStory } from "./slider-with-map";
 export { default as UpdateViewStory } from "./update-view"; // Update view event story
 export { default as DatePickerPopupItemsStory } from "./date-picker-popup-items"; // Date picker popup items story
 export { default as NoMapStory } from "./no-map"; // No map story
@@ -18,4 +20,5 @@ export { default as DateInUTCStory } from "./date-in-utc"; // Date in UTC story
 export { default as TimelineSelectionDurationStory } from "./timeline-selection-duration"; // Timeline with selection duration story
 export { default as TimelineSelectionResizableStory } from "./timeline-selection-resizable"; // Timeline with selection resizable story
 export { default as TimelineWithClusteringStory } from "./timeline-with-clustering"; // Timeline with clustering story
+export { default as TimecontrolWithCompareMapsStory } from "./timecontrol-with-compare-maps";
 export { default as DateWithoutWrapStory } from "./date-without-wrap.js"; // Disables next/prev button at the date boundaries

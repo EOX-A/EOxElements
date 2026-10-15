@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import groupBy from "lodash.groupby";
 import { TIME_CONTROL_DATE_FORMAT } from "../../enums.js";
+import { hasTimeFormat } from "../../helpers/index.js";
 
 /**
  * Resolves the date reached by a navigation step using the same UTC-first,
@@ -22,7 +23,11 @@ export default function getStepDateMethod(step, EOxTimeControlDate) {
     );
   let itemValues = getValues("utc");
   let index = itemValues.findIndex((date) => {
-    if (EOxTimeControl.showUTC && curStartDate.includes("T00:00:00Z")) {
+    if (
+      !hasTimeFormat(EOxTimeControlDate.format) &&
+      EOxTimeControl.showUTC &&
+      curStartDate.includes("T00:00:00Z")
+    ) {
       return dayjs(date).isSame(curStartDate, "day");
     }
     return dayjs(date).isSame(curStartDate);

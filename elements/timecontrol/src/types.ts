@@ -103,6 +103,10 @@ export type TimeControlDateOptions = {
    */
   navigation?: boolean;
   /**
+   * Enables date text editing. Defaults to false; a timecontrol picker enables it on initialization.
+   */
+  editable?: boolean;
+  /**
    * Whether to disable default styling.
    */
   unstyled?: boolean;
@@ -362,9 +366,9 @@ export type FilterConfig = {
  */
 export type TimeControlConfig = {
   /**
-   * Reference to the eox-map element (can be a selector string or element instance).
+   * Map or comparison selector/reference, or an array of map selectors/references.
    */
-  for?: string | EOxMap;
+  for?: string | HTMLElement | Array<string | HTMLElement>;
   /**
    * Property key used to identify layers (default: "id").
    */
