@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.9.0...layercontrol-v1.10.0) (2026-10-15)
+
+
+### Features
+
+* Support multidimensional geozarr layer configuration and band switching ([#2570](https://github.com/EOX-A/EOxElements/issues/2570)) ([2f5b441](https://github.com/EOX-A/EOxElements/commit/2f5b4413fbe4b3e7640430ab5314578b5be4365b))
+
+
+### Bug Fixes
+
+* Alternative update without setting up or checking the zarr layer ([#2555](https://github.com/EOX-A/EOxElements/issues/2555)) ([7f24b7b](https://github.com/EOX-A/EOxElements/commit/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6))
+
 ## [1.9.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.3...layercontrol-v1.9.0) (2026-09-28)
 
 

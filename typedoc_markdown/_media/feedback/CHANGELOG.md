@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/EOX-A/EOxElements/compare/feedback-v1.2.0...feedback-v1.2.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* Y-scrollable feedback panel ([#2588](https://github.com/EOX-A/EOxElements/issues/2588)) ([8897459](https://github.com/EOX-A/EOxElements/commit/8897459eab72e443aafaca62c1a5083bb3918a01))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/feedback-v1.1.1...feedback-v1.2.0) (2026-04-13)
 
 
