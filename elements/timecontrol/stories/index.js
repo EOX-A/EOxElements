@@ -2,6 +2,7 @@
 // Export different stories
 
 export { default as OnlyDateStory } from "./only-date"; // Only date story
+export { default as EditableDateStory } from "./editable-date.js"; // Editable date story
 export { default as DateWithNavigationStory } from "./date-with-navigation"; // Date with navigation story
 export { default as DatePickerPopupStory } from "./date-picker-popup"; // Date picker story
 export { default as DatePickerStandaloneStory } from "./date-picker-standalone"; // Date picker story
@@ -19,3 +20,4 @@ export { default as DateInUTCStory } from "./date-in-utc"; // Date in UTC story
 export { default as TimelineSelectionDurationStory } from "./timeline-selection-duration"; // Timeline with selection duration story
 export { default as TimelineSelectionResizableStory } from "./timeline-selection-resizable"; // Timeline with selection resizable story
 export { default as TimelineWithClusteringStory } from "./timeline-with-clustering"; // Timeline with clustering story
+export { default as TimecontrolWithCompareMapsStory } from "./timecontrol-with-compare-maps";

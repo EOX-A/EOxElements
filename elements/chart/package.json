@@ -42,7 +42,7 @@
     "deepmerge-ts": "^8.0.2",
     "lit": "^3.3.3",
     "vega": "^6.4.0",
-    "vega-embed": "^7.2.0",
+    "vega-embed": "^7.3.0",
     "vega-lite": "^6.4.3"
   }
 }

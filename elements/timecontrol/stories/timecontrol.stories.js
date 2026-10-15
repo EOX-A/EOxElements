@@ -2,10 +2,12 @@
 import { html } from "lit";
 import {
   OnlyDateStory,
+  EditableDateStory,
   DateWithNavigationStory,
   DatePickerPopupStory,
   DatePickerStandaloneStory,
   TimelineStory,
+  TimecontrolWithCompareMapsStory,
   ExternalMapRenderingStory,
   DateFilterStory,
   ExpertStory,
@@ -46,6 +48,15 @@ export default {
  * selector string (e.g., `"eox-map#primary"`) or a direct reference to the map element.
  */
 export const OnlyDate = OnlyDateStory;
+
+/**
+ * Editable date field with map navigation and a popup picker
+ *
+ * Set `editable` to enter dates using the assigned `format`. Press Enter or leave the field
+ * to apply valid edits; invalid input restores the previous date without firing a change.
+ * The picker enables editing automatically, and time is shown only when included in `format`.
+ */
+export const EditableDate = EditableDateStory;
 
 /**
  * Date display component with init date
@@ -146,6 +157,15 @@ export const Slider = SliderStory;
  * the map layers.
  */
 export const SliderWithMap = SliderWithMapStory;
+
+/**
+ * Wind and NO₂ on separate comparison maps, controlled by date navigation and a calendar.
+ * Use `for="eox-map-compare#timecontrol-compare"` to collect both maps' layers.
+ * For separate maps linked with `sync`, set `.for` to an array of map selectors
+ * or element references. Layer identifiers may be reused across maps; each source
+ * is updated independently.
+ */
+export const TimecontrolWithCompareMaps = TimecontrolWithCompareMapsStory;
 
 /**
  * Timeline visualization using vis-timeline with date picker and calendar integration
