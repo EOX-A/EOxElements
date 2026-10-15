@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.9.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.8.0...timecontrol-v2.9.0) (2026-10-15)
+
+
+### Features
+
+* Enable editing `datetime` input field ([#2562](https://github.com/EOX-A/EOxElements/issues/2562)) ([f6820f8](https://github.com/EOX-A/EOxElements/commit/f6820f8d404e41d22747d575cea83de2b706e30f))
+* Extend timecontrol to work with `eox-map-compare` ([#2566](https://github.com/EOX-A/EOxElements/issues/2566)) ([109c7a7](https://github.com/EOX-A/EOxElements/commit/109c7a77ff1dca4c3bb2fb53a7c3e2a6ae96d911))
+
+
+### Bug Fixes
+
+* Dark mode style issue ([#2578](https://github.com/EOX-A/EOxElements/issues/2578)) ([045ec34](https://github.com/EOX-A/EOxElements/commit/045ec34e60472c33b75f6b952e9ca102774dc2d1))
+* Datepicker don't recenter timeline view  ([#2574](https://github.com/EOX-A/EOxElements/issues/2574)) ([8dcac8e](https://github.com/EOX-A/EOxElements/commit/8dcac8ed58d8eb2cbc3105418c229be5d179e574))
+* Slider ticks and label overlap ([#2568](https://github.com/EOX-A/EOxElements/issues/2568)) ([ef079f1](https://github.com/EOX-A/EOxElements/commit/ef079f115f3fb28fca4010ef8fddeb8c2afff08d))
+* Support multidimensional date range initialization and slider sync ([#2569](https://github.com/EOX-A/EOxElements/issues/2569)) ([796ae2c](https://github.com/EOX-A/EOxElements/commit/796ae2c2d6850f6812c255f0090a36573ceb4b6e))
+
 ## [2.8.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.7.0...timecontrol-v2.8.0) (2026-09-28)
 
 
