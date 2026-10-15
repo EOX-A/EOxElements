@@ -290,6 +290,9 @@ export class EOxTimeControlPicker extends LitElement {
             "eox-timecontrol-date",
           )?.shadowRoot?.querySelector("span")
         );
+      if (externalCalendarSelector) {
+        externalCalendarSelector.getRootNode = () => document;
+      }
       const calendarSelector = !this.popup
         ? defaultCalendarSelector
         : externalCalendarSelector || defaultCalendarSelector;
