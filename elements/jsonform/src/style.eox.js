@@ -317,4 +317,11 @@ export const styleEOX = `
     padding: 0;
     border: none;
   }
+  /* Checkbox multiselect in arrays */
+  div[data-schematype="array"] > div.control-group {
+    padding-left: 4px;
+  }
+  .form-control label.checkbox.small input.je-checkbox {
+    height: auto;
+  }
 `;
