@@ -215,6 +215,227 @@
     },
     {
       "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "return": {
+                "type": {
+                  "text": "JsonSchema|null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema|null"
+                  }
+                }
+              ],
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
+            },
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onTextareaInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onJsonFormChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_endpoint",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_schema",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_submitted",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "name": "unstyled",
+              "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -769,227 +990,6 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, screen resolution and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ],
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "kind": "field",
-              "name": "schema",
-              "return": {
-                "type": {
-                  "text": "JsonSchema|null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newSchema",
-                  "type": {
-                    "text": "JsonSchema|null"
-                  }
-                }
-              ],
-              "type": {
-                "text": "JsonSchema"
-              },
-              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
-            },
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onTextareaInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onJsonFormChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_endpoint",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_schema",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_submitted",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "name": "unstyled",
-              "kind": "field"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles."
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -4785,7 +4785,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.\n\n## Basic usage:\n\n```\nimport \"@eox/timecontrol\"\n\n<eox-timecontrol for=\"eox-map#my-map\">\n  <eox-timecontrol-date></eox-timecontrol-date>\n  <eox-timecontrol-slider></eox-timecontrol-slider>\n  <eox-timecontrol-timeline></eox-timecontrol-timeline>\n  <eox-timecontrol-timelapse></eox-timecontrol-timelapse>\n  <eox-timecontrol-picker></eox-timecontrol-picker>\n</eox-timecontrol>\n```\n\n## Features\n\n- **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.\n- **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.\n- **Navigation Controls:** Previous/next buttons for stepping through time periods.\n- **Date Formatting:** Customizable display format using dayjs tokens (default: \"YYYY-MM-DD\").\n- **Filtering:** Integration with `<eox-itemfilter>` for filtering timeline items by metadata properties.\n- **Timelapse Export:** Export animated GIFs or MP4s from time series data.\n- **Standalone Mode:** Can be used without a map for time selection purposes.\n\n## Component Structure\n\nThe timecontrol element acts as a container for child components:\n- `<eox-timecontrol-date>`: Displays the current selected date(s) with optional navigation buttons.\n- `<eox-timecontrol-picker>`: Calendar-based date picker (popup or inline, single or range selection).\n- `<eox-timecontrol-slider>`: Range slider for selecting date ranges.\n- `<eox-timecontrol-timeline>`: Timeline visualization using vis-timeline.\n- `<eox-timecontrol-timelapse>`: Timelapse export functionality.\n\n## Layer Configuration\n\nLayers must have the following properties to work with timecontrol:\n- `properties.timeControlValues`: Array of objects with `date` and optional metadata.\n- `properties.timeControlProperty`: Property name used in WMS requests (e.g., \"TIME\").\n- `properties.id`: Layer identifier (used for grouping in timeline).\n- `properties.name`: Display name (used in timeline groups).\n\n## Events\n\n- `stepchange`: Fired when the current time step changes (not currently implemented).",
+          "description": "The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.\n\n## Basic usage:\n\n```\nimport \"@eox/timecontrol\"\n\n<eox-timecontrol for=\"eox-map#my-map\">\n  <eox-timecontrol-date></eox-timecontrol-date>\n  <eox-timecontrol-slider></eox-timecontrol-slider>\n  <eox-timecontrol-timeline></eox-timecontrol-timeline>\n  <eox-timecontrol-timelapse></eox-timecontrol-timelapse>\n  <eox-timecontrol-picker></eox-timecontrol-picker>\n</eox-timecontrol>\n```\n\n## Features\n\n- **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.\n- **Multiple Maps:** Target an `eox-map-compare` or pass an array of map selectors/references through the `for` property to share one timeline and picker.\n- **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.\n- **Navigation Controls:** Previous/next buttons for stepping through time periods.\n- **Date Formatting:** Customizable display format using dayjs tokens (default: \"YYYY-MM-DD\").\n- **Filtering:** Integration with `<eox-itemfilter>` for filtering timeline items by metadata properties.\n- **Timelapse Export:** Export animated GIFs or MP4s from time series data.\n- **Standalone Mode:** Can be used without a map for time selection purposes.\n\n## Component Structure\n\nThe timecontrol element acts as a container for child components:\n- `<eox-timecontrol-date>`: Displays the current selected date(s) with optional navigation buttons.\n- `<eox-timecontrol-picker>`: Calendar-based date picker (popup or inline, single or range selection).\n- `<eox-timecontrol-slider>`: Range slider for selecting date ranges.\n- `<eox-timecontrol-timeline>`: Timeline visualization using vis-timeline.\n- `<eox-timecontrol-timelapse>`: Timelapse export functionality.\n\n## Layer Configuration\n\nLayers must have the following properties to work with timecontrol:\n- `properties.timeControlValues`: Array of objects with `date` and optional metadata.\n- `properties.timeControlProperty`: Property name used in WMS requests (e.g., \"TIME\").\n- `properties.id`: Layer identifier (used for grouping in timeline).\n- `properties.name`: Display name (used in timeline groups).\n\n## Events\n\n- `stepchange`: Fired when the current time step changes (not currently implemented).",
           "name": "EOxTimeControl",
           "members": [
             {
@@ -4796,7 +4796,7 @@
                 "text": "EOxMap | null"
               },
               "default": "null",
-              "description": "Reference to the associated eox-map element instance."
+              "description": "Primary map reference (the first resolved map), also used for timelapse export."
             },
             {
               "kind": "field",
@@ -4830,13 +4830,23 @@
             },
             {
               "kind": "field",
-              "name": "#cleanupLayersListener",
+              "name": "#removeTimecontrolListeners",
               "privacy": "private",
               "type": {
                 "text": "(() => void) | null"
               },
               "default": "null",
-              "description": "Removes the map `layerschanged` listener registered in firstUpdated."
+              "description": "Removes listeners registered on the associated maps and layers."
+            },
+            {
+              "kind": "field",
+              "name": "#skipInitialUpdate",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Skips the initial update of the timecontrol."
             },
             {
               "kind": "field",
@@ -5117,9 +5127,9 @@
               "name": "for",
               "privacy": "public",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement | Array<string | HTMLElement>"
               },
-              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "description": "Selector or element reference for an `eox-map` or `eox-map-compare`.\nPass an array of selectors/references as a property to control multiple maps,\nincluding maps whose views are linked with `sync`.",
               "default": "undefined",
               "attribute": "for"
             },
@@ -5150,9 +5160,9 @@
             {
               "name": "for",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement | Array<string | HTMLElement>"
               },
-              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "description": "Selector or element reference for an `eox-map` or `eox-map-compare`.\nPass an array of selectors/references as a property to control multiple maps,\nincluding maps whose views are linked with `sync`.",
               "default": "undefined",
               "fieldName": "for"
             },

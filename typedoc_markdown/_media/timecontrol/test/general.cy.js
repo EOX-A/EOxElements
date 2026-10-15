@@ -16,6 +16,7 @@ import {
   loadDatePickerStandalone,
   loadDatePickerSelectEvent,
   loadSlider,
+  loadCompareMaps,
   loadTimeline,
   loadTimelineWithClustering,
   loadTimelineOnLayersChange,
@@ -67,6 +68,9 @@ describe("TimeControl", () => {
 
   // Test to verify that slider component loads with year ticks and custom marks
   it("loads slider", () => loadSlider());
+
+  it("updates both comparison maps when the date changes", () =>
+    loadCompareMaps());
 
   // Test to verify that timeline component loads with vis-timeline visualization
   it("loads timeline", () => loadTimeline());

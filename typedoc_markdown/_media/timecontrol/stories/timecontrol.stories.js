@@ -7,6 +7,7 @@ import {
   DatePickerPopupStory,
   DatePickerStandaloneStory,
   TimelineStory,
+  TimecontrolWithCompareMapsStory,
   ExternalMapRenderingStory,
   DateFilterStory,
   ExpertStory,
@@ -145,6 +146,15 @@ export const DatePickerStandalone = DatePickerStandaloneStory;
  * the map layers.
  */
 export const Slider = SliderStory;
+
+/**
+ * Wind and NO₂ on separate comparison maps, controlled by date navigation and a calendar.
+ * Use `for="eox-map-compare#timecontrol-compare"` to collect both maps' layers.
+ * For separate maps linked with `sync`, set `.for` to an array of map selectors
+ * or element references. Layer identifiers may be reused across maps; each source
+ * is updated independently.
+ */
+export const TimecontrolWithCompareMaps = TimecontrolWithCompareMapsStory;
 
 /**
  * Timeline visualization using vis-timeline with date picker and calendar integration

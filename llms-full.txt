@@ -13605,7 +13605,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-10-15T08:38:01.261Z",
+              default: "2026-10-15T08:41:10.293Z",
               options: {
                 hidden: true,
               },
@@ -17458,6 +17458,7 @@ import "@eox/timecontrol"
 ## Features
 
 - **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.
+- **Multiple Maps:** Target an `eox-map-compare` or pass an array of map selectors/references through the `for` property to share one timeline and picker.
 - **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.
 - **Navigation Controls:** Previous/next buttons for stepping through time periods.
 - **Date Formatting:** Customizable display format using dayjs tokens (default: "YYYY-MM-DD").
@@ -17488,8 +17489,9 @@ Layers must have the following properties to work with timecontrol:
 
 ### Attributes
 
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
-or an `eox-map` DOM element (`HTMLElement`, passed as property)
+- `for` (string | HTMLElement | Array<string | HTMLElement>): Selector or element reference for an `eox-map` or `eox-map-compare`.
+Pass an array of selectors/references as a property to control multiple maps,
+including maps whose views are linked with `sync`.
 - `unstyled` (boolean): Whether default styling is disabled.
 - `title-key` (string): Property key used to retrieve layer titles (default: "name").
 - `layer-id-key` (string): Property key used to identify layers (default: "id").
@@ -17507,8 +17509,9 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `layerIdKey` (string): Property key used to identify layers (default: "id"). (Default: `"id"`)
 - `showUTC` (boolean): Whether to show UTC dates in the timecontrol (default: false). (Default: `false`)
 - `externalMapRendering` (boolean): Whether external map rendering is enabled for timelapse export. (Default: `false`)
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
-or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `undefined`)
+- `for` (string | HTMLElement | Array<string | HTMLElement>): Selector or element reference for an `eox-map` or `eox-map-compare`.
+Pass an array of selectors/references as a property to control multiple maps,
+including maps whose views are linked with `sync`. (Default: `undefined`)
 - `controlValues` (Array<Object>): Array of control values. (Default: `[]`)
 - `initDate` (DateRange): The initial date range as [startDate, endDate] in ISO/UTC format. (Default: `null`)
 
@@ -22264,6 +22267,25 @@ the map layers.
   Object.assign(eoxTimecontrolSlider, {
     animateOnClickInterval: "0.3s",
   });
+</script>
+
+```
+
+#### TimecontrolWithCompareMaps
+
+Wind and NO₂ on separate comparison maps, controlled by date navigation and a calendar.
+Use `for="eox-map-compare#timecontrol-compare"` to collect both maps' layers.
+For separate maps linked with `sync`, set `.for` to an array of map selectors
+or element references. Layer identifiers may be reused across maps; each source
+is updated independently.
+
+```html
+<eox-timecontrol for="eox-map-compare#timecontrol-compare"></eox-timecontrol>
+
+<script type="module">
+  import "@eox/timecontrol/dist/eox-timecontrol.js";
+
+  const eoxTimecontrol = document.querySelector("eox-timecontrol");
 </script>
 
 ```
