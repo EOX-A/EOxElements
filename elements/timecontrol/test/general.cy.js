@@ -9,6 +9,7 @@ import {
   loadDateWithInitDate,
   loadDateWithFormat,
   loadDateWithNavigation,
+  loadDateWrap,
   loadDatePickerPopup,
   loadDatePickerPopupItems,
   loadDatePickerStandalone,
@@ -45,6 +46,9 @@ describe("TimeControl", () => {
 
   // Test to verify that navigation buttons work correctly and update dates
   it("loads date with navigation", () => loadDateWithNavigation());
+
+  it("disables date navigation at the first and last dates", () =>
+    loadDateWrap());
 
   // Test to verify that date picker popup opens and date selection works
   it("loads date picker popup", () => loadDatePickerPopup());

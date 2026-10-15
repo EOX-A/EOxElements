@@ -3,6 +3,7 @@ import { html } from "lit";
 import {
   OnlyDateStory,
   DateWithNavigationStory,
+  DateWithoutWrapStory,
   DatePickerPopupStory,
   DatePickerStandaloneStory,
   TimelineStory,
@@ -62,6 +63,15 @@ export const DateWithInitDate = DateWithInitDateStory;
  * automatically update the selected date range and apply it to the map layers.
  */
 export const DateWithNavigation = DateWithNavigationStory;
+
+/**
+ * Date navigation that stops at the first and last available dates
+ *
+ * This example sets `dateWrap` to `false` on `<eox-timecontrol-date>` to disable
+ * previous/next buttons at the date boundaries. The `initDate` value `"first"`
+ * selects the first available date on initialization.
+ */
+export const DateWithoutWrap = DateWithoutWrapStory;
 
 /**
  * Calendar date picker displayed in popup mode, triggered by clicking the date input field
