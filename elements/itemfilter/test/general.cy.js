@@ -21,6 +21,8 @@ import {
   resultAggregationTest,
   inlineModeToggleTest,
   resultsTitleTest,
+  inlineSearchTest,
+  inlineSearchTitleOnlyTest,
 } from "./cases/general/";
 
 /**
@@ -169,4 +171,16 @@ describe("Item Filter Config", () => {
    */
   it("should display capitalized title attribute for result items", () =>
     resultsTitleTest());
+
+  /**
+   * Test case to verify the inline search box filters items through the inlineSearch text filter.
+   */
+  it("should filter results from the inline search box when inlineSearch is set", () =>
+    inlineSearchTest());
+
+  /**
+   * Test case to verify the inline search box only matches filter titles without inlineSearch.
+   */
+  it("should not filter results from the inline search box without inlineSearch", () =>
+    inlineSearchTitleOnlyTest());
 });

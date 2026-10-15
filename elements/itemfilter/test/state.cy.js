@@ -5,6 +5,8 @@ import {
   renderCheckboxTest,
   resultPreCheckedTest,
   resultsWithPreSetFiltersTest,
+  textPreSetChipTest,
+  textPreSetValueTest,
 } from "./cases/state/";
 
 describe("Item Filter Config", () => {
@@ -71,4 +73,44 @@ describe("Item Filter Config", () => {
    * Test case to have a custom order
    */
   it("should have a custom order", () => customOrderTest(customOrder));
+});
+
+describe("Item Filter Text State", () => {
+  const title = "Search";
+  const value = "asparagus";
+
+  /**
+   * Runs before each test case to mount the eox-itemfilter component with a pre-set text filter.
+   */
+  beforeEach(() => {
+    cy.mount(`<eox-itemfilter></eox-itemfilter>`)
+      .as("eox-itemfilter")
+      .then(($el) => {
+        Object.assign($el[0], {
+          titleProperty: "title",
+          filterProperties: [
+            {
+              keys: ["title", "themes"],
+              title,
+              type: "text",
+              expanded: true,
+              state: { title: value },
+            },
+          ],
+          items: testItems,
+        });
+      });
+  });
+
+  /**
+   * Test case to show the pre-set text value in the input and filter results
+   */
+  it("should show the pre-set text value and filter the results", () =>
+    textPreSetValueTest(value, testItems.length));
+
+  /**
+   * Test case to show the pre-set text value in the inline mode chip
+   */
+  it("should show the pre-set text value in the inline chip", () =>
+    textPreSetChipTest(title, value));
 });

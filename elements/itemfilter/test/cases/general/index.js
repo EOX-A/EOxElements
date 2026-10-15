@@ -19,3 +19,5 @@ export { default as inlineModeToggleTest } from "./inline-mode-toggle";
 export { default as resultsTitleTest } from "./results-title";
 export { resultSortingTest } from "./result-sorting";
 export { default as resultAggregationTest } from "./results-aggregation";
+export { default as inlineSearchTest } from "./inline-search";
+export { default as inlineSearchTitleOnlyTest } from "./inline-search-title-only";
