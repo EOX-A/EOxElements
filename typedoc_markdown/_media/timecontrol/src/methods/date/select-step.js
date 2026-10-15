@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { hasTimeFormat } from "../../helpers/index.js";
+import { selectDateRangeMethod } from "../timecontrol/index.js";
 
 dayjs.extend(utc);
 
@@ -26,7 +27,7 @@ export default function selectStepMethod(nextDate, EOxTimeControlDate) {
     ? next.utc().endOf("day")
     : next.endOf("day");
 
-  EOxTimeControl.dateChange(
+  selectDateRangeMethod(
     [start.utc().format(), end.utc().format()],
     EOxTimeControl,
   );
