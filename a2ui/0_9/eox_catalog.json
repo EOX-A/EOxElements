@@ -997,6 +997,10 @@
             "component": {
               "const": "EOxA2uiElement"
             },
+            "controller": {
+              "description": "",
+              "type": "string"
+            },
             "map": {
               "description": "",
               "type": "string"

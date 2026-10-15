@@ -5466,6 +5466,10 @@
           "members": [
             {
               "kind": "field",
+              "name": "controller"
+            },
+            {
+              "kind": "field",
               "name": "map",
               "readonly": true
             },
@@ -5719,7 +5723,7 @@
         {
           "kind": "variable",
           "name": "eoxCatalog",
-          "default": "new Catalog( `https://eox-a.github.io/EOxElements/a2ui/${urlVersion}/eox_catalog.json`, [...eoxComponents, ...virtualComponents], )"
+          "default": "new Catalog( `https://eox-a.github.io/EOxElements/a2ui/${urlVersion}/eox_catalog.json`, \"0.9\", [...eoxComponents, ...virtualComponents], )"
         }
       ],
       "exports": [
@@ -5751,7 +5755,7 @@
           "type": {
             "text": "string"
           },
-          "default": "\"1.3.0\""
+          "default": "\"1.4.0\""
         },
         {
           "kind": "variable",
