@@ -8,7 +8,7 @@
 
 > **ConfigObject** = `object`
 
-Defined in: [elements/map/src/types.ts:274](https://github.com/EOX-A/EOxElements/blob/ef079f115f3fb28fca4010ef8fddeb8c2afff08d/elements/map/src/types.ts#L274)
+Defined in: [elements/map/src/types.ts:274](https://github.com/EOX-A/EOxElements/blob/ffe118beeb66085e902a2cb8b5f0139b32af6d9e/elements/map/src/types.ts#L274)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/types.ts:274](https://github.com/EOX-A/EOxElements
 
 > `optional` **animationOptions?**: [`EOxAnimationOptions`](EOxAnimationOptions.md)
 
-Defined in: [elements/map/src/types.ts:286](https://github.com/EOX-A/EOxElements/blob/ef079f115f3fb28fca4010ef8fddeb8c2afff08d/elements/map/src/types.ts#L286)
+Defined in: [elements/map/src/types.ts:286](https://github.com/EOX-A/EOxElements/blob/ffe118beeb66085e902a2cb8b5f0139b32af6d9e/elements/map/src/types.ts#L286)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/types.ts:286](https://github.com/EOX-A/EOxElements
 
 > **controls**: [`ControlDictionary`](ControlDictionary.md)
 
-Defined in: [elements/map/src/types.ts:275](https://github.com/EOX-A/EOxElements/blob/ef079f115f3fb28fca4010ef8fddeb8c2afff08d/elements/map/src/types.ts#L275)
+Defined in: [elements/map/src/types.ts:275](https://github.com/EOX-A/EOxElements/blob/ffe118beeb66085e902a2cb8b5f0139b32af6d9e/elements/map/src/types.ts#L275)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/types.ts:275](https://github.com/EOX-A/EOxElements
 
 > **layers**: [`EoxLayers`](EoxLayers.md)
 
-Defined in: [elements/map/src/types.ts:276](https://github.com/EOX-A/EOxElements/blob/ef079f115f3fb28fca4010ef8fddeb8c2afff08d/elements/map/src/types.ts#L276)
+Defined in: [elements/map/src/types.ts:276](https://github.com/EOX-A/EOxElements/blob/ffe118beeb66085e902a2cb8b5f0139b32af6d9e/elements/map/src/types.ts#L276)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/types.ts:276](https://github.com/EOX-A/EOxElements
 
 > **preventScroll**: `boolean`
 
-Defined in: [elements/map/src/types.ts:285](https://github.com/EOX-A/EOxElements/blob/ef079f115f3fb28fca4010ef8fddeb8c2afff08d/elements/map/src/types.ts#L285)
+Defined in: [elements/map/src/types.ts:285](https://github.com/EOX-A/EOxElements/blob/ffe118beeb66085e902a2cb8b5f0139b32af6d9e/elements/map/src/types.ts#L285)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [elements/map/src/types.ts:285](https://github.com/EOX-A/EOxElements
 
 > **view**: `object`
 
-Defined in: [elements/map/src/types.ts:277](https://github.com/EOX-A/EOxElements/blob/ef079f115f3fb28fca4010ef8fddeb8c2afff08d/elements/map/src/types.ts#L277)
+Defined in: [elements/map/src/types.ts:277](https://github.com/EOX-A/EOxElements/blob/ffe118beeb66085e902a2cb8b5f0139b32af6d9e/elements/map/src/types.ts#L277)
 
 #### center
 
