@@ -7,5 +7,6 @@ export const urlVersion = A2UI_SPEC_VERSION;
 
 export const eoxCatalog = new Catalog(
   `https://eox-a.github.io/EOxElements/a2ui/${urlVersion}/eox_catalog.json`,
+  "0.9",
   [...eoxComponents, ...virtualComponents],
 );

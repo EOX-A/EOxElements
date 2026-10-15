@@ -40,6 +40,14 @@ export class EOxA2uiElement extends A2uiLitElement {
     this._appliedProps = {};
   }
 
+  get controller() {
+    return this._controller;
+  }
+
+  set controller(value) {
+    this._controller = value;
+  }
+
   get map() {
     return (
       this._elementRef?.value?.map ||
