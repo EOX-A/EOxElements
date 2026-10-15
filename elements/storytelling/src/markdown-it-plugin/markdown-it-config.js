@@ -1,4 +1,4 @@
-import yaml from "js-yaml";
+import { load } from "js-yaml";
 import { checkMarkdownVersion } from "../helpers";
 
 /**
@@ -20,7 +20,13 @@ function markdownItConfig(md) {
     if (match) {
       try {
         // Config generate with help of yaml load
-        md.config = yaml.load(match[1]);
+        const parsedConfig = match[1]?.trim()
+          ? /** @type {Record<string, any>} */ (load(match[1]) || {})
+          : {};
+        md.config = {
+          ...md.config,
+          ...parsedConfig,
+        };
         state.src = state.src.replace(match[0], "");
       } catch (e) {
         console.error("Error parsing frontmatter:", e);
