@@ -12,6 +12,7 @@ import {
   DateFilterStory,
   ExpertStory,
   SliderStory,
+  SliderWithMapStory,
   UpdateViewStory,
   DatePickerPopupItemsStory,
   NoMapStory,
@@ -136,6 +137,16 @@ export const DateInUTC = DateInUTCStory;
 export const DatePickerStandalone = DatePickerStandaloneStory;
 
 /**
+ * Two independently resizable, map-free sliders covering 2018–2026 and 1900–2026.
+ * Use these examples for partial endpoint years and long time series in narrow
+ * dashboards. First and last years remain visible, with intermediate labels
+ * shown when they fit. Minor ticks stay at least 12 pixels apart.
+ * Every date remains selectable. Resize either
+ * parent panel to reveal more years.
+ */
+export const Slider = SliderStory;
+
+/**
  * Range slider for selecting date ranges with visual indicators for years and months
  *
  * This example demonstrates the `<eox-timecontrol-slider>` component, which provides a visual
@@ -145,7 +156,7 @@ export const DatePickerStandalone = DatePickerStandaloneStory;
  * select a date range by dragging the handles. The selected range is immediately applied to
  * the map layers.
  */
-export const Slider = SliderStory;
+export const SliderWithMap = SliderWithMapStory;
 
 /**
  * Wind and NO₂ on separate comparison maps, controlled by date navigation and a calendar.

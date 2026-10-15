@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./lit-D8IuYOuz.js";import{a as r,n as i}from"./enums-CyXPk3_M.js";import{t as a}from"./taggedTemplateLiteral-D3OAzLWD.js";var o;function s(){return(s=e((()=>{n(),r(),o={args:{for:`eox-map#only-date`,storyAdditionalComponents:{"eox-map":{id:`only-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format}}},render:e=>t`
+import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./lit-D8IuYOuz.js";import{a as r,n as i}from"./enums-CyXPk3_M.js";import{t as a}from"./taggedTemplateLiteral-D3OAzLWD.js";var o;function ee(){return(ee=e((()=>{n(),r(),o={args:{for:`eox-map#only-date`,storyAdditionalComponents:{"eox-map":{id:`only-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -17,7 +17,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .format=${e.storyAdditionalComponents[`eox-timecontrol-date`].format}
       ></eox-timecontrol-date>
     </eox-timecontrol>
-  `}})))()}var c;function l(){return(l=e((()=>{n(),r(),c={args:{showUTC:!0,initDate:`first`,for:`eox-map#editable-date`,layerIdKey:i.layerIdKey,titleKey:i.titleKey,select:e=>console.log(`Selected date range:`,e.detail.date),storyAdditionalComponents:{"eox-map":{id:`editable-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:`YYYY-MM-DD`,navigation:!0,editable:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,popup:!0,position:[`bottom`,`left`],showDots:!0}}},render:e=>t`
+  `}})))()}var s;function c(){return(c=e((()=>{n(),r(),s={args:{showUTC:!0,initDate:`first`,for:`eox-map#editable-date`,layerIdKey:i.layerIdKey,titleKey:i.titleKey,select:e=>console.log(`Selected date range:`,e.detail.date),storyAdditionalComponents:{"eox-map":{id:`editable-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:`YYYY-MM-DD`,navigation:!0,editable:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,popup:!0,position:[`bottom`,`left`],showDots:!0}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -44,7 +44,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .position=${e.storyAdditionalComponents[`eox-timecontrol-picker`].position}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}var u;function d(){return(d=e((()=>{n(),r(),u={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-with-navigation`,storyAdditionalComponents:{"eox-map":{id:`date-with-navigation`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0}}},render:e=>t`
+  `}})))()}var l;function te(){return(te=e((()=>{n(),r(),l={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-with-navigation`,storyAdditionalComponents:{"eox-map":{id:`date-with-navigation`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -64,7 +64,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .navigation=${e.storyAdditionalComponents[`eox-timecontrol-date`].navigation}
       ></eox-timecontrol-date>
     </eox-timecontrol>
-  `}})))()}var f;function p(){return(p=e((()=>{n(),r(),f={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-picker-popup`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-picker-popup`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0}}},render:e=>t`
+  `}})))()}var ne;function re(){return(re=e((()=>{n(),r(),ne={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-picker-popup`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-picker-popup`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0}}},render:e=>t`
     <style>
       eox-map {
         width: 100%;
@@ -95,7 +95,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .popup=${e.storyAdditionalComponents[`eox-timecontrol-picker`].popup}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}var ee;function te(){return(te=e((()=>{n(),r(),ee={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-picker-standalone`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-picker-standalone`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0}}},render:e=>t`
+  `}})))()}var ie;function ae(){return(ae=e((()=>{n(),r(),ie={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-picker-standalone`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-picker-standalone`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -117,7 +117,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .showDots=${e.storyAdditionalComponents[`eox-timecontrol-picker`].showDots}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}var ne;function re(){return(re=e((()=>{n(),r(),ne={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`timeline`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,showDots:!0,popup:!0,showItems:!0}}},render:e=>t`
+  `}})))()}var oe;function se(){return(se=e((()=>{n(),r(),oe={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`timeline`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,showDots:!0,popup:!0,showItems:!0}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -143,7 +143,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .showItems=${e.storyAdditionalComponents[`eox-timecontrol-picker`].showItems}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}var ie,ae;function oe(){return(oe=e((()=>{n(),r(),ae={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,externalMapRendering:!0,animate:!0,for:`eox-map#external-map-rendering-mosaic`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`external-map-rendering-mosaic`,zoom:10,center:[12,42]},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0,format:`YYYY-MM-DD HH:mm:ss`},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,range:!0,showDots:!0,showItems:!0,popup:!0}}},render:e=>t(ie||=a([`
+  `}})))()}var ce,le;function ue(){return(ue=e((()=>{n(),r(),le={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,externalMapRendering:!0,animate:!0,for:`eox-map#external-map-rendering-mosaic`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`external-map-rendering-mosaic`,zoom:10,center:[12,42]},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0,format:`YYYY-MM-DD HH:mm:ss`},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,range:!0,showDots:!0,showItems:!0,popup:!0}}},render:e=>t(ce||=a([`
     <eox-map
       style="width: 100%; height: 500px;"
       id=`,`
@@ -310,7 +310,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
       };
       externalStorySetup();
     <\/script>
-  `]),e.storyAdditionalComponents[`eox-map`].id,e.storyAdditionalComponents[`eox-map`].zoom,e.storyAdditionalComponents[`eox-map`].center,e.for,e.layerIdKey,e.titleKey,e.filters,e.externalMapRendering,e.select,e.storyAdditionalComponents[`eox-timecontrol-date`].format,e.storyAdditionalComponents[`eox-timecontrol-date`].navigation,e.storyAdditionalComponents[`eox-timecontrol-picker`].range,e.storyAdditionalComponents[`eox-timecontrol-picker`].showDots,e.storyAdditionalComponents[`eox-timecontrol-picker`].showItems,e.storyAdditionalComponents[`eox-timecontrol-picker`].popup)}})))()}var se,ce;function le(){return(le=e((()=>{n(),r(),ce={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,externalMapRendering:!0,animate:!0,for:`eox-map#external-map-rendering-mosaic`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`external-map-rendering-mosaic`,zoom:10,center:[12,42]},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,range:!0,showDots:!0,popup:!0},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-itemfilter":{storySlot:!0}}},render:e=>t(se||=a([`
+  `]),e.storyAdditionalComponents[`eox-map`].id,e.storyAdditionalComponents[`eox-map`].zoom,e.storyAdditionalComponents[`eox-map`].center,e.for,e.layerIdKey,e.titleKey,e.filters,e.externalMapRendering,e.select,e.storyAdditionalComponents[`eox-timecontrol-date`].format,e.storyAdditionalComponents[`eox-timecontrol-date`].navigation,e.storyAdditionalComponents[`eox-timecontrol-picker`].range,e.storyAdditionalComponents[`eox-timecontrol-picker`].showDots,e.storyAdditionalComponents[`eox-timecontrol-picker`].showItems,e.storyAdditionalComponents[`eox-timecontrol-picker`].popup)}})))()}var de,fe;function pe(){return(pe=e((()=>{n(),r(),fe={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,externalMapRendering:!0,animate:!0,for:`eox-map#external-map-rendering-mosaic`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`external-map-rendering-mosaic`,zoom:10,center:[12,42]},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,range:!0,showDots:!0,popup:!0},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-itemfilter":{storySlot:!0}}},render:e=>t(de||=a([`
     <eox-map
       style="width: 100%; height: 500px;"
       id=`,`
@@ -487,7 +487,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
       };
       dateFilterStorySetup();
     <\/script>
-  `]),e.storyAdditionalComponents[`eox-map`].id,e.storyAdditionalComponents[`eox-map`].zoom,e.storyAdditionalComponents[`eox-map`].center,e.for,e.layerIdKey,e.titleKey,e.externalMapRendering,e.select,e.storyAdditionalComponents[`eox-timecontrol-date`].navigation,e.storyAdditionalComponents[`eox-timecontrol-picker`].range,e.storyAdditionalComponents[`eox-timecontrol-picker`].showDots,e.storyAdditionalComponents[`eox-timecontrol-picker`].popup,!0,`id`,!1,e.filters)}})))()}var ue,de;function fe(){return(fe=e((()=>{n(),r(),de={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,externalMapRendering:!0,animate:!0,for:`eox-map#external-map-rendering-mosaic`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`external-map-rendering-mosaic`,zoom:10,center:[12,42]},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,range:!0,showDots:!0,popup:!0},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-timelapse":{storyImport:!1,storySlot:!0},"eox-itemfilter":{storySlot:!0}}},render:e=>t(ue||=a([`
+  `]),e.storyAdditionalComponents[`eox-map`].id,e.storyAdditionalComponents[`eox-map`].zoom,e.storyAdditionalComponents[`eox-map`].center,e.for,e.layerIdKey,e.titleKey,e.externalMapRendering,e.select,e.storyAdditionalComponents[`eox-timecontrol-date`].navigation,e.storyAdditionalComponents[`eox-timecontrol-picker`].range,e.storyAdditionalComponents[`eox-timecontrol-picker`].showDots,e.storyAdditionalComponents[`eox-timecontrol-picker`].popup,!0,`id`,!1,e.filters)}})))()}var me,he;function ge(){return(ge=e((()=>{n(),r(),he={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,externalMapRendering:!0,animate:!0,for:`eox-map#external-map-rendering-mosaic`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`external-map-rendering-mosaic`,zoom:10,center:[12,42]},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,range:!0,showDots:!0,popup:!0},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-timelapse":{storyImport:!1,storySlot:!0},"eox-itemfilter":{storySlot:!0}}},render:e=>t(me||=a([`
     <eox-map
       style="width: 100%; height: 500px;"
       id=`,`
@@ -680,7 +680,29 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
       };
       expertStorySetup();
     <\/script>
-  `]),e.storyAdditionalComponents[`eox-map`].id,e.storyAdditionalComponents[`eox-map`].zoom,e.storyAdditionalComponents[`eox-map`].center,e.for,e.layerIdKey,e.titleKey,e.externalMapRendering,e.select,e.storyAdditionalComponents[`eox-timecontrol-date`].navigation,e.storyAdditionalComponents[`eox-timecontrol-picker`].range,e.storyAdditionalComponents[`eox-timecontrol-picker`].showDots,e.storyAdditionalComponents[`eox-timecontrol-picker`].popup,!0,`id`,!1,e.filters)}})))()}var m;function h(){return(h=e((()=>{n(),r(),m={args:{layerIdKey:i.layerIdKey,for:`eox-map#slider`,storyAdditionalComponents:{"eox-map":{id:`slider`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,showDots:!0,popup:!0},"eox-timecontrol-slider":{storyImport:!1,storySlot:!0,animateOnClickInterval:`0.3s`}}},render:e=>t`
+  `]),e.storyAdditionalComponents[`eox-map`].id,e.storyAdditionalComponents[`eox-map`].zoom,e.storyAdditionalComponents[`eox-map`].center,e.for,e.layerIdKey,e.titleKey,e.externalMapRendering,e.select,e.storyAdditionalComponents[`eox-timecontrol-date`].navigation,e.storyAdditionalComponents[`eox-timecontrol-picker`].range,e.storyAdditionalComponents[`eox-timecontrol-picker`].showDots,e.storyAdditionalComponents[`eox-timecontrol-picker`].popup,!0,`id`,!1,e.filters)}})))()}function _e(e,t){return[{id:`monthly-observations`,timeControlValues:Array.from({length:t},(t,n)=>({date:new Date(Date.UTC(e,9+n,4)).toISOString()}))}]}var u;function d(){return(d=e((()=>{n(),u={args:{narrowControlValues:_e(2018,90),manyYearsControlValues:_e(1900,1506)},render:e=>t`
+    <p>Drag either panel's bottom-right corner to resize its slider.</p>
+    <h3>Partial first and last years (2018–2026)</h3>
+    <div
+      class="border round"
+      style="width: 320px; min-width: 320px; max-width: 100%; resize: horizontal; overflow: auto; padding: 16px; box-sizing: border-box;"
+    >
+      <eox-timecontrol .controlValues=${e.narrowControlValues} show-utc>
+        <eox-timecontrol-date navigation></eox-timecontrol-date>
+        <eox-timecontrol-slider></eox-timecontrol-slider>
+      </eox-timecontrol>
+    </div>
+    <h3>Many years (1900–2026)</h3>
+    <div
+      class="border round"
+      style="width: 320px; min-width: 320px; max-width: 100%; resize: horizontal; overflow: auto; padding: 16px; box-sizing: border-box;"
+    >
+      <eox-timecontrol .controlValues=${e.manyYearsControlValues} show-utc>
+        <eox-timecontrol-date navigation></eox-timecontrol-date>
+        <eox-timecontrol-slider></eox-timecontrol-slider>
+      </eox-timecontrol>
+    </div>
+  `}})))()}var f;function p(){return(p=e((()=>{n(),r(),f={args:{layerIdKey:i.layerIdKey,for:`eox-map#slider`,storyAdditionalComponents:{"eox-map":{id:`slider`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,showDots:!0,popup:!0},"eox-timecontrol-slider":{storyImport:!1,storySlot:!0,animateOnClickInterval:`0.3s`}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -710,7 +732,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .animateOnClickInterval=${e.storyAdditionalComponents[`eox-timecontrol-slider`].animateOnClickInterval}
       ></eox-timecontrol-slider>
     </eox-timecontrol>
-  `}})))()}var g;function _(){return(_=e((()=>{n(),r(),g={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,externalMapRendering:i.externalMapRendering,for:`eox-map#timeline`,updateView:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`timeline`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,showDots:!0,popup:!0}}},render:e=>t`
+  `}})))()}var m;function h(){return(h=e((()=>{n(),r(),m={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,externalMapRendering:i.externalMapRendering,for:`eox-map#timeline`,updateView:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`timeline`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,showDots:!0,popup:!0}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -735,7 +757,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .popup=${e.storyAdditionalComponents[`eox-timecontrol-picker`].popup}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}var v;function y(){return(y=e((()=>{n(),r(),v={argTypes:{showItems:{control:{type:`boolean`},description:`Whether to show the items popup card when hovering over available dates.`},itemTitleKey:{control:{type:`select`},options:[void 0,`cloudCoverage`,`layerName`,`itemId`,`id`],description:"Property key on the timeline item used as the primary title in the card (e.g. `cloudCoverage`, `layerName`, `itemId`, `id`)."},showTime:{control:{type:`boolean`},description:`Whether to show time in the popup items card (automatically omitted for date-only items).`},timeFormat:{control:{type:`text`},description:`Format string for time display in the popup items card.`}},args:{layerIdKey:i.layerIdKey,navigation:!0,popup:!0,showItems:!0,itemTitleKey:void 0,showTime:!0,timeFormat:`HH:mm`,for:`eox-map#date-picker-popup`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-picker-popup`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0,showItems:!0,itemTitleKey:void 0,showTime:!0,timeFormat:`HH:mm`}}},render:e=>t`
+  `}})))()}var g;function _(){return(_=e((()=>{n(),r(),g={argTypes:{showItems:{control:{type:`boolean`},description:`Whether to show the items popup card when hovering over available dates.`},itemTitleKey:{control:{type:`select`},options:[void 0,`cloudCoverage`,`layerName`,`itemId`,`id`],description:"Property key on the timeline item used as the primary title in the card (e.g. `cloudCoverage`, `layerName`, `itemId`, `id`)."},showTime:{control:{type:`boolean`},description:`Whether to show time in the popup items card (automatically omitted for date-only items).`},timeFormat:{control:{type:`text`},description:`Format string for time display in the popup items card.`}},args:{layerIdKey:i.layerIdKey,navigation:!0,popup:!0,showItems:!0,itemTitleKey:void 0,showTime:!0,timeFormat:`HH:mm`,for:`eox-map#date-picker-popup`,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-picker-popup`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0,showItems:!0,itemTitleKey:void 0,showTime:!0,timeFormat:`HH:mm`}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -766,7 +788,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .propertyTransform=${e.propertyTransform??e.storyAdditionalComponents[`eox-timecontrol-picker`].propertyTransform}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}var b;function x(){return(x=e((()=>{n(),r(),b={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,navigation:!0,popup:!0,position:[`bottom`,`left`],select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0,position:[`bottom`,`left`]},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-slider":{storyImport:!1,storySlot:!0},"eox-itemfilter":{storyImport:!1,storySlot:!0}}},render:e=>t`
+  `}})))()}var v;function y(){return(y=e((()=>{n(),r(),v={args:{layerIdKey:i.layerIdKey,titleKey:i.titleKey,filters:i.filters,navigation:!0,popup:!0,position:[`bottom`,`left`],select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0,position:[`bottom`,`left`]},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0},"eox-timecontrol-slider":{storyImport:!1,storySlot:!0},"eox-itemfilter":{storyImport:!1,storySlot:!0}}},render:e=>t`
     <eox-timecontrol
       .layerIdKey=${e.layerIdKey}
       .titleKey=${e.titleKey}
@@ -804,7 +826,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         style="width: 600px; margin-top: 10px;"
       ></eox-timecontrol-slider>
     </eox-timecontrol>
-  `}})))()}var S;function C(){return(C=e((()=>{n(),r(),S={args:{for:`eox-map#date-with-init-date`,initDate:[`2021-02-28`],storyAdditionalComponents:{"eox-map":{id:`date-with-init-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:`D. MMMM YYYY`}},select:e=>{console.log(e.detail)}},render:e=>t`
+  `}})))()}var b;function x(){return(x=e((()=>{n(),r(),b={args:{for:`eox-map#date-with-init-date`,initDate:[`2021-02-28`],storyAdditionalComponents:{"eox-map":{id:`date-with-init-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:`D. MMMM YYYY`}},select:e=>{console.log(e.detail)}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -825,7 +847,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .format=${e.storyAdditionalComponents[`eox-timecontrol-date`].format}
       ></eox-timecontrol-date>
     </eox-timecontrol>
-  `}})))()}var w;function T(){return(T=e((()=>{n(),r(),w={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-in-utc`,showUTC:!0,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-in-utc`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:`YYYY-MM-DDTHH:mm:ss`,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0}}},render:e=>t`
+  `}})))()}var S;function C(){return(C=e((()=>{n(),r(),S={args:{layerIdKey:i.layerIdKey,for:`eox-map#date-in-utc`,showUTC:!0,select:e=>{console.log(e.detail)},storyAdditionalComponents:{"eox-map":{id:`date-in-utc`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:`YYYY-MM-DDTHH:mm:ss`,navigation:!0},"eox-timecontrol-picker":{storyImport:!1,storySlot:!0,format:i.format,showDots:!0,popup:!0}}},render:e=>t`
     <style>
       eox-map {
         width: 100%;
@@ -857,7 +879,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .popup=${e.storyAdditionalComponents[`eox-timecontrol-picker`].popup}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}var E;function D(){return(D=e((()=>{n(),r(),E={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline-selection-duration`,storyAdditionalComponents:{"eox-map":{id:`timeline-selection-duration`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0,selectionDuration:{months:1}}}},render:e=>t`
+  `}})))()}var w;function T(){return(T=e((()=>{n(),r(),w={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline-selection-duration`,storyAdditionalComponents:{"eox-map":{id:`timeline-selection-duration`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0,selectionDuration:{months:1}}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -876,7 +898,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .selectionDuration=${e.storyAdditionalComponents[`eox-timecontrol-timeline`].selectionDuration}
       ></eox-timecontrol-timeline>
     </eox-timecontrol>
-  `}})))()}var O;function k(){return(k=e((()=>{n(),r(),O={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline-selection-resizable`,storyAdditionalComponents:{"eox-map":{id:`timeline-selection-resizable`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0,selectionDuration:{months:1},selectionResizable:!1}}},render:e=>t`
+  `}})))()}var E;function D(){return(D=e((()=>{n(),r(),E={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline-selection-resizable`,storyAdditionalComponents:{"eox-map":{id:`timeline-selection-resizable`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0,selectionDuration:{months:1},selectionResizable:!1}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -896,7 +918,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .selectionResizable=${e.storyAdditionalComponents[`eox-timecontrol-timeline`].selectionResizable}
       ></eox-timecontrol-timeline>
     </eox-timecontrol>
-  `}})))()}var A;function j(){return(j=e((()=>{n(),r(),A={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline-with-clustering`,storyAdditionalComponents:{"eox-map":{id:`timeline-with-clustering`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0,clustering:!0}}},render:e=>t`
+  `}})))()}var O;function k(){return(k=e((()=>{n(),r(),O={args:{layerIdKey:i.layerIdKey,for:`eox-map#timeline-with-clustering`,storyAdditionalComponents:{"eox-map":{id:`timeline-with-clustering`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-timeline":{storyImport:!1,storySlot:!0,clustering:!0}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}
@@ -915,7 +937,7 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         .clustering=${e.storyAdditionalComponents[`eox-timecontrol-timeline`].clustering}
       ></eox-timecontrol-timeline>
     </eox-timecontrol>
-  `}})))()}var M;function pe(){return(pe=e((()=>{n(),r(),M={name:`Timecontrol with Compare maps`,args:{for:`eox-map-compare#timecontrol-compare`},render:e=>t`
+  `}})))()}var A;function j(){return(j=e((()=>{n(),r(),A={name:`Timecontrol with Compare maps`,args:{for:`eox-map-compare#timecontrol-compare`},render:e=>t`
     <eox-map-compare id="timecontrol-compare" style="height: 500px;">
       <eox-map
         id="compare-wind"
@@ -941,22 +963,27 @@ import{n as e}from"./rolldown-runtime-C0FnF6B9.js";import{d as t,t as n}from"./l
         show-items
       ></eox-timecontrol-picker>
     </eox-timecontrol>
-  `}})))()}function N(){return(N=e((()=>{s(),l(),d(),p(),te(),re(),oe(),le(),fe(),h(),_(),y(),x(),C(),T(),D(),k(),j(),pe()})))()}var P,F,I,L,R,z,B,V,H,U,W,G,K,q,J,Y,X,Z,Q,$,me;function he(){return(he=e((()=>{n(),N(),P={title:`Elements/eox-timecontrol`,tags:[`autodocs`],component:`eox-timecontrol`,render:e=>t`
+  `}})))()}function M(){return(M=e((()=>{ee(),c(),te(),re(),ae(),se(),ue(),pe(),ge(),d(),p(),h(),_(),y(),x(),C(),T(),D(),k(),j()})))()}var N,P,F,I,L,R,z,B,V,H,U,W,G,K,q,J,Y,X,Z,Q,$,ve;function ye(){return(ye=e((()=>{n(),M(),N={title:`Elements/eox-timecontrol`,tags:[`autodocs`],component:`eox-timecontrol`,render:e=>t`
     <eox-timecontrol
       .for=${e.for}
       .layerIdKey=${e.layerIdKey}
       .titleKey=${e.titleKey}
       .externalMapRendering=${e.externalMapRendering}
     ></eox-timecontrol>
-  `},F=o,I=c,L=S,R=u,z=f,B=v,V=w,H=ee,U=m,W=M,G=ne,K=A,q=E,J=O,Y=ae,X=ce,Z=g,Q=b,$=de,me=[`OnlyDate`,`EditableDate`,`DateWithInitDate`,`DateWithNavigation`,`DatePickerPopup`,`DatePickerPopupItems`,`DateInUTC`,`DatePickerStandalone`,`Slider`,`TimecontrolWithCompareMaps`,`Timeline`,`TimelineWithClustering`,`TimelineSelectionDuration`,`TimelineSelectionResizable`,`ExternalMapRendering`,`DateFilter`,`UpdateView`,`NoMap`,`Expert`],F.parameters={...F.parameters,docs:{...F.parameters?.docs,source:{originalSource:`OnlyDateStory`,...F.parameters?.docs?.source},description:{story:'Basic timecontrol rendered using only the date display component\n\nThis renders a timecontrol element with just the `<eox-timecontrol-date>` component, which displays\nthe currently selected date(s) from the associated map layers. The date is automatically extracted\nfrom layers that have `timeControlValues` and `timeControlProperty` properties.\n\nThe component links to an `<eox-map>` instance using the `for` attribute, which can be either a\nselector string (e.g., `"eox-map#primary"`) or a direct reference to the map element.',...F.parameters?.docs?.description}}},I.parameters={...I.parameters,docs:{...I.parameters?.docs,source:{originalSource:`EditableDateStory`,...I.parameters?.docs?.source},description:{story:"Editable date field with map navigation and a popup picker\n\nSet `editable` to enter dates using the assigned `format`. Press Enter or leave the field\nto apply valid edits; invalid input restores the previous date without firing a change.\nThe picker enables editing automatically, and time is shown only when included in `format`.",...I.parameters?.docs?.description}}},L.parameters={...L.parameters,docs:{...L.parameters?.docs,source:{originalSource:`DateWithInitDateStory`,...L.parameters?.docs?.source},description:{story:"Date display component with init date\n\nThis example shows the `<eox-timecontrol-date>` component with the `initDate` property added,\nwhich sets the initial date range. Also, it uses the date `format` of `D. MMMM YYYY`.",...L.parameters?.docs?.description}}},R.parameters={...R.parameters,docs:{...R.parameters?.docs,source:{originalSource:`DateWithNavigationStory`,...R.parameters?.docs?.source},description:{story:`Date display component with navigation buttons for stepping through available dates
+  `},P=o,F=s,I=b,L=l,R=ne,z=g,B=S,V=ie,H=u,U=f,W=A,G=oe,K=O,q=w,J=E,Y=le,X=fe,Z=m,Q=v,$=he,ve=[`OnlyDate`,`EditableDate`,`DateWithInitDate`,`DateWithNavigation`,`DatePickerPopup`,`DatePickerPopupItems`,`DateInUTC`,`DatePickerStandalone`,`Slider`,`SliderWithMap`,`TimecontrolWithCompareMaps`,`Timeline`,`TimelineWithClustering`,`TimelineSelectionDuration`,`TimelineSelectionResizable`,`ExternalMapRendering`,`DateFilter`,`UpdateView`,`NoMap`,`Expert`],P.parameters={...P.parameters,docs:{...P.parameters?.docs,source:{originalSource:`OnlyDateStory`,...P.parameters?.docs?.source},description:{story:'Basic timecontrol rendered using only the date display component\n\nThis renders a timecontrol element with just the `<eox-timecontrol-date>` component, which displays\nthe currently selected date(s) from the associated map layers. The date is automatically extracted\nfrom layers that have `timeControlValues` and `timeControlProperty` properties.\n\nThe component links to an `<eox-map>` instance using the `for` attribute, which can be either a\nselector string (e.g., `"eox-map#primary"`) or a direct reference to the map element.',...P.parameters?.docs?.description}}},F.parameters={...F.parameters,docs:{...F.parameters?.docs,source:{originalSource:`EditableDateStory`,...F.parameters?.docs?.source},description:{story:"Editable date field with map navigation and a popup picker\n\nSet `editable` to enter dates using the assigned `format`. Press Enter or leave the field\nto apply valid edits; invalid input restores the previous date without firing a change.\nThe picker enables editing automatically, and time is shown only when included in `format`.",...F.parameters?.docs?.description}}},I.parameters={...I.parameters,docs:{...I.parameters?.docs,source:{originalSource:`DateWithInitDateStory`,...I.parameters?.docs?.source},description:{story:"Date display component with init date\n\nThis example shows the `<eox-timecontrol-date>` component with the `initDate` property added,\nwhich sets the initial date range. Also, it uses the date `format` of `D. MMMM YYYY`.",...I.parameters?.docs?.description}}},L.parameters={...L.parameters,docs:{...L.parameters?.docs,source:{originalSource:`DateWithNavigationStory`,...L.parameters?.docs?.source},description:{story:`Date display component with navigation buttons for stepping through available dates
 
 This example shows the \`<eox-timecontrol-date>\` component with the \`navigation\` property enabled,
 which adds previous/next buttons to step through available dates. Clicking these buttons will
-automatically update the selected date range and apply it to the map layers.`,...R.parameters?.docs?.description}}},z.parameters={...z.parameters,docs:{...z.parameters?.docs,source:{originalSource:`DatePickerPopupStory`,...z.parameters?.docs?.source},description:{story:"Calendar date picker displayed in popup mode, triggered by clicking the date input field\n\nThis example demonstrates the `<eox-timecontrol-picker>` component with `popup` enabled.\nThe calendar appears as a popup overlay when clicking on the date input field (provided by\n`<eox-timecontrol-date>`). The picker supports both single date and range selection modes.",...z.parameters?.docs?.description}}},B.parameters={...B.parameters,docs:{...B.parameters?.docs,source:{originalSource:`DatePickerPopupItemsStory`,...B.parameters?.docs?.source},description:{story:'Calendar date picker displayed in popup mode with configurable items popup card\n\nThis example demonstrates the `<eox-timecontrol-picker>` component with `showItems` enabled.\nThe calendar appears as a popup overlay when clicking on the date input field (provided by\n`<eox-timecontrol-date>`). Hovering over a date with available data displays a popup card.\n\nCard content is configurable using:\n- `itemTitleKey` / `item-title-key`: Selects which property on the timeline item to display on the primary line.\n  - Available item properties include:\n    - `layerName`: The layer title/name (from `layer.properties[titleKey]`).\n    - `group`: The layer ID (from `layer.properties[layerIdKey]`).\n    - `itemId`: The item identifier (from `timeControlValues[i].id` or generated UUID).\n    - `originalDate`: The raw date string from `timeControlValues[i].date`.\n    - Any custom properties defined on `timeControlValues` objects (e.g., `cloudCoverage`).\n  - Defaults to `undefined` (which falls back to the layer title `layerName`).\n- `showTime` / `show-time`: Controls whether time is shown in the card metadata (defaults to `true`; time is automatically omitted for date-only items).\n- `timeFormat` / `time-format`: Dayjs format string for displaying item time (defaults to `"HH:mm"`).\n- `propertyTransform`: Optional function to customize or transform item rendering (receives `{ title, subtitle, time, dotColor, layerName, group, itemId, originalDate, ...customItemProps }` and returns transformed object or custom HTML string).\n\n```html\n<eox-timecontrol for="eox-map#my-map">\n  <eox-timecontrol-date navigation></eox-timecontrol-date>\n  <eox-timecontrol-picker\n    popup\n    show-dots\n    show-items\n    item-title-key="layerName"\n    show-time\n  ></eox-timecontrol-picker>\n</eox-timecontrol>\n```',...B.parameters?.docs?.description}}},V.parameters={...V.parameters,docs:{...V.parameters?.docs,source:{originalSource:`DateInUTCStory`,...V.parameters?.docs?.source},description:{story:"Date is displayed in UTC format when the showUTC property / show-utc attribute is true\n\nThis example demonstrates the `<eox-timecontrol-date>` component with `showUTC` enabled.\nThe date is displayed in the UTC format and not the local timezone format.",...V.parameters?.docs?.description}}},H.parameters={...H.parameters,docs:{...H.parameters?.docs,source:{originalSource:`DatePickerStandaloneStory`,...H.parameters?.docs?.source},description:{story:`Calendar date picker displayed inline (not in popup mode)
+automatically update the selected date range and apply it to the map layers.`,...L.parameters?.docs?.description}}},R.parameters={...R.parameters,docs:{...R.parameters?.docs,source:{originalSource:`DatePickerPopupStory`,...R.parameters?.docs?.source},description:{story:"Calendar date picker displayed in popup mode, triggered by clicking the date input field\n\nThis example demonstrates the `<eox-timecontrol-picker>` component with `popup` enabled.\nThe calendar appears as a popup overlay when clicking on the date input field (provided by\n`<eox-timecontrol-date>`). The picker supports both single date and range selection modes.",...R.parameters?.docs?.description}}},z.parameters={...z.parameters,docs:{...z.parameters?.docs,source:{originalSource:`DatePickerPopupItemsStory`,...z.parameters?.docs?.source},description:{story:'Calendar date picker displayed in popup mode with configurable items popup card\n\nThis example demonstrates the `<eox-timecontrol-picker>` component with `showItems` enabled.\nThe calendar appears as a popup overlay when clicking on the date input field (provided by\n`<eox-timecontrol-date>`). Hovering over a date with available data displays a popup card.\n\nCard content is configurable using:\n- `itemTitleKey` / `item-title-key`: Selects which property on the timeline item to display on the primary line.\n  - Available item properties include:\n    - `layerName`: The layer title/name (from `layer.properties[titleKey]`).\n    - `group`: The layer ID (from `layer.properties[layerIdKey]`).\n    - `itemId`: The item identifier (from `timeControlValues[i].id` or generated UUID).\n    - `originalDate`: The raw date string from `timeControlValues[i].date`.\n    - Any custom properties defined on `timeControlValues` objects (e.g., `cloudCoverage`).\n  - Defaults to `undefined` (which falls back to the layer title `layerName`).\n- `showTime` / `show-time`: Controls whether time is shown in the card metadata (defaults to `true`; time is automatically omitted for date-only items).\n- `timeFormat` / `time-format`: Dayjs format string for displaying item time (defaults to `"HH:mm"`).\n- `propertyTransform`: Optional function to customize or transform item rendering (receives `{ title, subtitle, time, dotColor, layerName, group, itemId, originalDate, ...customItemProps }` and returns transformed object or custom HTML string).\n\n```html\n<eox-timecontrol for="eox-map#my-map">\n  <eox-timecontrol-date navigation></eox-timecontrol-date>\n  <eox-timecontrol-picker\n    popup\n    show-dots\n    show-items\n    item-title-key="layerName"\n    show-time\n  ></eox-timecontrol-picker>\n</eox-timecontrol>\n```',...z.parameters?.docs?.description}}},B.parameters={...B.parameters,docs:{...B.parameters?.docs,source:{originalSource:`DateInUTCStory`,...B.parameters?.docs?.source},description:{story:"Date is displayed in UTC format when the showUTC property / show-utc attribute is true\n\nThis example demonstrates the `<eox-timecontrol-date>` component with `showUTC` enabled.\nThe date is displayed in the UTC format and not the local timezone format.",...B.parameters?.docs?.description}}},V.parameters={...V.parameters,docs:{...V.parameters?.docs,source:{originalSource:`DatePickerStandaloneStory`,...V.parameters?.docs?.source},description:{story:`Calendar date picker displayed inline (not in popup mode)
 
 This example shows the \`<eox-timecontrol-picker>\` component without the \`popup\` attribute,
 displaying the calendar inline within the component. Useful for always-visible date selection
-interfaces.`,...H.parameters?.docs?.description}}},U.parameters={...U.parameters,docs:{...U.parameters?.docs,source:{originalSource:`SliderStory`,...U.parameters?.docs?.source},description:{story:`Range slider for selecting date ranges with visual indicators for years and months
+interfaces.`,...V.parameters?.docs?.description}}},H.parameters={...H.parameters,docs:{...H.parameters?.docs,source:{originalSource:`SliderStory`,...H.parameters?.docs?.source},description:{story:`Two independently resizable, map-free sliders covering 2018–2026 and 1900–2026.
+Use these examples for partial endpoint years and long time series in narrow
+dashboards. First and last years remain visible, with intermediate labels
+shown when they fit. Minor ticks stay at least 12 pixels apart.
+Every date remains selectable. Resize either
+parent panel to reveal more years.`,...H.parameters?.docs?.description}}},U.parameters={...U.parameters,docs:{...U.parameters?.docs,source:{originalSource:`SliderWithMapStory`,...U.parameters?.docs?.source},description:{story:`Range slider for selecting date ranges with visual indicators for years and months
 
 This example demonstrates the \`<eox-timecontrol-slider>\` component, which provides a visual
 range slider for selecting start and end dates. The slider displays tick marks for years and
@@ -1022,4 +1049,4 @@ This comprehensive example demonstrates all available timecontrol components and
 - Date filtering
 
 This example serves as a reference for building complex time navigation interfaces with
-multiple interaction methods and visualization options.`,...$.parameters?.docs?.description}}}})))()}he();export{X as DateFilter,V as DateInUTC,z as DatePickerPopup,B as DatePickerPopupItems,H as DatePickerStandalone,L as DateWithInitDate,R as DateWithNavigation,I as EditableDate,$ as Expert,Y as ExternalMapRendering,Q as NoMap,F as OnlyDate,U as Slider,W as TimecontrolWithCompareMaps,G as Timeline,q as TimelineSelectionDuration,J as TimelineSelectionResizable,K as TimelineWithClustering,Z as UpdateView,me as __namedExportsOrder,P as default};
+multiple interaction methods and visualization options.`,...$.parameters?.docs?.description}}}})))()}ye();export{X as DateFilter,B as DateInUTC,R as DatePickerPopup,z as DatePickerPopupItems,V as DatePickerStandalone,I as DateWithInitDate,L as DateWithNavigation,F as EditableDate,$ as Expert,Y as ExternalMapRendering,Q as NoMap,P as OnlyDate,H as Slider,U as SliderWithMap,W as TimecontrolWithCompareMaps,G as Timeline,q as TimelineSelectionDuration,J as TimelineSelectionResizable,K as TimelineWithClustering,Z as UpdateView,ve as __namedExportsOrder,N as default};
