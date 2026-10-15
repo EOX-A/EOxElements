@@ -5,46 +5,6 @@
   "description": "Unified catalog of EOxElements components.",
   "catalogId": "https://eox-a.github.io/EOxElements/a2ui/0_9/eox_catalog.json",
   "components": {
-    "EOxChart": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "common_types.json#/$defs/ComponentCommon"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "component": {
-              "const": "EOxChart"
-            },
-            "dataValues": {
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
-              "type": "string"
-            },
-            "spec": {
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
-              "type": "string"
-            },
-            "opt": {
-              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "type": "string"
-            },
-            "noShadow": {
-              "description": "Renders the element without a shadow root",
-              "type": "boolean"
-            },
-            "unstyled": {
-              "description": "Render the element without additional styles",
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "component"
-          ]
-        }
-      ],
-      "unevaluatedProperties": false
-    },
     "EOxDrawtools": {
       "type": "object",
       "allOf": [
@@ -153,6 +113,46 @@
             "selectionEvents": {
               "description": "",
               "type": "string"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxChart": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxChart"
+            },
+            "dataValues": {
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "type": "string"
+            },
+            "spec": {
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "type": "string"
+            },
+            "opt": {
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "type": "string"
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
             }
           },
           "required": [
