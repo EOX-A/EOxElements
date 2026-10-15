@@ -8,7 +8,7 @@
 
 > **EOxFormatType**\<`F`\> = `F` \| `object` & `NonNullable`\<`ConstructorParameters`\<[`OLFormats`](OLFormats.md)\[`F`\]\>\[`0`\]\>
 
-Defined in: [elements/map/src/layers.ts:90](https://github.com/EOX-A/EOxElements/blob/045ec34e60472c33b75f6b952e9ca102774dc2d1/elements/map/src/layers.ts#L90)
+Defined in: [elements/map/src/layers.ts:90](https://github.com/EOX-A/EOxElements/blob/c299abe62c5f2cb22ccec831944bff9f5681276f/elements/map/src/layers.ts#L90)
 
 ## Type Parameters
 
