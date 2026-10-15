@@ -440,6 +440,10 @@ export class EOxFeedback extends HTMLElement {
         .region-screenshot_tools {
           z-index: 10001;
         }
+        article {
+          max-height: 100vh;
+          overflow-y: auto;
+        }
       </style>
       <article class="no-margin small-round">
         <div ${!this.endpoint ? 'class="disabled"' : ""}>
