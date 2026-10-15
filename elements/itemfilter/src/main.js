@@ -178,7 +178,7 @@ export class EOxItemFilter extends LitElement {
 
     /**
      * The filter properties. Can be passed as a property or stringified JSON attribute.
-     * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>
+     * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object, inlineSearch?: Boolean}>
      */
     this.filterProperties = [];
 
