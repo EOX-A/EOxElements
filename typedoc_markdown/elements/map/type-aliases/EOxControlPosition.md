@@ -8,4 +8,4 @@
 
 > **EOxControlPosition** = `"top-left"` \| `"top-center"` \| `"top-right"` \| `"center-left"` \| `"center-right"` \| `"bottom-left"` \| `"bottom-center"` \| `"bottom-right"`
 
-Defined in: [elements/map/src/types.ts:155](https://github.com/EOX-A/EOxElements/blob/52f34c552e5142661591970d40555b8d5f7b1d42/elements/map/src/types.ts#L155)
+Defined in: [elements/map/src/types.ts:155](https://github.com/EOX-A/EOxElements/blob/f6820f8d404e41d22747d575cea83de2b706e30f/elements/map/src/types.ts#L155)

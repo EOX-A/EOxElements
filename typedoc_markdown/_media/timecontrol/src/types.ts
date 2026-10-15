@@ -103,6 +103,10 @@ export type TimeControlDateOptions = {
    */
   navigation?: boolean;
   /**
+   * Enables date text editing. Defaults to false; a timecontrol picker enables it on initialization.
+   */
+  editable?: boolean;
+  /**
    * Whether to disable default styling.
    */
   unstyled?: boolean;

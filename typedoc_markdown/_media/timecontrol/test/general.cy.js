@@ -8,6 +8,8 @@ import {
   loadOnlyDates,
   loadDateWithInitDate,
   loadDateWithFormat,
+  editDate,
+  loadDateRangeWithTime,
   loadDateWithNavigation,
   loadDatePickerPopup,
   loadDatePickerPopupItems,
@@ -42,6 +44,14 @@ describe("TimeControl", () => {
 
   // Test to verify that timecontrol-date correctly formats dates using custom format strings
   it("loads date with custom format", () => loadDateWithFormat());
+
+  // Test to verify that timecontrol-date correctly formats dates using custom format strings
+  it("edits dates, resets wrong formats, and commits on Enter", () =>
+    editDate());
+
+  // Test to verify that timecontrol-date correctly formats dates using custom format strings
+  it("shows date range hours according to the format", () =>
+    loadDateRangeWithTime());
 
   // Test to verify that navigation buttons work correctly and update dates
   it("loads date with navigation", () => loadDateWithNavigation());
