@@ -8,7 +8,7 @@
 
 > **TimeControlDateOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:96](https://github.com/EOX-A/EOxElements/blob/f2ce4a97be6f6c74d59318da1249cdf92ef89c3e/elements/timecontrol/src/types.ts#L96)
+Defined in: [elements/timecontrol/src/types.ts:96](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L96)
 
 Configuration options for the time control date component.
 
@@ -18,7 +18,7 @@ Configuration options for the time control date component.
 
 > `optional` **editable?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:108](https://github.com/EOX-A/EOxElements/blob/f2ce4a97be6f6c74d59318da1249cdf92ef89c3e/elements/timecontrol/src/types.ts#L108)
+Defined in: [elements/timecontrol/src/types.ts:108](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L108)
 
 Enables date text editing. Defaults to false; a timecontrol picker enables it on initialization.
 
@@ -28,7 +28,7 @@ Enables date text editing. Defaults to false; a timecontrol picker enables it on
 
 > `optional` **format?**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:100](https://github.com/EOX-A/EOxElements/blob/f2ce4a97be6f6c74d59318da1249cdf92ef89c3e/elements/timecontrol/src/types.ts#L100)
+Defined in: [elements/timecontrol/src/types.ts:100](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L100)
 
 Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
@@ -38,7 +38,7 @@ Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
 > `optional` **navigation?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:104](https://github.com/EOX-A/EOxElements/blob/f2ce4a97be6f6c74d59318da1249cdf92ef89c3e/elements/timecontrol/src/types.ts#L104)
+Defined in: [elements/timecontrol/src/types.ts:104](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L104)
 
 Whether to show navigation buttons (previous/next).
 
@@ -48,6 +48,6 @@ Whether to show navigation buttons (previous/next).
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:112](https://github.com/EOX-A/EOxElements/blob/f2ce4a97be6f6c74d59318da1249cdf92ef89c3e/elements/timecontrol/src/types.ts#L112)
+Defined in: [elements/timecontrol/src/types.ts:112](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L112)
 
 Whether to disable default styling.
