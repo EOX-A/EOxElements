@@ -119,7 +119,9 @@ export class EOxTimeControlSlider extends LitElement {
    * @returns {(HTMLElement & { data?: any; value1?: any }) | null} The slider element.
    */
   getSliderInstance() {
-    return this.renderRoot.querySelector("tc-range-slider");
+    return /** @type {any} */ (
+      this.renderRoot?.querySelector("tc-range-slider")
+    );
   }
 
   /**
