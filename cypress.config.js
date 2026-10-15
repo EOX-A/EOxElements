@@ -29,6 +29,10 @@ if (pathsChanged) {
   }
 }
 export default defineConfig({
+  manageBrowserMemory: true,
+  forceHttp1: true,
+  keystrokeDelay: 10,
+  visibilityStrategy: "legacy",
   env: {
     CI_PATHS_CHANGED: pathsChanged,
     codeCoverage: {
@@ -55,7 +59,6 @@ export default defineConfig({
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
-    experimentalMemoryManagement: true,
     numTestsKeptInMemory: 1,
   },
   component: {
