@@ -74,8 +74,6 @@
   },
   "customElements": "custom-elements.json",
   "overrides": {
-    "concurrently": {
-      "shell-quote": "1.11.0"
-    }
+    "shell-quote": "^1.11.0"
   }
 }

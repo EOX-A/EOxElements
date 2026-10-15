@@ -132,10 +132,8 @@ addCommonStylesheet();
  *
  * - `buffer`: Applies a buffer around an extent
  * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
- * - `isGeoZarrLayer`: Checks if a layer is a GeoZarr layer.
- * - `setupGeoZarrLayer`: Sets up a GeoZarr layer with the necessary configurations.
  *
- * Usage: `import { buffer, transform, transformExtent, isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";`
+ * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
  *
  * @element eox-map
  * @fires {CustomEvent} clusterSelect - A cluster is selected

@@ -219,6 +219,8 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 function handleRangeChanged(props, EOxTimeControlTimeline) {
+  if (!EOxTimeControlTimeline.isConnected) return;
+
   if (props.byUser) {
     drag = true;
     setTimeout(() => (drag = false));
