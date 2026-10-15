@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/EOX-A/EOxElements/compare/map-v2.8.0...map-v2.8.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* Alternative update without setting up or checking the zarr layer ([#2555](https://github.com/EOX-A/EOxElements/issues/2555)) ([7f24b7b](https://github.com/EOX-A/EOxElements/commit/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6))
+
 ## [2.8.0](https://github.com/EOX-A/EOxElements/compare/map-v2.7.2...map-v2.8.0) (2026-09-28)
 
 
