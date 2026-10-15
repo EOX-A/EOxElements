@@ -11,7 +11,7 @@ import {
   calendarStyle,
   getUTCLocalDateTime,
 } from "../helpers";
-import { Calendar } from "vanilla-calendar-pro";
+import { Calendar, annotations } from "vanilla-calendar-pro";
 import groupBy from "lodash.groupby";
 import find from "lodash.find";
 dayjs.extend(utc);
@@ -291,6 +291,9 @@ export class EOxTimeControlPicker extends LitElement {
             "eox-timecontrol-date",
           )?.shadowRoot?.querySelector("span")
         );
+      if (externalCalendarSelector) {
+        externalCalendarSelector.getRootNode = () => document;
+      }
       const calendarSelector = !this.popup
         ? defaultCalendarSelector
         : externalCalendarSelector || defaultCalendarSelector;
@@ -493,6 +496,7 @@ export class EOxTimeControlPicker extends LitElement {
         }
 
         this.cal = new Calendar(calendarSelector || "#cal", {
+          extensions: [annotations],
           selectedTheme: "light",
           dateMin: options.min,
           dateMax: options.max,
@@ -501,6 +505,7 @@ export class EOxTimeControlPicker extends LitElement {
           displayDateMax: options.max,
           displayDatesOutside: true,
           type: "default",
+          enableDateToggle: false,
           selectionDatesMode: this.range ? "multiple-ranged" : "single",
           ...(selectedDates
             ? {
