@@ -2,7 +2,7 @@
 // Generated automatically from custom-elements.json. Do not edit.
 import { z } from "zod";
 
-export const version = "1.3.0";
+export const version = "1.4.0";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
