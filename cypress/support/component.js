@@ -11,7 +11,7 @@ const cleanup = () => {
 
 beforeEach(cleanup);
 
-Cypress.Commands.overwrite("mount", (originalMount, element, options = {}) => {
+Cypress.Commands.add("mount", (element, options = {}) => {
   cleanup();
-  return originalMount(element, options);
+  return mount(element, options);
 });
