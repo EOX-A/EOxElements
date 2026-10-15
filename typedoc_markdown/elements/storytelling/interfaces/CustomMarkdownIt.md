@@ -6,7 +6,7 @@
 
 # Interface: CustomMarkdownIt
 
-Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxElements/blob/08e4f2b0399fd4a6789364a84de62b6c63b6527d/elements/storytelling/src/types.ts#L3)
+Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxElements/blob/8c9b8f8219683d59017077093fc0ecdec7b46f32/elements/storytelling/src/types.ts#L3)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxE
 
 > **attrs**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:4](https://github.com/EOX-A/EOxElements/blob/08e4f2b0399fd4a6789364a84de62b6c63b6527d/elements/storytelling/src/types.ts#L4)
+Defined in: [elements/storytelling/src/types.ts:4](https://github.com/EOX-A/EOxElements/blob/8c9b8f8219683d59017077093fc0ecdec7b46f32/elements/storytelling/src/types.ts#L4)
 
 #### keys
 
@@ -32,13 +32,13 @@ Defined in: [elements/storytelling/src/types.ts:4](https://github.com/EOX-A/EOxE
 
 ### block
 
-> `readonly` **block**: `ParserBlock`
+> **block**: `ParserBlock`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:114
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:760
 
 Instance of ParserBlock. You may need it to add new rules when
-writing plugins. For simple rules control use MarkdownIt.disable and
-MarkdownIt.enable.
+writing plugins. For simple rules control use MarkdownIt.disable
+and MarkdownIt.enable.
 
 #### Inherited from
 
@@ -50,7 +50,7 @@ MarkdownIt.enable.
 
 > **config**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:5](https://github.com/EOX-A/EOxElements/blob/08e4f2b0399fd4a6789364a84de62b6c63b6527d/elements/storytelling/src/types.ts#L5)
+Defined in: [elements/storytelling/src/types.ts:5](https://github.com/EOX-A/EOxElements/blob/8c9b8f8219683d59017077093fc0ecdec7b46f32/elements/storytelling/src/types.ts#L5)
 
 #### version?
 
@@ -64,13 +64,13 @@ Defined in: [elements/storytelling/src/types.ts:5](https://github.com/EOX-A/EOxE
 
 ### core
 
-> `readonly` **core**: `Core`
+> **core**: `ParserCore`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:121
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:766
 
-Instance of Core chain executor. You may need it to add new rules when
-writing plugins. For simple rules control use MarkdownIt.disable and
-MarkdownIt.enable.
+Instance of ParserCore chain executor. You may need it to add new
+rules when writing plugins. For simple rules control use
+MarkdownIt.disable and MarkdownIt.enable.
 
 #### Inherited from
 
@@ -80,9 +80,12 @@ MarkdownIt.enable.
 
 ### helpers
 
-> `readonly` **helpers**: `__module`
+> **helpers**: *typeof* `index_d_exports`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:179
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:829
+
+Link components parser functions, useful to write plugins. See details
+[here](https://github.com/markdown-it/markdown-it/blob/master/src/helpers).
 
 #### Inherited from
 
@@ -92,13 +95,13 @@ Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:179
 
 ### inline
 
-> `readonly` **inline**: `ParserInline`
+> **inline**: `ParserInline`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:107
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:754
 
 Instance of ParserInline. You may need it to add new rules when
-writing plugins. For simple rules control use MarkdownIt.disable and
-MarkdownIt.enable.
+writing plugins. For simple rules control use MarkdownIt.disable
+and MarkdownIt.enable.
 
 #### Inherited from
 
@@ -108,12 +111,12 @@ MarkdownIt.enable.
 
 ### linkify
 
-> `readonly` **linkify**: `LinkifyIt`
+> **linkify**: `LinkifyIt`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:149
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:793
 
 [linkify-it](https://github.com/markdown-it/linkify-it) instance.
-Used by [linkify](https://github.com/markdown-it/markdown-it/blob/master/lib/rules_core/linkify.js)
+Used by [linkify](https://github.com/markdown-it/markdown-it/blob/master/src/rules_core/linkify.ts)
 rule.
 
 #### Inherited from
@@ -126,15 +129,15 @@ rule.
 
 > **nav**: `string`[]
 
-Defined in: [elements/storytelling/src/types.ts:6](https://github.com/EOX-A/EOxElements/blob/08e4f2b0399fd4a6789364a84de62b6c63b6527d/elements/storytelling/src/types.ts#L6)
+Defined in: [elements/storytelling/src/types.ts:6](https://github.com/EOX-A/EOxElements/blob/8c9b8f8219683d59017077093fc0ecdec7b46f32/elements/storytelling/src/types.ts#L6)
 
 ***
 
 ### options
 
-> `readonly` **options**: `Options`
+> **options**: `Required`\<`MarkdownItOptions`\>
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:181
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:830
 
 #### Inherited from
 
@@ -144,17 +147,21 @@ Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:181
 
 ### renderer
 
-> `readonly` **renderer**: `Renderer`
+> **renderer**: `Renderer`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:142
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:787
 
 Instance of Renderer. Use it to modify output look. Or to add rendering
 rules for new token types, generated by plugins.
 
-##### Example
+See Renderer docs and
+[source code](https://github.com/markdown-it/markdown-it/blob/master/src/renderer.ts).
+
+#### Example
 
 ```javascript
-var md = require('markdown-it')();
+import MarkdownIt from 'markdown-it'
+const md = new MarkdownIt()
 
 function myToken(tokens, idx, options, env, self) {
   //...
@@ -163,8 +170,6 @@ function myToken(tokens, idx, options, env, self) {
 
 md.renderer.rules['my_token'] = myToken
 ```
-
-See Renderer docs and [source code](https://github.com/markdown-it/markdown-it/blob/master/lib/renderer.js).
 
 #### Inherited from
 
@@ -176,7 +181,7 @@ See Renderer docs and [source code](https://github.com/markdown-it/markdown-it/b
 
 > **sections**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxElements/blob/08e4f2b0399fd4a6789364a84de62b6c63b6527d/elements/storytelling/src/types.ts#L7)
+Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxElements/blob/8c9b8f8219683d59017077093fc0ecdec7b46f32/elements/storytelling/src/types.ts#L7)
 
 ***
 
@@ -184,15 +189,18 @@ Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxE
 
 > `optional` **showMapLoadingIndicator?**: `boolean`
 
-Defined in: [elements/storytelling/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/08e4f2b0399fd4a6789364a84de62b6c63b6527d/elements/storytelling/src/types.ts#L8)
+Defined in: [elements/storytelling/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/8c9b8f8219683d59017077093fc0ecdec7b46f32/elements/storytelling/src/types.ts#L8)
 
 ***
 
 ### utils
 
-> `readonly` **utils**: `__module`
+> **utils**: *typeof* `utils_d_exports`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:177
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:824
+
+Assorted utility functions, useful to write plugins. See details
+[here](https://github.com/markdown-it/markdown-it/blob/master/src/common/utils.ts).
 
 #### Inherited from
 
@@ -204,13 +212,11 @@ Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:177
 
 > **configure**(`presets`): `this`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:214
-
-*chainable*, *internal*
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:859
 
 Batch load of all options and compenent settings. This is internal method,
-and you probably will not need it. But if you with - see available presets
-and data structure [here](https://github.com/markdown-it/markdown-it/tree/master/lib/presets)
+and you probably will not need it. But if you will - see available presets
+and data structure [here](https://github.com/markdown-it/markdown-it/tree/master/src/presets)
 
 We strongly recommend to use presets instead of direct config loads. That
 will give better compatibility with next versions.
@@ -219,7 +225,7 @@ will give better compatibility with next versions.
 
 ##### presets
 
-`PresetName`
+`"default"` \| `"zero"` \| `"commonmark"` \| `MarkdownItPreset`
 
 #### Returns
 
@@ -235,9 +241,7 @@ will give better compatibility with next versions.
 
 > **disable**(`list`, `ignoreInvalid?`): `this`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:244
-
-*chainable*
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:878
 
 The same as MarkdownIt.enable, but turn specified rules off.
 
@@ -247,13 +251,9 @@ The same as MarkdownIt.enable, but turn specified rules off.
 
 `string` \| `string`[]
 
-rule name or list of rule names to disable.
-
 ##### ignoreInvalid?
 
 `boolean`
-
-set `true` to ignore errors when rule not found.
 
 #### Returns
 
@@ -269,21 +269,11 @@ set `true` to ignore errors when rule not found.
 
 > **enable**(`list`, `ignoreInvalid?`): `this`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:234
-
-*chainable*
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:874
 
 Enable list or rules. It will automatically find appropriate components,
 containing rules with given names. If rule not found, and `ignoreInvalid`
 not set - throws exception.
-
-##### Example
-
-```javascript
-var md = require('markdown-it')()
-            .enable(['sub', 'sup'])
-            .disable('smartquotes');
-```
 
 #### Parameters
 
@@ -291,17 +281,23 @@ var md = require('markdown-it')()
 
 `string` \| `string`[]
 
-rule name or list of rule names to enable
-
 ##### ignoreInvalid?
 
 `boolean`
 
-set `true` to ignore errors when rule not found.
-
 #### Returns
 
 `this`
+
+#### Example
+
+```javascript
+import MarkdownIt from 'markdown-it'
+
+const md = new MarkdownIt()
+  .enable(['sub', 'sup'])
+  .disable('smartquotes')
+```
 
 #### Inherited from
 
@@ -313,7 +309,7 @@ set `true` to ignore errors when rule not found.
 
 > **normalizeLink**(`url`): `string`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:170
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:815
 
 Function used to encode link url to a machine-readable format,
 which includes url-encoding, punycode, etc.
@@ -338,7 +334,7 @@ which includes url-encoding, punycode, etc.
 
 > **normalizeLinkText**(`url`): `string`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:175
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:819
 
 Function used to decode link url to a human-readable format`
 
@@ -362,11 +358,9 @@ Function used to decode link url to a human-readable format`
 
 > **parse**(`src`, `env`): `Token`[]
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:282
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:906
 
-*internal*
-
-Parse input string and returns list of block tokens (special token type
+Parse input string and return list of block tokens (special token type
 "inline" will contain list of inline tokens). You should not call this
 method directly, until you write custom renderer (for example, to produce
 AST).
@@ -382,13 +376,9 @@ and then pass updated object to renderer.
 
 `string`
 
-source string
-
 ##### env
 
-`any`
-
-environment sandbox
+`Env`
 
 #### Returns
 
@@ -404,13 +394,11 @@ environment sandbox
 
 > **parseInline**(`src`, `env`): `Token`[]
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:306
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:920
 
-*internal*
-
-The same as MarkdownIt.parse but skip all block rules. It returns the
-block tokens list with the single `inline` element, containing parsed inline
-tokens in `children` property. Also updates `env` object.
+The same as [MarkdownIt.parse](#parse) but skip all block rules. It returns
+the block tokens list with the single `inline` element, containing parsed
+inline tokens in `children` property. Also updates `env` object.
 
 #### Parameters
 
@@ -418,13 +406,9 @@ tokens in `children` property. Also updates `env` object.
 
 `string`
 
-source string
-
 ##### env
 
-`any`
-
-environment sandbox
+`Env`
 
 #### Returns
 
@@ -440,13 +424,13 @@ environment sandbox
 
 > **render**(`src`, `env?`): `string`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:294
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:914
 
 Render markdown string into html. It does all magic for you :).
 
 `env` can be used to inject additional metadata (`{}` by default).
 But you will not need it with high probability. See also comment
-in MarkdownIt.parse.
+in [MarkdownIt.parse](#parse).
 
 #### Parameters
 
@@ -454,13 +438,9 @@ in MarkdownIt.parse.
 
 `string`
 
-source string
-
 ##### env?
 
-`any`
-
-environment sandbox
+`Env`
 
 #### Returns
 
@@ -476,10 +456,10 @@ environment sandbox
 
 > **renderInline**(`src`, `env?`): `string`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:315
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:925
 
-Similar to MarkdownIt.render but for single paragraph content. Result
-will NOT be wrapped into `<p>` tags.
+Similar to [MarkdownIt.render](#render) but for single paragraph content.
+Result will NOT be wrapped into `<p>` tags.
 
 #### Parameters
 
@@ -487,13 +467,9 @@ will NOT be wrapped into `<p>` tags.
 
 `string`
 
-source string
-
 ##### env?
 
-`any`
-
-environment sandbox
+`Env`
 
 #### Returns
 
@@ -509,20 +485,10 @@ environment sandbox
 
 > **set**(`options`): `this`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:202
-
-*chainable*
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:850
 
 Set parser options (in the same format as in constructor). Probably, you
 will never need it, but you can change options after constructor call.
-
-##### Example
-
-```javascript
-var md = require('markdown-it')()
-            .set({ html: true, breaks: true })
-            .set({ typographer: true });
-```
 
 __Note:__ To achieve the best possible performance, don't modify a
 `markdown-it` instance options on the fly. If you need multiple configurations
@@ -533,11 +499,21 @@ config.
 
 ##### options
 
-`Options`
+`MarkdownItOptions`
 
 #### Returns
 
 `this`
+
+#### Example
+
+```javascript
+import MarkdownIt from 'markdown-it'
+
+const md = new MarkdownIt()
+  .set({ html: true, breaks: true })
+  .set({ typographer: true })
+```
 
 #### Inherited from
 
@@ -547,92 +523,46 @@ config.
 
 ### use()
 
-#### Call Signature
+> **use**\<`Params`\>(`plugin`, ...`params`): `this`
 
-> **use**(`plugin`): `this`
-
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:262
-
-*chainable*
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:894
 
 Load specified plugin with given params into current parser instance.
 It's just a sugar to call `plugin(md, params)` with curring.
 
-##### Example
+#### Type Parameters
+
+##### Params
+
+`Params` *extends* `unknown`[]
+
+#### Parameters
+
+##### plugin
+
+(`md`, ...`params`) => `void`
+
+##### params
+
+...`Params`
+
+#### Returns
+
+`this`
+
+#### Example
 
 ```javascript
-var iterator = require('markdown-it-for-inline');
-var md = require('markdown-it')()
-            .use(iterator, 'foo_replace', 'text', function (tokens, idx) {
-              tokens[idx].content = tokens[idx].content.replace(/foo/g, 'bar');
-            });
+import MarkdownIt from 'markdown-it'
+import iterator from 'markdown-it-for-inline'
+
+const md = new MarkdownIt()
+  .use(iterator, 'foo_replace', 'text', function (tokens, idx) {
+    tokens[idx].content = tokens[idx].content.replace(/foo/g, 'bar')
+  })
 ```
 
-##### Parameters
-
-###### plugin
-
-`PluginSimple`
-
-##### Returns
-
-`this`
-
-##### Inherited from
-
-`MarkdownIt.use`
-
-#### Call Signature
-
-> **use**\<`T`\>(`plugin`, `options?`): `this`
-
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:263
-
-##### Type Parameters
-
-###### T
-
-`T` = `any`
-
-##### Parameters
-
-###### plugin
-
-`PluginWithOptions`\<`T`\>
-
-###### options?
-
-`T`
-
-##### Returns
-
-`this`
-
-##### Inherited from
-
-`MarkdownIt.use`
-
-#### Call Signature
-
-> **use**(`plugin`, ...`params`): `this`
-
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:264
-
-##### Parameters
-
-###### plugin
-
-`PluginWithParams`
-
-###### params
-
-...`any`[]
-
-##### Returns
-
-`this`
-
-##### Inherited from
+#### Inherited from
 
 `MarkdownIt.use`
 
@@ -642,19 +572,13 @@ Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:264
 
 > **validateLink**(`url`): `boolean`
 
-Defined in: node\_modules/@types/markdown-it/lib/index.d.mts:164
+Defined in: node\_modules/markdown-it/dist/markdown-it.d.mts:810
 
 Link validation function. CommonMark allows too much in links. By default
 we disable `javascript:`, `vbscript:`, `file:` schemas, and almost all `data:...` schemas
 except some embedded image types.
 
 You can change this behaviour:
-
-```javascript
-var md = require('markdown-it')();
-// enable everything
-md.validateLink = function () { return true; }
-```
 
 #### Parameters
 
@@ -665,6 +589,16 @@ md.validateLink = function () { return true; }
 #### Returns
 
 `boolean`
+
+#### Example
+
+```javascript
+import MarkdownIt from 'markdown-it'
+const md = new MarkdownIt()
+
+// enable everything
+md.validateLink = function () { return true; }
+```
 
 #### Inherited from
 

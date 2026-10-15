@@ -16,16 +16,14 @@ import {
  * This plugin is improved ES6 version of `markdown-it-decorate`
  * Ref - https://github.com/rstacruz/markdown-it-decorate
  *
- * @type {import("markdown-it").PluginSimple}
  * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 export default function attributes(md) {
-  md.core.ruler.push("curly_attributes", curlyAttrs);
+  md.core.ruler.push("curly_attributes", /** @type {any} */ (curlyAttrs));
 }
 
 /**
  * Main function to process tokens and apply attributes
- * @type {Parameters<import("markdown-it").default["core"]["ruler"]["push"]>[1]}
  * @param {import("../types").CustomMarkdownItState} state - Token state
  */
 function curlyAttrs(state) {
@@ -241,7 +239,7 @@ function parseInlineContent(
   md,
 ) {
   /**
-   * @type {InstanceType<InstanceType<import("markdown-it").default["core"]["State"]>["Token"]>}
+   * @type {import("markdown-it").Token}
    */
   let lastText;
   const omissions = [];
