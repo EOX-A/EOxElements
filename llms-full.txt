@@ -13605,7 +13605,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-10-15T14:00:47.441Z",
+              default: "2026-10-15T17:09:33.635Z",
               options: {
                 hidden: true,
               },
@@ -17499,7 +17499,8 @@ including maps whose views are linked with `sync`.
 - `external-map-rendering` (boolean): Whether external map rendering is enabled for timelapse export.
 - `selectedDateRange` (SelectedDateRange): The currently selected date range as [startDate, endDate] in ISO format.
 - `controlValues` (Array<Object>): Array of control values.
-- `init-date` (DateRange): The initial date range as [startDate, endDate] in ISO/UTC format.
+- `init-date` (DateRange | string | Array<string> | null): The initial date range as [startDate, endDate] in ISO/UTC format,
+or a date/keyword string, or array.
 
 ### Properties
 
@@ -17513,7 +17514,8 @@ including maps whose views are linked with `sync`.
 Pass an array of selectors/references as a property to control multiple maps,
 including maps whose views are linked with `sync`. (Default: `undefined`)
 - `controlValues` (Array<Object>): Array of control values. (Default: `[]`)
-- `initDate` (DateRange): The initial date range as [startDate, endDate] in ISO/UTC format. (Default: `null`)
+- `initDate` (DateRange | string | Array<string> | null): The initial date range as [startDate, endDate] in ISO/UTC format,
+or a date/keyword string, or array. (Default: `null`)
 
 ### Examples
 

@@ -99,6 +99,9 @@ export class EOxTimeControlDate extends LitElement {
    */
   #getCurrIndexAndValues(key) {
     const EOxTimeControl = this.getEOxTimeControl();
+    if (!EOxTimeControl?.selectedDateRange) {
+      return { index: -1, itemValues: [] };
+    }
     const itemValues = Object.keys(
       groupBy(EOxTimeControl.items.get(), key),
     ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
@@ -178,11 +181,14 @@ export class EOxTimeControlDate extends LitElement {
     const EOxTimeControl = this.getEOxTimeControl();
     const EOxTimeControlPicker =
       /** @type {import("./timecontrol-picker.js").EOxTimeControlPicker} */ (
-        EOxTimeControl.querySelector("eox-timecontrol-picker")
+        EOxTimeControl?.querySelector("eox-timecontrol-picker")
       );
     if (EOxTimeControlPicker) {
       this.editable = true;
       this.requestUpdate();
+    }
+    if (!this.#selectedDateRange && EOxTimeControl?.selectedDateRange) {
+      this.setDateRange(EOxTimeControl.selectedDateRange);
     }
   }
 

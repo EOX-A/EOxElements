@@ -8,7 +8,7 @@
 
 > **SelectedDates** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:449](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L449)
+Defined in: [elements/timecontrol/src/types.ts:449](https://github.com/EOX-A/EOxElements/blob/d1827cade2102d1cd8fe937d8d3990e6ea755e47/elements/timecontrol/src/types.ts#L449)
 
 Selected dates structure for calendar picker.
 
@@ -18,7 +18,7 @@ Selected dates structure for calendar picker.
 
 > **dates**: `string`[]
 
-Defined in: [elements/timecontrol/src/types.ts:453](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L453)
+Defined in: [elements/timecontrol/src/types.ts:453](https://github.com/EOX-A/EOxElements/blob/d1827cade2102d1cd8fe937d8d3990e6ea755e47/elements/timecontrol/src/types.ts#L453)
 
 Array of selected date strings.
 
@@ -28,7 +28,7 @@ Array of selected date strings.
 
 > **month**: `0` \| `1` \| `2` \| `3` \| `4` \| `5` \| `6` \| `7` \| `8` \| `9` \| `10` \| `11`
 
-Defined in: [elements/timecontrol/src/types.ts:461](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L461)
+Defined in: [elements/timecontrol/src/types.ts:461](https://github.com/EOX-A/EOxElements/blob/d1827cade2102d1cd8fe937d8d3990e6ea755e47/elements/timecontrol/src/types.ts#L461)
 
 Selected month (0-11).
 
@@ -38,6 +38,6 @@ Selected month (0-11).
 
 > **year**: `number`
 
-Defined in: [elements/timecontrol/src/types.ts:457](https://github.com/EOX-A/EOxElements/blob/02b0320b177180eaee46cfcbc670b76d7d27b2e0/elements/timecontrol/src/types.ts#L457)
+Defined in: [elements/timecontrol/src/types.ts:457](https://github.com/EOX-A/EOxElements/blob/d1827cade2102d1cd8fe937d8d3990e6ea755e47/elements/timecontrol/src/types.ts#L457)
 
 Selected year.
