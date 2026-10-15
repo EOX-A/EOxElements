@@ -2,14 +2,17 @@
 import { html } from "lit";
 import {
   OnlyDateStory,
+  EditableDateStory,
   DateWithNavigationStory,
   DatePickerPopupStory,
   DatePickerStandaloneStory,
   TimelineStory,
+  TimecontrolWithCompareMapsStory,
   ExternalMapRenderingStory,
   DateFilterStory,
   ExpertStory,
   SliderStory,
+  SliderWithMapStory,
   UpdateViewStory,
   DatePickerPopupItemsStory,
   NoMapStory,
@@ -45,6 +48,15 @@ export default {
  * selector string (e.g., `"eox-map#primary"`) or a direct reference to the map element.
  */
 export const OnlyDate = OnlyDateStory;
+
+/**
+ * Editable date field with map navigation and a popup picker
+ *
+ * Set `editable` to enter dates using the assigned `format`. Press Enter or leave the field
+ * to apply valid edits; invalid input restores the previous date without firing a change.
+ * The picker enables editing automatically, and time is shown only when included in `format`.
+ */
+export const EditableDate = EditableDateStory;
 
 /**
  * Date display component with init date
@@ -125,6 +137,16 @@ export const DateInUTC = DateInUTCStory;
 export const DatePickerStandalone = DatePickerStandaloneStory;
 
 /**
+ * Two independently resizable, map-free sliders covering 2018–2026 and 1900–2026.
+ * Use these examples for partial endpoint years and long time series in narrow
+ * dashboards. First and last years remain visible, with intermediate labels
+ * shown when they fit. Minor ticks stay at least 12 pixels apart.
+ * Every date remains selectable. Resize either
+ * parent panel to reveal more years.
+ */
+export const Slider = SliderStory;
+
+/**
  * Range slider for selecting date ranges with visual indicators for years and months
  *
  * This example demonstrates the `<eox-timecontrol-slider>` component, which provides a visual
@@ -134,7 +156,16 @@ export const DatePickerStandalone = DatePickerStandaloneStory;
  * select a date range by dragging the handles. The selected range is immediately applied to
  * the map layers.
  */
-export const Slider = SliderStory;
+export const SliderWithMap = SliderWithMapStory;
+
+/**
+ * Wind and NO₂ on separate comparison maps, controlled by date navigation and a calendar.
+ * Use `for="eox-map-compare#timecontrol-compare"` to collect both maps' layers.
+ * For separate maps linked with `sync`, set `.for` to an array of map selectors
+ * or element references. Layer identifiers may be reused across maps; each source
+ * is updated independently.
+ */
+export const TimecontrolWithCompareMaps = TimecontrolWithCompareMapsStory;
 
 /**
  * Timeline visualization using vis-timeline with date picker and calendar integration

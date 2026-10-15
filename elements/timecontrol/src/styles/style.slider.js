@@ -1,6 +1,6 @@
 export const sliderStyle = `
   .date-range-slider-wrapper {
-    margin: 16px 0px 0px 0px;
+    margin: 16px 9px 0;
     position: relative;
   }
 
@@ -49,11 +49,16 @@ export const sliderStyle = `
     top: 0;
   }
 
-  .custom-mark-empty {
+  .custom-mark-empty,
+  .custom-mark[data-minor] {
     height: 4px;
     width: 1px;
     background-color: var(--mark-color, var(--outline, #666));
     top: 10px;
+  }
+
+  .custom-mark[data-hidden] {
+    visibility: hidden;
   }
 
   .custom-mark-label {
@@ -86,6 +91,10 @@ export const sliderStyle = `
   .custom-mark-year-label {
     color: var(--mark-text-color, var(--on-surface-variant, #666));
     top: 16px;
+  }
+
+  .custom-mark-year-label[data-overlapping] {
+    visibility: hidden;
   }
 
   /* Custom tooltips */
