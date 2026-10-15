@@ -13605,7 +13605,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-10-12T13:55:53.202Z",
+              default: "2026-10-15T08:31:14.383Z",
               options: {
                 hidden: true,
               },
@@ -14149,10 +14149,8 @@ Usage: `document.querySelector("eox-map").registerProjection([...]);`
 
 - `buffer`: Applies a buffer around an extent
 - `transform`, `transformExtent`: Transform coordinates and extents between projections.
-- `isGeoZarrLayer`: Checks if a layer is a GeoZarr layer.
-- `setupGeoZarrLayer`: Sets up a GeoZarr layer with the necessary configurations.
 
-Usage: `import { buffer, transform, transformExtent, isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";`
+Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
 
 ### Attributes
 

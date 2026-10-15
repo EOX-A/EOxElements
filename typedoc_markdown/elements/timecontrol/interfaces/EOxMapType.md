@@ -6,7 +6,7 @@
 
 # Interface: EOxMapType
 
-Defined in: [elements/map/src/main.js:156](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L156)
+Defined in: [elements/map/src/main.js:154](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L154)
 
 The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.
 
@@ -83,10 +83,8 @@ Usage: `document.querySelector("eox-map").registerProjection([...]);`
 
 - `buffer`: Applies a buffer around an extent
 - `transform`, `transformExtent`: Transform coordinates and extents between projections.
-- `isGeoZarrLayer`: Checks if a layer is a GeoZarr layer.
-- `setupGeoZarrLayer`: Sets up a GeoZarr layer with the necessary configurations.
 
-Usage: `import { buffer, transform, transformExtent, isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";`
+Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
 
 ## Element
 
@@ -247,7 +245,7 @@ Removes a `ReactiveController` from the element.
 
 > **connectedCallback**(): `void`
 
-Defined in: [elements/map/src/main.js:702](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L702)
+Defined in: [elements/map/src/main.js:700](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L700)
 
 Invoked when the component is added to the document's DOM.
 
@@ -1582,7 +1580,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **globe**: `any`
 
-Defined in: [elements/map/src/main.js:333](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L333)
+Defined in: [elements/map/src/main.js:331](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L331)
 
 The globe instance when using globe projection.
 todo: define proper type
@@ -1687,7 +1685,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11129
 
 > **interactions**: `object`
 
-Defined in: [elements/map/src/main.js:312](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L312)
+Defined in: [elements/map/src/main.js:310](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L310)
 
 Object to store various map interactions (e.g., drag, zoom).
 
@@ -1743,7 +1741,7 @@ The **`lang`** property of the HTMLElement interface indicates the base language
 
 > **last2dProjection**: `ProjectionLike` = `"EPSG:3857"`
 
-Defined in: [elements/map/src/main.js:262](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L262)
+Defined in: [elements/map/src/main.js:260](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L260)
 
 Stores the last 2D projection to switch back from globe view.
 
@@ -1801,7 +1799,7 @@ The **`Element.localName`** read-only property returns the local part of the qua
 
 > **map**: `Map`
 
-Defined in: [elements/map/src/main.js:293](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L293)
+Defined in: [elements/map/src/main.js:291](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L291)
 
 The OpenLayers map instance.
 
@@ -1811,7 +1809,7 @@ The OpenLayers map instance.
 
 > **mapControls**: `object`
 
-Defined in: [elements/map/src/main.js:326](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L326)
+Defined in: [elements/map/src/main.js:324](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L324)
 
 Object to store map controls (e.g., custom buttons, geolocation).
 
@@ -5121,7 +5119,7 @@ The **`scrollWidth`** read-only property of the Element interface is a measureme
 
 > **selectInteractions**: `object`
 
-Defined in: [elements/map/src/main.js:319](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L319)
+Defined in: [elements/map/src/main.js:317](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L317)
 
 Object to store selection interactions for the map.
 
@@ -5273,7 +5271,7 @@ The **`writingSuggestions`** property of the HTMLElement interface is a string i
 
 > **get** **animationOptions**(): [`EOxAnimationOptions`](../../map/type-aliases/EOxAnimationOptions.md)
 
-Defined in: [elements/map/src/main.js:512](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L512)
+Defined in: [elements/map/src/main.js:510](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L510)
 
 Gets the current animation options.
 
@@ -5287,7 +5285,7 @@ The current animation options for the map.
 
 > **set** **animationOptions**(`animationOptions`): `void`
 
-Defined in: [elements/map/src/main.js:502](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L502)
+Defined in: [elements/map/src/main.js:500](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L500)
 
 Sets animation options for map view changes.
 
@@ -5311,7 +5309,7 @@ The animation options.
 
 > **get** **center**(): `number`[]
 
-Defined in: [elements/map/src/main.js:355](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L355)
+Defined in: [elements/map/src/main.js:353](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L353)
 
 Gets the current center coordinates of the map.
 
@@ -5325,7 +5323,7 @@ The current center of the map.
 
 > **set** **center**(`center`): `void`
 
-Defined in: [elements/map/src/main.js:341](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L341)
+Defined in: [elements/map/src/main.js:339](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L339)
 
 Sets the center of the map. If the new center is valid, updates the map's view.
 
@@ -5387,7 +5385,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10714
 
 > **get** **config**(): [`ConfigObject`](../../map/type-aliases/ConfigObject.md)
 
-Defined in: [elements/map/src/main.js:374](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L374)
+Defined in: [elements/map/src/main.js:372](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L372)
 
 Gets the current configuration of the map.
 
@@ -5401,7 +5399,7 @@ The map's configuration object.
 
 > **set** **config**(`config`): `void`
 
-Defined in: [elements/map/src/main.js:364](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L364)
+Defined in: [elements/map/src/main.js:362](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L362)
 
 Sets the configuration for the map.
 
@@ -5425,7 +5423,7 @@ The configuration object.
 
 > **get** **controls**(): [`ControlDictionary`](../../map/type-aliases/ControlDictionary.md)
 
-Defined in: [elements/map/src/main.js:453](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L453)
+Defined in: [elements/map/src/main.js:451](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L451)
 
 Gets the current map controls.
 
@@ -5439,7 +5437,7 @@ The current controls applied to the map.
 
 > **set** **controls**(`controls`): `void`
 
-Defined in: [elements/map/src/main.js:443](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L443)
+Defined in: [elements/map/src/main.js:441](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L441)
 
 Sets the controls for the map. Allows configuring the `position` (e.g. "top-right"), `target` (to group controls in the same region together), and `orientation` ("vertical" or "horizontal"). Custom tools can be additionally slotted alongside native OL controls using matching `top-x` / `bottom-x` slot names.
 
@@ -5463,7 +5461,7 @@ A dictionary object of control configurations.
 
 > **get** **globeConfig**(): [`GlobeConfig`](../../map/type-aliases/GlobeConfig.md)
 
-Defined in: [elements/map/src/main.js:623](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L623)
+Defined in: [elements/map/src/main.js:621](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L621)
 
 Gets the current globe configuration properties.
 
@@ -5475,7 +5473,7 @@ Gets the current globe configuration properties.
 
 > **set** **globeConfig**(`globeConfig`): `void`
 
-Defined in: [elements/map/src/main.js:615](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L615)
+Defined in: [elements/map/src/main.js:613](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L613)
 
 Sets the properties of the globe such as the terrain.
 
@@ -5499,7 +5497,7 @@ The globe configuration which contains the terrain boolean.
 
 > **get** **globeEnabled**(): `boolean`
 
-Defined in: [elements/map/src/main.js:577](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L577)
+Defined in: [elements/map/src/main.js:575](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L575)
 
 Gets the  Whether the globe is enabled.
 
@@ -5513,7 +5511,7 @@ Whether the globe is enabled.
 
 > **set** **globeEnabled**(`globeEnabled`): `void`
 
-Defined in: [elements/map/src/main.js:587](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L587)
+Defined in: [elements/map/src/main.js:585](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L585)
 
 Sets the  Whether the globe is enabled.
 
@@ -5537,7 +5535,7 @@ Whether the globe is enabled.
 
 > **get** **layers**(): [`EoxLayer`](../../map/type-aliases/EoxLayer.md)[]
 
-Defined in: [elements/map/src/main.js:474](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L474)
+Defined in: [elements/map/src/main.js:472](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L472)
 
 Gets the current layers of the map
 
@@ -5551,7 +5549,7 @@ The current layers applied to the map.
 
 > **set** **layers**(`layers`): `void`
 
-Defined in: [elements/map/src/main.js:462](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L462)
+Defined in: [elements/map/src/main.js:460](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L460)
 
 Sets the layers for the map.
 
@@ -5575,7 +5573,7 @@ An array of layer configurations.
 
 > **get** **lonLatCenter**(): `number`[]
 
-Defined in: [elements/map/src/main.js:384](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L384)
+Defined in: [elements/map/src/main.js:382](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L382)
 
 Gets the current center of the map in longitude and latitude.
 
@@ -5593,7 +5591,7 @@ The geographic center [longitude, latitude].
 
 > **get** **lonLatExtent**(): `number`[]
 
-Defined in: [elements/map/src/main.js:394](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L394)
+Defined in: [elements/map/src/main.js:392](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L392)
 
 Gets the current extent of the map in longitude and latitude.
 
@@ -5611,7 +5609,7 @@ The geographic extent [minLon, minLat, maxLon, maxLat].
 
 > **get** **OLprojection**(): `ProjectionLike`
 
-Defined in: [elements/map/src/main.js:567](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L567)
+Defined in: [elements/map/src/main.js:565](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L565)
 
 Gets the openlayer map projection.
 
@@ -5667,7 +5665,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10792
 
 > **get** **preventScroll**(): `boolean`
 
-Defined in: [elements/map/src/main.js:493](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L493)
+Defined in: [elements/map/src/main.js:491](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L491)
 
 Gets the current scroll interaction state.
 
@@ -5681,7 +5679,7 @@ Gets the current scroll interaction state.
 
 > **set** **preventScroll**(`preventScroll`): `void`
 
-Defined in: [elements/map/src/main.js:483](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L483)
+Defined in: [elements/map/src/main.js:481](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L481)
 
 Enables or disables scroll interactions on the map.
 
@@ -5705,7 +5703,7 @@ Whether to prevent scroll interactions.
 
 > **get** **projection**(): `ProjectionLike`
 
-Defined in: [elements/map/src/main.js:557](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L557)
+Defined in: [elements/map/src/main.js:555](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L555)
 
 Gets the current map projection.
 
@@ -5719,7 +5717,7 @@ The map's projection code or "globe" if globe is enabled.
 
 > **set** **projection**(`projection`): `void`
 
-Defined in: [elements/map/src/main.js:521](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L521)
+Defined in: [elements/map/src/main.js:519](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L519)
 
 Sets the map's projection.
 
@@ -5779,7 +5777,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11120
 
 > **get** **sync**(): `string`
 
-Defined in: [elements/map/src/main.js:606](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L606)
+Defined in: [elements/map/src/main.js:604](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L604)
 
 Gets the current sync state of the map.
 
@@ -5793,7 +5791,7 @@ The ID of the map that this map is synced with.
 
 > **set** **sync**(`sync`): `void`
 
-Defined in: [elements/map/src/main.js:596](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L596)
+Defined in: [elements/map/src/main.js:594](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L594)
 
 Sets the sync state for the map.
 
@@ -5857,7 +5855,7 @@ The **`textContent`** property of the Node interface represents the text content
 
 > **get** **zoom**(): `number`
 
-Defined in: [elements/map/src/main.js:415](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L415)
+Defined in: [elements/map/src/main.js:413](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L413)
 
 Gets the current zoom level of the map.
 
@@ -5871,7 +5869,7 @@ The current zoom level.
 
 > **set** **zoom**(`zoom`): `void`
 
-Defined in: [elements/map/src/main.js:403](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L403)
+Defined in: [elements/map/src/main.js:401](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L401)
 
 Sets the zoom level of the map and animates the change.
 
@@ -5895,7 +5893,7 @@ The new zoom level.
 
 > **get** **zoomExtent**(): `number`[]
 
-Defined in: [elements/map/src/main.js:434](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L434)
+Defined in: [elements/map/src/main.js:432](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L432)
 
 Gets the current extent of the map.
 
@@ -5909,7 +5907,7 @@ The extent in current map projection.
 
 > **set** **zoomExtent**(`extent`): `void`
 
-Defined in: [elements/map/src/main.js:424](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L424)
+Defined in: [elements/map/src/main.js:422](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L422)
 
 Sets the zoom extent of the map.
 
@@ -5997,7 +5995,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13840
 
 > **addOrUpdateLayer**(`json`): `any`
 
-Defined in: [elements/map/src/main.js:633](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L633)
+Defined in: [elements/map/src/main.js:631](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L631)
 
 Adds or updates a layer on the map.
 
@@ -6485,7 +6483,7 @@ The **`contains()`** method of the Node interface returns a boolean value indica
 
 > **disconnectedCallback**(): `void`
 
-Defined in: [elements/map/src/main.js:714](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L714)
+Defined in: [elements/map/src/main.js:712](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L712)
 
 Lifecycle method called when the component is removed from the DOM.
 Ensures that any associated event listeners or observers are properly disconnected.
@@ -6530,7 +6528,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/map/src/main.js:698](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L698)
+Defined in: [elements/map/src/main.js:696](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L696)
 
 Lifecycle method called after the component's first update.
 Sets up initial configurations like zoom extent.
@@ -6769,7 +6767,7 @@ The **`getClientRects()`** method of the Element interface returns a collection 
 
 > **getControlsTargets**(): `object`
 
-Defined in: [elements/map/src/main.js:728](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L728)
+Defined in: [elements/map/src/main.js:726](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L726)
 
 Returns a map's controls targets for interaction.
 
@@ -7047,7 +7045,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getFlatLayersArray**(`layers`): [`AnyLayer`](../../map/type-aliases/AnyLayer.md)[]
 
-Defined in: [elements/map/src/main.js:796](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L796)
+Defined in: [elements/map/src/main.js:794](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L794)
 
 Returns a flat array of all map layers, including nested layers within groups.
 
@@ -7100,7 +7098,7 @@ The **`getHTML()`** method of the Element interface is used to serialize an elem
 
 > **getLayerById**(`layerId`): [`AnyLayerWithSource`](../../map/type-aliases/AnyLayerWithSource.md)
 
-Defined in: [elements/map/src/main.js:670](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L670)
+Defined in: [elements/map/src/main.js:668](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L668)
 
 Retrieves a layer from the map by its ID.
 
@@ -7548,7 +7546,7 @@ The **`lookupPrefix()`** method of the Node interface returns a string containin
 
 > **mapResizeEvent**(`entry`): `void`
 
-Defined in: [elements/map/src/main.js:679](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L679)
+Defined in: [elements/map/src/main.js:677](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L677)
 
 Internal method to handle a resize event for the map container.
 
@@ -7616,7 +7614,7 @@ The **`normalize()`** method of the Node interface puts the specified node and a
 
 > **parseFeature**(`features`): `any`
 
-Defined in: [elements/map/src/main.js:746](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L746)
+Defined in: [elements/map/src/main.js:744](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L744)
 
 Converts an array of OpenLayers features into a GeoJSON object.
 
@@ -7640,7 +7638,7 @@ An array of OpenLayers features to be converted.
 
 > **parseTextToFeature**(`text`, `vectorLayer`, `EOxMap`, `replaceFeatures`, `animate`): `void`
 
-Defined in: [elements/map/src/main.js:761](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L761)
+Defined in: [elements/map/src/main.js:759](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L759)
 
 This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
 If successful, it adds the parsed features to the map.
@@ -7995,7 +7993,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:22724
 
 > **registerProjection**(`name`, `projection`, `extent?`): `void`
 
-Defined in: [elements/map/src/main.js:783](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L783)
+Defined in: [elements/map/src/main.js:781](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L781)
 
 Registers a projection under a given name using a proj4 definition.
 This allows OpenLayers to recognize and work with custom or predefined projections.
@@ -8030,7 +8028,7 @@ Optional extent for the projection. Defines the coordinate system's valid area.
 
 > **registerProjectionFromCode**(`code`): `Promise`\<`Projection`\>
 
-Defined in: [elements/map/src/main.js:771](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L771)
+Defined in: [elements/map/src/main.js:769](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L769)
 
 Fetches the projection definition for a given EPSG code from epsg.io and registers the projection using proj4.
 
@@ -8214,7 +8212,7 @@ The **`removeChild()`** method of the Node interface removes a child node from t
 
 > **removeControl**(`id`): `void`
 
-Defined in: [elements/map/src/main.js:660](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L660)
+Defined in: [elements/map/src/main.js:658](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L658)
 
 Removes a control from the map by its ID.
 
@@ -8302,7 +8300,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 > **removeInteraction**(`id`): `void`
 
-Defined in: [elements/map/src/main.js:642](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L642)
+Defined in: [elements/map/src/main.js:640](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L640)
 
 Removes an interaction from the map by its ID.
 
@@ -8324,7 +8322,7 @@ The ID of the interaction to remove.
 
 > **removeSelect**(`id`): `void`
 
-Defined in: [elements/map/src/main.js:651](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L651)
+Defined in: [elements/map/src/main.js:649](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L649)
 
 Removes a select interaction from the map by its ID.
 
@@ -8840,7 +8838,7 @@ The **`setPointerCapture()`** method of the _capture target_ of future pointer e
 
 > **setResizeObserver**(`observer`): `void`
 
-Defined in: [elements/map/src/main.js:736](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L736)
+Defined in: [elements/map/src/main.js:734](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L734)
 
 Set map resize observer instance.
 
@@ -9007,7 +9005,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/map/src/main.js:801](https://github.com/EOX-A/EOxElements/blob/e914f296cdeba78bfbdea55142ace299fe3e7a53/elements/map/src/main.js#L801)
+Defined in: [elements/map/src/main.js:799](https://github.com/EOX-A/EOxElements/blob/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6/elements/map/src/main.js#L799)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a
