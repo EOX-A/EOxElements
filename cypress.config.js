@@ -29,8 +29,24 @@ if (pathsChanged) {
   }
 }
 export default defineConfig({
+  manageBrowserMemory: true,
+  forceHttp1: true,
+  keystrokeDelay: 10,
+  visibilityStrategy: "legacy",
   env: {
     CI_PATHS_CHANGED: pathsChanged,
+    codeCoverage: {
+      exclude: [
+        "cypress/**/*.*",
+        "**/stories/**/*.*",
+        "**/*.stories.js",
+        "**/*.stories.ts",
+      ],
+    },
+  },
+  expose: {
+    CI_PATHS_CHANGED: pathsChanged,
+    codeCoverageTasksRegistered: true,
     codeCoverage: {
       exclude: [
         "cypress/**/*.*",
@@ -44,10 +60,10 @@ export default defineConfig({
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
-    experimentalMemoryManagement: true,
     numTestsKeptInMemory: 1,
   },
   component: {
+    numTestsKeptInMemory: 1,
     supportFile: "cypress/support/component.js",
     setupNodeEvents(on, config) {
       require("@cypress/code-coverage/task")(on, config);
