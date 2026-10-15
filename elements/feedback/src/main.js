@@ -441,7 +441,7 @@ export class EOxFeedback extends HTMLElement {
           z-index: 10001;
         }
         article {
-          max-height: 100vh;
+          max-height: calc(100dvh - 2rem);
           overflow-y: auto;
         }
       </style>
