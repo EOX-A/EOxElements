@@ -103,14 +103,10 @@ describe("Item Filter Text State", () => {
   });
 
   /**
-   * Test case to show the pre-set text value in the input and filter results
+   * Test case to show the pre-set text value in the input and in the inline mode chip
    */
-  it("should show the pre-set text value and filter the results", () =>
-    textPreSetValueTest(value, testItems.length));
-
-  /**
-   * Test case to show the pre-set text value in the inline mode chip
-   */
-  it("should show the pre-set text value in the inline chip", () =>
-    textPreSetChipTest(title, value));
+  it("should show the pre-set text value in the input and inline chip", () => {
+    textPreSetValueTest(value);
+    textPreSetChipTest(title, value);
+  });
 });

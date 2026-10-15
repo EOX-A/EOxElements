@@ -23,6 +23,7 @@ import {
   resultsTitleTest,
   inlineSearchTest,
   inlineSearchTitleOnlyTest,
+  inlineResetSearchTest,
 } from "./cases/general/";
 
 /**
@@ -175,7 +176,7 @@ describe("Item Filter Config", () => {
   /**
    * Test case to verify the inline search box filters items through the inlineSearch text filter.
    */
-  it("should filter results from the inline search box when inlineSearch is set", () =>
+  it("should filter results from the inline search box on Enter when inlineSearch is set", () =>
     inlineSearchTest());
 
   /**
@@ -183,4 +184,10 @@ describe("Item Filter Config", () => {
    */
   it("should not filter results from the inline search box without inlineSearch", () =>
     inlineSearchTitleOnlyTest());
+
+  /**
+   * Test case to verify a click outside shows all filter sections again.
+   */
+  it("should show all filter sections after a click outside", () =>
+    inlineResetSearchTest());
 });

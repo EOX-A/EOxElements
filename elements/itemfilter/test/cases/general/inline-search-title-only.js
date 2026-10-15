@@ -1,6 +1,6 @@
 /**
- * Tests that without `inlineSearch`, the inline search box only matches filter titles
- * and leaves the results unchanged.
+ * Tests that without `inlineSearch`, Enter in the inline search box does not
+ * apply the text to any filter.
  */
 const inlineSearchTitleOnlyTest = () => {
   // Opening the inline popover can trigger a benign ResizeObserver loop error
@@ -15,18 +15,15 @@ const inlineSearchTitleOnlyTest = () => {
   cy.get("eox-itemfilter")
     .shadow()
     .within(() => {
-      cy.get("ul#results > li")
-        .its("length")
-        .then((totalResults) => {
-          cy.get("eox-itemfilter-container")
-            .shadow()
-            .find("#eox-itemfilter-input-search")
-            .type("asparagus");
-          // Wait past the text filter debounce (500ms) so a late filter would show up
-          cy.wait(600);
-          cy.get("ul#results > li").should("have.length", totalResults);
-          cy.get("[data-cy='search']").should("have.value", "");
-        });
+      cy.get("eox-itemfilter-container")
+        .shadow()
+        .find("#eox-itemfilter-input-search")
+        .type("asparagus{enter}");
+      cy.get("eox-itemfilter-container")
+        .shadow()
+        .find("#eox-itemfilter-input-search")
+        .should("have.value", "asparagus");
+      cy.get("[data-cy='search']").should("have.value", "");
     });
 };
 
