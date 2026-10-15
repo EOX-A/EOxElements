@@ -40,6 +40,17 @@ export default defineConfig({
       ],
     },
   },
+  expose: {
+    CI_PATHS_CHANGED: pathsChanged,
+    codeCoverage: {
+      exclude: [
+        "cypress/**/*.*",
+        "**/stories/**/*.*",
+        "**/*.stories.js",
+        "**/*.stories.ts",
+      ],
+    },
+  },
   e2e: {
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",

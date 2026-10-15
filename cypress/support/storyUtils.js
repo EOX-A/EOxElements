@@ -1,7 +1,10 @@
 import stories from "../../docs/index.json";
 
 export function getFilteredStories() {
-  const pathsChanged = Cypress.env("CI_PATHS_CHANGED");
+  const pathsChanged =
+    typeof Cypress.expose === "function"
+      ? Cypress.expose("CI_PATHS_CHANGED")
+      : Cypress.env?.("CI_PATHS_CHANGED");
   let uniqueElementFolders = [];
   let cypressChanged = false;
 
