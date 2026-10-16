@@ -3,6 +3,7 @@ import { when } from "lit/directives/when.js";
 import { styleEOX } from "../style.eox";
 import {
   searchFilterMethod,
+  inlineSearchMethod,
   resetFilterMethod,
   handleFormClickMethod,
   handleShowDropdownOnFocusMethod,
@@ -191,7 +192,18 @@ export class EOxItemFilterContainer extends LitElement {
    * @param {Event} event - The search event.
    */
   #searchFilter(event) {
+    // Typing after Enter closed the dropdown should show matching filters again
+    handleShowDropdownOnFocusMethod(this);
     searchFilterMethod(event, this);
+  }
+
+  /**
+   * Applies the search text to inline search filters using the inlineSearchMethod.
+   *
+   * @param {KeyboardEvent} event - The keydown event.
+   */
+  #inlineSearch(event) {
+    inlineSearchMethod(event, this);
   }
 
   /**
@@ -276,6 +288,7 @@ export class EOxItemFilterContainer extends LitElement {
                     @click="${this.#handleToggleDropdown}"
                     @focus="${this.#handleShowDropdownOnFocus}"
                     @input="${this.#searchFilter}"
+                    @keydown="${this.#inlineSearch}"
                     placeholder="Search and add filter"
                     aria-haspopup="true"
                     aria-expanded="${this.showDropdown}"
