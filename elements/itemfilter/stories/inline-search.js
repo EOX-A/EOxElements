@@ -29,20 +29,19 @@ function InlineSearchStory() {
           .showResults=${args.showResults}
           .filterProperties=${args.filterProperties}
           @filter=${renderResults}
-          style="height: auto"
+          style=${args.style}
         ></eox-itemfilter>
         <ul></ul>`,
     args: {
       inlineMode: true,
       titleProperty: "title",
       showResults: false,
+      style: "height: auto",
       filterProperties: [
         {
           keys: ["title", "description", "themes"],
           title: "Search",
           type: "text",
-          placeholder: "Type Something...",
-          expanded: true,
           inlineSearch: true,
         },
         {

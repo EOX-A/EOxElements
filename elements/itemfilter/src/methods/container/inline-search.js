@@ -1,42 +1,54 @@
-import searchFilterMethod from "./search-filter.js";
+import resetSearchMethod from "./reset-search.js";
 
 /**
- * On Enter, applies the inline search box text to every text filter flagged with `inlineSearch`,
+ * Adds the inline search box text to every text filter with `inlineSearch` enabled,
  * then clears the box and closes the dropdown.
  *
- * @param {KeyboardEvent} event - The keydown event of the inline search box.
  * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
-function inlineSearchMethod(event, EOxItemFilterContainer) {
-  if (
-    event.key !== "Enter" ||
-    // Enter that confirms an IME composition is not a search
-    event.isComposing ||
-    !(event.target instanceof HTMLInputElement)
-  ) {
-    return;
-  }
-  const inputText = event.target.value;
-  const inlineSearchFilters = Object.values(
-    EOxItemFilterContainer.filters,
-  ).filter((filter) => filter.inlineSearch && filter.type === "text");
-  if (!inputText || !inlineSearchFilters.length) {
+export function applyInlineSearchMethod(EOxItemFilterContainer) {
+  const input = EOxItemFilterContainer.renderRoot.querySelector(
+    "#eox-itemfilter-input-search",
+  );
+  const text = input.value.trim();
+  const inlineSearchFilters = getInlineSearchFilters(EOxItemFilterContainer);
+  if (!text || !inlineSearchFilters.length) {
     return;
   }
 
   inlineSearchFilters.forEach((filter) => {
-    const textFilter = EOxItemFilterContainer.querySelector(
+    // Filter ids only replace the first "|" (see create-filter.js), so they must be escaped
+    EOxItemFilterContainer.querySelector(
       `#${CSS.escape(`filter-${filter.key}`.replace("|", "-"))}`,
-    );
-    if (!textFilter) return;
-    const textInput = textFilter.renderRoot.querySelector("input[type='text']");
-    textInput.value = [textInput.value, inputText].filter(Boolean).join(" ");
-    textFilter.debouncedInputHandler();
+    )?.appendText(text);
   });
 
-  event.target.value = "";
-  searchFilterMethod(event, EOxItemFilterContainer);
+  resetSearchMethod(EOxItemFilterContainer);
+  // Focusing the box opens the dropdown, so focus it before closing the dropdown
+  input.focus();
   EOxItemFilterContainer.showDropdown = false;
 }
 
-export default inlineSearchMethod;
+/**
+ * Handles the keydown event of the inline search box, applying the inline search on Enter.
+ *
+ * @param {KeyboardEvent} event - The keydown event.
+ * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ */
+export function handleInlineSearchKeyDownMethod(event, EOxItemFilterContainer) {
+  // Enter that confirms an IME composition (e.g. Japanese input) is not a search
+  if (event.key !== "Enter" || event.isComposing) return;
+  applyInlineSearchMethod(EOxItemFilterContainer);
+}
+
+/**
+ * Returns the text filters that receive the text of the inline search box.
+ *
+ * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @returns {Array<Object>} The text filters with `inlineSearch` enabled.
+ */
+export function getInlineSearchFilters(EOxItemFilterContainer) {
+  return Object.values(EOxItemFilterContainer.filters).filter(
+    (filter) => filter.inlineSearch && filter.type === "text",
+  );
+}

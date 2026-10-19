@@ -22,3 +22,4 @@ export { default as resultAggregationTest } from "./results-aggregation";
 export { default as inlineSearchTest } from "./inline-search";
 export { default as inlineSearchTitleOnlyTest } from "./inline-search-title-only";
 export { default as inlineResetSearchTest } from "./inline-reset-search";
+export { default as inlineSearchModeToggleTest } from "./inline-search-mode-toggle";

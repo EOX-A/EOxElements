@@ -51,9 +51,6 @@ export function keyboardEventListenerMethod(event, EOxItemFilterChips) {
   )
     return;
 
-  // Prevent default action for the Space key
-  if (code === "Space") event.preventDefault();
-
   // Stop propagation for keys other than Escape, Space, and Enter
   if (!["Escape", "Space", "Enter"].includes(code)) event.stopPropagation();
 

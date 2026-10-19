@@ -24,6 +24,7 @@ import {
   inlineSearchTest,
   inlineSearchTitleOnlyTest,
   inlineResetSearchTest,
+  inlineSearchModeToggleTest,
 } from "./cases/general/";
 
 /**
@@ -190,4 +191,10 @@ describe("Item Filter Config", () => {
    */
   it("should show all filter sections after a click outside", () =>
     inlineResetSearchTest());
+
+  /**
+   * Test case to verify an inlineSearch text filter outside of inline mode and when toggling it.
+   */
+  it("should show the inlineSearch filter outside of inline mode", () =>
+    inlineSearchModeToggleTest());
 });

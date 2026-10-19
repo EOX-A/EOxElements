@@ -616,7 +616,14 @@ export class EOxItemFilter extends LitElement {
                       ${map(
                         Object.values(this.filters),
                         (filterObject, index) =>
-                          html` <li class="no-padding">
+                          html` <li
+                            class="no-padding"
+                            style=${this.inlineMode &&
+                            filterObject.inlineSearch &&
+                            filterObject.type === "text"
+                              ? "display: none"
+                              : nothing}
+                          >
                             <eox-itemfilter-expandcontainer
                               .filterObject=${filterObject}
                               @details-toggled=${(e) =>

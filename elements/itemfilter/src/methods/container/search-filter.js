@@ -1,4 +1,5 @@
 import Fuse from "fuse.js";
+import { INLINE_SEARCH_TITLE_THRESHOLD } from "../../enums/index.js";
 
 /**
  * Filters the items in the EOxItemFilterContainer based on the search input.
@@ -7,9 +8,15 @@ import Fuse from "fuse.js";
  * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 function searchFilterMethod(event, EOxItemFilterContainer) {
+  const isInlineSearch = (filter) =>
+    filter.inlineSearch && filter.type === "text";
   // Create a Fuse instance for fuzzy searching with the filter properties
   const fuse = new Fuse(EOxItemFilterContainer.filterProperties, {
     keys: ["title"],
+    // Stricter title matching for inlineSearch
+    ...(EOxItemFilterContainer.filterProperties.some(isInlineSearch) && {
+      threshold: INLINE_SEARCH_TITLE_THRESHOLD,
+    }),
   });
   if (!(event.target instanceof HTMLInputElement)) {
     return;
@@ -20,6 +27,8 @@ function searchFilterMethod(event, EOxItemFilterContainer) {
 
   // Update the display of filter elements based on the search results
   Object.keys(EOxItemFilterContainer.filters).forEach((filter) => {
+    // Hidden in inline mode (see main.js), as the inline search box is its input
+    if (isInlineSearch(EOxItemFilterContainer.filters[filter])) return;
     EOxItemFilterContainer.querySelector(
       `[data-details="${filter}"]`,
     ).parentElement.style.display =

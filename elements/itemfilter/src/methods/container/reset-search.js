@@ -10,6 +10,7 @@ function resetSearchMethod(EOxItemFilterContainer) {
     "#eox-itemfilter-input-search",
   );
   input.value = "";
+  EOxItemFilterContainer.inlineSearchText = "";
   // searchFilterMethod only accepts events targeting a real input element
   const event = { target: input };
   searchFilterMethod(

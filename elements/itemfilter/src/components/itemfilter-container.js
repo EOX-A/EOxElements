@@ -1,12 +1,14 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { styleEOX } from "../style.eox";
 import {
-  searchFilterMethod,
-  inlineSearchMethod,
+  getInlineSearchFilters,
+  applyInlineSearchMethod,
+  handleInlineSearchKeyDownMethod,
   resetFilterMethod,
   handleFormClickMethod,
   handleShowDropdownOnFocusMethod,
+  handleSearchInputMethod,
   handleToggleDropdownMethod,
   handleKeyDownMethod,
   handleClickOutsideMethod,
@@ -23,6 +25,7 @@ import { getChipItems, isFiltersDirty } from "../helpers";
  * @property {Boolean} inlineMode - Flag to determine if the component should operate in inline mode.
  * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
  * @property {Object} filters - The filters applied in the container.
+ * @property {String} inlineSearchText - The text in the inline search box, offered as an inline search.
  */
 export class EOxItemFilterContainer extends LitElement {
   // Define properties with defaults and types
@@ -32,6 +35,7 @@ export class EOxItemFilterContainer extends LitElement {
       inlineMode: { attribute: "inline-mode", type: Boolean },
       unstyled: { type: Boolean },
       filters: { state: true, type: Object },
+      inlineSearchText: { state: true, type: String },
     };
   }
 
@@ -57,6 +61,11 @@ export class EOxItemFilterContainer extends LitElement {
      * @type Object
      */
     this.filters = {};
+
+    /**
+     * @type String
+     */
+    this.inlineSearchText = "";
 
     /**
      * @type {(this: Document, ev: MouseEvent|FocusEvent) => any}
@@ -187,23 +196,28 @@ export class EOxItemFilterContainer extends LitElement {
   }
 
   /**
-   * Searches the filter using the searchFilterMethod.
+   * Handles typing in the inline search box.
    *
-   * @param {Event} event - The search event.
+   * @param {Event} event - The input event.
    */
-  #searchFilter(event) {
-    // Typing after Enter closed the dropdown should show matching filters again
-    handleShowDropdownOnFocusMethod(this);
-    searchFilterMethod(event, this);
+  #handleSearchInput(event) {
+    handleSearchInputMethod(event, this);
   }
 
   /**
-   * Applies the search text to inline search filters using the inlineSearchMethod.
+   * Handles keydown events of the inline search box.
    *
    * @param {KeyboardEvent} event - The keydown event.
    */
-  #inlineSearch(event) {
-    inlineSearchMethod(event, this);
+  #handleInlineSearchKeyDown(event) {
+    handleInlineSearchKeyDownMethod(event, this);
+  }
+
+  /**
+   * Applies the inline search box text to the inline search filters.
+   */
+  #applyInlineSearch() {
+    applyInlineSearchMethod(this);
   }
 
   /**
@@ -287,8 +301,8 @@ export class EOxItemFilterContainer extends LitElement {
                     type="text"
                     @click="${this.#handleToggleDropdown}"
                     @focus="${this.#handleShowDropdownOnFocus}"
-                    @input="${this.#searchFilter}"
-                    @keydown="${this.#inlineSearch}"
+                    @input="${this.#handleSearchInput}"
+                    @keydown="${this.#handleInlineSearchKeyDown}"
                     placeholder="Search and add filter"
                     aria-haspopup="true"
                     aria-expanded="${this.showDropdown}"
@@ -306,6 +320,37 @@ export class EOxItemFilterContainer extends LitElement {
                   @click="${this.#handleFormClick}"
                   @focus="${this.#handleFormClick}"
                 >
+                  ${when(
+                    this.inlineSearchText &&
+                      getInlineSearchFilters(this).length,
+                    () => html`
+                      <button
+                        type="button"
+                        class="transparent responsive left-align no-margin"
+                        data-cy="inline-search-action"
+                        @click=${this.#applyInlineSearch}
+                      >
+                        ${this.unstyled
+                          ? nothing
+                          : html`
+                              <i class="small">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <title>search</title>
+                                  <path
+                                    d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"
+                                  />
+                                </svg>
+                              </i>
+                            `}
+                        <span class="truncate"
+                          >Search for "${this.inlineSearchText}"</span
+                        >
+                      </button>
+                    `,
+                  )}
                   <slot name="section"></slot>
                 </div>
               </div>

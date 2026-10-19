@@ -57,7 +57,7 @@ export const InlineMode = InlineModeStory();
 
 /**
  * Setting `inlineSearch: true` on a `type: "text"` filter in `inlineMode` lets the input field search the items:
- * typing still matches filter names, and pressing Enter applies the text to that filter and adds it as a chip.
+ * typing matches filter names and offers a "Search for" action; choosing it or pressing Enter adds the text to that filter as a chip.
  */
 export const InlineSearch = InlineSearchStory();
 

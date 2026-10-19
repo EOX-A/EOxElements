@@ -23,6 +23,10 @@ const inlineSearchTitleOnlyTest = () => {
         .shadow()
         .find("#eox-itemfilter-input-search")
         .should("have.value", "asparagus");
+      cy.get("eox-itemfilter-container")
+        .shadow()
+        .find("[data-cy='inline-search-action']")
+        .should("not.exist");
       cy.get("[data-cy='search']").should("have.value", "");
     });
 };
