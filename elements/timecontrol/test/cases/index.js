@@ -23,3 +23,4 @@ export { default as loadTimelineWithRangeConfiguration } from "./load-timeline-w
 export { default as loadTimelineWithClustering } from "./load-timeline-with-clustering.js";
 export { default as loadDatePickerSelectionModes } from "./load-date-picker-selection-modes.js";
 export { default as loadCompareMaps } from "./load-compare-maps.js";
+export { default as loadDateNavigationWithoutFormat } from "./load-date-navigation-without-format.js";

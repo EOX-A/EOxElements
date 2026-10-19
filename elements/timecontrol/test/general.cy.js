@@ -30,6 +30,7 @@ import {
   loadDateInUTC,
   loadTimelineWithRangeConfiguration,
   loadDatePickerSelectionModes,
+  loadDateNavigationWithoutFormat,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -56,6 +57,10 @@ describe("TimeControl", () => {
 
   // Test to verify that navigation buttons work correctly and update dates
   it("loads date with navigation", () => loadDateWithNavigation());
+
+  // Test to verify that navigation works without a format and keeps the time of each step
+  it("navigates dates without a format", () =>
+    loadDateNavigationWithoutFormat());
 
   // Test to verify that date picker popup opens and date selection works
   it("loads date picker popup", () => loadDatePickerPopup());
