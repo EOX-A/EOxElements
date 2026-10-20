@@ -17,6 +17,7 @@ import {
   checkLayerLegendDynamic,
   colorSwatch,
   toolsAutoExpand,
+  hideDatetimeWithoutControlValues,
   // checkLayerDatetime,
 } from "./cases/general";
 
@@ -76,6 +77,10 @@ describe("LayerControl", () => {
 
   // Test to verify the toolsAutoExpand property
   it("supports toolsAutoExpand", () => toolsAutoExpand());
+
+  // Test to verify that the datetime tool waits for layerDatetime.controlValues
+  it("hides the datetime tool while layerDatetime has no controlValues", () =>
+    hideDatetimeWithoutControlValues());
 
   // Test to verify that updateVectorLayerStyle helper is exported
   it("exports updateVectorLayerStyle as a function", () => {

@@ -21,3 +21,4 @@ export { default as TimelineSelectionDurationStory } from "./timeline-selection-
 export { default as TimelineSelectionResizableStory } from "./timeline-selection-resizable"; // Timeline with selection resizable story
 export { default as TimelineWithClusteringStory } from "./timeline-with-clustering"; // Timeline with clustering story
 export { default as TimecontrolWithCompareMapsStory } from "./timecontrol-with-compare-maps";
+export { default as DateWithoutWrapStory } from "./date-without-wrap.js"; // Disables next/prev button at the date boundaries
