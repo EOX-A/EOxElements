@@ -62,6 +62,7 @@ export default function getInitDate(initDate, items, showUTC = false) {
       end = showUTC
         ? utc.utc().endOf("day").format()
         : utc.endOf("day").format();
+      return [dayjs(start).utc().format(), dayjs(end).utc().format()];
     } else {
       return null;
     }
