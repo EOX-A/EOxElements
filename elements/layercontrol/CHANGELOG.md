@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.10.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.10.0...layercontrol-v1.10.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* AnyOf config form fields when no start values exist ([#2594](https://github.com/EOX-A/EOxElements/issues/2594)) ([2da5f37](https://github.com/EOX-A/EOxElements/commit/2da5f37c57cbca061919cf1b2dc9cbfb3bab5745))
+* Debounce time slice updates in the layer datetime tool ([#2590](https://github.com/EOX-A/EOxElements/issues/2590)) ([3677b05](https://github.com/EOX-A/EOxElements/commit/3677b0503c81d79686c9064763fa0a5d4e4b6a98))
+* Hide the datetime tool when layerDatetime has no`controlValues` ([#2606](https://github.com/EOX-A/EOxElements/issues/2606)) ([40884c0](https://github.com/EOX-A/EOxElements/commit/40884c0495144dca6386f8b9e903477cbe8622df))
+
 ## [1.10.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.9.0...layercontrol-v1.10.0) (2026-10-15)
 
 
