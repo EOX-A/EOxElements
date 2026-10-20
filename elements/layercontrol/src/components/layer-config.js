@@ -334,18 +334,24 @@ export class EOxLayerControlLayerConfig extends LitElement {
   render() {
     // Fetch initial values for the layer and its configuration
     const freshStartVals = getStartVals(this.layer, this.layerConfig) || {};
-    this.#startVals = { ...freshStartVals, ...this.#data };
+    const startVals = { ...freshStartVals, ...this.#data };
     const schemaProps = this.layerConfig?.schema?.properties;
     const isAutofill =
       this.layerConfig?.autofill === true ||
       this.layerConfig?.schema?.autofill === true;
     if (schemaProps && !isAutofill) {
       const allowedKeys = new Set(Object.keys(schemaProps));
-      for (const k of Object.keys(this.#startVals)) {
+      for (const k of Object.keys(startVals)) {
         if (!allowedKeys.has(k)) {
-          delete this.#startVals[k];
+          delete startVals[k];
         }
       }
+    }
+    // without start values, null lets eox-jsonform build the form from the schema defaults
+    const nextStartVals = Object.keys(startVals).length ? startVals : null;
+    // a new object on every render makes eox-jsonform reset the form to it
+    if (JSON.stringify(nextStartVals) !== JSON.stringify(this.#startVals)) {
+      this.#startVals = nextStartVals;
     }
     this.#data = { ...this.#startVals };
     if (!customElements.get("eox-jsonform")) {
