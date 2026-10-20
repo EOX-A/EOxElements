@@ -21,5 +21,9 @@ export {
   isGeoZarrLayer,
   getGeoZarrRootUrl,
   getGeoZarrSourceUrl,
+  discoverGeoZarrVariables,
+  setupGeoZarrDimensions,
   setupGeoZarrLayer,
+  computeStep,
+  buildMinMaxProperties,
 } from "./geozarr";

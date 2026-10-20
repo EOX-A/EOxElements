@@ -9,7 +9,10 @@ function resetFilterMethod(event, EOxItemFilterContainer) {
     return;
   }
   const filterKey = event.target.getAttribute("data-close").replace("|", "-");
-  EOxItemFilterContainer.querySelector(`#filter-${filterKey}`).reset();
+  // Filter ids only replace the first "|" (see create-filter.js), so they must be escaped
+  EOxItemFilterContainer.querySelector(
+    `#${CSS.escape(`filter-${filterKey}`)}`,
+  ).reset();
   EOxItemFilterContainer.dispatchEvent(new CustomEvent("filter"));
   EOxItemFilterContainer.requestUpdate();
 }

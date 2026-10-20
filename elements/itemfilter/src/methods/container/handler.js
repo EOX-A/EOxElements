@@ -1,4 +1,5 @@
 import resetSearchMethod from "./reset-search.js";
+import searchFilterMethod from "./search-filter.js";
 
 /**
  * Handles the click event on the form, stopping propagation if in inline mode.
@@ -19,6 +20,21 @@ export function handleShowDropdownOnFocusMethod(EOxItemFilterContainer) {
   if (EOxItemFilterContainer.inlineMode) {
     EOxItemFilterContainer.showDropdown = true;
   }
+}
+
+/**
+ * Handles typing in the inline search box: shows the dropdown, filters the listed filters
+ * by title and keeps the text for the inline search action.
+ *
+ * @param {Event} event - The input event.
+ * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ */
+export function handleSearchInputMethod(event, EOxItemFilterContainer) {
+  if (!(event.target instanceof HTMLInputElement)) return;
+  // A search closes the dropdown but keeps focus in the box, so typing has to open it again
+  EOxItemFilterContainer.showDropdown = true;
+  searchFilterMethod(event, EOxItemFilterContainer);
+  EOxItemFilterContainer.inlineSearchText = event.target.value.trim();
 }
 
 /**

@@ -66,6 +66,20 @@ export class EOxTimeControlSlider extends LitElement {
   #filteredItems = null;
 
   /**
+   * Currently active slider value1 date string.
+   *
+   * @type {string | null}
+   */
+  #sliderValue = null;
+
+  /**
+   * Prevents programmatic slider updates from triggering date changes.
+   *
+   * @type {boolean}
+   */
+  #syncingSlider = false;
+
+  /**
    * Generated ticks for the slider.
    *
    * @type {Array<{type: 'year' | 'empty', position: number, label?: string, date?: string}>}
@@ -102,10 +116,12 @@ export class EOxTimeControlSlider extends LitElement {
   /**
    * Gets the toolcool-range-slider instance.
    *
-   * @returns {HTMLElement} The slider element.
+   * @returns {(HTMLElement & { data?: any; value1?: any }) | null} The slider element.
    */
   getSliderInstance() {
-    return this.renderRoot.querySelector("tc-range-slider");
+    return /** @type {any} */ (
+      this.renderRoot?.querySelector("tc-range-slider")
+    );
   }
 
   /**
@@ -212,17 +228,22 @@ export class EOxTimeControlSlider extends LitElement {
   setDateRange(dateRange, data) {
     this.#selectedDateRange = dateRange;
     let exactMatch = null;
-    const slider = this.getSliderInstance();
     if (data && data.length) {
       this.#items = Object.keys(groupBy(data, "utc")).sort((a, b) =>
         dayjs(a).diff(dayjs(b), "day"),
       );
     }
     if (this.#items && this.#selectedDateRange) {
-      const start = dayjs(this.#selectedDateRange[0]);
-      const end = dayjs(this.#selectedDateRange[1]);
+      const tc = this.getEOxTimeControl();
+      const isUtc = tc?.showUTC;
+      const start = isUtc
+        ? dayjs.utc(this.#selectedDateRange[0])
+        : dayjs(this.#selectedDateRange[0]);
+      const end = isUtc
+        ? dayjs.utc(this.#selectedDateRange[1])
+        : dayjs(this.#selectedDateRange[1]);
       const filteredItems = this.#items.filter((utc) => {
-        const date = dayjs(utc);
+        const date = isUtc ? dayjs.utc(utc) : dayjs(utc);
         if (date.isSame(start)) exactMatch = utc;
         return (
           (date.isAfter(start) || date.isSame(start, "day")) &&
@@ -231,15 +252,36 @@ export class EOxTimeControlSlider extends LitElement {
       });
       this.#filteredItems = filteredItems;
     }
-    if (slider) {
-      slider.setAttribute("data", this.#items.join(","));
-      slider.setAttribute("value1", exactMatch || this.#filteredItems[0]);
-    }
+    this.#sliderValue =
+      exactMatch || (this.#filteredItems && this.#filteredItems[0]) || null;
 
     // Generate ticks after items are set
     this.#ticks = this.#generateTicks();
 
     this.requestUpdate();
+  }
+
+  /**
+   * Lifecycle method called after each component update.
+   * Ensures the range slider custom element attributes stay synchronized and year labels are updated.
+   *
+   * @param {import("lit").PropertyValues} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    updateYearLabelsMethod(this);
+    const slider = this.getSliderInstance();
+    if (slider && this.#items && this.#items.length) {
+      this.#syncingSlider = true;
+      try {
+        if (slider.data !== this.#items) slider.data = this.#items;
+        if (this.#sliderValue && slider.value1 !== this.#sliderValue) {
+          slider.value1 = this.#sliderValue;
+        }
+      } finally {
+        this.#syncingSlider = false;
+      }
+    }
   }
 
   /**
@@ -260,10 +302,10 @@ export class EOxTimeControlSlider extends LitElement {
       });
       this.#resizeObserver.observe(slider);
     }
-  }
-
-  updated() {
-    updateYearLabelsMethod(this);
+    const tc = this.getEOxTimeControl();
+    if (tc?.selectedDateRange && tc?.items?.get) {
+      this.setDateRange(tc.selectedDateRange, tc.items.get());
+    }
   }
 
   /**
@@ -278,6 +320,7 @@ export class EOxTimeControlSlider extends LitElement {
   }
 
   handleChange(evt) {
+    if (this.#syncingSlider) return;
     const EOxTimeControl = this.getEOxTimeControl();
     if (!EOxTimeControl) return;
     const start = dayjs(evt.detail.value1).utc().format();

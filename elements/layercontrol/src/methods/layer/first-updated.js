@@ -61,10 +61,14 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
       .on("change:resolution", () => updateLayerZoomVisibility());
   }
 
-  // Trigger re-render if layerDatetime or layerConfig are updated asynchronously
+  // Listen for dynamic property changes (e.g. GeoZarr layerDatetime, layerConfig, timeControlValues)
   EOxLayerControlLayer.layer?.on?.("propertychange", (e) => {
     const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
-    if (propEvent.key === "layerDatetime" || propEvent.key === "layerConfig") {
+    if (
+      propEvent.key === "layerDatetime" ||
+      propEvent.key === "layerConfig" ||
+      propEvent.key === "timeControlValues"
+    ) {
       EOxLayerControlLayer.requestUpdate();
     }
   });

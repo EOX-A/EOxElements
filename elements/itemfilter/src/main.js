@@ -178,7 +178,7 @@ export class EOxItemFilter extends LitElement {
 
     /**
      * The filter properties. Can be passed as a property or stringified JSON attribute.
-     * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>
+     * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object, inlineSearch?: Boolean}>
      */
     this.filterProperties = [];
 
@@ -616,7 +616,14 @@ export class EOxItemFilter extends LitElement {
                       ${map(
                         Object.values(this.filters),
                         (filterObject, index) =>
-                          html` <li class="no-padding">
+                          html` <li
+                            class="no-padding"
+                            style=${this.inlineMode &&
+                            filterObject.inlineSearch &&
+                            filterObject.type === "text"
+                              ? "display: none"
+                              : nothing}
+                          >
                             <eox-itemfilter-expandcontainer
                               .filterObject=${filterObject}
                               @details-toggled=${(e) =>

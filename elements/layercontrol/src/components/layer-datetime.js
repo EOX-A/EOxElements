@@ -1,5 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
+import _debounce from "lodash.debounce";
+import { updateLayerSlice } from "../helpers/handle-datetime-update";
 
 /**
  * `EOxLayerControlLayerDatetime` is a component that handles date time options for layers using eox-timecontrol.
@@ -67,6 +69,14 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  disconnectedCallback() {
+    // runs a pending slice update before removal
+    this.#updateSlice.flush();
+    super.disconnectedCallback();
+  }
+
+  #updateSlice = _debounce(updateLayerSlice, 300);
+
   /**
    * Handles timecontrol Stepchange &
    * triggers `datetime:updated` event on step change
@@ -102,6 +112,8 @@ export class EOxLayerControlLayerDatetime extends LitElement {
         },
       }),
     );
+
+    this.#updateSlice(this.layer, currentStep);
 
     this.layerDatetime.currentStep = currentStep;
     this.requestUpdate();

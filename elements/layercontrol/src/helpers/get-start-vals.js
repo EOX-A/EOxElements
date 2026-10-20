@@ -14,8 +14,9 @@ export function getStartVals(layer, layerConfig) {
   // extract style variables from layer
   let styleVars =
     "updateStyleVariables" in layer
-      ? /** @type {import("ol/layer/WebGLTile").default} */
-        (layer)["style_"]?.variables
+      ? /** @type {any} */ (layer).styleVariables_ ||
+        /** @type {any} */ (layer)["style_"]?.variables ||
+        layer.get?.("style")?.variables
       : layerConfig.style?.variables;
   if ((layerConfig.type === "style" || layerConfig.style) && styleVars) {
     nestedValues = { ...styleVars };
@@ -45,6 +46,29 @@ export function getStartVals(layer, layerConfig) {
       console.error("Error parsing start values from tile URL", e);
     }
   } else return null;
+
+  const cfg = /** @type {any} */ (layerConfig);
+  if (nestedValues.min === undefined && cfg.min !== undefined) {
+    nestedValues.min = cfg.min;
+  }
+  if (nestedValues.max === undefined && cfg.max !== undefined) {
+    nestedValues.max = cfg.max;
+  }
+  if (nestedValues.bands === undefined && cfg.bands !== undefined) {
+    nestedValues.bands = cfg.bands;
+  }
+  if (nestedValues.band === undefined && cfg.band !== undefined) {
+    nestedValues.band = cfg.band;
+  }
+  if (nestedValues.variable === undefined) {
+    nestedValues.variable =
+      cfg.variable ??
+      cfg.band ??
+      (Array.isArray(cfg.bands) && cfg.bands.length > 0
+        ? cfg.bands[0]
+        : undefined) ??
+      layer.get?.("_lastVariable");
+  }
 
   // fall back for schemas passed as a bare map of field definitions
   const fieldSchemas = collectFieldSchemas(layerConfig.schema);
@@ -127,6 +151,36 @@ export function getNestedStartVals(
         : nestedValues[key];
       // keep the raw URL value instead of NaN (e.g. "auto" on a number field)
       startVals[key] = Number.isNaN(value) ? nestedValues[key] : value;
+    } else if (key === "variable" && type && type !== "object" && layer) {
+      const source = /** @type {any} */ (
+        layer.getSource ? layer.getSource() : null
+      );
+      const bands =
+        layer.get?.("_lastVariable") ||
+        (typeof source?.getBands === "function" ? source.getBands() : null) ||
+        source?.bands_ ||
+        layer.get?.("_jsonDefinition")?.source?.bands ||
+        layer.get?.("source")?.bands;
+      const bandVal =
+        Array.isArray(bands) && bands.length > 0
+          ? bands[0]
+          : typeof bands === "string"
+            ? bands
+            : undefined;
+      if (
+        bandVal &&
+        (!Array.isArray(schema[key]?.enum) ||
+          schema[key].enum.includes(bandVal))
+      ) {
+        startVals[key] = bandVal;
+      } else if (schema[key]?.default !== undefined) {
+        startVals[key] = schema[key].default;
+      } else if (
+        Array.isArray(schema[key]?.enum) &&
+        schema[key].enum.length > 0
+      ) {
+        startVals[key] = schema[key].enum[0];
+      }
     } else if (
       type &&
       type !== "object" &&
@@ -140,19 +194,6 @@ export function getNestedStartVals(
       schema[key].enum.length > 0
     ) {
       startVals[key] = schema[key].enum[0];
-    } else if (key === "variable" && type && type !== "object" && layer) {
-      const source = /** @type {any} */ (
-        layer.getSource ? layer.getSource() : null
-      );
-      const bands =
-        (typeof source?.getBands === "function" ? source.getBands() : null) ||
-        source?.bands_ ||
-        layer.get?.("_lastVariable") ||
-        layer.get?.("_jsonDefinition")?.source?.bands ||
-        layer.get?.("source")?.bands;
-      if (bands) {
-        startVals[key] = Array.isArray(bands) ? bands[0] : bands;
-      }
     } else {
       // Recursively traverse nested properties
       const nestedStartVals = getNestedStartVals(

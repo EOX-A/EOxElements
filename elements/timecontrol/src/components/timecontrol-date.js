@@ -129,11 +129,14 @@ export class EOxTimeControlDate extends LitElement {
     const EOxTimeControl = this.getEOxTimeControl();
     const EOxTimeControlPicker =
       /** @type {import("./timecontrol-picker.js").EOxTimeControlPicker} */ (
-        EOxTimeControl.querySelector("eox-timecontrol-picker")
+        EOxTimeControl?.querySelector("eox-timecontrol-picker")
       );
     if (EOxTimeControlPicker) {
       this.editable = true;
       this.requestUpdate();
+    }
+    if (!this.#selectedDateRange && EOxTimeControl?.selectedDateRange) {
+      this.setDateRange(EOxTimeControl.selectedDateRange);
     }
   }
 
