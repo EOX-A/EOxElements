@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-BrtyLC9k.js";e();
