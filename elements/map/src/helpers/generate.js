@@ -20,6 +20,7 @@ import {
   addClusterExplode,
   generateTileGrid,
   isGeoZarrLayer,
+  setupGeoZarrDimensions,
   setupGeoZarrLayer,
 } from "./";
 import { get as getProjection } from "ol/proj";
@@ -343,13 +344,13 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   }
 
   // Update source if different
-  if (
+  const sourceChanged =
     newLayerDefinition.type !== "MapboxStyle" &&
     "source" in newLayerDefinition &&
     "source" in existingJsonDefinition &&
     serialize(newLayerDefinition.source) !==
-      serialize(existingJsonDefinition.source)
-  ) {
+      serialize(existingJsonDefinition.source);
+  if (sourceChanged) {
     /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
       /** @type {any} **/ existingLayer
     ).setSource(
@@ -393,6 +394,14 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       ),
     );
   }
+
+  // compared before `setProperties`, which syncs the new values into the existing definition
+  const timePropertiesChanged = ["layerDatetime", "timeControlValues"].some(
+    (key) =>
+      key in (newLayerDefinition.properties ?? {}) &&
+      serialize(newLayerDefinition.properties[key]) !==
+        serialize(existingJsonDefinition.properties?.[key]),
+  );
 
   // Update properties if different
   if (
@@ -544,6 +553,19 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Synchronize properties
   setSyncListeners(existingLayer, newLayerDefinition);
   existingLayer.set("_jsonDefinition", newLayerDefinition, true);
+
+  // a new source starts at the first slice; a new layerDatetime or timeControlValues replaces the time setup
+  if (
+    isGeoZarrLayer(existingLayer) &&
+    (sourceChanged || timePropertiesChanged)
+  ) {
+    setupGeoZarrDimensions(
+      existingLayer,
+      /** @type {import("ol/layer/Layer").default} */ (
+        existingLayer
+      ).getSource(),
+    );
+  }
 
   return existingLayer;
 }

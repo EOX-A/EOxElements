@@ -397,30 +397,37 @@ export async function setupGeoZarrDimensions(layer, source, _rootUrl) {
       return iso;
     });
 
-    const existingDatetime = layer.get("layerDatetime") || {};
-    const layerDatetime = {
-      showUTC: true,
-      slider: true,
-      navigation: true,
-      ...existingDatetime,
-      controlValues,
-      sliceMap,
-      currentStep:
-        existingDatetime.currentStep &&
-        controlValues.includes(existingDatetime.currentStep)
-          ? existingDatetime.currentStep
-          : controlValues[0],
-    };
+    // `false` opts the layer out of the time setup
+    if (layer.get("layerDatetime") !== false) {
+      const existingDatetime = layer.get("layerDatetime") || {};
+      const layerDatetime = {
+        showUTC: true,
+        slider: true,
+        navigation: true,
+        ...existingDatetime,
+        controlValues,
+        sliceMap,
+        currentStep:
+          existingDatetime.currentStep &&
+          controlValues.includes(existingDatetime.currentStep)
+            ? existingDatetime.currentStep
+            : controlValues[0],
+      };
 
-    layer.set("layerDatetime", layerDatetime);
-    layer.set(
-      "timeControlValues",
-      slices.map((s) => ({ date: s.date.toISOString() })),
-    );
+      layer.set("layerDatetime", layerDatetime);
 
-    const initialIndex = sliceMap[layerDatetime.currentStep] ?? 0;
-    if (typeof source?.updateDimensions === "function") {
-      source.updateDimensions({ time: initialIndex });
+      const initialIndex = sliceMap[layerDatetime.currentStep] ?? 0;
+      if (typeof source?.updateDimensions === "function") {
+        source.updateDimensions({ time: initialIndex });
+      }
+    }
+
+    // a list set by the client, or `false`, stays as it is
+    if (layer.get("timeControlValues") === undefined) {
+      layer.set(
+        "timeControlValues",
+        slices.map((s) => ({ date: s.date.toISOString() })),
+      );
     }
   }
 
