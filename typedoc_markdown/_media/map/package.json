@@ -13,7 +13,7 @@
     "flatgeobuf": "^4.4.0",
     "lit": "^3.3.3",
     "ol": "^10.11.0",
-    "ol-mapbox-style": "^13.5.0",
+    "ol-mapbox-style": "^13.5.1",
     "ol-stac": "^1.7.0",
     "proj4": "^2.22.0",
     "serialize-javascript": "^7.0.1"
