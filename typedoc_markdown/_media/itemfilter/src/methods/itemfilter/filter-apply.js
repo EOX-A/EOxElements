@@ -54,6 +54,8 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           }
           return;
         }
+        // Text filters use `keys`, so no state keys come from item values
+        if (filterProperty.type === "text") return;
         if (Array.isArray(item[filterProperty.key])) {
           item[filterProperty.key].forEach((prop) => {
             filterKeys[prop] = undefined;
@@ -153,6 +155,11 @@ function filterApplyMethod(config, items, EOxItemFilter) {
         existingFilter?.state || {},
         filterProperty.state,
       );
+      if (filterProperty.type === "text") {
+        EOxItemFilter.filters[filterKey].stringifiedState = Object.values(
+          EOxItemFilter.filters[filterKey].state,
+        ).find(Boolean);
+      }
 
       if (filterProperty.type === "range" && filterProperty.state) {
         const parseVal = (val) => {

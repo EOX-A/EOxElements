@@ -1721,7 +1721,7 @@
               "name": "filterProperties",
               "privacy": "public",
               "type": {
-                "text": "Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>"
+                "text": "Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object, inlineSearch?: Boolean}>"
               },
               "description": "The filter properties. Can be passed as a property or stringified JSON attribute.",
               "default": "[]",
@@ -2001,7 +2001,7 @@
             {
               "name": "filterProperties",
               "type": {
-                "text": "Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>"
+                "text": "Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object, inlineSearch?: Boolean}>"
               },
               "description": "The filter properties. Can be passed as a property or stringified JSON attribute.",
               "default": "[]",
