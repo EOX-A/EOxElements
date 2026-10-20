@@ -21,6 +21,10 @@ export function interceptGeoZarrStore() {
   cy.intercept(`${STORE_URL}/**`, { statusCode: 404 });
   // `**` does not match path segments starting with a dot
   cy.intercept(`${STORE_URL}/.zmetadata`, { statusCode: 404 });
+  // one shard per time step, so the URLs show which slices were requested
+  cy.intercept(`${STORE_URL}/descending/r720m/*/c/**`, {
+    statusCode: 404,
+  }).as("bandShards");
   cy.intercept(`${STORE_URL}/descending/zarr.json`, {
     fixture: "./map/test/fixtures/geozarr/descending/zarr.json",
   });

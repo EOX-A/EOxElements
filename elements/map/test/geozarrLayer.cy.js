@@ -7,6 +7,7 @@ import {
   skipTimePropertySetToFalse,
   keepClientTimeControlValues,
   keepSliceOnUpdate,
+  openCurrentStepOnEarlyUpdate,
   openNewCurrentStepOnUpdate,
   skipSetupOnUnrelatedUpdate,
 } from "./cases/geozarr/index.js";
@@ -53,10 +54,16 @@ describe("GeoZarr time properties", () => {
     keepClientTimeControlValues());
 
   /**
-   * Test case to keep the current slice when an update changes the source
+   * Test case to open a new source at the current slice when an update changes the bands
    */
-  it("keeps the stepped slice when an update changes the source", () =>
+  it("loads only the stepped slice when an update changes the bands", () =>
     keepSliceOnUpdate());
+
+  /**
+   * Test case to open the client currentStep when the bands change before the time setup finished
+   */
+  it("opens the client currentStep when an update changes the bands before the time setup finished", () =>
+    openCurrentStepOnEarlyUpdate());
 
   /**
    * Test case to open a new currentStep passed with an update

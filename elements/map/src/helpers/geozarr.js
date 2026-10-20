@@ -296,13 +296,37 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
  * @param {import("ol/layer/Base").default|any} layer
  * @param {any} source
  * @param {string} [_rootUrl]
+ * @param {import("../layers").EoxSource<"GeoZarr">} [previousSource] - Source definition before the source was replaced
  * @returns {Promise<{ slices: { index: number, date: Date }[], nonTemporalDims: Record<string, any> }>}
  */
-export async function setupGeoZarrDimensions(layer, source, _rootUrl) {
+export async function setupGeoZarrDimensions(
+  layer,
+  source,
+  _rootUrl,
+  previousSource,
+) {
   /** @type {{ index: number, date: Date }[]} */
   let slices = [];
   /** @type {Record<string, any>} */
   const nonTemporalDims = {};
+
+  /** @type {import("../layers").EoxSource<"GeoZarr"> | undefined} */
+  const newSource = layer.get("_jsonDefinition")?.source;
+  const [previousBand] = previousSource?.bands ?? [];
+  const [newBand] = newSource?.bands ?? [];
+  const { sliceMap: currentSliceMap, currentStep } =
+    layer.get("layerDatetime") || {};
+  // a new source on the same store starts at the current slice, before its first tiles load
+  const sourceTimeIndex =
+    previousSource &&
+    previousSource.url === newSource?.url &&
+    (typeof previousBand === "object" && previousBand.group) ===
+      (typeof newBand === "object" && newBand.group)
+      ? currentSliceMap?.[currentStep]
+      : undefined;
+  if (sourceTimeIndex !== undefined) {
+    source.updateDimensions({ time: sourceTimeIndex });
+  }
 
   if (typeof source?.ready === "function") {
     try {
@@ -417,7 +441,10 @@ export async function setupGeoZarrDimensions(layer, source, _rootUrl) {
       layer.set("layerDatetime", layerDatetime);
 
       const initialIndex = sliceMap[layerDatetime.currentStep] ?? 0;
-      if (typeof source?.updateDimensions === "function") {
+      if (
+        initialIndex !== sourceTimeIndex &&
+        typeof source?.updateDimensions === "function"
+      ) {
         source.updateDimensions({ time: initialIndex });
       }
     }

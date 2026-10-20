@@ -7,12 +7,13 @@ import {
 } from "../../utils/geozarr";
 
 /**
- * Tests that an update with a new source keeps the slice the user stepped to
+ * Tests that an update with new bands opens the new source at the slice the user stepped to,
+ * without requesting the first slice or switching slices afterwards
  */
 const keepSliceOnUpdate = () => {
   interceptGeoZarrStore();
   let eoxMap;
-  // the only way to see which slice the source shows
+  let steppedDatetime;
   cy.spy(GeoZarr.prototype, "updateDimensions").as("updateDimensions");
 
   cy.mount(html`<eox-map .layers=${[geoZarrLayerDefinition()]}></eox-map>`).as(
@@ -26,18 +27,31 @@ const keepSliceOnUpdate = () => {
     })
     .then(($el) => {
       eoxMap = $el[0];
+      steppedDatetime = eoxMap.getLayerById("cube").get("layerDatetime");
       // the datetime tool steps by changing `currentStep` in place
-      eoxMap.getLayerById("cube").get("layerDatetime").currentStep =
-        STORE_TIME[2];
+      steppedDatetime.currentStep = STORE_TIME[2];
       // new bands, so the layer gets a new source
       eoxMap.addOrUpdateLayer(geoZarrLayerDefinition({}, ["vh"]));
     });
 
-  cy.get("@updateDimensions").should((spy) => {
+  // the time setup has run again on the new source
+  cy.get("eox-map").should(() => {
     const layer = eoxMap.getLayerById("cube");
-    expect(spy.lastCall.thisValue, "new source").to.equal(layer.getSource());
-    expect(spy.lastCall.args[0]).to.deep.equal({ time: 2 });
+    expect(layer.get("layerDatetime")).to.not.equal(steppedDatetime);
     expect(layer.get("layerDatetime").currentStep).to.equal(STORE_TIME[2]);
+  });
+
+  cy.get("@bandShards.all").should((requests) => {
+    const urls = requests.map(({ request }) => request.url);
+    expect(urls.some((url) => url.endsWith("/vh/c/2/0/0"))).to.be.true;
+    expect(urls.some((url) => url.endsWith("/vh/c/0/0/0"))).to.be.false;
+  });
+
+  // a second switch to the same slice would load it again
+  cy.get("@updateDimensions").then((spy) => {
+    const source = eoxMap.getLayerById("cube").getSource();
+    const calls = spy.getCalls().filter((call) => call.thisValue === source);
+    expect(calls.map((call) => call.args[0])).to.deep.equal([{ time: 2 }]);
   });
 };
 

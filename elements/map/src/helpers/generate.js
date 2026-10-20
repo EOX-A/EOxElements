@@ -564,6 +564,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       /** @type {import("ol/layer/Layer").default} */ (
         existingLayer
       ).getSource(),
+      undefined,
+      sourceChanged ? existingJsonDefinition.source : undefined,
     );
   }
 
