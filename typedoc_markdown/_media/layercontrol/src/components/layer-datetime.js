@@ -134,7 +134,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
         ${!this.unstyled && this.#styleEOX}
       </style>
       ${when(
-        this.layerDatetime,
+        this.layerDatetime?.controlValues,
         () => html`
           <eox-timecontrol
             .initDate=${this.layerDatetime.currentStep
