@@ -126,6 +126,15 @@ export const Unstyled = unstyledStory;
 
 /**
  * Demonstrates multi-dimensional GeoZarr layer support in eox-layercontrol. Connects to zarr.json and GeoZarr dimensions to dynamically populate time controls, band/variable selection, and value ranges.
+ *
+ * When the store has a time axis, `eox-map` sets up the layer's `layerDatetime` (for the "datetime" tool) and `timeControlValues` (for `eox-timecontrol`) from it. Both properties follow the same rules:
+ * - Not set: filled from the store's time axis.
+ * - `false`: not set up.
+ * - Set by the client: kept. A `timeControlValues` list stays as given. A `layerDatetime` object keeps its options, gets `controlValues` and `sliceMap` from the store, and opens the slice whose date matches `currentStep` exactly, otherwise the earliest slice.
+ *
+ * Updating a layer with the same `id` runs the time setup again only when the update changes the source, `layerDatetime` or `timeControlValues`. The current `currentStep` stays unless the update sets another one.
+ *
+ * The "datetime" tool shows once `layerDatetime` has `controlValues`.
  */
 export const GeoZarr = geozarrStory;
 
