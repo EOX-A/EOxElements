@@ -119,3 +119,9 @@ export const ELEMENT_PROPERTIES = [
 ];
 
 export const DATE_TIME_FORMAT = "YYYY-MM-DD";
+
+/**
+ * Fuzzy matching threshold for filter titles in the inline search box when an
+ * `inlineSearch` filter exists, so search terms do not match unrelated filter titles.
+ */
+export const INLINE_SEARCH_TITLE_THRESHOLD = 0.3;
