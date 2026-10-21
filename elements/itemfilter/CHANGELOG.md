@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.5...itemfilter-v1.18.0) (2026-10-20)
+
+
+### Features
+
+* Search items from the inline mode input with `inlineSearch` ([#2591](https://github.com/EOX-A/EOxElements/issues/2591)) ([19241aa](https://github.com/EOX-A/EOxElements/commit/19241aa8d6a6e739bb4409c7adb4d44843e6f20f))
+
 ## [1.17.5](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.4...itemfilter-v1.17.5) (2026-07-27)
 
 
