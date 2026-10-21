@@ -132,7 +132,7 @@ export class EOxDrawTools extends LitElement {
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
-     * @type {String|HTMLElement}
+     * @type {string | HTMLElement}
      */
     this.for = "eox-map";
 
@@ -244,7 +244,7 @@ export class EOxDrawTools extends LitElement {
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
   }

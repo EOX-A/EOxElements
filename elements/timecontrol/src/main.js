@@ -83,7 +83,7 @@ export class EOxTimeControl extends LitElement {
   /**
    * Defines the component's reactive properties.
    *
-   * @returns {Object} Property definitions.
+   * @returns {object} Property definitions.
    */
   static get properties() {
     return {
@@ -221,7 +221,7 @@ export class EOxTimeControl extends LitElement {
     /**
      * Array of control values.
      *
-     * @type {Array<Object>}
+     * @type {Array<object>}
      */
     this.controlValues = [];
 

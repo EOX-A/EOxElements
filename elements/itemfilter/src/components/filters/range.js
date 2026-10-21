@@ -17,10 +17,10 @@ import { isDate } from "../../helpers/index.js";
  * generating labels, and resetting the range filter.
  *
  * @module EOxItemFilterRange
- * @extends LitElement
- * @property {Object} filterObject - The filter object containing state and range limits.
+ * @augments LitElement
+ * @property {object} filterObject - The filter object containing state and range limits.
  * @property {Array} suggestions - The list of suggestions for the selector.
- * @property {Number} tabIndex - The tab index for the input elements.
+ * @property {number} tabIndex - The tab index for the input elements.
  */
 export class EOxItemFilterRange extends LitElement {
   // Define properties with defaults and types

@@ -472,7 +472,7 @@ export class EOxSelectInteraction {
   /**
    * Pans the map to the specified feature or extent.
    * @param {Feature | RenderFeature | import("ol/extent").Extent} featureOrExtent - The feature or extent to pan to.
-   * @param {Object} [options] - Additional options for the panning animation.
+   * @param {object} [options] - Additional options for the panning animation.
    */
   panIntoFeature = (featureOrExtent, options) => {
     const extent =
@@ -486,7 +486,7 @@ export class EOxSelectInteraction {
   /**
    * Highlights features by their IDs and optionally pans into their extent.
    * @param {Array<string | number>} ids - Array of feature IDs to highlight.
-   * @param {Object} [fitOptions] - Options for panning into the highlighted features.
+   * @param {object} [fitOptions] - Options for panning into the highlighted features.
    */
   highlightById(ids, fitOptions) {
     this.selectedFids = ids;

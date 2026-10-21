@@ -59,10 +59,10 @@ jobs:
 
       - name: Release previews 🚀
         if: steps.changed.outputs.paths != ''
+        continue-on-error: true
         run: |
           ROOT_DIR=$(pwd)
           for p in ${{ steps.changed.outputs.paths }}; do
-            cd "$ROOT_DIR/$p"
-            npm run types:generate --if-present
-            npx pkg-pr-new publish . --comment=off
+            (cd "$ROOT_DIR/$p" && npm run types:generate --if-present)
           done
+          npx pkg-pr-new publish ${{ steps.changed.outputs.paths }} --comment=off

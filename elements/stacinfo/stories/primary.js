@@ -1,7 +1,7 @@
 /**
  * In its most basic form, the element fetches a STAC file and displays its properties.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const PrimaryStory = {
   args: {

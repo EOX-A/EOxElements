@@ -7,7 +7,7 @@ import { DEFAULT_SPEC, DEFAULT_OPT } from "../../enums";
  *
  * @param {import("../../main").EOxChart} EOxChart The eox-chart instance
  * @param {import("vega-embed").VisualizationSpec} spec
- * @param {Object=} dataValues
+ * @param {object=} dataValues
  *
  */
 const renderChartMethod = (EOxChart, spec, opt, dataValues) => {

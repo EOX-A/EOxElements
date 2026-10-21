@@ -20,7 +20,7 @@ export class EOxLayerControlTabs extends LitElement {
     /**
      * List of action ids
      *
-     * @type {Array<String>}
+     * @type {Array<string>}
      */
     this.actions = [];
 
@@ -29,28 +29,28 @@ export class EOxLayerControlTabs extends LitElement {
     /**
      * List of tab ids
      *
-     * @type {Array<String>}
+     * @type {Array<string>}
      */
     this.tabs = [];
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
   }

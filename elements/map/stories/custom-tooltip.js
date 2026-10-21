@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * Renders `eox-map` with a custom `Tooltip` hover feature
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const CustomTooltipStory = {
   args: {

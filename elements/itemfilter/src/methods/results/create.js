@@ -9,7 +9,7 @@ import { capitalize, getValue } from "../../helpers";
  * Creates the item details view for the aggregation property in the EOxItemFilterResults component.
  *
  * @param {string} aggregationProperty - The property used for aggregation.
- * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
+ * @param {object} EOxItemFilterResults - The EOxItemFilterResults component instance.
  * @returns {import("lit").HTMLTemplateResult} The HTML template for the item details view.
  */
 export function createItemDetailsMethod(
@@ -54,7 +54,7 @@ export function createItemDetailsMethod(
 /**
  * Creates the item list view for the aggregation property in the EOxItemFilterResults component.
  *
- * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
+ * @param {object} EOxItemFilterResults - The EOxItemFilterResults component instance.
  * @param {string} [aggregationProperty] - The property used for aggregation.
  * @returns {import("lit").TemplateResult} The HTML template for the item list view.
  */

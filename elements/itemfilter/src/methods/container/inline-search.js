@@ -4,7 +4,7 @@ import resetSearchMethod from "./reset-search.js";
  * Adds the inline search box text to every text filter with `inlineSearch` enabled,
  * then clears the box and closes the dropdown.
  *
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function applyInlineSearchMethod(EOxItemFilterContainer) {
   const input = EOxItemFilterContainer.renderRoot.querySelector(
@@ -33,7 +33,7 @@ export function applyInlineSearchMethod(EOxItemFilterContainer) {
  * Handles the keydown event of the inline search box, applying the inline search on Enter.
  *
  * @param {KeyboardEvent} event - The keydown event.
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function handleInlineSearchKeyDownMethod(event, EOxItemFilterContainer) {
   // Enter that confirms an IME composition (e.g. Japanese input) is not a search
@@ -44,8 +44,8 @@ export function handleInlineSearchKeyDownMethod(event, EOxItemFilterContainer) {
 /**
  * Returns the text filters that receive the text of the inline search box.
  *
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
- * @returns {Array<Object>} The text filters with `inlineSearch` enabled.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @returns {Array<object>} The text filters with `inlineSearch` enabled.
  */
 export function getInlineSearchFilters(EOxItemFilterContainer) {
   return Object.values(EOxItemFilterContainer.filters).filter(

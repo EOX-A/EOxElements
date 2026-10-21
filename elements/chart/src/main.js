@@ -65,14 +65,14 @@ export class EOxChart extends LitElement {
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 

@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * External map rendering mode for timelapse export with custom map rendering logic
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ExternalMapRenderingStory = {
   args: {

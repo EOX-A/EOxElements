@@ -7,8 +7,8 @@ let _fuse;
 /**
  * Indexes the given items using Fuse.js with the provided configuration.
  *
- * @param {Array<Object>} items - The items to be indexed.
- * @param {Object} fuseConfig - Configuration object for Fuse.js.
+ * @param {Array<object>} items - The items to be indexed.
+ * @param {object} fuseConfig - Configuration object for Fuse.js.
  */
 export const indexItems = (items, fuseConfig) => {
   _fuse = new Fuse(items, {
@@ -24,10 +24,10 @@ export const indexItems = (items, fuseConfig) => {
 /**
  * Filters the given items based on the provided filters and configuration.
  *
- * @param {Array<Object>} items - The items to be filtered.
- * @param {Object} filters - The filters to be applied.
- * @param {Object} config - Configuration for filtering behavior.
- * @returns {Promise<Array<Object>>} The filtered items.
+ * @param {Array<object>} items - The items to be filtered.
+ * @param {object} filters - The filters to be applied.
+ * @param {object} config - Configuration for filtering behavior.
+ * @returns {Promise<Array<object>>} The filtered items.
  */
 export const filter = async (items, filters, config) => {
   // Parse text, select, and multiselect filters

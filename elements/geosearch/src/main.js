@@ -206,7 +206,7 @@ class EOxGeoSearch extends LitElement {
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
-     * @type {String|HTMLElement}
+     * @type {string | HTMLElement}
      */
     this.for = "eox-map";
     this.queryParameter = "q";

@@ -20,12 +20,12 @@ import { getChipItems, isFiltersDirty } from "../helpers";
  * EOxItemFilterContainer is a custom web component that provides a container for item filters.
  *
  * @module EOxItemFilterContainer
- * @extends LitElement
- * @property {Object} filterProperties - The properties for the filter.
- * @property {Boolean} inlineMode - Flag to determine if the component should operate in inline mode.
- * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
- * @property {Object} filters - The filters applied in the container.
- * @property {String} inlineSearchText - The text in the inline search box, offered as an inline search.
+ * @augments LitElement
+ * @property {object} filterProperties - The properties for the filter.
+ * @property {boolean} inlineMode - Flag to determine if the component should operate in inline mode.
+ * @property {boolean} unstyled - Flag to determine if default styles should be applied.
+ * @property {object} filters - The filters applied in the container.
+ * @property {string} inlineSearchText - The text in the inline search box, offered as an inline search.
  */
 export class EOxItemFilterContainer extends LitElement {
   // Define properties with defaults and types

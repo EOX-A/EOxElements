@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Date filtering using eox-itemfilter for filtering timeline items by metadata properties
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const DateFilterStory = {
   args: {

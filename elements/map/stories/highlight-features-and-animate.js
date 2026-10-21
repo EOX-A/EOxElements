@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * Renders `Select` with `animation` to the selection.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const HighlightFeaturesAndAnimateStory = {
   args: {

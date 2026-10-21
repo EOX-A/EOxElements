@@ -1,0 +1,7 @@
+# Ignore formatting and JSDoc comment normalization commits in git blame.
+# To configure git locally to use this file:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# chore(deps-dev): bump @eox/eslint-config to 2.2.0 and normalize jsdoc types
+291a3e593b147d7dbccfce8af40f4fd9acefd506
+

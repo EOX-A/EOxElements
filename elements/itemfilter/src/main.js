@@ -298,7 +298,7 @@ export class EOxItemFilter extends LitElement {
 
     /** Overrides elements current CSS.
      *
-     * @type {String}
+     * @type {string}
      */
     this.styleOverride = "";
 
@@ -354,7 +354,7 @@ export class EOxItemFilter extends LitElement {
    * Sorts the given items based on the current configuration.
    *
    * @param {Array<object>} items - The items to be sorted.
-   * @param {Object} [options] - Optional sorting parameters.
+   * @param {object} [options] - Optional sorting parameters.
    * @param {boolean} [options.isExternalResult] - Flag for results from external filter.
    * @returns {Array<object>} - The sorted items.
    */
@@ -365,7 +365,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Creates a filter element based on the given filter object and tab index.
    *
-   * @param {Object} filterObject - The filter object.
+   * @param {object} filterObject - The filter object.
    * @param {number} tabIndex - The tab index for the filter element.
    * @returns {import("lit").HTMLTemplateResult} - The template result for the filter element.
    */
@@ -376,7 +376,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Creates a reset element for the given filter object and tab index.
    *
-   * @param {Object} filterObject - The filter object.
+   * @param {object} filterObject - The filter object.
    * @param {number} tabIndex - The tab index for the reset element.
    * @returns {import("lit").HTMLTemplateResult} - The template result for the filter element.
    */
@@ -458,7 +458,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Updates selected result when result component triggers the "result" event.
    *
-   * @param {{detail: Object}} evt - "result" event triggered by result component
+   * @param {{detail: object}} evt - "result" event triggered by result component
    */
   updateResult(evt) {
     this.selectedResult = evt.detail;
@@ -478,7 +478,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Dispatches an event when result component triggers the "mouseenter:result" event.
    *
-   * @param {{detail: Object}} evt - "mouseenter:result" event triggered by result component
+   * @param {{detail: object}} evt - "mouseenter:result" event triggered by result component
    */
   mouseEnterResult(evt) {
     /**
@@ -496,7 +496,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Dispatches an event when result component triggers the "mouseleave:result" event.
    *
-   * @param {{detail: Object}} evt - "mouseleave:result" event triggered by result component
+   * @param {{detail: object}} evt - "mouseleave:result" event triggered by result component
    */
   mouseLeaveResult(evt) {
     /**
@@ -514,7 +514,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Emits "click:result-action" event.
    *
-   * @param {{detail: Object}} evt - "click:result-action" event triggered by result component
+   * @param {{detail: object}} evt - "click:result-action" event triggered by result component
    */
   emitResultAction(evt) {
     /**

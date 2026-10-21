@@ -9,7 +9,7 @@ import { updateLayerSlice } from "../helpers/handle-datetime-update";
  *
  *
  * @element eox-layercontrol-layer-datetime
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerDatetime extends LitElement {
   // Define static properties for the component
@@ -26,14 +26,14 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 

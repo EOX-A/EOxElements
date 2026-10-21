@@ -1,7 +1,7 @@
 /**
  * Checks if any of the filters are dirty.
  *
- * @param {Object} filters - An object containing filter data.
+ * @param {object} filters - An object containing filter data.
  * @returns {boolean} True if any filter is dirty, otherwise false.
  */
 export default function isFiltersDirty(filters) {
