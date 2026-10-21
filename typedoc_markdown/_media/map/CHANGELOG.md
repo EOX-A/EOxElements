@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.2](https://github.com/EOX-A/EOxElements/compare/map-v2.8.1...map-v2.8.2) (2026-10-20)
+
+
+### Bug Fixes
+
+* Allow GeoZarr time settings ([#2605](https://github.com/EOX-A/EOxElements/issues/2605)) ([bcf9388](https://github.com/EOX-A/EOxElements/commit/bcf9388eff74f28acb0f83b1435c5d63fbceac31))
+
 ## [2.8.1](https://github.com/EOX-A/EOxElements/compare/map-v2.8.0...map-v2.8.1) (2026-10-15)
 
 
