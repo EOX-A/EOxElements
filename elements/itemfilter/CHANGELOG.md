@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.18.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.5...itemfilter-v1.18.0) (2026-10-20)
+## [1.18.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.5...itemfilter-v1.18.0) (2026-10-21)
 
 
 ### Features

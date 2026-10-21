@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.8.2](https://github.com/EOX-A/EOxElements/compare/map-v2.8.1...map-v2.8.2) (2026-10-20)
+## [2.8.2](https://github.com/EOX-A/EOxElements/compare/map-v2.8.1...map-v2.8.2) (2026-10-21)
 
 
 ### Bug Fixes

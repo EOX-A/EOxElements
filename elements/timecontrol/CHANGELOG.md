@@ -1,11 +1,16 @@
 # Changelog
 
-## [2.10.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.9.0...timecontrol-v2.10.0) (2026-10-20)
+## [2.10.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.9.0...timecontrol-v2.10.0) (2026-10-21)
 
 
 ### Features
 
 * Add date-wrap prop in timecontrol ([#2584](https://github.com/EOX-A/EOxElements/issues/2584)) ([3ef8bc8](https://github.com/EOX-A/EOxElements/commit/3ef8bc8c686480801c50a7bfc8f25b7e63c114f1))
+
+
+### Bug Fixes
+
+* Handle a missing date format in timecontrol navigation ([#2593](https://github.com/EOX-A/EOxElements/issues/2593)) ([58a547f](https://github.com/EOX-A/EOxElements/commit/58a547fa756b78d2562179066c75dd673c4abec9))
 
 ## [2.9.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.8.0...timecontrol-v2.9.0) (2026-10-15)
 
