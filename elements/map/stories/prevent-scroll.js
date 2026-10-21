@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * Prevent `eox-map` mouse-scroll or drag-touch event while scrolling a page.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const PreventScrollStory = {
   args: {

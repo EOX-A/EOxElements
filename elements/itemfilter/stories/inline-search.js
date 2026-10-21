@@ -17,7 +17,7 @@ const renderResults = (evt) =>
 /**
  * Generates a story configuration for the InlineSearch item filter.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 function InlineSearchStory() {
   return {

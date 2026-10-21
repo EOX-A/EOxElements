@@ -11,10 +11,10 @@ import {
  * EOxItemFilterText is a custom web component that provides a text input field for filtering items.
  *
  * @module EOxItemFilterText
- * @extends LitElement
- * @property {Object} filterObject - The filter object containing the state and placeholder.
- * @property {Number} tabIndex - The tab index for the input element.
- * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
+ * @augments LitElement
+ * @property {object} filterObject - The filter object containing the state and placeholder.
+ * @property {number} tabIndex - The tab index for the input element.
+ * @property {boolean} unstyled - Flag to determine if default styles should be applied.
  */
 export class EOxItemFilterText extends LitElement {
   // Define properties with defaults and types

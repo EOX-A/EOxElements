@@ -100,7 +100,7 @@ class WMTSCapabilities extends TileImage {
   /**
    * Updates the source parameters (e.g. dimensions, style).
    *
-   * @param {Object} params - The parameters to update.
+   * @param {object} params - The parameters to update.
    */
   updateParams(params) {
     if ("style" in params) {
@@ -122,7 +122,7 @@ class WMTSCapabilities extends TileImage {
   /**
    * Returns the current source parameters (dimensions and style).
    *
-   * @returns {Object}
+   * @returns {object}
    */
   getParams() {
     return {
@@ -134,7 +134,7 @@ class WMTSCapabilities extends TileImage {
   /**
    * Creates a URL function for WMTS tiles based on a template.
    *
-   * @param {String} template - The WMTS URL template.
+   * @param {string} template - The WMTS URL template.
    */
   createFromWMTSTemplate(template) {
     const requestEncoding = this.requestEncoding_;
@@ -172,7 +172,7 @@ class WMTSCapabilities extends TileImage {
        * Returns the tile URL based on the tile coordinates.
        *
        * @param {Array<number>} tileCoord - The tile coordinate.
-       * @return {string|undefined} - The tile URL, or `undefined` if tileCoord is invalid.
+       * @returns {string|undefined} - The tile URL, or `undefined` if tileCoord is invalid.
        */
       function (tileCoord) {
         if (!tileCoord) {

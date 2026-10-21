@@ -1,7 +1,7 @@
 /**
  * Renders basic vector layer using `GeoJSON`
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const VectorLayerStory = {
   args: {

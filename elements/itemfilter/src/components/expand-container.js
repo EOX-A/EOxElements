@@ -7,9 +7,9 @@ import { when } from "lit/directives/when.js";
  * The component supports a featured view and an expandable details view.
  *
  * @module EOxItemFilterExpandContainer
- * @extends LitElement
- * @property {Object} filterObject - The filter object containing state and properties such as title and expanded state.
- * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
+ * @augments LitElement
+ * @property {object} filterObject - The filter object containing state and properties such as title and expanded state.
+ * @property {boolean} unstyled - Flag to determine if default styles should be applied.
  */
 export class EOxItemFilterExpandContainer extends LitElement {
   // Define properties with defaults and types

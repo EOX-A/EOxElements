@@ -102,7 +102,7 @@ export class EOxJSONForm extends LitElement {
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
@@ -110,14 +110,14 @@ export class EOxJSONForm extends LitElement {
      * Shows a toggle for showing/hiding object properties editing buttons
      * To be used in combination with `options.disable_properties = false`
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.propertiesToggle = false;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
@@ -141,7 +141,7 @@ export class EOxJSONForm extends LitElement {
   /**
    * Getter for the JSON schema used to render the form
    *
-   * @return {JsonSchema | String}
+   * @returns {JsonSchema | string}
    */
   get schema() {
     return this._schema;

@@ -1,7 +1,7 @@
 /**
  * Renders vector layer using inline GeoJSON features
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const VectorLayerInlineGeojsonStory = {
   args: {

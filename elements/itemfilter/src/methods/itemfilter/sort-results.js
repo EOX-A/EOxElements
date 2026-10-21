@@ -9,11 +9,11 @@ import { getValue } from "../../helpers";
  * - function: custom comparator function (a, b) => number
  * - object: { key: string, order?: 'asc' | 'desc' }
  *
- * @param {Array<Object>} items - The items to be sorted.
- * @param {Object} config - The configuration object containing sorting options.
- * @param {Object} [options] - Optional sorting parameters.
+ * @param {Array<object>} items - The items to be sorted.
+ * @param {object} config - The configuration object containing sorting options.
+ * @param {object} [options] - Optional sorting parameters.
  * @param {boolean} [options.isExternalResult] - Flag for results from external filter.
- * @returns {Array<Object>} The sorted array of items.
+ * @returns {Array<object>} The sorted array of items.
  */
 function sortResultsMethod(items, config, options = {}) {
   const { resultSorting } = config;

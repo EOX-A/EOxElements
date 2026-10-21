@@ -9,7 +9,7 @@ import "./layer-list";
  * Handles rendering a layer control group with expandable details containing layers.
  *
  * @element eox-layercontrol-layer-group
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerGroup extends LitElement {
   // Define static properties for the component
@@ -46,7 +46,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
     /**
      * The layer id property
      *
-     * @type {String}
+     * @type {string}
      */
     this.idProperty = "id";
 
@@ -60,14 +60,14 @@ export class EOxLayerControlLayerGroup extends LitElement {
     /**
      * The layer title property
      *
-     * @type {String}
+     * @type {string}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showLayerZoomState = false;
 
@@ -81,35 +81,35 @@ export class EOxLayerControlLayerGroup extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
 
     /**
      * If enabled, toggling the layer visibility will also open/close the layer tools.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAutoExpand = false;
 
     /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.globallyExclusiveLayers = false;
 

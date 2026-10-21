@@ -3,7 +3,7 @@
  * `WMTS` data can also be accessed directly without the need of fetching the capabilities.
  * A TileGrid can be defined via the `tileGrid`-property of the Source
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const WMTSTileGridStory = {
   args: {

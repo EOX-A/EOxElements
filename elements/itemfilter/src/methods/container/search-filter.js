@@ -5,7 +5,7 @@ import { INLINE_SEARCH_TITLE_THRESHOLD } from "../../enums/index.js";
  * Filters the items in the EOxItemFilterContainer based on the search input.
  *
  * @param {Event} event - The input event that triggers the search.
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 function searchFilterMethod(event, EOxItemFilterContainer) {
   const isInlineSearch = (filter) =>

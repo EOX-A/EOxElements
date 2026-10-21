@@ -3,7 +3,7 @@
  * A source with type `WMTSCapabilities` automatically fetches the provided capabilities url
  * and renders the specified layer.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const WMTSCapabilitiesLayerStory = {
   args: {

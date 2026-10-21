@@ -1,7 +1,7 @@
 /**
  * Renders `GeoZarr` layer as `WebGLTile`
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const GeoZarrLayerStory = {
   args: {

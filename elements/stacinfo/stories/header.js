@@ -1,7 +1,7 @@
 /**
  * Individual STAC properties can be rendered in the header by using the `header` property.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const HeaderPropertiesStory = {
   args: {

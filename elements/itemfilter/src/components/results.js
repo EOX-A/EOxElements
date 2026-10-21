@@ -14,12 +14,12 @@ import { toggleAccordion } from "../helpers";
  * and creating item details and lists.
  *
  * @module EOxItemFilterResults
- * @extends LitElement
- * @property {Object} config - The configuration object for the results display.
- * @property {Object} results - The state object containing the filter results.
- * @property {Object} filters - The state object containing the applied filters.
+ * @augments LitElement
+ * @property {object} config - The configuration object for the results display.
+ * @property {object} results - The state object containing the filter results.
+ * @property {object} filters - The state object containing the applied filters.
  * @property {Array} resultAggregation - The array of properties used for result aggregation.
- * @property {Object} selectedResult - Property with pre-selected result
+ * @property {object} selectedResult - Property with pre-selected result
  */
 export class EOxItemFilterResults extends LitElement {
   // Define properties with defaults and types

@@ -8,7 +8,7 @@ import XYZ_ol from "ol/source/XYZ.js";
  * @param {{[key: string]: any}} data - The updated data to be applied to the layer.
  * @param {Function} tileUrlFunc - The function generating the tile URL for the layer.
  * @param {import("../../components/layer-config").EOxLayerControlLayerConfig} EOxLayerControlLayerConfig - Instance of EOxLayerControlLayer.
- * @return {Function} - New function generating the tile URL for the layer.
+ * @returns {Function} - New function generating the tile URL for the layer.
  */
 const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
   let newTileUrlFunc = tileUrlFunc; // Placeholder for the updated tile URL function.

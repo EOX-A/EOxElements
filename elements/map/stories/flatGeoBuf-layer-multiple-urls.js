@@ -1,7 +1,7 @@
 /**
  * Renders a layer with FlatGeoBuf-source with one or more urls
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const FlatGeoBufStoryMultipleUrls = {
   args: {

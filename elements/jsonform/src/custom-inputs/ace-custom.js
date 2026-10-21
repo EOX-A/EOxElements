@@ -6,7 +6,7 @@ const aceEditor = JSONEditor.defaults.editors.ace;
 
 /**
  * Custom editor that extends the built-in Ace editor to add a markdown toolbar.
- * @extends aceEditor
+ * @augments aceEditor
  */
 export class AceCustomEditor extends aceEditor {
   afterInputReady() {

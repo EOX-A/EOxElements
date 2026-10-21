@@ -189,7 +189,7 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
   // set min/max zoom behavior
   // get the min/max zoom value of all the layers
   /**
-   * @typedef {Object} MinMaxZoom
+   * @typedef {object} MinMaxZoom
    * @property {number|undefined} minZoom
    * @property {number|undefined} maxZoom
    */

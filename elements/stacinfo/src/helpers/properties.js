@@ -75,13 +75,13 @@ export function transformProperties(
     /**
      * Filters values based on their roles and relationships and so on.
      *
-     * @param {Object} values - The links,assets, providers..etc to filter.
+     * @param {object} values - The links,assets, providers..etc to filter.
      * @returns {Array<any>} The filtered values
      */
     const filterValues = (values) => {
       /**
        * Default filter for assets, links, and providers.
-       * @param {Object} itemValue - The value to filter.
+       * @param {object} itemValue - The value to filter.
        * @returns {boolean} True if the value should be included, false otherwise.
        */
       const defaultFilter = (itemValue) => {

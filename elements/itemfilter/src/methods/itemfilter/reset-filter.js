@@ -1,7 +1,7 @@
 /**
  * Resets all filters in the EOxItemFilter component and triggers a search update.
  *
- * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @param {object} EOxItemFilter - The EOxItemFilter component instance.
  */
 export default function resetFilterMethod(EOxItemFilter) {
   EOxItemFilter.renderRoot

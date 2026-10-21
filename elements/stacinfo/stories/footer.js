@@ -1,7 +1,7 @@
 /**
  * The `footer` allows to highlight one or more properties in a dedicated section.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const FooterStory = {
   args: {

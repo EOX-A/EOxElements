@@ -16,7 +16,7 @@ let sectionTimeouts = [];
  * Converts an HTML string into DOM nodes and processes each node.
  *
  * @param {string} htmlString - The HTML string to be rendered.
- * @param {Object} sections - List of sections meta
+ * @param {object} sections - List of sections meta
  * @param {Function} initDispatchFunc - Init dispatch event
  * @param {import("../main.js").EOxStoryTelling} that - The EOxStoryTelling instance.
  * @returns {HTMLElement[]} An array of processed DOM nodes.
@@ -327,9 +327,9 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 /**
  * Assign new value for attribute of element
  *
- * @param {Object} section - section meta
- * @param {Number} index - current section index
- * @param {String} elementSelector - sector string for element
+ * @param {object} section - section meta
+ * @param {number} index - current section index
+ * @param {string} elementSelector - sector string for element
  * @param {HTMLElement} parent - The EOxStoryTelling instance.
  * @param {Array} allLayers - List of all layers in the section
  */
@@ -544,7 +544,7 @@ function processNode(node, initDispatchFunc, that) {
  *
  * @param {HTMLElement} element - The DOM element containing the attribute or element with actual value.
  * @param {string} attributeName - The name of the attribute to convert.
- * @returns {string|number|boolean|array|object} The attribute value converted to its detected type.
+ * @returns {string | number | boolean | Array | object} The attribute value converted to its detected type.
  */
 export function convertAttributeValueBasedOnItsType(
   element,
@@ -576,9 +576,9 @@ export function convertValueToType(value) {
  * Click event for add section button in ::after and ::before
  *
  * @param {MouseEvent} event - Click event
- * @param {Boolean} isStartSection - Whether the clicked section is start section or not
- * @param {Boolean} isEndSection - Whether the clicked section is end section or not
- * @param {Boolean} isDirectClick - Whether the click is direct or not
+ * @param {boolean} isStartSection - Whether the clicked section is start section or not
+ * @param {boolean} isEndSection - Whether the clicked section is end section or not
+ * @param {boolean} isDirectClick - Whether the click is direct or not
  * @param {HTMLElement} that - DOM Element
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  */
@@ -647,8 +647,8 @@ function generateAddSectionClickEvt(
  *
  * @param {Array<HTMLElement>} html - List of html elements
  * @param {Array} nav - List of nav elements
- * @param {Boolean} showNav - Whether to show nav or not
- * @param {String | "closed" | undefined} showEditor - Whether to show editor or not
+ * @param {boolean} showNav - Whether to show nav or not
+ * @param {string | "closed" | undefined} showEditor - Whether to show editor or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {HTMLElement[]} An array of processed DOM nodes after adding navigation.
  */

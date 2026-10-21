@@ -4,7 +4,7 @@ import { html } from "lit";
 /**
  * Generates a story configuration for the Result Action.
  *
- * @returns {Object} The story configuration with arguments for the component and a play function for interaction testing.
+ * @returns {object} The story configuration with arguments for the component and a play function for interaction testing.
  */
 function ResultAction() {
   return {

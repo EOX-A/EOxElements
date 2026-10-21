@@ -18,7 +18,7 @@ import "./layer-legend";
  *
  *
  * @element eox-layercontrol-layerconfig
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerConfig extends LitElement {
   // Define static properties for the component
@@ -66,14 +66,14 @@ export class EOxLayerControlLayerConfig extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 

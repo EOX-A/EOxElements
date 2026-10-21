@@ -131,7 +131,7 @@ export class EOxDrawToolsList extends LitElement {
   /**
    *
    * @param {number | string | undefined} featureId - The ID of the feature to hover.
-   * @param {Boolean} mouseOut - Flag indicating mouse out event.
+   * @param {boolean} mouseOut - Flag indicating mouse out event.
    */
   _handleHoverFeature(featureId, mouseOut = false) {
     hoverFeatureMethod(this, featureId, mouseOut);

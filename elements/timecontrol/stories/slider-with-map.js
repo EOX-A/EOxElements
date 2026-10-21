@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Range slider for selecting date ranges with visual indicators for years and months
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const SliderWithMapStory = {
   args: {
