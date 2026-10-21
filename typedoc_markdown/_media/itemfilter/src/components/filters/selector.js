@@ -16,18 +16,18 @@ import { capitalize } from "../../helpers";
  * key events, and selection updates.
  *
  * @module EOxSelector
- * @extends LitElement
- * @property {Object} filterObject - The filter object containing state and placeholder.
+ * @augments LitElement
+ * @property {object} filterObject - The filter object containing state and placeholder.
  * @property {Array} suggestions - The list of suggestions for the selector.
  * @property {Array} selectedItems - The list of currently selected items.
- * @property {String} query - The current input query for autocomplete.
- * @property {Boolean} showSuggestions - Flag to control the display of suggestions in autocomplete mode.
- * @property {Number} highlightedIndex - The index of the currently highlighted suggestion.
+ * @property {string} query - The current input query for autocomplete.
+ * @property {boolean} showSuggestions - Flag to control the display of suggestions in autocomplete mode.
+ * @property {number} highlightedIndex - The index of the currently highlighted suggestion.
  * @property {Array} filteredSuggestions - The list of suggestions filtered based on the query.
- * @property {String} type - The type of selector ("select", "multi-select", etc.).
- * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
- * @property {Number} tabIndex - The tab index for the input elements.
- * @property {Boolean} inlineMode - State whether to enable or disable inline mode
+ * @property {string} type - The type of selector ("select", "multi-select", etc.).
+ * @property {boolean} unstyled - Flag to determine if default styles should be applied.
+ * @property {number} tabIndex - The tab index for the input elements.
+ * @property {boolean} inlineMode - State whether to enable or disable inline mode
  */
 export class EOxSelector extends LitElement {
   // Define properties with defaults and types
@@ -139,7 +139,7 @@ export class EOxSelector extends LitElement {
   /**
    * Toggles the selection of an item.
    *
-   * @param {Object} item - The item to toggle.
+   * @param {object} item - The item to toggle.
    */
   #toggleItem(item) {
     toggleItemSelectorMethod(item, this);

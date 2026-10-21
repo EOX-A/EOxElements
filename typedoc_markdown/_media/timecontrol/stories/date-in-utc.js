@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Date is displayed in UTC format when showUTC is true
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const DateInUTCStory = {
   args: {

@@ -23,7 +23,7 @@ import {
  * Manages rendering tools and actions such as remove, sort, information display, layer configuration, and opacity adjustment.
  *
  * @element eox-layercontrol-layer-tools
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerTools extends LitElement {
   // Define static properties for the component
@@ -64,42 +64,42 @@ export class EOxLayerControlLayerTools extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
 
     /**
      * If enabled, the tools section will be opened.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.open = false;
 
     /**
      * If enabled, toggling the layer visibility will also open/close the layer tools.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAutoExpand = false;
 
     /**
      * Determine if tools are embedded in layercontrol or stand-alone
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     setTimeout(() => {
       const parent =

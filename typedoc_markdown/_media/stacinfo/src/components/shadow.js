@@ -8,7 +8,7 @@ import { styleEOX } from "../style.eox.js";
  * exceed the width of their container.
  *
  * @module EOxStacInfoProperties
- * @extends {LitElement}
+ * @augments {LitElement}
  */
 export class EOxStacInfoShadow extends LitElement {
   static get properties() {

@@ -4,7 +4,7 @@ import { html } from "lit";
  * Creates monthly observations for a standalone slider.
  * @param {number} startYear - First year, starting in October.
  * @param {number} monthCount - Number of monthly observations.
- * @returns {Array<Object>} Timecontrol values.
+ * @returns {Array<object>} Timecontrol values.
  */
 function createControlValues(startYear, monthCount) {
   return [

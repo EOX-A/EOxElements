@@ -36,7 +36,7 @@ export class EOxTimeControlPicker extends LitElement {
   /**
    * Defines the component's reactive properties.
    *
-   * @returns {Object} Property definitions.
+   * @returns {object} Property definitions.
    */
   static get properties() {
     return {
@@ -153,7 +153,7 @@ export class EOxTimeControlPicker extends LitElement {
      * `{ title, subtitle, time, dotColor, layerName, group, itemId, originalDate, ...customItemProps }`.
      * Can return an updated item object, an HTML string, or null/false to hide the item.
      *
-     * @type {((item: Object) => Object | string | null | false) | null}
+     * @type {((item: object) => object | string | null | false) | null}
      */
     this.propertyTransform = null;
   }
@@ -246,7 +246,7 @@ export class EOxTimeControlPicker extends LitElement {
   /**
    * Gets the view range of the calendar picker.
    *
-   * @returns {Object} The view range of the calendar picker.
+   * @returns {object} The view range of the calendar picker.
    */
   getViewRange() {
     const monthEle = this.cal.context.mainElement.querySelector(".vc-month");
@@ -271,7 +271,7 @@ export class EOxTimeControlPicker extends LitElement {
    * Initializes the calendar picker with the given options.
    * Creates a new vanilla-calendar-pro Calendar instance and sets up event handlers for date selection.
    *
-   * @param {Object} [options={}] - Calendar initialization options.
+   * @param {object} [options={}] - Calendar initialization options.
    * @param {DateRange} [options.selectedDateRange] - Initial selected date range.
    * @param {DateAny} [options.min] - Minimum selectable date.
    * @param {DateAny} [options.max] - Maximum selectable date.

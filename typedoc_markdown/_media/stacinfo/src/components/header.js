@@ -7,11 +7,11 @@ import { html as staticHTML } from "lit/static-html.js";
  * This parser displays STAC properties in the header.
  * This element filters, formats, and displays properties in a structured header layout.
  *
- * @typedef {Object} Property
+ * @typedef {object} Property
  * @property {string} formatted
  *
  * @param {Array<Array<(Property)>>} header - Array of header properties to display.
- * @return {import("lit-html").TemplateResult}
+ * @returns {import("lit-html").TemplateResult}
  */
 export default function parseHeader(header = []) {
   return html`

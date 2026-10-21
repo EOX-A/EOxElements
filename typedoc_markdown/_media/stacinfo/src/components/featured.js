@@ -7,13 +7,13 @@ import { when } from "lit/directives/when.js";
  * This parser displays STAC properties in the featured section.
  * This element filters, formats, and displays properties in a structured way.
  *
- * @typedef {Object} Property
+ * @typedef {object} Property
  * @property {string} label
  * @property {string} formatted
  * @property {number} length
  *
  * @param {Array<Array<Property>>} featured - Array of featured properties to display.
- * @return {import("lit-html").TemplateResult}
+ * @returns {import("lit-html").TemplateResult}
  */
 export default function parseFeatured(featured = []) {
   return html`

@@ -626,7 +626,7 @@ export class EOxMap extends LitElement {
    * Adds or updates a layer on the map.
    *
    * @param {EoxLayer} json - The layer configuration in JSON format.
-   * @returns {Object} The added or updated layer.
+   * @returns {object} The added or updated layer.
    */
   addOrUpdateLayer(json) {
     return addOrUpdateLayerMethod(json, this);
@@ -739,7 +739,7 @@ export class EOxMap extends LitElement {
    * Converts an array of OpenLayers features into a GeoJSON object.
    *
    * @param {Array<import("ol/Feature").default>} features - An array of OpenLayers features to be converted.
-   * @returns {Object} - A GeoJSON object representing the provided features.
+   * @returns {object} - A GeoJSON object representing the provided features.
    */
   parseFeature(features) {
     return parseFeature(features);
@@ -754,7 +754,7 @@ export class EOxMap extends LitElement {
    * @param {EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
    * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
    * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
-   * @return {void}
+   * @returns {void}
    */
   parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate) {
     parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate);

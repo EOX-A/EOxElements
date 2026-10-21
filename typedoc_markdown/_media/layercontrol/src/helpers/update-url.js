@@ -1,9 +1,9 @@
 /**
  * Updates the layer's URL using input values and returns the modified URL.
  *
- * @param {String} url - The original URL to be updated.
- * @param {Object} values - The key-value pairs to update in the URL.
- * @returns {String} - The updated URL based on the provided values.
+ * @param {string} url - The original URL to be updated.
+ * @param {object} values - The key-value pairs to update in the URL.
+ * @returns {string} - The updated URL based on the provided values.
  */
 export default function updateUrl(url, values) {
   // Create a search params object from the URL

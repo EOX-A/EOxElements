@@ -9,7 +9,7 @@ import { createLayer, updateLayer, getLayerById } from "../../helpers";
  *
  * @param {EoxLayer} json - The JSON data containing layer properties and interactions.
  * @param {import("../../main").EOxMap} EOxMap - The map object where the layer will be added or updated.
- * @returns {Object} - The newly created or updated layer object.
+ * @returns {object} - The newly created or updated layer object.
  */
 export default function addOrUpdateLayerMethod(json, EOxMap) {
   // Initialize interactions property if it doesn't exist in the JSON data

@@ -69,7 +69,7 @@
               "name": "noShadow",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -80,7 +80,7 @@
               "name": "unstyled",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -154,7 +154,7 @@
             {
               "name": "no-shadow",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -163,7 +163,7 @@
             {
               "name": "unstyled",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -385,7 +385,7 @@
               "name": "for",
               "privacy": "public",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement"
               },
               "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
               "default": "\"eox-map\"",
@@ -576,7 +576,7 @@
               "name": "noShadow",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -605,7 +605,7 @@
             {
               "name": "for",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement"
               },
               "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
               "default": "\"eox-map\"",
@@ -712,7 +712,7 @@
             {
               "name": "no-shadow",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -1107,7 +1107,7 @@
               "name": "for",
               "privacy": "public",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement"
               },
               "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
               "default": "\"eox-map\"",
@@ -1284,7 +1284,7 @@
             {
               "name": "for",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement"
               },
               "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
               "default": "\"eox-map\"",
@@ -1517,7 +1517,7 @@
                   "name": "filterObject",
                   "description": "The filter object.",
                   "type": {
-                    "text": "Object"
+                    "text": "object"
                   }
                 },
                 {
@@ -1544,7 +1544,7 @@
                   "name": "filterObject",
                   "description": "The filter object.",
                   "type": {
-                    "text": "Object"
+                    "text": "object"
                   }
                 },
                 {
@@ -1575,7 +1575,7 @@
                   "name": "evt",
                   "description": "\"result\" event triggered by result component",
                   "type": {
-                    "text": "{detail: Object}"
+                    "text": "{detail: object}"
                   }
                 }
               ],
@@ -1589,7 +1589,7 @@
                   "name": "evt",
                   "description": "\"mouseenter:result\" event triggered by result component",
                   "type": {
-                    "text": "{detail: Object}"
+                    "text": "{detail: object}"
                   }
                 }
               ],
@@ -1603,7 +1603,7 @@
                   "name": "evt",
                   "description": "\"mouseleave:result\" event triggered by result component",
                   "type": {
-                    "text": "{detail: Object}"
+                    "text": "{detail: object}"
                   }
                 }
               ],
@@ -1617,7 +1617,7 @@
                   "name": "evt",
                   "description": "\"click:result-action\" event triggered by result component",
                   "type": {
-                    "text": "{detail: Object}"
+                    "text": "{detail: object}"
                   }
                 }
               ],
@@ -1897,7 +1897,7 @@
               "name": "styleOverride",
               "privacy": "public",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Overrides elements current CSS.",
               "default": "\"\"",
@@ -2145,7 +2145,7 @@
             {
               "name": "styleOverride",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Overrides elements current CSS.",
               "default": "\"\"",
@@ -2223,7 +2223,7 @@
               "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
               "return": {
                 "type": {
-                  "text": "JsonSchema | String"
+                  "text": "JsonSchema | string"
                 }
               },
               "parameters": [
@@ -2306,7 +2306,7 @@
               "name": "noShadow",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -2317,7 +2317,7 @@
               "name": "propertiesToggle",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
               "default": "false",
@@ -2328,7 +2328,7 @@
               "name": "unstyled",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -2378,7 +2378,7 @@
               "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
               "return": {
                 "type": {
-                  "text": "JsonSchema | String"
+                  "text": "JsonSchema | string"
                 }
               },
               "parameters": [
@@ -2439,7 +2439,7 @@
             {
               "name": "no-shadow",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -2448,7 +2448,7 @@
             {
               "name": "properties-toggle",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
               "default": "false",
@@ -2457,7 +2457,7 @@
             {
               "name": "unstyled",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -2552,7 +2552,7 @@
               "name": "for",
               "privacy": "public",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement"
               },
               "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
               "default": "\"eox-map\"",
@@ -2563,7 +2563,7 @@
               "name": "idProperty",
               "privacy": "public",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Layer id property",
               "default": "\"id\"",
@@ -2584,7 +2584,7 @@
               "name": "titleProperty",
               "privacy": "public",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Layer title property",
               "default": "\"title\"",
@@ -2595,7 +2595,7 @@
               "name": "showLayerZoomState",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Show layer state based on zoom level or not",
               "default": "false",
@@ -2606,7 +2606,7 @@
               "name": "tools",
               "privacy": "public",
               "type": {
-                "text": "Array<String>"
+                "text": "Array<string>"
               },
               "description": "Layer tools",
               "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
@@ -2617,7 +2617,7 @@
               "name": "addExternalLayers",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable-disable external layer",
               "default": "false",
@@ -2628,7 +2628,7 @@
               "name": "unstyled",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -2639,7 +2639,7 @@
               "name": "styleOverride",
               "privacy": "public",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Overrides elements current CSS.",
               "default": "\"\"",
@@ -2650,7 +2650,7 @@
               "name": "toolsAsList",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "If enabled, the tools section will be rendered as list.",
               "default": "false",
@@ -2661,7 +2661,7 @@
               "name": "globallyExclusiveLayers",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
               "default": "false",
@@ -2672,7 +2672,7 @@
               "name": "toolsAutoExpand",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
               "default": "false",
@@ -2718,7 +2718,7 @@
             {
               "name": "for",
               "type": {
-                "text": "String|HTMLElement"
+                "text": "string | HTMLElement"
               },
               "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
               "default": "\"eox-map\"",
@@ -2727,7 +2727,7 @@
             {
               "name": "id-property",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Layer id property",
               "default": "\"id\"",
@@ -2736,7 +2736,7 @@
             {
               "name": "title-property",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Layer title property",
               "default": "\"title\"",
@@ -2745,7 +2745,7 @@
             {
               "name": "show-layer-zoom-state",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Show layer state based on zoom level or not",
               "default": "false",
@@ -2754,7 +2754,7 @@
             {
               "name": "tools",
               "type": {
-                "text": "Array<String>"
+                "text": "Array<string>"
               },
               "description": "Layer tools",
               "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
@@ -2763,7 +2763,7 @@
             {
               "name": "add-external-layers",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable-disable external layer",
               "default": "false",
@@ -2772,7 +2772,7 @@
             {
               "name": "unstyled",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -2781,7 +2781,7 @@
             {
               "name": "styleOverride",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Overrides elements current CSS.",
               "default": "\"\"",
@@ -2790,7 +2790,7 @@
             {
               "name": "toolsAsList",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "If enabled, the tools section will be rendered as list.",
               "default": "false",
@@ -2799,7 +2799,7 @@
             {
               "name": "globally-exclusive-layers",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
               "default": "false",
@@ -2808,7 +2808,7 @@
             {
               "name": "tools-auto-expand",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
               "default": "false",
@@ -3526,7 +3526,7 @@
               "description": "Adds or updates a layer on the map.",
               "return": {
                 "type": {
-                  "text": "Object"
+                  "text": "object"
                 }
               }
             },
@@ -3643,7 +3643,7 @@
               "description": "Converts an array of OpenLayers features into a GeoJSON object.",
               "return": {
                 "type": {
-                  "text": "Object"
+                  "text": "object"
                 }
               }
             },
@@ -4448,7 +4448,7 @@
               "name": "#config",
               "privacy": "private",
               "type": {
-                "text": "Object"
+                "text": "object"
               },
               "default": "{}",
               "description": "Basic config"
@@ -4458,7 +4458,7 @@
               "name": "#debounceUpdateMarkdown",
               "privacy": "private",
               "type": {
-                "text": "Object"
+                "text": "object"
               },
               "default": "null",
               "description": "Debounce update markdown"
@@ -4497,7 +4497,7 @@
               "name": "markdown",
               "privacy": "public",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Markdown Content",
               "default": "\"\"",
@@ -4508,7 +4508,7 @@
               "name": "markdownURL",
               "privacy": "public",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Markdown Content URL",
               "default": "null",
@@ -4519,7 +4519,7 @@
               "name": "unstyled",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -4530,7 +4530,7 @@
               "name": "noShadow",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -4541,7 +4541,7 @@
               "name": "disableAutosave",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Disable auto save",
               "deprecated": "Will be removed in the next major version",
@@ -4553,7 +4553,7 @@
               "name": "showEditor",
               "privacy": "public",
               "type": {
-                "text": "String | \"closed\" | undefined"
+                "text": "string | \"closed\" | undefined"
               },
               "description": "Enable or disable editor",
               "deprecated": "Will be removed in the next major version",
@@ -4565,7 +4565,7 @@
               "name": "showNav",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable or disable navigation",
               "default": "false",
@@ -4576,7 +4576,7 @@
               "name": "showHeroScrollIndicator",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable or disable hero scroll indicator",
               "default": "false",
@@ -4587,7 +4587,7 @@
               "name": "showMapLoadingIndicator",
               "privacy": "public",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable or disable map loading indicator by default",
               "default": "false",
@@ -4598,7 +4598,7 @@
               "name": "nav",
               "privacy": "public",
               "type": {
-                "text": "Array<Object>"
+                "text": "Array<object>"
               },
               "description": "List of items in navigation",
               "default": "[]"
@@ -4608,7 +4608,7 @@
               "name": "addCustomSectionIndex",
               "privacy": "public",
               "type": {
-                "text": "Number"
+                "text": "number"
               },
               "description": "custom section index",
               "default": "-1",
@@ -4619,7 +4619,7 @@
               "name": "selectedCustomElement",
               "privacy": "public",
               "type": {
-                "text": "Object | null"
+                "text": "object | null"
               },
               "description": "Selected custom element object",
               "default": "null",
@@ -4653,7 +4653,7 @@
             {
               "name": "markdown",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Markdown Content",
               "default": "\"\"",
@@ -4662,7 +4662,7 @@
             {
               "name": "markdown-url",
               "type": {
-                "text": "String"
+                "text": "string"
               },
               "description": "Markdown Content URL",
               "default": "null",
@@ -4671,7 +4671,7 @@
             {
               "name": "show-nav",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable or disable navigation",
               "default": "false",
@@ -4680,7 +4680,7 @@
             {
               "name": "show-editor",
               "type": {
-                "text": "String | \"closed\" | undefined"
+                "text": "string | \"closed\" | undefined"
               },
               "description": "Enable or disable editor",
               "deprecated": "Will be removed in the next major version",
@@ -4690,7 +4690,7 @@
             {
               "name": "show-hero-scroll-indicator",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable or disable hero scroll indicator",
               "default": "false",
@@ -4699,7 +4699,7 @@
             {
               "name": "show-map-loading-indicator",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Enable or disable map loading indicator by default",
               "default": "false",
@@ -4708,7 +4708,7 @@
             {
               "name": "no-shadow",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Renders the element without a shadow root",
               "default": "false",
@@ -4717,7 +4717,7 @@
             {
               "name": "disable-autosave",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Disable auto save",
               "deprecated": "Will be removed in the next major version",
@@ -4727,7 +4727,7 @@
             {
               "name": "unstyled",
               "type": {
-                "text": "Boolean"
+                "text": "boolean"
               },
               "description": "Render the element without additional styles",
               "default": "false",
@@ -4736,7 +4736,7 @@
             {
               "name": "addCustomSectionIndex",
               "type": {
-                "text": "Number"
+                "text": "number"
               },
               "description": "custom section index",
               "default": "-1",
@@ -4745,7 +4745,7 @@
             {
               "name": "selectedCustomElement",
               "type": {
-                "text": "Object | null"
+                "text": "object | null"
               },
               "description": "Selected custom element object",
               "default": "null",
@@ -5138,7 +5138,7 @@
               "name": "controlValues",
               "privacy": "public",
               "type": {
-                "text": "Array<Object>"
+                "text": "Array<object>"
               },
               "description": "Array of control values.",
               "default": "[]",
@@ -5223,7 +5223,7 @@
             {
               "name": "controlValues",
               "type": {
-                "text": "Array<Object>"
+                "text": "Array<object>"
               },
               "description": "Array of control values.",
               "default": "[]",

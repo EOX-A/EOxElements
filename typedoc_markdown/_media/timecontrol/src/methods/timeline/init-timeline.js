@@ -136,7 +136,7 @@ function handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl) {
  * Handles the time changed event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  */
 function handleTimeChanged(props, EOxTimeControl) {
@@ -160,7 +160,7 @@ function handleTimeChanged(props, EOxTimeControl) {
  * Handles the click event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
@@ -216,7 +216,7 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
  * Handles the range changed event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 function handleRangeChanged(props, EOxTimeControlTimeline) {

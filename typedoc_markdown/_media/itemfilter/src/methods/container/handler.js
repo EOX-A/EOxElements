@@ -5,7 +5,7 @@ import searchFilterMethod from "./search-filter.js";
  * Handles the click event on the form, stopping propagation if in inline mode.
  *
  * @param {Event} event - The click event.
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function handleFormClickMethod(event, EOxItemFilterContainer) {
   if (EOxItemFilterContainer.inlineMode) event.stopPropagation();
@@ -14,7 +14,7 @@ export function handleFormClickMethod(event, EOxItemFilterContainer) {
 /**
  * Shows the dropdown when the component is focused, if in inline mode.
  *
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function handleShowDropdownOnFocusMethod(EOxItemFilterContainer) {
   if (EOxItemFilterContainer.inlineMode) {
@@ -27,7 +27,7 @@ export function handleShowDropdownOnFocusMethod(EOxItemFilterContainer) {
  * by title and keeps the text for the inline search action.
  *
  * @param {Event} event - The input event.
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function handleSearchInputMethod(event, EOxItemFilterContainer) {
   if (!(event.target instanceof HTMLInputElement)) return;
@@ -41,7 +41,7 @@ export function handleSearchInputMethod(event, EOxItemFilterContainer) {
  * Toggles the dropdown visibility when an event occurs, stopping propagation if in inline mode.
  *
  * @param {Event} event - The event that triggers the toggle.
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function handleToggleDropdownMethod(event, EOxItemFilterContainer) {
   if (EOxItemFilterContainer.inlineMode) {
@@ -54,7 +54,7 @@ export function handleToggleDropdownMethod(event, EOxItemFilterContainer) {
  * Handles the keydown event, resetting the search and hiding the dropdown if Escape is pressed in inline mode.
  *
  * @param {KeyboardEvent} event - The keydown event.
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function handleKeyDownMethod(event, EOxItemFilterContainer) {
   if (
@@ -71,7 +71,7 @@ export function handleKeyDownMethod(event, EOxItemFilterContainer) {
  * Handles clicks outside the component, resetting the search and hiding the dropdown if in inline mode.
  *
  * @param {Event} event - The click event.
- * @param {Object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
+ * @param {object} EOxItemFilterContainer - The EOxItemFilterContainer component instance.
  */
 export function handleClickOutsideMethod(event, EOxItemFilterContainer) {
   if (

@@ -56,7 +56,7 @@ function findFirstCoordinateValue(coordinates) {
  * @param {import("../main").EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
  * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
  * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
- * @return {void}
+ * @returns {void}
  */
 export default function parseTextToFeature(
   text,

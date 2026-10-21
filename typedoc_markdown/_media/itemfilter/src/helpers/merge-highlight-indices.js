@@ -2,7 +2,7 @@
  * Merge highlight indices which are overlapping with existing indices and sort the range in ascending order
  *
  * @param {number[][]} indices
- * @param {Object} [opts]
+ * @param {object} [opts]
  * @param {boolean} [opts.mergeAdjacent=false]
  * @returns {number[][]}
  */

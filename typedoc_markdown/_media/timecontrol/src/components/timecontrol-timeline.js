@@ -26,7 +26,7 @@ export class EOxTimeControlTimeline extends LitElement {
   /**
    * Defines the component's reactive properties.
    *
-   * @returns {Object} Property definitions.
+   * @returns {object} Property definitions.
    */
   static get properties() {
     return {
@@ -151,7 +151,7 @@ export class EOxTimeControlTimeline extends LitElement {
   /**
    * Gets the window of the vis-timeline Timeline instance.
    *
-   * @returns {Object} The window of the vis-timeline Timeline instance.
+   * @returns {object} The window of the vis-timeline Timeline instance.
    */
   getViewRange() {
     return this.#visTimeline.getWindow();

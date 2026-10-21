@@ -6,7 +6,7 @@
  * @param {import("ol/coordinate").Coordinate} coordinate2 - The first coordinate to compare.
  * @param {number?} [epsilon] - The first coordinate to compare.
  *
- * @return {boolean} - True if the coordinates are approximately equal, false otherwise.
+ * @returns {boolean} - True if the coordinates are approximately equal, false otherwise.
  */
 export default function coordinatesRoughlyEquals(
   coordinate1,
@@ -33,7 +33,7 @@ export default function coordinatesRoughlyEquals(
  * @param {number} number1 - The first number to compare.
  * @param {number} number2 - The second number to compare.
  * @param {number?} [epsilon] - The first coordinate to compare.
- * @return {boolean} - True if the numbers are approximately equal within the given tolerance, false otherwise.
+ * @returns {boolean} - True if the numbers are approximately equal within the given tolerance, false otherwise.
  */
 function numbersRoughlyEquals(number1, number2, epsilon = 0.001) {
   // Check if the absolute difference between the numbers is less than the tolerance

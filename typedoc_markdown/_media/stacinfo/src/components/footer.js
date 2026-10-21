@@ -8,12 +8,12 @@ import { html as staticHTML } from "lit/static-html.js";
  * This parser displays STAC properties in the footer.
  * This element filters, formats, and displays properties in a structured footer layout.
  *
- * @typedef {Object} Property
+ * @typedef {object} Property
  * @property {string} label
  * @property {string} formatted
  *
  * @param {Array<Array<(Property)>>} footer - Array of footer properties to display.
- * @return {import("lit-html").TemplateResult}
+ * @returns {import("lit-html").TemplateResult}
  */
 export default function parseFooter(footer = []) {
   return html`

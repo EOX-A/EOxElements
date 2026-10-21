@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Date display component with navigation buttons for stepping through available dates
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const DateWithNavigationStory = {
   args: {

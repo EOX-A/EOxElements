@@ -222,16 +222,16 @@ For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` e
 - `dataValues` ({[dataSourceName: string]: InlineData} | string): Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.
 - `spec` (VisualizationSpec | string): [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.
 - `opt` (EmbedOptions): [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)
-- `no-shadow` (Boolean): Renders the element without a shadow root
-- `unstyled` (Boolean): Render the element without additional styles
+- `no-shadow` (boolean): Renders the element without a shadow root
+- `unstyled` (boolean): Render the element without additional styles
 
 ### Properties
 
 - `spec` (VisualizationSpec | string): [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string. (Default: `undefined`)
 - `opt` (EmbedOptions): [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options) (Default: `undefined`)
 - `dataValues` ({[dataSourceName: string]: InlineData} | string): Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object. (Default: `undefined`)
-- `noShadow` (Boolean): Renders the element without a shadow root (Default: `false`)
-- `unstyled` (Boolean): Render the element without additional styles (Default: `false`)
+- `noShadow` (boolean): Renders the element without a shadow root (Default: `false`)
+- `unstyled` (boolean): Render the element without additional styles (Default: `false`)
 
 ### Events
 
@@ -1474,7 +1474,7 @@ Usage: `document.querySelector("eox-drawtools").startDrawing();`
 ### Attributes
 
 - `allow-modify` (boolean): Allow modifying the drawn feature(s)
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
+- `for` (string | HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
 or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `continuous` (boolean): Enables the user to draw continuously one feature after another
 without having to discard previous ones manually
@@ -1495,7 +1495,7 @@ This measurement is also displayed as a text label on the map using OpenLayers f
 - `show-editor` (boolean): Show geo-json editor for draw tool
 - `show-list` (boolean): Show list of features
 - `projection` (string): Projection of the emitted drawn features
-- `no-shadow` (Boolean): Renders the element without a shadow root
+- `no-shadow` (boolean): Renders the element without a shadow root
 - `format` ("feature"| "geojson" | "wkt"): The format in which the drawn features should be emitted
 - `type` ("Polygon" | "Point" | "LineString" | "Circle" | "Box"): Type of the drawn feature
 - `unstyled` (boolean): Render the element without additional styles
@@ -1508,7 +1508,7 @@ without having to discard previous ones manually (Default: `undefined`)
 Pass features to be drawn on the map by setting this property. The features should be in the same projection as the map, or a projection should be specified via the `projection` property for proper transformation. (Default: `undefined`)
 - `layerId` (string): The ID of the Vector/Vector Tile Layer that contains features to be selected (Default: `""`)
 - `allowModify` (boolean): Allow modifying the drawn feature(s) (Default: `false`)
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
+- `for` (string | HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
 or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `"eox-map"`)
 - `currentlyDrawing` (boolean): Whether the user is currently in the process of drawing or not (Default: `false`)
 - `draw` (Draw | EOxMap["selectInteractions"][string]): The current native OpenLayers `draw` interaction (Default: `null`)
@@ -1533,7 +1533,7 @@ This measurement is also displayed as a text label on the map using OpenLayers f
 - `type` ("Polygon" | "Point" | "LineString" | "Circle" | "Box"): Type of the drawn feature (Default: `"Polygon"`)
 - `format` ("feature"| "geojson" | "wkt"): The format in which the drawn features should be emitted (Default: `"feature"`)
 - `unstyled` (boolean): Render the element without additional styles (Default: `false`)
-- `noShadow` (Boolean): Renders the element without a shadow root (Default: `false`)
+- `noShadow` (boolean): Renders the element without a shadow root (Default: `false`)
 
 ### Events
 
@@ -2367,7 +2367,7 @@ Main features:
 ### Attributes
 
 - `endpoint` (string): The OpenCage API endpoint to use for the search, including the key but without the query parameter.
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
+- `for` (string | HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
 or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `query-parameter` (string): The name of the query parameter to use for the search query in the endpoint URI.
 - `button` (boolean): Whether or not to enable button mode, which hides and shows the input field
@@ -2402,7 +2402,7 @@ Example: { language: "en", limit: 10, countrycode: "us" }
 ### Properties
 
 - `endpoint` (string): The OpenCage API endpoint to use for the search, including the key but without the query parameter. (Default: `undefined`)
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
+- `for` (string | HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
 or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `"eox-map"`)
 - `queryParameter` (string): The name of the query parameter to use for the search query in the endpoint URI. (Default: `"q"`)
 - `button` (boolean): Whether or not to enable button mode, which hides and shows the input field
@@ -2805,7 +2805,7 @@ Supports passing a function which recieves the current item as parameter and is 
 - `result-type` (String): Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element)
 - `enableResultAction` (Boolean): Enable result action button (a secondary action besides the normal result selection)
 - `resultActionIcon` (String): Icon for result action. Supports html
-- `styleOverride` (String): Overrides elements current CSS.
+- `styleOverride` (string): Overrides elements current CSS.
 - `unstyled` (boolean): Render the element without additional styles
 
 ### Properties
@@ -2849,7 +2849,7 @@ Supports passing a function which recieves the current item as parameter and is 
 - `resultType` (String): Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element) (Default: `"list"`)
 - `enableResultAction` (Boolean): Enable result action button (a secondary action besides the normal result selection) (Default: `false`)
 - `resultActionIcon` (String): Icon for result action. Supports html (Default: `'<svg style="width: 24px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>click me!</title><path fill="currentColor" d="M11.5,11L17.88,16.37L17,16.55L16.36,16.67C15.73,16.8 15.37,17.5 15.65,18.07L15.92,18.65L17.28,21.59L15.86,22.25L14.5,19.32L14.24,18.74C13.97,18.15 13.22,17.97 12.72,18.38L12.21,18.78L11.5,19.35V11M10.76,8.69A0.76,0.76 0 0,0 10,9.45V20.9C10,21.32 10.34,21.66 10.76,21.66C10.95,21.66 11.11,21.6 11.24,21.5L13.15,19.95L14.81,23.57C14.94,23.84 15.21,24 15.5,24C15.61,24 15.72,24 15.83,23.92L18.59,22.64C18.97,22.46 19.15,22 18.95,21.63L17.28,18L19.69,17.55C19.85,17.5 20,17.43 20.12,17.29C20.39,16.97 20.35,16.5 20,16.21L11.26,8.86L11.25,8.87C11.12,8.76 10.95,8.69 10.76,8.69M15,10V8H20V10H15M13.83,4.76L16.66,1.93L18.07,3.34L15.24,6.17L13.83,4.76M10,0H12V5H10V0M3.93,14.66L6.76,11.83L8.17,13.24L5.34,16.07L3.93,14.66M3.93,3.34L5.34,1.93L8.17,4.76L6.76,6.17L3.93,3.34M7,10H2V8H7V10" /></svg>'`)
-- `styleOverride` (String): Overrides elements current CSS. (Default: `""`)
+- `styleOverride` (string): Overrides elements current CSS. (Default: `""`)
 - `unstyled` (boolean): Render the element without additional styles (Default: `false`)
 
 ### Events
@@ -10188,10 +10188,10 @@ See JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-edit
 - `customEditorInterfaces` (Array): List of custom editor interface
 Read more about the implementation of custom editor interfaces here:
 https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
-- `no-shadow` (Boolean): Renders the element without a shadow root
-- `properties-toggle` (Boolean): Shows a toggle for showing/hiding object properties editing buttons
+- `no-shadow` (boolean): Renders the element without a shadow root
+- `properties-toggle` (boolean): Shows a toggle for showing/hiding object properties editing buttons
 To be used in combination with `options.disable_properties = false`
-- `unstyled` (Boolean): Render the element without additional styles
+- `unstyled` (boolean): Render the element without additional styles
 
 ### Properties
 
@@ -10200,10 +10200,10 @@ To be used in combination with `options.disable_properties = false`
 - `defaults` (object): Default values for the JSONEditor instance (Default: `{}`)
 - `options` (object): Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).
 See JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md (Default: `{}`)
-- `noShadow` (Boolean): Renders the element without a shadow root (Default: `false`)
-- `propertiesToggle` (Boolean): Shows a toggle for showing/hiding object properties editing buttons
+- `noShadow` (boolean): Renders the element without a shadow root (Default: `false`)
+- `propertiesToggle` (boolean): Shows a toggle for showing/hiding object properties editing buttons
 To be used in combination with `options.disable_properties = false` (Default: `false`)
-- `unstyled` (Boolean): Render the element without additional styles (Default: `false`)
+- `unstyled` (boolean): Render the element without additional styles (Default: `false`)
 - `customEditorInterfaces` (Array): List of custom editor interface
 Read more about the implementation of custom editor interfaces here:
 https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html (Default: `[]`)
@@ -14281,7 +14281,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-10-21T07:51:06.033Z",
+              default: "2026-10-21T10:37:45.379Z",
               options: {
                 hidden: true,
               },
@@ -14400,37 +14400,37 @@ Usage: `import { updateVectorLayerStyle } from "@eox/layercontrol";`
 
 ### Attributes
 
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
+- `for` (string | HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
 or an `eox-map` DOM element (`HTMLElement`, passed as property)
-- `id-property` (String): Layer id property
-- `title-property` (String): Layer title property
-- `show-layer-zoom-state` (Boolean): Show layer state based on zoom level or not
-- `tools` (Array<String>): Layer tools
-- `add-external-layers` (Boolean): Enable-disable external layer
-- `unstyled` (Boolean): Render the element without additional styles
-- `styleOverride` (String): Overrides elements current CSS.
-- `toolsAsList` (Boolean): If enabled, the tools section will be rendered as list.
-- `globally-exclusive-layers` (Boolean): If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
-- `tools-auto-expand` (Boolean): If enabled, toggling the layer visibility will also open/close the layer tools.
+- `id-property` (string): Layer id property
+- `title-property` (string): Layer title property
+- `show-layer-zoom-state` (boolean): Show layer state based on zoom level or not
+- `tools` (Array<string>): Layer tools
+- `add-external-layers` (boolean): Enable-disable external layer
+- `unstyled` (boolean): Render the element without additional styles
+- `styleOverride` (string): Overrides elements current CSS.
+- `toolsAsList` (boolean): If enabled, the tools section will be rendered as list.
+- `globally-exclusive-layers` (boolean): If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
+- `tools-auto-expand` (boolean): If enabled, toggling the layer visibility will also open/close the layer tools.
 - `customEditorInterfaces` (Array): List of custom editor interfaces for layer config eox-jsonforms
 Read more about the implementation of custom editor interfaces here:
 https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
 
 ### Properties
 
-- `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
+- `for` (string | HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
 or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `"eox-map"`)
-- `idProperty` (String): Layer id property (Default: `"id"`)
+- `idProperty` (string): Layer id property (Default: `"id"`)
 - `map` (Map): The native OL map instance (Default: `null`)
-- `titleProperty` (String): Layer title property (Default: `"title"`)
-- `showLayerZoomState` (Boolean): Show layer state based on zoom level or not (Default: `false`)
-- `tools` (Array<String>): Layer tools (Default: `["info", "opacity", "datetime", "config", "remove", "sort"]`)
-- `addExternalLayers` (Boolean): Enable-disable external layer (Default: `false`)
-- `unstyled` (Boolean): Render the element without additional styles (Default: `false`)
-- `styleOverride` (String): Overrides elements current CSS. (Default: `""`)
-- `toolsAsList` (Boolean): If enabled, the tools section will be rendered as list. (Default: `false`)
-- `globallyExclusiveLayers` (Boolean): If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group). (Default: `false`)
-- `toolsAutoExpand` (Boolean): If enabled, toggling the layer visibility will also open/close the layer tools. (Default: `false`)
+- `titleProperty` (string): Layer title property (Default: `"title"`)
+- `showLayerZoomState` (boolean): Show layer state based on zoom level or not (Default: `false`)
+- `tools` (Array<string>): Layer tools (Default: `["info", "opacity", "datetime", "config", "remove", "sort"]`)
+- `addExternalLayers` (boolean): Enable-disable external layer (Default: `false`)
+- `unstyled` (boolean): Render the element without additional styles (Default: `false`)
+- `styleOverride` (string): Overrides elements current CSS. (Default: `""`)
+- `toolsAsList` (boolean): If enabled, the tools section will be rendered as list. (Default: `false`)
+- `globallyExclusiveLayers` (boolean): If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group). (Default: `false`)
+- `toolsAutoExpand` (boolean): If enabled, toggling the layer visibility will also open/close the layer tools. (Default: `false`)
 - `customEditorInterfaces` (Array): List of custom editor interfaces for layer config eox-jsonforms
 Read more about the implementation of custom editor interfaces here:
 https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html (Default: `[]`)
@@ -17635,32 +17635,32 @@ Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--ma
 
 ### Attributes
 
-- `markdown` (String): Markdown Content
-- `markdown-url` (String): Markdown Content URL
-- `show-nav` (Boolean): Enable or disable navigation
-- `show-editor` (String | "closed" | undefined): Enable or disable editor
-- `show-hero-scroll-indicator` (Boolean): Enable or disable hero scroll indicator
-- `show-map-loading-indicator` (Boolean): Enable or disable map loading indicator by default
-- `no-shadow` (Boolean): Renders the element without a shadow root
-- `disable-autosave` (Boolean): Disable auto save
-- `unstyled` (Boolean): Render the element without additional styles
-- `addCustomSectionIndex` (Number): custom section index
-- `selectedCustomElement` (Object | null): Selected custom element object
+- `markdown` (string): Markdown Content
+- `markdown-url` (string): Markdown Content URL
+- `show-nav` (boolean): Enable or disable navigation
+- `show-editor` (string | "closed" | undefined): Enable or disable editor
+- `show-hero-scroll-indicator` (boolean): Enable or disable hero scroll indicator
+- `show-map-loading-indicator` (boolean): Enable or disable map loading indicator by default
+- `no-shadow` (boolean): Renders the element without a shadow root
+- `disable-autosave` (boolean): Disable auto save
+- `unstyled` (boolean): Render the element without additional styles
+- `addCustomSectionIndex` (number): custom section index
+- `selectedCustomElement` (object | null): Selected custom element object
 
 ### Properties
 
-- `markdown` (String): Markdown Content (Default: `""`)
-- `markdownURL` (String): Markdown Content URL (Default: `null`)
-- `unstyled` (Boolean): Render the element without additional styles (Default: `false`)
-- `noShadow` (Boolean): Renders the element without a shadow root (Default: `false`)
-- `disableAutosave` (Boolean): Disable auto save (Default: `false`)
-- `showEditor` (String | "closed" | undefined): Enable or disable editor (Default: `undefined`)
-- `showNav` (Boolean): Enable or disable navigation (Default: `false`)
-- `showHeroScrollIndicator` (Boolean): Enable or disable hero scroll indicator (Default: `false`)
-- `showMapLoadingIndicator` (Boolean): Enable or disable map loading indicator by default (Default: `false`)
-- `nav` (Array<Object>): List of items in navigation (Default: `[]`)
-- `addCustomSectionIndex` (Number): custom section index (Default: `-1`)
-- `selectedCustomElement` (Object | null): Selected custom element object (Default: `null`)
+- `markdown` (string): Markdown Content (Default: `""`)
+- `markdownURL` (string): Markdown Content URL (Default: `null`)
+- `unstyled` (boolean): Render the element without additional styles (Default: `false`)
+- `noShadow` (boolean): Renders the element without a shadow root (Default: `false`)
+- `disableAutosave` (boolean): Disable auto save (Default: `false`)
+- `showEditor` (string | "closed" | undefined): Enable or disable editor (Default: `undefined`)
+- `showNav` (boolean): Enable or disable navigation (Default: `false`)
+- `showHeroScrollIndicator` (boolean): Enable or disable hero scroll indicator (Default: `false`)
+- `showMapLoadingIndicator` (boolean): Enable or disable map loading indicator by default (Default: `false`)
+- `nav` (Array<object>): List of items in navigation (Default: `[]`)
+- `addCustomSectionIndex` (number): custom section index (Default: `-1`)
+- `selectedCustomElement` (object | null): Selected custom element object (Default: `null`)
 
 ### Events
 
@@ -18174,7 +18174,7 @@ including maps whose views are linked with `sync`.
 - `show-utc` (boolean): Whether to show UTC dates in the timecontrol (default: false).
 - `external-map-rendering` (boolean): Whether external map rendering is enabled for timelapse export.
 - `selectedDateRange` (SelectedDateRange): The currently selected date range as [startDate, endDate] in ISO format.
-- `controlValues` (Array<Object>): Array of control values.
+- `controlValues` (Array<object>): Array of control values.
 - `init-date` (DateRange | string | Array<string> | null): The initial date range as [startDate, endDate] in ISO/UTC format,
 or a date/keyword string, or array.
 
@@ -18189,7 +18189,7 @@ or a date/keyword string, or array.
 - `for` (string | HTMLElement | Array<string | HTMLElement>): Selector or element reference for an `eox-map` or `eox-map-compare`.
 Pass an array of selectors/references as a property to control multiple maps,
 including maps whose views are linked with `sync`. (Default: `undefined`)
-- `controlValues` (Array<Object>): Array of control values. (Default: `[]`)
+- `controlValues` (Array<object>): Array of control values. (Default: `[]`)
 - `initDate` (DateRange | string | Array<string> | null): The initial date range as [startDate, endDate] in ISO/UTC format,
 or a date/keyword string, or array. (Default: `null`)
 

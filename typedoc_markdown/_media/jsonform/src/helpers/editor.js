@@ -486,8 +486,8 @@ export const createEditor = (element) => {
  * Fetch properties from a URL and return them
  *
  * @typedef {JSON & {properties: object}} JsonSchema
- * @param {JsonSchema | String} property - The property to fetch or parse
- * @returns {Promise<JsonSchema | String>} - The parsed property or fetched schema
+ * @param {JsonSchema | string} property - The property to fetch or parse
+ * @returns {Promise<JsonSchema | string>} - The parsed property or fetched schema
  */
 export async function parseProperty(property) {
   if (property) {

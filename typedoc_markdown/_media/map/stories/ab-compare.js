@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * To compare two maps, wrap them in an `<eox-map-compare>` element and assign them to the slot `first` and `second`.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ABCompareStory = {
   argTypes: {

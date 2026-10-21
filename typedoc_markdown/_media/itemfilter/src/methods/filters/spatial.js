@@ -3,7 +3,7 @@ import { getMapLayers, resetFilter } from "../../helpers/index.js";
 /**
  * Resets the spatial filter to its default state and updates the component.
  *
- * @param {Object} EOxItemFilterSpatial - The EOxItemFilterSpatial component instance.
+ * @param {object} EOxItemFilterSpatial - The EOxItemFilterSpatial component instance.
  */
 export function resetSpatialMethod(EOxItemFilterSpatial) {
   resetFilter(EOxItemFilterSpatial.filterObject);
@@ -18,7 +18,7 @@ export function resetSpatialMethod(EOxItemFilterSpatial) {
 /**
  * Resets the spatial filter map and re-initializes it.
  *
- * @param {Object} EOxItemFilterSpatial - The EOxItemFilterSpatial component instance.
+ * @param {object} EOxItemFilterSpatial - The EOxItemFilterSpatial component instance.
  */
 export function resetSpatialFilterMethod(EOxItemFilterSpatial) {
   EOxItemFilterSpatial.renderRoot.querySelector("#eox-map").innerHTML = "";
@@ -29,7 +29,7 @@ export function resetSpatialFilterMethod(EOxItemFilterSpatial) {
  * Handles the click event for spatial mode buttons and updates the filter state.
  *
  * @param {string} mode - The selected spatial mode.
- * @param {Object} EOxItemFilterSpatial - The EOxItemFilterSpatial component instance.
+ * @param {object} EOxItemFilterSpatial - The EOxItemFilterSpatial component instance.
  */
 export function handleClickSpatialMethod(mode, EOxItemFilterSpatial) {
   EOxItemFilterSpatial.filterObject.state.mode = mode;
@@ -44,7 +44,7 @@ export function handleClickSpatialMethod(mode, EOxItemFilterSpatial) {
 /**
  * Sets up the spatial filter map and its interactions.
  *
- * @param {Object} that - The EOxItemFilterSpatial component instance.
+ * @param {object} that - The EOxItemFilterSpatial component instance.
  */
 export function setupSpatialMethod(that) {
   const parentEOxMap = that.renderRoot.querySelector("#eox-map");
@@ -94,7 +94,7 @@ export function setupSpatialMethod(that) {
 /**
  * Creates a URL for a GeoJSON feature collection from the given geometry.
  *
- * @param {Object} geometry - The geometry to include in the feature collection.
+ * @param {object} geometry - The geometry to include in the feature collection.
  * @returns {string} The URL for the GeoJSON feature collection.
  */
 function createFeatureUrl(geometry) {

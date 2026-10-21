@@ -21,7 +21,7 @@ import { ifDefined } from "lit/directives/if-defined.js";
  * `EOxLayerControlLayerLegend` is a component that handles creating a legend from a range of colors & the domain of the color values.
  *
  * @element eox-layercontrol-layer-datetime
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerLegend extends LitElement {
   // Define static properties for the component
@@ -38,14 +38,14 @@ export class EOxLayerControlLayerLegend extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 

@@ -2,7 +2,7 @@
  * Loading Indicators can also be centered over the entire map by setting the option `type` to `'fullscreen'`, adapting the opacity is adviced when doing so.
  * Custom rotating SVG-Icons can be used by setting the svg data as the `spinnerSvg`-option.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const CustomFullScreenLoadingIndicatorStory = {
   args: {

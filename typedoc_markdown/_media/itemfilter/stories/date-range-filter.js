@@ -5,7 +5,7 @@ import { html } from "lit";
  * Demonstrates the integration of `eox-timecontrol` within `eox-itemfilter`
  * when a filter property has `type: "range"` and `format: "date"`.
  *
- * @returns {Object} The story configuration.
+ * @returns {object} The story configuration.
  */
 function DateRangeFilterStory() {
   const items = [
