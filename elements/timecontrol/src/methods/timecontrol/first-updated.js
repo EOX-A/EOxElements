@@ -2,6 +2,7 @@ import {
   getDateRange,
   getUTCLocalDateTime,
   updateTimelineItems,
+  updateVisibility,
 } from "../../helpers";
 import { DataSet } from "vis-data/standalone";
 import resolveMapsMethod from "./resolve-maps";
@@ -145,112 +146,163 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
         }
       }
 
-      if (!initialized || !isequal(EOxTimeControl.sliderValues, sliderValues)) {
-        initialized = true;
+      const extractSliderContent = (sliders) =>
+        sliders.map(({ layer, name, property, values }) => ({
+          layer,
+          name,
+          property,
+          values,
+        }));
+
+      const contentChanged =
+        !initialized ||
+        !isequal(
+          extractSliderContent(EOxTimeControl.sliderValues),
+          extractSliderContent(sliderValues),
+        );
+
+      if (!contentChanged) {
         removeTimelineVisibilityListeners?.();
-        EOxTimeControl.sliderValues = sliderValues;
-
-        updateChildrenProp(EOxTimeControl, ["eox-timecontrol-timeline"], {
-          loading: true,
-        });
-        const groups = new DataSet([]);
-        const items = new DataSet([]);
-
-        const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
-          EOxTimeControl.querySelector("eox-timecontrol-timeline")
-        );
-
-        removeTimelineVisibilityListeners = updateTimelineItems(
-          EOxTimeControl.sliderValues,
-          groups,
-          items,
-          EOxTimeControlTimeline,
-          EOxTimeControl.showUTC,
-        );
-
-        EOxTimeControl.groups = groups;
-        EOxTimeControl.items = items;
-        const EOxTimeControlDate =
-          /** @type {import("../../components/timecontrol-date.js").EOxTimeControlDate} */ (
-            EOxTimeControl.getTimeControlDate()
-          );
-        EOxTimeControlDate?.requestUpdate();
-
-        if (EOxTimeControlTimeline) {
-          if (items.length) {
-            EOxTimeControlTimeline.initTimeline();
-          } else {
-            EOxTimeControlTimeline.visTimeline?.setData({
-              items: [],
-              groups: [],
-            });
-          }
-        }
-        updateChildrenProp(EOxTimeControl, ["eox-timecontrol-timeline"], {
-          loading: false,
-        });
-
-        const itemValues = EOxTimeControl.items.get();
-        const initDateRange = getInitDate(
-          EOxTimeControl.initDate,
-          itemValues,
-          EOxTimeControl.showUTC,
-        );
-        if (itemValues && itemValues.length) {
-          const { dateRange } = getDateRange(
-            EOxTimeControl,
-            itemValues,
-            initDateRange,
-          );
-
-          const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
-            EOxTimeControl.querySelector("eox-timecontrol-picker")
-          );
-
-          setTimeout(() => {
-            if (disposed) return;
-            EOxTimeControl.dateChange(dateRange, EOxTimeControl);
-            const EOxItemFilter = /** @type {EOxItemFilter} */ (
-              EOxTimeControl.querySelector("eox-itemfilter")
-            );
-            if (EOxItemFilter) {
-              // Convert items to FilterConfig[] before assigning
-              EOxItemFilter.items = EOxTimeControl.items.get().map((item) => ({
-                key: item.id,
-                title: item.name || item.title || String(item.id),
-                ...item,
-              }));
-              const filterHandler = (e) => {
-                EOxTimeControl.filter(e, EOxTimeControl);
-              };
-              if (!itemFilterAdded) {
-                EOxItemFilter.addEventListener("filter", filterHandler);
-                itemFilterAdded = true;
-                eventListenerRemovers.push(() =>
-                  EOxItemFilter.removeEventListener("filter", filterHandler),
-                );
-              }
+        const removers = [];
+        for (let i = 0; i < sliderValues.length; i++) {
+          const slider = sliderValues[i];
+          const visibilityFunc = (props) => {
+            if (EOxTimeControlTimeline) {
+              const visibility = props.target.getVisible();
+              updateVisibility(EOxTimeControlTimeline, visibility, i);
             }
-          });
-          if (EOxTimeControlPicker) {
-            EOxTimeControlPicker.initCalendar({
-              selectedDateRange: dateRange,
-            });
-          }
-        } else if (!usedInitDate && initDateRange) {
-          EOxTimeControl.dateChange(initDateRange, EOxTimeControl);
+          };
+          slider.layerInstance?.on("change:visible", visibilityFunc);
+          removers.push(() =>
+            slider.layerInstance?.un("change:visible", visibilityFunc),
+          );
         }
-        if (
-          !itemValues.length &&
-          EOxTimeControlPicker &&
-          EOxTimeControl.selectedDateRange
-        ) {
-          /** @type {EOxTimeControlPicker} */ (
-            EOxTimeControlPicker
-          ).initCalendar();
-        }
-        usedInitDate = true;
+        removeTimelineVisibilityListeners = () =>
+          removers.forEach((removeListener) => removeListener());
+        EOxTimeControl.sliderValues = sliderValues;
+        EOxTimeControl.requestUpdate();
+        return;
       }
+
+      initialized = true;
+      removeTimelineVisibilityListeners?.();
+      EOxTimeControl.sliderValues = sliderValues;
+
+      updateChildrenProp(EOxTimeControl, ["eox-timecontrol-timeline"], {
+        loading: true,
+      });
+      const groups = new DataSet([]);
+      const items = new DataSet([]);
+
+      const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
+        EOxTimeControl.querySelector("eox-timecontrol-timeline")
+      );
+
+      removeTimelineVisibilityListeners = updateTimelineItems(
+        EOxTimeControl.sliderValues,
+        groups,
+        items,
+        EOxTimeControlTimeline,
+        EOxTimeControl.showUTC,
+      );
+
+      EOxTimeControl.groups = groups;
+      EOxTimeControl.items = items;
+      const EOxTimeControlDate =
+        /** @type {import("../../components/timecontrol-date.js").EOxTimeControlDate} */ (
+          EOxTimeControl.getTimeControlDate()
+        );
+      EOxTimeControlDate?.requestUpdate();
+
+      if (EOxTimeControlTimeline) {
+        if (items.length) {
+          EOxTimeControlTimeline.initTimeline();
+        } else {
+          EOxTimeControlTimeline.visTimeline?.setData({
+            items: [],
+            groups: [],
+          });
+        }
+      }
+      updateChildrenProp(EOxTimeControl, ["eox-timecontrol-timeline"], {
+        loading: false,
+      });
+
+      const itemValues = EOxTimeControl.items.get();
+      const initDateRange = getInitDate(
+        EOxTimeControl.initDate,
+        itemValues,
+        EOxTimeControl.showUTC,
+      );
+      if (itemValues && itemValues.length) {
+        const { dateRange: defaultDateRange } = getDateRange(
+          EOxTimeControl,
+          itemValues,
+          initDateRange,
+        );
+
+        const currentSelected = EOxTimeControl.selectedDateRange;
+        const isCurrentValid =
+          usedInitDate &&
+          currentSelected &&
+          currentSelected.length === 2 &&
+          itemValues.some((it) => {
+            const itTime = new Date(it.utc || it.date || it.start).getTime();
+            return (
+              itTime >= new Date(currentSelected[0]).getTime() &&
+              itTime <= new Date(currentSelected[1]).getTime()
+            );
+          });
+
+        const dateRange = isCurrentValid ? currentSelected : defaultDateRange;
+
+        const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
+          EOxTimeControl.querySelector("eox-timecontrol-picker")
+        );
+
+        setTimeout(() => {
+          if (disposed) return;
+          EOxTimeControl.dateChange(dateRange, EOxTimeControl);
+          const EOxItemFilter = /** @type {EOxItemFilter} */ (
+            EOxTimeControl.querySelector("eox-itemfilter")
+          );
+          if (EOxItemFilter) {
+            // Convert items to FilterConfig[] before assigning
+            EOxItemFilter.items = EOxTimeControl.items.get().map((item) => ({
+              key: item.id,
+              title: item.name || item.title || String(item.id),
+              ...item,
+            }));
+            const filterHandler = (e) => {
+              EOxTimeControl.filter(e, EOxTimeControl);
+            };
+            if (!itemFilterAdded) {
+              EOxItemFilter.addEventListener("filter", filterHandler);
+              itemFilterAdded = true;
+              eventListenerRemovers.push(() =>
+                EOxItemFilter.removeEventListener("filter", filterHandler),
+              );
+            }
+          }
+        });
+        if (EOxTimeControlPicker) {
+          EOxTimeControlPicker.initCalendar({
+            selectedDateRange: dateRange,
+          });
+        }
+      } else if (!usedInitDate && initDateRange) {
+        EOxTimeControl.dateChange(initDateRange, EOxTimeControl);
+      }
+      if (
+        !itemValues.length &&
+        EOxTimeControlPicker &&
+        EOxTimeControl.selectedDateRange
+      ) {
+        /** @type {EOxTimeControlPicker} */ (
+          EOxTimeControlPicker
+        ).initCalendar();
+      }
+      usedInitDate = true;
       EOxTimeControl.requestUpdate();
     };
 

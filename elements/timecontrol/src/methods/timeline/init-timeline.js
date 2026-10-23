@@ -257,6 +257,15 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const min = dayjs.min(dates).subtract(50, "day").toDate();
     const max = dayjs.max(dates).add(50, "day").format("YYYY-MM-DD");
 
+    let previousWindow = null;
+    if (EOxTimeControlTimeline.visTimeline) {
+      try {
+        previousWindow = EOxTimeControlTimeline.visTimeline.getWindow();
+      } catch {
+        // ignore if not initialized
+      }
+    }
+
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
 
@@ -350,7 +359,17 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         )
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
-    visTimeline.fit();
+    if (
+      previousWindow?.start &&
+      previousWindow?.end &&
+      !isNaN(new Date(previousWindow.start).getTime())
+    ) {
+      visTimeline.setWindow(previousWindow.start, previousWindow.end, {
+        animation: false,
+      });
+    } else {
+      visTimeline.fit();
+    }
     updateGridClipMethod(EOxTimeControlTimeline);
     EOxTimeControlTimeline.requestUpdate();
 
