@@ -8,7 +8,7 @@
 
 > **GlobeConfig** = `object`
 
-Defined in: [elements/map/src/types.ts:261](https://github.com/EOX-A/EOxElements/blob/b15e78d356c6ad9edf1771fe914f849d9d138612/elements/map/src/types.ts#L261)
+Defined in: [elements/map/src/types.ts:261](https://github.com/EOX-A/EOxElements/blob/562124c72942f1a2ea64c672a8827cea0494f22a/elements/map/src/types.ts#L261)
 
 Configuration for the globe projection.
 
@@ -18,7 +18,7 @@ Configuration for the globe projection.
 
 > `optional` **terrain?**: `boolean`
 
-Defined in: [elements/map/src/types.ts:266](https://github.com/EOX-A/EOxElements/blob/b15e78d356c6ad9edf1771fe914f849d9d138612/elements/map/src/types.ts#L266)
+Defined in: [elements/map/src/types.ts:266](https://github.com/EOX-A/EOxElements/blob/562124c72942f1a2ea64c672a8827cea0494f22a/elements/map/src/types.ts#L266)
 
 Option for whether or not there will be terrain on the globe projection.
 Defaults to false.
@@ -29,7 +29,7 @@ Defaults to false.
 
 > `optional` **useHighLOD?**: `boolean`
 
-Defined in: [elements/map/src/types.ts:271](https://github.com/EOX-A/EOxElements/blob/b15e78d356c6ad9edf1771fe914f849d9d138612/elements/map/src/types.ts#L271)
+Defined in: [elements/map/src/types.ts:271](https://github.com/EOX-A/EOxElements/blob/562124c72942f1a2ea64c672a8827cea0494f22a/elements/map/src/types.ts#L271)
 
 Whether use high level of details or not.
 Defaults to false.
