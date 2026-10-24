@@ -42,8 +42,8 @@
     "@cypress/code-coverage": "^4.0.0",
     "@cypress/mount-utils": "^5.0.0",
     "@eox/eslint-config": "^2.2.0",
-    "@storybook/addon-docs": "^10.0.8",
-    "@storybook/web-components-vite": "^10.0.8",
+    "@storybook/addon-docs": "^10.6.2",
+    "@storybook/web-components-vite": "^10.6.2",
     "concurrently": "^10.0.1",
     "custom-elements-manifest": "^2.0.0",
     "markdown-it": "^15.0.2",
@@ -52,13 +52,13 @@
     "cypress-file-upload": "^5.0.8",
     "cypress-lit": "^0.0.8",
     "cypress-network-idle": "^2.0.1",
-    "eslint-plugin-storybook": "^10.0.8",
+    "eslint-plugin-storybook": "^10.6.2",
     "nodemon": "^3.0.3",
     "nyc": "^18.0.0",
     "prettier-plugin-svelte": "^4.1.0",
     "rimraf": "^6.0.1",
     "serialize-javascript": "^7.0.0",
-    "storybook": "^10.0.8",
+    "storybook": "^10.6.2",
     "typedoc": "^0.28.14",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-plugin-merge-modules": "^7.0.0",
@@ -74,6 +74,7 @@
   },
   "customElements": "custom-elements.json",
   "overrides": {
+    "dompurify": "^3.4.17",
     "shell-quote": "^1.11.0"
   }
 }
