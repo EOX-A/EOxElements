@@ -254,8 +254,10 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const items = /** @type {Array<any>} */ (EOxTimeControl.items.get());
     const groups = EOxTimeControl.groups.get();
     const dates = items.map((item) => dayjs(item.start));
-    const min = dayjs.min(dates).subtract(50, "day").toDate();
-    const max = dayjs.max(dates).add(50, "day").format("YYYY-MM-DD");
+    const minDate = dayjs.min(dates).subtract(50, "day");
+    const maxDate = dayjs.max(dates).add(50, "day");
+    const min = minDate.toDate();
+    const max = maxDate.format("YYYY-MM-DD");
 
     let previousWindow = null;
     if (EOxTimeControlTimeline.visTimeline) {
@@ -359,11 +361,19 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         )
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
-    if (
-      previousWindow?.start &&
-      previousWindow?.end &&
-      !isNaN(new Date(previousWindow.start).getTime())
-    ) {
+    const prevStart = previousWindow?.start
+      ? new Date(previousWindow.start).getTime()
+      : NaN;
+    const prevEnd = previousWindow?.end
+      ? new Date(previousWindow.end).getTime()
+      : NaN;
+    const isWindowValid =
+      !isNaN(prevStart) &&
+      !isNaN(prevEnd) &&
+      prevEnd >= minDate.valueOf() &&
+      prevStart <= maxDate.valueOf();
+
+    if (isWindowValid) {
       visTimeline.setWindow(previousWindow.start, previousWindow.end, {
         animation: false,
       });

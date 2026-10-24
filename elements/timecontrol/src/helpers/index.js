@@ -1,5 +1,7 @@
 export {
   default as updateTimelineItems,
+  hasSameSliderContent,
+  setupVisibilityListeners,
   updateVisibility,
 } from "./update-timeline-items";
 export { default as setSelectedDate } from "./set-selected-date";

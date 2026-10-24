@@ -1,14 +1,14 @@
 import {
   getDateRange,
   getUTCLocalDateTime,
+  hasSameSliderContent,
+  setupVisibilityListeners,
   updateTimelineItems,
-  updateVisibility,
 } from "../../helpers";
 import { DataSet } from "vis-data/standalone";
 import resolveMapsMethod from "./resolve-maps";
 import { getUid } from "ol/util";
 import dayjs from "dayjs";
-import isequal from "lodash.isequal";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { updateChildrenProp, getInitDate } from "../../helpers";
@@ -146,39 +146,20 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
         }
       }
 
-      const extractSliderContent = (sliders) =>
-        sliders.map(({ layer, name, property, values }) => ({
-          layer,
-          name,
-          property,
-          values,
-        }));
+      const timeline = /** @type {EOxTimeControlTimeline} */ (
+        EOxTimeControl.getTimeControlTimeline()
+      );
 
       const contentChanged =
         !initialized ||
-        !isequal(
-          extractSliderContent(EOxTimeControl.sliderValues),
-          extractSliderContent(sliderValues),
-        );
+        !hasSameSliderContent(EOxTimeControl.sliderValues, sliderValues);
 
       if (!contentChanged) {
         removeTimelineVisibilityListeners?.();
-        const removers = [];
-        for (let i = 0; i < sliderValues.length; i++) {
-          const slider = sliderValues[i];
-          const visibilityFunc = (props) => {
-            if (EOxTimeControlTimeline) {
-              const visibility = props.target.getVisible();
-              updateVisibility(EOxTimeControlTimeline, visibility, i);
-            }
-          };
-          slider.layerInstance?.on("change:visible", visibilityFunc);
-          removers.push(() =>
-            slider.layerInstance?.un("change:visible", visibilityFunc),
-          );
-        }
-        removeTimelineVisibilityListeners = () =>
-          removers.forEach((removeListener) => removeListener());
+        removeTimelineVisibilityListeners = setupVisibilityListeners(
+          sliderValues,
+          timeline,
+        );
         EOxTimeControl.sliderValues = sliderValues;
         EOxTimeControl.requestUpdate();
         return;
@@ -194,15 +175,11 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
       const groups = new DataSet([]);
       const items = new DataSet([]);
 
-      const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
-        EOxTimeControl.querySelector("eox-timecontrol-timeline")
-      );
-
       removeTimelineVisibilityListeners = updateTimelineItems(
         EOxTimeControl.sliderValues,
         groups,
         items,
-        EOxTimeControlTimeline,
+        timeline,
         EOxTimeControl.showUTC,
       );
 
@@ -214,11 +191,11 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
         );
       EOxTimeControlDate?.requestUpdate();
 
-      if (EOxTimeControlTimeline) {
+      if (timeline) {
         if (items.length) {
-          EOxTimeControlTimeline.initTimeline();
+          timeline.initTimeline();
         } else {
-          EOxTimeControlTimeline.visTimeline?.setData({
+          timeline.visTimeline?.setData({
             items: [],
             groups: [],
           });

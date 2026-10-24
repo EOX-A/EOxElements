@@ -158,6 +158,27 @@ const loadTimelineOnLayersChange = () => {
     expect(/** @type {any} */ ($tl[0]).visTimeline).to.equal(timelineInstance);
   });
 
+  // Verify: layer visibility toggle works after non-content layer reassignment
+  cy.get("eox-timecontrol").then(($tc) => {
+    const layerInstance = /** @type {any} */ ($tc[0]).sliderValues[0]
+      .layerInstance;
+    expect(layerInstance).to.exist;
+    layerInstance.setVisible(false);
+  });
+  cy.get("eox-timecontrol-timeline")
+    .shadow()
+    .find(".vis-label")
+    .first()
+    .should("have.class", "vis-label-hide");
+  cy.get("eox-timecontrol").then(($tc) => {
+    /** @type {any} */ ($tc[0]).sliderValues[0].layerInstance.setVisible(true);
+  });
+  cy.get("eox-timecontrol-timeline")
+    .shadow()
+    .find(".vis-label")
+    .first()
+    .should("not.have.class", "vis-label-hide");
+
   // Set a custom zoom window
   const zoomStart = new Date("2021-05-01T12:00:00Z");
   const zoomEnd = new Date("2021-05-02T12:00:00Z");
@@ -185,6 +206,16 @@ const loadTimelineOnLayersChange = () => {
       2000,
     );
     expect(new Date(win.end).getTime()).to.be.closeTo(zoomEnd.getTime(), 2000);
+  });
+
+  // Swap to layer with non-overlapping date range (2020) and verify window fits new range
+  cy.get("eox-map").then(($map) => {
+    /** @type {any} */ ($map[0]).layers = [baseLayer, GroupLayer([layerA])];
+  });
+  cy.get("eox-timecontrol-timeline").should(($tl) => {
+    const win = /** @type {any} */ ($tl[0]).visTimeline.getWindow();
+    expect(new Date(win.start).getUTCFullYear()).to.be.lessThan(2021);
+    expect(new Date(win.end).getUTCFullYear()).to.equal(2020);
   });
 };
 
