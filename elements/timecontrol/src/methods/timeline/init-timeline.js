@@ -254,8 +254,19 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const items = /** @type {Array<any>} */ (EOxTimeControl.items.get());
     const groups = EOxTimeControl.groups.get();
     const dates = items.map((item) => dayjs(item.start));
-    const min = dayjs.min(dates).subtract(50, "day").toDate();
-    const max = dayjs.max(dates).add(50, "day").format("YYYY-MM-DD");
+    const minDate = dayjs.min(dates).subtract(50, "day");
+    const maxDate = dayjs.max(dates).add(50, "day");
+    const min = minDate.toDate();
+    const max = maxDate.format("YYYY-MM-DD");
+
+    let previousWindow = null;
+    if (EOxTimeControlTimeline.visTimeline) {
+      try {
+        previousWindow = EOxTimeControlTimeline.visTimeline.getWindow();
+      } catch {
+        // ignore if not initialized
+      }
+    }
 
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
@@ -350,7 +361,25 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         )
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
-    visTimeline.fit();
+    const prevStart = previousWindow?.start
+      ? new Date(previousWindow.start).getTime()
+      : NaN;
+    const prevEnd = previousWindow?.end
+      ? new Date(previousWindow.end).getTime()
+      : NaN;
+    const isWindowValid =
+      !isNaN(prevStart) &&
+      !isNaN(prevEnd) &&
+      prevEnd >= minDate.valueOf() &&
+      prevStart <= maxDate.valueOf();
+
+    if (isWindowValid) {
+      visTimeline.setWindow(previousWindow.start, previousWindow.end, {
+        animation: false,
+      });
+    } else {
+      visTimeline.fit();
+    }
     updateGridClipMethod(EOxTimeControlTimeline);
     EOxTimeControlTimeline.requestUpdate();
 

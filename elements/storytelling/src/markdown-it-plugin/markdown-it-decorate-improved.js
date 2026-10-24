@@ -345,7 +345,7 @@ function parseInlineContent(
  * @param {number} sectionStepsIndex - Step Section start index
  * @param {{tokens: Array<object>}} state - Token state
  * @param {object} stack
- * @returns {Object} - Final list of updated states
+ * @returns {object} - Final list of updated states
  */
 function parseSection(
   index,
@@ -420,7 +420,7 @@ function parseSection(
  * @param {number} sectionStepsIndex - Step Section start index
  * @param {{tokens: Array<object>}} state - Token state
  * @param {object} stack
- * @returns {Object} - Final list of updated states
+ * @returns {object} - Final list of updated states
  */
 function parseStepSection(
   index,
