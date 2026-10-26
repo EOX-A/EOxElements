@@ -8,6 +8,6 @@
 
 > **SelectedDateRange** = [`DateRange`](DateRange.md) \| `null`
 
-Defined in: [elements/timecontrol/src/types.ts:91](https://github.com/EOX-A/EOxElements/blob/562124c72942f1a2ea64c672a8827cea0494f22a/elements/timecontrol/src/types.ts#L91)
+Defined in: [elements/timecontrol/src/types.ts:91](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/types.ts#L91)
 
 Represents the selected date range, which can be null or a DateRange.

@@ -8,7 +8,7 @@
 
 > **CustomMarkdownItState** = `StateCore` & `object`
 
-Defined in: [elements/storytelling/src/types.ts:10](https://github.com/EOX-A/EOxElements/blob/562124c72942f1a2ea64c672a8827cea0494f22a/elements/storytelling/src/types.ts#L10)
+Defined in: [elements/storytelling/src/types.ts:10](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/storytelling/src/types.ts#L10)
 
 ## Type Declaration
 

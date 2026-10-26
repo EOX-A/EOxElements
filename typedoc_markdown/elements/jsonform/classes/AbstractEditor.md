@@ -6,7 +6,7 @@
 
 # Class: AbstractEditor
 
-Defined in: [elements/jsonform/src/custom-inputs/custom-editors.d.ts:2](https://github.com/EOX-A/EOxElements/blob/562124c72942f1a2ea64c672a8827cea0494f22a/elements/jsonform/src/custom-inputs/custom-editors.d.ts#L2)
+Defined in: [elements/jsonform/src/custom-inputs/custom-editors.d.ts:2](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/jsonform/src/custom-inputs/custom-editors.d.ts#L2)
 
 ## Indexable
 
