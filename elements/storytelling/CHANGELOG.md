@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.13.0...storytelling-v1.13.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* Timeline re-creation flashing and date selection reset bugs when map layers update dynamically ([#2614](https://github.com/EOX-A/EOxElements/issues/2614)) ([562124c](https://github.com/EOX-A/EOxElements/commit/562124c72942f1a2ea64c672a8827cea0494f22a))
+
 ## [1.13.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.12.0...storytelling-v1.13.0) (2026-06-29)
 
 
