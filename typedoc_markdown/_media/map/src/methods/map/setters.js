@@ -133,7 +133,7 @@ export function setControlsMethod(controls, oldControls, EOxMap) {
 export function setLayersMethod(layers, oldLayers, EOxMap) {
   // Deep copy the new layers array
   // Deserialization see: https://github.com/yahoo/serialize-javascript?tab=readme-ov-file#deserializing
-  const newLayers = eval("(" + serialize(layers) + ")");
+  const newLayers = (0, eval)("(" + serialize(layers) + ")");
 
   // Remove old layers not present in the new layers
   if (oldLayers) {

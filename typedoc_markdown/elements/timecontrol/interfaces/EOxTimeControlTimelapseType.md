@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlTimelapseType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:35](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L35)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:35](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L35)
 
 The `eox-timecontrol-timelapse` component provides functionality to export time series data as animated GIFs or MP4s.
 It allows users to preview map layers at different time steps and export them as animations with configurable speed.
@@ -1454,7 +1454,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **format**: `"gif"` \| `"mp4"`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:109](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L109)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:109](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L109)
 
 Export format: "gif" or "mp4" (default: "gif").
 
@@ -4984,7 +4984,7 @@ The **`slot`** property of the Element interface returns the name of the shadow 
 
 > **speed**: `number`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:102](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L102)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:102](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L102)
 
 Animation speed in frames per second (default: 1).
 
@@ -5086,7 +5086,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:88](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L88)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:88](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L88)
 
 Whether default styling is disabled.
 
@@ -5096,7 +5096,7 @@ Whether default styling is disabled.
 
 > **visTimeline**: `any`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:95](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L95)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:95](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L95)
 
 Legacy property (not used).
 
@@ -5162,7 +5162,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10714
 
 > **get** **exportConfig**(): [`ExportConfig`](../type-aliases/ExportConfig.md)
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:118](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L118)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:118](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L118)
 
 Gets the export configuration object.
 
@@ -5176,7 +5176,7 @@ The export configuration.
 
 > **set** **exportConfig**(`value`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:127](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L127)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:127](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L127)
 
 Sets the export configuration object.
 
@@ -5314,7 +5314,7 @@ The **`textContent`** property of the Node interface represents the text content
 
 > **get** **timelapseComponent**(): `HTMLElement`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:137](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L137)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:137](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L137)
 
 Gets the timelapse component DOM element.
 
@@ -5860,7 +5860,7 @@ The **`contains()`** method of the Node interface returns a boolean value indica
 
 > **disconnectedCallback**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:472](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L472)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:472](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L472)
 
 Lifecycle method called when the component is disconnected from the DOM.
 Cleans up the timelapse component element to prevent memory leaks.
@@ -5905,7 +5905,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **export**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:179](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L179)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:179](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L179)
 
 Exports the animation using the current export configuration.
 Calls the exportAnimation helper function to generate the GIF or MP4 file.
@@ -5944,7 +5944,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16075
 
 > **generateExport**(`config`): `Promise`\<`void`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:227](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L227)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:227](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L227)
 
 Generates the export dialog and starts the snapshot generation process.
 
@@ -6164,7 +6164,7 @@ The **`getClientRects()`** method of the Element interface returns a collection 
 
 > **getContainer**(): `HTMLElement`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:156](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L156)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:156](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L156)
 
 Gets the container element (legacy method, not used).
 
@@ -6444,7 +6444,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getEOxTimeControl**(): [`EOxTimeControlType`](EOxTimeControlType.md)
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:217](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L217)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:217](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L217)
 
 Gets the parent EOxTimeControl component instance.
 
@@ -6512,7 +6512,7 @@ The **`getRootNode()`** method of the Node interface returns the context object'
 
 > **handleExport**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:428](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L428)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:428](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L428)
 
 Handles the export button click event.
 Collects selected timeline items and either dispatches an export event (for external rendering)
@@ -6528,7 +6528,7 @@ or generates the export directly using the associated map.
 
 > **handleExportClose**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:165](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L165)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:165](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L165)
 
 Closes the export dialog and cleans up resources.
 
@@ -6542,7 +6542,7 @@ Closes the export dialog and cleans up resources.
 
 > **handlePlayPause**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:393](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L393)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:393](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L393)
 
 Handles play/pause functionality for previewing the animation.
 Cycles through preview images at the configured speed.
@@ -6557,7 +6557,7 @@ Cycles through preview images at the configured speed.
 
 > **handleSelectedPreview**(`index`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:195](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L195)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:195](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L195)
 
 Handles selection of a preview image/map in the export dialog.
 
@@ -7999,7 +7999,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:146](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L146)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:146](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L146)
 
 Sets the date range and triggers a re-render.
 
@@ -8220,7 +8220,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:480](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/timecontrol/src/components/timecontrol-timelapse.js#L480)
+Defined in: [elements/timecontrol/src/components/timecontrol-timelapse.js:480](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/timecontrol/src/components/timecontrol-timelapse.js#L480)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a

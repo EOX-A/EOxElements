@@ -8,4 +8,4 @@
 
 > **OLLayers** = [`OLBasicLayers`](OLBasicLayers.md) & [`OLAdvancedLayers`](OLAdvancedLayers.md)
 
-Defined in: [elements/map/src/layers.ts:87](https://github.com/EOX-A/EOxElements/blob/21f412d7232c70b5b694ffdaad1728a7f4e3a01a/elements/map/src/layers.ts#L87)
+Defined in: [elements/map/src/layers.ts:87](https://github.com/EOX-A/EOxElements/blob/617a5574022948ef6007728ffcff53436aee68cc/elements/map/src/layers.ts#L87)
