@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.3](https://github.com/EOX-A/EOxElements/compare/map-v2.8.2...map-v2.8.3) (2026-10-26)
+
+
+### Bug Fixes
+
+* Eval warning fix ([#2617](https://github.com/EOX-A/EOxElements/issues/2617)) ([617a557](https://github.com/EOX-A/EOxElements/commit/617a5574022948ef6007728ffcff53436aee68cc))
+
 ## [2.8.2](https://github.com/EOX-A/EOxElements/compare/map-v2.8.1...map-v2.8.2) (2026-10-20)
 
 

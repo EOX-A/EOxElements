@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.10.0...timecontrol-v2.10.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* Correct timelapse export and show frame loading progress ([#2613](https://github.com/EOX-A/EOxElements/issues/2613)) ([21f412d](https://github.com/EOX-A/EOxElements/commit/21f412d7232c70b5b694ffdaad1728a7f4e3a01a))
+* Timeline re-creation flashing and date selection reset bugs when map layers update dynamically ([#2614](https://github.com/EOX-A/EOxElements/issues/2614)) ([562124c](https://github.com/EOX-A/EOxElements/commit/562124c72942f1a2ea64c672a8827cea0494f22a))
+
 ## [2.10.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.9.0...timecontrol-v2.10.0) (2026-10-20)
 
 
