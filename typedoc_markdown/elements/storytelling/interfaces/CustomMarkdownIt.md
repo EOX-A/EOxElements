@@ -6,7 +6,7 @@
 
 # Interface: CustomMarkdownIt
 
-Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxElements/blob/db73bb46cf87cb6b5db422bd91a949825429f2e8/elements/storytelling/src/types.ts#L3)
+Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxElements/blob/6724ddaf6052a15cc228954b2076b8df16dccc13/elements/storytelling/src/types.ts#L3)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxE
 
 > **attrs**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:4](https://github.com/EOX-A/EOxElements/blob/db73bb46cf87cb6b5db422bd91a949825429f2e8/elements/storytelling/src/types.ts#L4)
+Defined in: [elements/storytelling/src/types.ts:4](https://github.com/EOX-A/EOxElements/blob/6724ddaf6052a15cc228954b2076b8df16dccc13/elements/storytelling/src/types.ts#L4)
 
 #### keys
 
@@ -50,7 +50,7 @@ and MarkdownIt.enable.
 
 > **config**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:5](https://github.com/EOX-A/EOxElements/blob/db73bb46cf87cb6b5db422bd91a949825429f2e8/elements/storytelling/src/types.ts#L5)
+Defined in: [elements/storytelling/src/types.ts:5](https://github.com/EOX-A/EOxElements/blob/6724ddaf6052a15cc228954b2076b8df16dccc13/elements/storytelling/src/types.ts#L5)
 
 #### version?
 
@@ -129,7 +129,7 @@ rule.
 
 > **nav**: `string`[]
 
-Defined in: [elements/storytelling/src/types.ts:6](https://github.com/EOX-A/EOxElements/blob/db73bb46cf87cb6b5db422bd91a949825429f2e8/elements/storytelling/src/types.ts#L6)
+Defined in: [elements/storytelling/src/types.ts:6](https://github.com/EOX-A/EOxElements/blob/6724ddaf6052a15cc228954b2076b8df16dccc13/elements/storytelling/src/types.ts#L6)
 
 ***
 
@@ -181,7 +181,7 @@ md.renderer.rules['my_token'] = myToken
 
 > **sections**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxElements/blob/db73bb46cf87cb6b5db422bd91a949825429f2e8/elements/storytelling/src/types.ts#L7)
+Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxElements/blob/6724ddaf6052a15cc228954b2076b8df16dccc13/elements/storytelling/src/types.ts#L7)
 
 ***
 
@@ -189,7 +189,7 @@ Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxE
 
 > `optional` **showMapLoadingIndicator?**: `boolean`
 
-Defined in: [elements/storytelling/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/db73bb46cf87cb6b5db422bd91a949825429f2e8/elements/storytelling/src/types.ts#L8)
+Defined in: [elements/storytelling/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/6724ddaf6052a15cc228954b2076b8df16dccc13/elements/storytelling/src/types.ts#L8)
 
 ***
 
