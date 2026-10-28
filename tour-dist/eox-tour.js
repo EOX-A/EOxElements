@@ -1114,16 +1114,11 @@ function xt(e = {}) {
 	}
 	function r() {
 		let e = t.getConfig("overlayClickBehavior");
-		if (t.getConfig("allowClose") && e === "close") {
-			m();
-			return;
-		}
-		if (typeof e == "function") {
+		if (t.getConfig("allowClose") && e === "close") m();
+		else if (typeof e == "function") {
 			let n = t.getState("__activeStep");
 			e(t.getState("__activeElement"), n, t.getHookOpts());
-			return;
-		}
-		if (e === "nextStep") {
+		} else if (e === "nextStep") {
 			let e = t.getState("activeStep"), n = t.getState("activeElement"), r = Z(t, e);
 			if (r) {
 				r(n, e, t.getHookOpts());
@@ -1152,11 +1147,7 @@ function xt(e = {}) {
 		let e = t.getState("__activeStep");
 		if (!e || !(e.advanceOnClick ?? t.getConfig("advanceOnClick"))) return;
 		let n = t.getState("__activeElement"), r = Z(t, e);
-		if (r) {
-			r(n, e, t.getHookOpts());
-			return;
-		}
-		i();
+		r ? r(n, e, t.getHookOpts()) : i();
 	}
 	function c() {
 		if (t.getState("__transitionCallback")) return;
@@ -1348,9 +1339,7 @@ function St(e) {
 			localStorage.removeItem(e.TOUR_KEY), St(e);
 			return;
 		}
-		return;
-	}
-	if (e.driver.drive(), e.id) {
+	} else if (e.driver.drive(), e.id) {
 		let t = typeof n == "object" && n ? n : {};
 		t[e.id] = !0, localStorage.setItem(e.TOUR_KEY, JSON.stringify(t));
 	} else localStorage.setItem(e.TOUR_KEY, "true");
