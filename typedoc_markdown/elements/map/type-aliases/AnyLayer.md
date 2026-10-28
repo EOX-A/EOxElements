@@ -8,4 +8,4 @@
 
 > **AnyLayer** = [`AnyLayerWithSource`](AnyLayerWithSource.md) \| `default`
 
-Defined in: [elements/map/src/types.ts:35](https://github.com/EOX-A/EOxElements/blob/ae0ab43fcd9cc49b8e971ce7f1a0c47b484a80f1/elements/map/src/types.ts#L35)
+Defined in: [elements/map/src/types.ts:35](https://github.com/EOX-A/EOxElements/blob/db73bb46cf87cb6b5db422bd91a949825429f2e8/elements/map/src/types.ts#L35)
