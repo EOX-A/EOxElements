@@ -42,7 +42,7 @@
     "@eox/ui": "^1.1.0",
     "@json-editor/json-editor": "^2.17.3",
     "@turf/bbox-polygon": "^7.4.0",
-    "ace-builds": "^1.44.0",
+    "ace-builds": "^1.45.0",
     "easymde": "^2.21.0",
     "isomorphic-dompurify": "^4.6.0",
     "lit": "^3.3.3",
