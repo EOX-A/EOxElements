@@ -31,7 +31,15 @@ export default {
   argTypes: {
     tools: {
       control: { type: "multi-select" },
-      options: ["info", "opacity", "datetime", "config", "remove", "sort"],
+      options: [
+        "info",
+        "opacity",
+        "config",
+        "datetime",
+        "legend",
+        "sort",
+        "remove",
+      ],
     },
   },
 };
@@ -58,7 +66,7 @@ export const OptionalLayers = OptionalLayersStory;
 export const ExpandedLayers = ExpandedLayersStory;
 
 /**
- * Demonstrates the use of layer tools. The layer control accepts a `tools` array, enabling extra functionalities such as info, opacity, datetime, config, remove, and sort. This example shows how to configure and display these tools for each layer.
+ * Demonstrates the use of layer tools. The layer control accepts a `tools` array, enabling extra functionalities such as info, opacity, config, datetime (time), legend, sort, and remove. This example shows how to configure and display these tools for each layer.
  * In the Controls panel, try toggling different combinations of tools to see how the layer control adapts.
  */
 export const Tools = ToolsStory;

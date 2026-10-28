@@ -1,6 +1,8 @@
 import { html } from "lit";
+import "color-legend-element";
 import {
   STORIES_LAYER_DEFORESTED_BIOMASS,
+  STORIES_LAYER_VESSEL_DENSITY_CARGO,
   STORIES_LAYER_REGION,
   STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
@@ -12,6 +14,9 @@ export const toolsAutoExpandStory = {
     for: "eox-map#tools-auto-expand",
     tools: ["info", "opacity"],
     toolsAutoExpand: true,
+    "datetime:updated": (evt) => {
+      evt.detail.layer.getSource().updateParams({ TIME: evt.detail.datetime });
+    },
     storyAdditionalComponents: {
       "eox-map": {
         style: STORIES_MAP_STYLE,
@@ -19,6 +24,7 @@ export const toolsAutoExpandStory = {
           STORIES_LAYER_TERRAIN_LIGHT,
           STORIES_LAYER_DEFORESTED_BIOMASS,
           STORIES_LAYER_REGION,
+          STORIES_LAYER_VESSEL_DENSITY_CARGO,
         ],
         id: "tools-auto-expand",
       },
@@ -31,6 +37,7 @@ export const toolsAutoExpandStory = {
       .tools=${args.tools}
       .toolsAutoExpand=${args.toolsAutoExpand}
       .style=${args.style}
+      @datetime:updated=${args["datetime:updated"]}
     ></eox-layercontrol>
     <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}
