@@ -3,14 +3,14 @@
  */
 
 /**
- * @typedef {Object} BandChannelOptions
+ * @typedef {object} BandChannelOptions
  * @property {number} band 1-indexed band number
  * @property {number} [min] Minimum channel value
  * @property {number} [max] Maximum channel value
  */
 
 /**
- * @typedef {Object} MultiBandRenderOptions
+ * @typedef {object} MultiBandRenderOptions
  * @property {BandChannelOptions} [r] Red channel options
  * @property {BandChannelOptions} [g] Green channel options
  * @property {BandChannelOptions} [b] Blue channel options
@@ -21,7 +21,7 @@
  */
 
 /**
- * @typedef {Object} SingleBandRenderOptions
+ * @typedef {object} SingleBandRenderOptions
  * @property {number} [band] Band index (1-indexed), defaults to 1
  * @property {ColorScaleName} [colorScale] Built-in colormap name
  * @property {ColorStop[] | string[]} [colors] Custom color stops or color strings
@@ -34,7 +34,7 @@
  */
 
 /**
- * @typedef {Object} TranslatedColorScaleResult
+ * @typedef {object} TranslatedColorScaleResult
  * @property {SingleBandRenderOptions} [single] Single-band render options for OpenGlobus GeoTIFFLayer
  * @property {MultiBandRenderOptions} [multi] Multi-band render options for OpenGlobus GeoTIFFLayer
  * @property {boolean} [convertToRGB] Whether to treat multi-band directly as RGB

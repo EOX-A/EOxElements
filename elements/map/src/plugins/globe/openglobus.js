@@ -25,6 +25,11 @@ import FullScreen from "ol/control/FullScreen";
 import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
 import { translateOLColorExpression } from "./colorScale.js";
+import {
+  attachGlobeSelect,
+  mountGlobeTooltip,
+  unmountGlobeTooltip,
+} from "./select.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
@@ -79,7 +84,7 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
     target,
     layers: EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
       .filter((l) => l.get("type") !== "Group")
-      .map((l) => createGlobusLayer(l, mapPool))
+      .map((l) => createGlobusLayer(l, mapPool, EOxMap))
       .filter((l) => l !== undefined),
     sun: { active: false },
     atmosphereEnabled: false,
@@ -136,7 +141,44 @@ export const refreshGlobe = () => {
   }
 };
 
-export const createGlobusLayer = (olLayer, mapPool) => {
+/**
+ * Translates an OL GeoTIFF source definition into OpenGlobus GeoTIFFLayer source options.
+ * A single COG (one entry in `sources`, or a top-level `url`) is passed as `src`,
+ * multiple COGs are passed as `sources` and stacked as bands, as in OL.
+ *
+ * @param {any} sourceDef - The `source` part of the layer JSON definition.
+ * @returns {Pick<import("@openglobus/og").geotiff.IGeoTIFFLayerParams, "src" | "sources" | "nodata">}
+ */
+export const getGeoTIFFSourceOptions = (sourceDef) => {
+  const sources = (sourceDef?.sources || [])
+    .filter((s) => s.url || s.blob)
+    .map((s) =>
+      Object.fromEntries(
+        Object.entries({
+          src: s.url || s.blob,
+          min: s.min,
+          max: s.max,
+          bands: s.bands,
+          nodata: s.nodata,
+        }).filter(([, value]) => value !== undefined),
+      ),
+    );
+
+  if (sources.length > 1) {
+    return { sources };
+  }
+  const { src = sourceDef?.url, nodata } = sources[0] || {};
+  return nodata !== undefined ? { src, nodata } : { src };
+};
+
+/**
+ * Creates the OpenGlobus counterpart of an OL layer.
+ *
+ * @param {any} olLayer - The OL layer.
+ * @param {Array<any>} mapPool - The pool of offscreen maps used for CanvasTiles rendering.
+ * @param {import("../../main").EOxMap} [EOxMap] - Instance of EOxMap class, used to attach select interactions.
+ */
+export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
   const jsonDef = olLayer.get("_jsonDefinition");
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
@@ -166,7 +208,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
     const wmsUrl = baseUrl;
     const wmsLayerNames = wmsParams.LAYERS || wmsParams.layers || "default";
 
-    return new WMS(id, {
+    const wmsLayer = new WMS(id, {
       isBaseLayer: olLayer.get("base"),
       layers: wmsLayerNames,
       url: wmsUrl,
@@ -177,6 +219,8 @@ export const createGlobusLayer = (olLayer, mapPool) => {
         ...wmsParams,
       },
     });
+    attachGlobeSelect(EOxMap, olLayer, wmsLayer);
+    return wmsLayer;
   }
   if (source instanceof Vector_ol && source.getUrl()) {
     let projection;
@@ -209,6 +253,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
           });
 
           vectorLayer.addTo(globus.planet);
+          attachGlobeSelect(EOxMap, olLayer, vectorLayer);
           const olStyle = olLayer.getStyle();
 
           var f = data.features;
@@ -220,6 +265,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
             );
             vectorLayer.add(
               new Entity({
+                properties: fi.properties,
                 geometry: {
                   type: fi.geometry.type,
                   coordinates: fi.geometry.coordinates,
@@ -241,8 +287,8 @@ export const createGlobusLayer = (olLayer, mapPool) => {
   // Check if GeoTIFF layer can be natively rendered in OpenGlobus
   const isGeoTIFF =
     source instanceof GeoTIFF_ol &&
-    jsonDef?.source.sources &&
-    jsonDef?.source.sources.length === 1;
+    (jsonDef?.source?.sources?.some((s) => s.url || s.blob) ||
+      !!jsonDef?.source?.url);
 
   if (isGeoTIFF) {
     const style = jsonDef?.style || olLayer.style_ || {};
@@ -251,17 +297,15 @@ export const createGlobusLayer = (olLayer, mapPool) => {
       /** @type {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions} */ (
         translateOLColorExpression(style, olLayer.styleVariables_)
       );
-    const url =
-      jsonDef?.source?.sources?.[0]?.url ||
-      jsonDef?.source?.url ||
-      (source && /** @type {any} */ (source).urls?.[0]);
-
-    return new GeoTIFFLayer(id, {
-      url,
+    const geoTIFFLayer = new GeoTIFFLayer(id, {
+      ...getGeoTIFFSourceOptions(jsonDef?.source),
       opacity: olLayer.getOpacity(),
       visibility: olLayer.getVisible(),
       renderOptions,
     });
+
+    attachGlobeSelect(EOxMap, olLayer, geoTIFFLayer);
+    return geoTIFFLayer;
   }
 
   // Fallback to CanvasTiles for other layer types
@@ -322,6 +366,7 @@ export const enableGlobe = (map) => {
       EOxMap: map,
       target: globeDiv,
     });
+    mountGlobeTooltip(map, globeDiv);
 
     /** @type {HTMLElement} */
     (map.shadowRoot.querySelector("#map")).style.display = "none";
@@ -584,6 +629,7 @@ export const disableGlobe = (map) => {
             existingFullScreen.source_ = map.shadowRoot.querySelector("#map");
           }
         }
+        unmountGlobeTooltip(map);
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation
