@@ -1,5 +1,7 @@
 export {
   default as updateTimelineItems,
+  hasSameSliderContent,
+  setupVisibilityListeners,
   updateVisibility,
 } from "./update-timeline-items";
 export { default as setSelectedDate } from "./set-selected-date";
@@ -18,3 +20,4 @@ export { default as getInitDate } from "./get-init-date";
 export { default as getWrongLocalFormatToUTCFormat } from "./get-wrong-local-to-utc";
 export { default as getUTCLocalDateTime } from "./get-utc-local";
 export { default as getDateRange } from "./get-date-range";
+export { default as hasTimeFormat } from "./has-time-format.js";

@@ -133,7 +133,7 @@ export function setControlsMethod(controls, oldControls, EOxMap) {
 export function setLayersMethod(layers, oldLayers, EOxMap) {
   // Deep copy the new layers array
   // Deserialization see: https://github.com/yahoo/serialize-javascript?tab=readme-ov-file#deserializing
-  const newLayers = eval("(" + serialize(layers) + ")");
+  const newLayers = (0, eval)("(" + serialize(layers) + ")");
 
   // Remove old layers not present in the new layers
   if (oldLayers) {
@@ -189,7 +189,7 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
   // set min/max zoom behavior
   // get the min/max zoom value of all the layers
   /**
-   * @typedef {Object} MinMaxZoom
+   * @typedef {object} MinMaxZoom
    * @property {number|undefined} minZoom
    * @property {number|undefined} maxZoom
    */
@@ -425,9 +425,16 @@ export function setSyncMethod(sync, EOxMap) {
   if (sync) {
     // Use a timeout to ensure the target map is ready before syncing views
     setTimeout(() => {
-      const originMap = /** @type {import("../../main").EOxMap} **/ (
-        /** @type {any} **/ (getElement(sync))
-      );
+      let originMap = null;
+      if (typeof sync === "string" && window.__eoxMapRegistry) {
+        const cleanId = sync.replace(/^eox-map/, "").replace(/^#/, "");
+        originMap = window.__eoxMapRegistry[cleanId];
+      }
+      if (!originMap) {
+        originMap = /** @type {import("../../main").EOxMap} **/ (
+          /** @type {any} **/ (getElement(sync))
+        );
+      }
 
       // Set the view of the current map to match the view of the origin map
       if (originMap) {

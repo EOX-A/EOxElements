@@ -302,6 +302,21 @@ for (const vc of virtualComponents) {
           "Configuration object or string containing layers/zoom/center settings for the step",
       },
     };
+  } else if (vc.name === "EOxMapWorkspace") {
+    properties = {
+      slot: { type: "string" },
+    };
+  } else if (vc.name === "EOxMapCompare") {
+    properties = {
+      slot: { type: "string" },
+      sync: { type: "string" },
+      enabled: { type: "string" },
+      value: { type: "number" },
+    };
+  } else if (vc.name === "EOxMapSideBySide") {
+    properties = {
+      slot: { type: "string" },
+    };
   }
 
   eoxCatalogJson.components[vc.name] = {
@@ -349,10 +364,27 @@ console.log(
 );
 
 // --- Generate combined_catalog.json ---
-const basicCatalogPath = path.resolve(
-  rootDir,
-  "node_modules/@a2ui/web_core/src/v0_9/schemas/basic_catalog.json",
-);
+const basicCatalogCandidatePaths = [
+  path.resolve(
+    process.cwd(),
+    "node_modules/@a2ui/web_core/src/v0_9/schemas/catalogs/basic/catalog.json",
+  ),
+  path.resolve(
+    rootDir,
+    "node_modules/@a2ui/web_core/src/v0_9/schemas/catalogs/basic/catalog.json",
+  ),
+  path.resolve(
+    process.cwd(),
+    "node_modules/@a2ui/web_core/src/v0_9/schemas/basic_catalog.json",
+  ),
+  path.resolve(
+    rootDir,
+    "node_modules/@a2ui/web_core/src/v0_9/schemas/basic_catalog.json",
+  ),
+];
+const basicCatalogPath =
+  basicCatalogCandidatePaths.find((p) => fs.existsSync(p)) ||
+  basicCatalogCandidatePaths[0];
 
 let combinedCatalogJson = null;
 

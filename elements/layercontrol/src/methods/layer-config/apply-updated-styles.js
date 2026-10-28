@@ -1,9 +1,11 @@
+import { getGeoZarrBandRange, updateGeoZarrBand } from "../../helpers";
+
 /**
  * @param {Record<string,number>} jsonformOutput
  * @param { import("ol/layer/Layer").default} layer
  * @param { import("../../components/layer-config").EOxLayerControlLayerConfig['layerConfig']} layerConfig
  * */
-export default function (jsonformOutput, layer, layerConfig) {
+export default async function (jsonformOutput, layer, layerConfig) {
   // check whether the layer is Vector or Tile
   const isTile = "updateStyleVariables" in layer;
   const isVector = "setStyle" in layer;
@@ -11,26 +13,89 @@ export default function (jsonformOutput, layer, layerConfig) {
   const styles = isTile
     ? /** @type {import('ol/layer/WebGLTile').default} */ (layer)["style_"]
     : layerConfig.style;
-  let styleVars = styles?.variables;
-  if (styleVars) {
-    const updatedValues = flattenObject(jsonformOutput);
+  const updatedValues = flattenObject(jsonformOutput);
+
+  if (styles) {
+    const styleVars = styles.variables || {};
     /** @type {Record<string,any>} */
     styles.variables = {
       ...styleVars,
       ...updatedValues,
     };
+  }
 
-    // check if it supports updating the variables using ol first
-    if (isTile) {
-      /** @type {import('ol/layer/WebGLTile').default} */ (
-        layer
-      ).updateStyleVariables(updatedValues);
-    } else if (isVector) {
-      const updatedStyles = updateVectorLayerStyle(styles);
-      /** @type {import('ol/layer/Vector').default} */ (layer).setStyle(
-        updatedStyles,
-      );
+  // check if it supports updating the variables using ol first
+  if (isTile) {
+    const selectedVar = jsonformOutput?.variable ?? jsonformOutput?.band;
+    if (selectedVar !== undefined) {
+      const lastVar = layer.get("_lastVariable");
+      if (selectedVar !== lastVar) {
+        const rangeResult = await updateGeoZarrBand(layer, String(selectedVar));
+
+        const targetMin =
+          rangeResult?.targetMin ??
+          getGeoZarrBandRange(layer, String(selectedVar), layerConfig)
+            .targetMin;
+        const targetMax =
+          rangeResult?.targetMax ??
+          getGeoZarrBandRange(layer, String(selectedVar), layerConfig)
+            .targetMax;
+
+        const isAutofill =
+          layerConfig?.autofill === true ||
+          layerConfig?.schema?.autofill === true;
+        const hasMinMaxStyle =
+          isAutofill ||
+          styles?.variables?.min !== undefined ||
+          styles?.variables?.max !== undefined ||
+          layerConfig?.schema?.properties?.min !== undefined ||
+          layerConfig?.schema?.properties?.max !== undefined;
+
+        if (hasMinMaxStyle) {
+          if (jsonformOutput) {
+            if ("min" in jsonformOutput) jsonformOutput.min = targetMin;
+            if ("max" in jsonformOutput) jsonformOutput.max = targetMax;
+          }
+          updatedValues.min = targetMin;
+          updatedValues.max = targetMax;
+          if (styles?.variables) {
+            styles.variables.min = targetMin;
+            styles.variables.max = targetMax;
+          }
+        }
+      }
     }
+
+    // Check and update non-temporal GeoZarr dimensions if present
+    const geozarrDims = layer.get("_geozarrDimensions");
+    const source = /** @type {any} */ (
+      layer.getSource ? layer.getSource() : null
+    );
+    if (
+      source &&
+      typeof source.updateDimensions === "function" &&
+      geozarrDims
+    ) {
+      /** @type {Record<string, number>} */
+      const dimUpdates = {};
+      for (const dimName of Object.keys(geozarrDims)) {
+        if (jsonformOutput[dimName] !== undefined) {
+          dimUpdates[dimName] = Number(jsonformOutput[dimName]);
+        }
+      }
+      if (Object.keys(dimUpdates).length > 0) {
+        source.updateDimensions(dimUpdates);
+      }
+    }
+
+    /** @type {import('ol/layer/WebGLTile').default} */ (
+      layer
+    ).updateStyleVariables(updatedValues);
+  } else if (isVector && styles) {
+    const updatedStyles = updateVectorLayerStyle(styles);
+    /** @type {import('ol/layer/Vector').default} */ (layer).setStyle(
+      updatedStyles,
+    );
   }
 }
 

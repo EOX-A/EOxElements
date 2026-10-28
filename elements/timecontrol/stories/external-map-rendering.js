@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * External map rendering mode for timelapse export with custom map rendering logic
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ExternalMapRenderingStory = {
   args: {
@@ -30,6 +30,7 @@ const ExternalMapRenderingStory = {
         storyImport: false,
         storySlot: true,
         navigation: true,
+        format: "YYYY-MM-DD HH:mm:ss",
       },
       "eox-timecontrol-picker": {
         storyImport: false,
@@ -58,6 +59,7 @@ const ExternalMapRenderingStory = {
     >
       <eox-timecontrol-timeline></eox-timecontrol-timeline>
       <eox-timecontrol-date
+        .format=${args.storyAdditionalComponents["eox-timecontrol-date"].format}
         .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
           .navigation}
       ></eox-timecontrol-date>

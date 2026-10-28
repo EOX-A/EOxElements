@@ -13,6 +13,7 @@ import { version } from "./generated-catalog.js";
 export function mergeCatalogs(id, ...catalogs) {
   const mergedComponents = [];
   const mergedFunctions = [];
+  const protocolVersion = catalogs[0]?.protocolVersion || "0.9";
   for (const cat of catalogs) {
     if (cat.components) {
       mergedComponents.push(...cat.components.values());
@@ -21,7 +22,7 @@ export function mergeCatalogs(id, ...catalogs) {
       mergedFunctions.push(...cat.functions.values());
     }
   }
-  return new Catalog(id, mergedComponents, mergedFunctions);
+  return new Catalog(id, protocolVersion, mergedComponents, mergedFunctions);
 }
 
 /**

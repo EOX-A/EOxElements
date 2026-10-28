@@ -65,16 +65,32 @@ export class EOxChart extends LitElement {
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
+
+    /**
+     * ResizeObserver instance to handle auto-resizing
+     *
+     * @type {ResizeObserver | null}
+     * @private
+     */
+    this._resizeObserver = null;
+
+    /**
+     * Vega view instance
+     *
+     * @type {any}
+     * @private
+     */
+    this._vegaView = null;
   }
 
   /**
@@ -120,10 +136,30 @@ export class EOxChart extends LitElement {
     }
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+    }
+  }
+
   /**
    * Append custom styling for vega tooltip
    */
   firstUpdated() {
+    if (typeof ResizeObserver !== "undefined" && !this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(() => {
+        if (this._vegaView) {
+          window.dispatchEvent(new Event("resize"));
+          this._vegaView.resize().runAsync();
+        }
+      });
+      this._resizeObserver.observe(this);
+      if (this.parentElement) {
+        this._resizeObserver.observe(this.parentElement);
+      }
+    }
+
     if (!this.unstyled) {
       const style = document.createElement("style");
       style.innerHTML = `

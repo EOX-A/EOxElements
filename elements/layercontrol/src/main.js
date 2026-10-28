@@ -84,14 +84,14 @@ export class EOxLayerControl extends LitElement {
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
-     * @type {String|HTMLElement}
+     * @type {string | HTMLElement}
      */
     this.for = "eox-map";
 
     /**
      * Layer id property
      *
-     * @type {String}
+     * @type {string}
      */
     this.idProperty = "id";
 
@@ -106,63 +106,63 @@ export class EOxLayerControl extends LitElement {
     /**
      * Layer title property
      *
-     * @type {String}
+     * @type {string}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showLayerZoomState = false;
 
     /**
      * Layer tools
      *
-     * @type {Array<String>}
+     * @type {Array<string>}
      */
     this.tools = ["info", "opacity", "datetime", "config", "remove", "sort"];
 
     /**
      * Enable-disable external layer
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.addExternalLayers = false;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Overrides elements current CSS.
      *
-     * @type {String}
+     * @type {string}
      */
     this.styleOverride = "";
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
 
     /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.globallyExclusiveLayers = false;
 
     /**
      * If enabled, toggling the layer visibility will also open/close the layer tools.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAutoExpand = false;
 

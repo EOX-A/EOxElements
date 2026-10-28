@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * A single config object for all the attribute and properties
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ConfigObjectStory = {
   args: {

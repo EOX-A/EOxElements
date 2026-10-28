@@ -1,5 +1,38 @@
 # Changelog
 
+## [2.8.3](https://github.com/EOX-A/EOxElements/compare/map-v2.8.2...map-v2.8.3) (2026-10-26)
+
+
+### Bug Fixes
+
+* Eval warning fix ([#2617](https://github.com/EOX-A/EOxElements/issues/2617)) ([617a557](https://github.com/EOX-A/EOxElements/commit/617a5574022948ef6007728ffcff53436aee68cc))
+
+## [2.8.2](https://github.com/EOX-A/EOxElements/compare/map-v2.8.1...map-v2.8.2) (2026-10-20)
+
+
+### Bug Fixes
+
+* Allow GeoZarr time settings ([#2605](https://github.com/EOX-A/EOxElements/issues/2605)) ([bcf9388](https://github.com/EOX-A/EOxElements/commit/bcf9388eff74f28acb0f83b1435c5d63fbceac31))
+
+## [2.8.1](https://github.com/EOX-A/EOxElements/compare/map-v2.8.0...map-v2.8.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* Alternative update without setting up or checking the zarr layer ([#2555](https://github.com/EOX-A/EOxElements/issues/2555)) ([7f24b7b](https://github.com/EOX-A/EOxElements/commit/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6))
+
+## [2.8.0](https://github.com/EOX-A/EOxElements/compare/map-v2.7.2...map-v2.8.0) (2026-09-28)
+
+
+### Features
+
+* GeoZarr source initialization and layer setup ([#2498](https://github.com/EOX-A/EOxElements/issues/2498)) ([4961397](https://github.com/EOX-A/EOxElements/commit/4961397d066d95aed2fd039f1ec24cb13de2bbe4))
+
+
+### Bug Fixes
+
+* Support map syncing across shadow DOM boundaries via global registry ([#2543](https://github.com/EOX-A/EOxElements/issues/2543)) ([b25222b](https://github.com/EOX-A/EOxElements/commit/b25222b4105d302a6baf77c8686e930431a3cd03))
+
 ## [2.7.2](https://github.com/EOX-A/EOxElements/compare/map-v2.7.1...map-v2.7.2) (2026-08-07)
 
 

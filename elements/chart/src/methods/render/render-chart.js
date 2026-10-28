@@ -7,7 +7,7 @@ import { DEFAULT_SPEC, DEFAULT_OPT } from "../../enums";
  *
  * @param {import("../../main").EOxChart} EOxChart The eox-chart instance
  * @param {import("vega-embed").VisualizationSpec} spec
- * @param {Object=} dataValues
+ * @param {object=} dataValues
  *
  */
 const renderChartMethod = (EOxChart, spec, opt, dataValues) => {
@@ -34,6 +34,8 @@ const renderChartMethod = (EOxChart, spec, opt, dataValues) => {
       // @ts-expect-error using private method defined on EOxChart
       EOxChart._dispatchItemClickEvent({ event, item });
     });
+    // @ts-expect-error using private method defined on EOxChart
+    EOxChart._vegaView = res.view;
   });
 };
 

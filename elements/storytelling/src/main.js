@@ -91,14 +91,14 @@ export class EOxStoryTelling extends LitElement {
   /**
    * Basic config
    *
-   * @type {Object}
+   * @type {object}
    */
   #config = {};
 
   /**
    * Debounce update markdown
    *
-   * @type {Object}
+   * @type {object}
    */
   #debounceUpdateMarkdown = null;
   constructor() {
@@ -107,26 +107,26 @@ export class EOxStoryTelling extends LitElement {
     this.#html = undefined;
 
     /**
-     * @type {String} - Markdown Content
+     * @type {string} - Markdown Content
      */
     this.markdown = "";
 
     /**
-     * @type {String} - Markdown Content URL
+     * @type {string} - Markdown Content URL
      */
     this.markdownURL = null;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
@@ -134,7 +134,7 @@ export class EOxStoryTelling extends LitElement {
      * Disable auto save
      *
      * @deprecated Will be removed in the next major version
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.disableAutosave = false;
 
@@ -142,49 +142,49 @@ export class EOxStoryTelling extends LitElement {
      * Enable or disable editor
      *
      * @deprecated Will be removed in the next major version
-     * @type {String | "closed" | undefined}
+     * @type {string | "closed" | undefined}
      */
     this.showEditor = undefined;
 
     /**
      * Enable or disable navigation
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showNav = false;
 
     /**
      * Enable or disable hero scroll indicator
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showHeroScrollIndicator = false;
 
     /**
      * Enable or disable map loading indicator by default
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showMapLoadingIndicator = false;
 
     /**
      * List of items in navigation
      *
-     * @type {Array<Object>}
+     * @type {Array<object>}
      */
     this.nav = [];
 
     /**
      * custom section index
      *
-     * @type {Number}
+     * @type {number}
      */
     this.addCustomSectionIndex = -1;
 
     /**
      * Selected custom element object
      *
-     * @type {Object | null}
+     * @type {object | null}
      */
     this.selectedCustomElement = null;
   }

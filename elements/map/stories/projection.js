@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * The projection of the view can be changed via the `projection`-attribute.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ProjectionStory = {
   args: {

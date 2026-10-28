@@ -1,7 +1,7 @@
 /**
  * Renders `Group` layer which contains multiple layers in a group
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const GroupLayerStory = {
   args: {

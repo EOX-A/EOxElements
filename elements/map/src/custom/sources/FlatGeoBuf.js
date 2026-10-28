@@ -1,6 +1,6 @@
 import { transformExtent, transform } from "../../helpers/transform";
 import { containsCoordinate } from "ol/extent";
-import { deserialize } from "flatgeobuf/lib/mjs/geojson";
+import { deserialize } from "flatgeobuf/geojson";
 import Vector from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON";
 import { bbox } from "ol/loadingstrategy";
@@ -163,7 +163,7 @@ class FlatGeoBuf extends Vector {
       for (const url of this.resourceURLs) {
         for (const rect of rects) {
           if (rect.minX === -Infinity || rect.maxX === Infinity) continue;
-          const iter = deserialize(url, rect);
+          const iter = deserialize(url, { rect });
           for await (const feature of iter) {
             const olFeature = geoJsonFormat.readFeature(feature);
             //@ts-expect-error for GeoJSON-Format this should always be a single feature.

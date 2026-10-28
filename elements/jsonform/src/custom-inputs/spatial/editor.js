@@ -52,7 +52,7 @@ export class SpatialEditor extends AbstractEditor {
       );
 
     const drawtoolsEl =
-      /** @type {import("@eox/drawtools").EOxDrawTools & {disabled: Boolean}} */ (
+      /** @type {import("@eox/drawtools").EOxDrawTools & {disabled: boolean}} */ (
         document.createElement("eox-drawtools")
       );
 

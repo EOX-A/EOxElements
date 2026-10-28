@@ -42,25 +42,21 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   );
   const selectedDateRange = dayjs(dateRange[0]);
   if (Number.isNaN(selectedDateRange.unix())) return;
-  const flatLayers = eoxMap
-    ? eoxMap.getFlatLayersArray(
-        /** @type {import('ol/layer/Base').default[]} */ (
-          eoxMap.map.getLayers().getArray()
-        ),
-      )
-    : [];
 
-  let selectedRangeItems = [];
-  const dayjsDateRange = [dayjs(dateRange[0]), dayjs(dateRange[1])];
+  const isUtc = EOxTimeControl.showUTC;
+  const dayjsDateRange = [
+    isUtc ? dayjs.utc(dateRange[0]) : dayjs(dateRange[0]),
+    isUtc ? dayjs.utc(dateRange[1]) : dayjs(dateRange[1]),
+  ];
 
   const [start, end] = dayjsDateRange[0].isBefore(dayjsDateRange[1])
     ? [dayjsDateRange[0], dayjsDateRange[1]]
     : [dayjsDateRange[1], dayjsDateRange[0]];
 
-  selectedRangeItems = EOxTimeControl.items.get().filter((item) => {
+  const selectedRangeItems = EOxTimeControl.items.get().filter((item) => {
     const itemDate = item.utc;
     if (!itemDate) return false;
-    const d = dayjs(itemDate);
+    const d = isUtc ? dayjs.utc(itemDate) : dayjs(itemDate);
     return (
       (d.isSame(start, "day") || d.isAfter(start, "day")) &&
       (d.isSame(end, "day") || d.isBefore(end, "day"))
@@ -68,9 +64,11 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   });
 
   let instances = {};
-  selectedRangeItems.forEach((item) => {
+  selectedRangeItems.forEach((item, index) => {
     if (item.group && eoxMap) {
-      const layer = flatLayers.find((l) => l.get("id") === item.group);
+      const layer = EOxTimeControl.sliderValues.find(
+        (slider) => slider.layer === item.group,
+      )?.layerInstance;
       // @ts-expect-error Property 'getSource' does not exist on type 'BaseLayer'.
       const source = layer?.getLayers ? null : layer?.getSource();
       instances = {
@@ -79,9 +77,30 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
       };
 
       if (!EOxTimeControl.externalMapRendering) {
-        source.updateParams({
-          [item.property]: item.originalDate,
-        });
+        if (typeof source?.updateParams === "function") {
+          source.updateParams({
+            [item.property]: item.date,
+          });
+        } else if (typeof source?.updateDimensions === "function") {
+          const sliceMap = layer?.get
+            ? layer.get("layerDatetime")?.sliceMap
+            : null;
+          const targetDate = item.originalDate || item.utc || item.date;
+          let sliceIndex = index;
+          if (sliceMap) {
+            if (targetDate in sliceMap) {
+              sliceIndex = sliceMap[targetDate];
+            } else {
+              const matchedKey = Object.keys(sliceMap).find(
+                (k) => k.startsWith(targetDate) || targetDate.startsWith(k),
+              );
+              if (matchedKey !== undefined) sliceIndex = sliceMap[matchedKey];
+            }
+          }
+          source.updateDimensions({
+            time: sliceIndex,
+          });
+        }
       }
     }
   });

@@ -40,6 +40,22 @@ export class EOxA2uiElement extends A2uiLitElement {
     this._appliedProps = {};
   }
 
+  get controller() {
+    return this._controller;
+  }
+
+  set controller(value) {
+    this._controller = value;
+  }
+
+  get map() {
+    return (
+      this._elementRef?.value?.map ||
+      this.querySelector("eox-map")?.map ||
+      undefined
+    );
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -58,8 +74,93 @@ export class EOxA2uiElement extends A2uiLitElement {
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
     const element = this._elementRef.value;
+    const type = this.context?.componentModel?.type;
+
+    if (type === "EOxMapWorkspace") {
+      this.style.cssText =
+        "display: block; width: 100%; height: 100%; flex: 1 1 100%; position: relative;";
+      const host =
+        this.parentElement ||
+        (this.parentNode && this.parentNode.host ? this.parentNode.host : null);
+      if (host) {
+        host.style.cssText =
+          "height: 100%; flex: 1 1 100%; display: flex; flex-direction: column;";
+      }
+    } else if (type === "EOxMapSideBySide") {
+      this.style.cssText =
+        "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
+      if (element) {
+        element.style.cssText =
+          "display: flex; flex-direction: row; width: 100%; height: 100%; position: relative;";
+      }
+    } else if (type === "EOxMap" && element) {
+      if (!element.controls) {
+        element.controls = { LoadingIndicator: { type: "small" } };
+      } else if (
+        typeof element.controls === "object" &&
+        !Array.isArray(element.controls) &&
+        !element.controls.LoadingIndicator
+      ) {
+        element.controls = {
+          ...element.controls,
+          LoadingIndicator: { type: "small" },
+        };
+      }
+    } else if (type === "EOxTimeControl" && element) {
+      if (!element.querySelector("eox-timecontrol-date")) {
+        const dateEl = document.createElement("eox-timecontrol-date");
+        dateEl.setAttribute("navigation", "");
+        element.appendChild(dateEl);
+      }
+      if (
+        !element.querySelector("eox-timecontrol-slider") &&
+        !element.querySelector("eox-timecontrol-picker")
+      ) {
+        const sliderEl = document.createElement("eox-timecontrol-slider");
+        element.appendChild(sliderEl);
+      }
+      if (!element.eoxMap && !element.for) {
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const mapEl = root.querySelector("eox-map");
+        if (mapEl) {
+          element.eoxMap = mapEl;
+          element.for = mapEl;
+        }
+      }
+    } else if (type === "EOxLayerControl" && element) {
+      if (!element.tools || element.tools.length === 0) {
+        element.tools = ["legend"];
+        element.setAttribute("tools", '["legend"]');
+      }
+      if (!element.hasAttribute("tools-auto-expand")) {
+        element.toolsAutoExpand = true;
+        element.setAttribute("tools-auto-expand", "");
+      }
+      if (!element.eoxMap && !element.for) {
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const mapEl = root.querySelector("eox-map");
+        if (mapEl) {
+          element.eoxMap = mapEl;
+          element.for = mapEl;
+        }
+      }
+    } else if (type === "EOxDrawTools" && element) {
+      if (!element.eoxMap && !element.for) {
+        const root = this.closest("eox-a2ui-wrapper, a2ui-surface") || document;
+        const mapEl = root.querySelector("eox-map");
+        if (mapEl) {
+          element.eoxMap = mapEl;
+          element.for = mapEl;
+          if (typeof element.updateLayer === "function") {
+            try {
+              element.updateLayer();
+            } catch (e) {}
+          }
+        }
+      }
+    }
+
     if (element) {
-      const type = this.context.componentModel.type;
       const api = eoxCatalog.components.get(type);
       const eventsToForward = api?.events || [];
 
@@ -202,8 +303,43 @@ export class EOxA2uiElement extends A2uiLitElement {
 
       // Pass all properties to the EOxElement
       const mergedProps = { ...this.controller.props, ...transformedProps };
+      if (type === "EOxMap") {
+        if (!mergedProps.controls) {
+          mergedProps.controls = { LoadingIndicator: { type: "small" } };
+        } else if (
+          typeof mergedProps.controls === "object" &&
+          !Array.isArray(mergedProps.controls) &&
+          !mergedProps.controls.LoadingIndicator
+        ) {
+          mergedProps.controls = {
+            ...mergedProps.controls,
+            LoadingIndicator: { type: "small" },
+          };
+        }
+      }
       for (const [key, value] of Object.entries(mergedProps)) {
         if (key === "children") {
+          continue;
+        }
+        if (key === "slot") {
+          this.setAttribute("slot", value);
+        }
+        if (key === "class") {
+          if (typeof value === "string") {
+            value.split(" ").forEach((c) => c && this.classList.add(c));
+          }
+        }
+        if (key === "style") {
+          if (typeof value === "string") {
+            this.style.cssText = value;
+            if (type === "EOxMapSideBySide") {
+              element.style.cssText =
+                "width: 100%; height: 100%; position: relative; display: flex; flex-direction: row;";
+            } else {
+              element.style.cssText =
+                "width: 100%; height: 100%; position: relative; display: block;";
+            }
+          }
           continue;
         }
         if (!isEqual(this._appliedProps[key], value)) {
@@ -226,6 +362,16 @@ export class EOxA2uiElement extends A2uiLitElement {
     const children = Array.isArray(this.controller?.props?.children)
       ? this.controller.props.children
       : [];
+
+    const slotVal = this.controller?.props?.slot;
+
+    if (slotVal) {
+      return html`<${targetTag}
+        id=${this.context.componentModel.id}
+        slot=${slotVal}
+        ${ref(this._elementRef)}
+      >${hasTransformer ? nothing : children.map((child) => this.renderNode(child))}</${targetTag}>`;
+    }
 
     return html`<${targetTag}
       id=${this.context.componentModel.id}

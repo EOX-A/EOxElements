@@ -48,6 +48,7 @@ import getChildElement from "./helpers/get-child-element.js";
  * ## Features
  *
  * - **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.
+ * - **Multiple Maps:** Target an `eox-map-compare` or pass an array of map selectors/references through the `for` property to share one timeline and picker.
  * - **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.
  * - **Navigation Controls:** Previous/next buttons for stepping through time periods.
  * - **Date Formatting:** Customizable display format using dayjs tokens (default: "YYYY-MM-DD").
@@ -82,7 +83,7 @@ export class EOxTimeControl extends LitElement {
   /**
    * Defines the component's reactive properties.
    *
-   * @returns {Object} Property definitions.
+   * @returns {object} Property definitions.
    */
   static get properties() {
     return {
@@ -97,12 +98,29 @@ export class EOxTimeControl extends LitElement {
       },
       selectedDateRange: { type: Array },
       controlValues: { type: Array },
-      initDate: { type: Array },
+      initDate: {
+        attribute: "init-date",
+        converter: {
+          fromAttribute(value) {
+            if (!value) return null;
+            try {
+              return JSON.parse(value);
+            } catch {
+              return value;
+            }
+          },
+          toAttribute(value) {
+            return typeof value === "object"
+              ? JSON.stringify(value)
+              : String(value);
+          },
+        },
+      },
     };
   }
 
   /**
-   * Reference to the associated eox-map element instance.
+   * Primary map reference (the first resolved map), also used for timelapse export.
    *
    * @type {EOxMap | null}
    */
@@ -130,11 +148,18 @@ export class EOxTimeControl extends LitElement {
   #sliderValues = [];
 
   /**
-   * Removes the map `layerschanged` listener registered in firstUpdated.
+   * Removes listeners registered on the associated maps and layers.
    *
    * @type {(() => void) | null}
    */
-  #cleanupLayersListener = null;
+  #removeTimecontrolListeners = null;
+
+  /**
+   * Skips the initial update of the timecontrol.
+   *
+   * @type {boolean}
+   */
+  #skipInitialUpdate = true;
 
   /**
    * Creates a new EOxTimeControl instance.
@@ -185,24 +210,26 @@ export class EOxTimeControl extends LitElement {
     this.externalMapRendering = false;
 
     /**
-     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
-     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
+     * Selector or element reference for an `eox-map` or `eox-map-compare`.
+     * Pass an array of selectors/references as a property to control multiple maps,
+     * including maps whose views are linked with `sync`.
      *
-     * @type {String|HTMLElement}
+     * @type {string | HTMLElement | Array<string | HTMLElement>}
      */
     this.for = undefined;
 
     /**
      * Array of control values.
      *
-     * @type {Array<Object>}
+     * @type {Array<object>}
      */
     this.controlValues = [];
 
     /**
-     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     * The initial date range as [startDate, endDate] in ISO/UTC format,
+     * or a date/keyword string, or array.
      *
-     * @type {DateRange}
+     * @type {DateRange | string | Array<string> | null}
      */
     this.initDate = null;
   }
@@ -380,15 +407,88 @@ export class EOxTimeControl extends LitElement {
   }
 
   /**
-   * Lifecycle method called after the component's first update.
-   * Initializes the timecontrol by finding the associated map and setting up layer listeners.
+   * Resolves associated maps and initializes the timecontrol after its first render.
    */
   firstUpdated() {
-    this.#cleanupLayersListener = firstUpdatedMethod(
+    this.#removeTimecontrolListeners = firstUpdatedMethod(
       this,
       this.#emitUpdateEvent,
     );
-    this.requestUpdate();
+  }
+
+  /**
+   * Extends observed attributes to support lowercase "initdate" attribute.
+   *
+   * @returns {string[]} List of observed attribute names.
+   */
+  static get observedAttributes() {
+    const attrs = super.observedAttributes;
+    if (!attrs.includes("initdate")) {
+      return [...attrs, "initdate"];
+    }
+    return attrs;
+  }
+
+  /**
+   * Handles attribute changes, supporting "initdate" as an alias for "init-date".
+   *
+   * @param {string} name - Attribute name.
+   * @param {string | null} oldVal - Old attribute value.
+   * @param {string | null} newVal - New attribute value.
+   */
+  attributeChangedCallback(name, oldVal, newVal) {
+    super.attributeChangedCallback(name, oldVal, newVal);
+    if (name === "initdate" && newVal !== oldVal && newVal !== null) {
+      try {
+        this.initDate = JSON.parse(newVal);
+      } catch {
+        this.initDate = newVal;
+      }
+    }
+  }
+
+  /**
+   * Lifecycle method called when the component is connected to the DOM.
+   */
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.hasAttribute("initdate") && !this.initDate) {
+      const val = this.getAttribute("initdate");
+      if (val) {
+        try {
+          this.initDate = JSON.parse(val);
+        } catch {
+          this.initDate = val;
+        }
+      }
+    }
+  }
+
+  /**
+   * Lifecycle method called after property updates.
+   *
+   * @param {import("lit").PropertyValues} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    // firstUpdated already initialized the same properties in this update cycle.
+    if (this.#skipInitialUpdate) {
+      this.#skipInitialUpdate = false;
+      return;
+    }
+    if (
+      changedProperties.has("controlValues") ||
+      changedProperties.has("for") ||
+      changedProperties.has("initDate")
+    ) {
+      this.#removeTimecontrolListeners?.();
+      this.#removeTimecontrolListeners = null;
+      this.#removeTimecontrolListeners = firstUpdatedMethod(
+        this,
+        this.#emitUpdateEvent,
+      );
+      this.requestUpdate();
+    }
   }
 
   /**
@@ -396,8 +496,8 @@ export class EOxTimeControl extends LitElement {
    * Removes the map layer listener so it does not leak across re-mounts.
    */
   disconnectedCallback() {
-    this.#cleanupLayersListener?.();
-    this.#cleanupLayersListener = null;
+    this.#removeTimecontrolListeners?.();
+    this.#removeTimecontrolListeners = null;
     super.disconnectedCallback();
   }
 

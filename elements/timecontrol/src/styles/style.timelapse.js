@@ -208,6 +208,12 @@ export const styleTimelapse = `
   align-items: center;
   width: 100%;
 }
+.timecontrol-export-status {
+  padding: 0.5rem 1rem;
+  background: color-mix(in srgb, var(--inverse-on-surface, #f0f0f0) 92%, black);
+  border-radius: 0 0 6px 6px;
+  font-size: 0.875rem;
+}
 .load-wrapper-container {
   position: absolute;
   top: 0;

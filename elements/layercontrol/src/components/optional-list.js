@@ -8,7 +8,7 @@ import { addToListMethod } from "../methods/optional-list";
  * It offers the ability to filter layers based on specific properties and provides a method to handle the addition of selected layers to a list.
  *
  * @element eox-layercontrol-optional-list
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlOptionalList extends LitElement {
   // Define static properties for the component
@@ -26,7 +26,7 @@ export class EOxLayerControlOptionalList extends LitElement {
     /**
      * The layer id property
      *
-     * @type {String}
+     * @type {string}
      */
     this.idProperty = "id";
 
@@ -41,21 +41,21 @@ export class EOxLayerControlOptionalList extends LitElement {
     /**
      * The layer title property
      *
-     * @type {String}
+     * @type {string}
      */
     this.titleProperty = "title";
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
   }

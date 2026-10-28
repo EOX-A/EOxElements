@@ -5,9 +5,9 @@ import flatMap from "lodash.flatmap";
 /**
  * Creates a filter element based on the filter object type.
  *
- * @param {Object} filterObject - The filter object containing filter details.
+ * @param {object} filterObject - The filter object containing filter details.
  * @param {number} tabIndex - The tab index for the filter element.
- * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @param {object} EOxItemFilter - The EOxItemFilter component instance.
  * @returns {import("lit").HTMLTemplateResult} The HTML template for the filter element.
  */
 function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {

@@ -1,4 +1,6 @@
 export { default as loadOnlyDates } from "./load-only-dates.js";
+export { default as editDate } from "./edit-date.js";
+export { default as loadDateRangeWithTime } from "./date-time.js";
 export { default as loadDateWithInitDate } from "./load-date-with-init-date.js";
 export { default as loadDateWithFormat } from "./load-date-with-format.js";
 export { default as loadDateWithNavigation } from "./load-date-with-navigation.js";
@@ -20,3 +22,6 @@ export { default as loadDateInUTC } from "./load-date-in-utc.js";
 export { default as loadTimelineWithRangeConfiguration } from "./load-timeline-with-range-configuration.js";
 export { default as loadTimelineWithClustering } from "./load-timeline-with-clustering.js";
 export { default as loadDatePickerSelectionModes } from "./load-date-picker-selection-modes.js";
+export { default as loadCompareMaps } from "./load-compare-maps.js";
+export { default as loadDateNavigationWithoutFormat } from "./load-date-navigation-without-format.js";
+export { default as loadDateWrap } from "./load-date-wrap.js";

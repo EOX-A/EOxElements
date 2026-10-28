@@ -10,7 +10,7 @@ import parseFeatured from "./components/featured.js";
 import parseFooter from "./components/footer.js";
 import "./components/shadow";
 /**
- * @typedef {Object} Filter
+ * @typedef {object} Filter
  * @property {string} key
  * @property {(value: any)=>boolean} filter
  */

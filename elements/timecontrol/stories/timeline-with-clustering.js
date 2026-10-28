@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Timeline visualization using vis-timeline with clustering configuration
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const TimelineWithClusteringStory = {
   args: {

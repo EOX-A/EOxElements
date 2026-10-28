@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.10.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.10.0...layercontrol-v1.10.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* AnyOf config form fields when no start values exist ([#2594](https://github.com/EOX-A/EOxElements/issues/2594)) ([2da5f37](https://github.com/EOX-A/EOxElements/commit/2da5f37c57cbca061919cf1b2dc9cbfb3bab5745))
+* Debounce time slice updates in the layer datetime tool ([#2590](https://github.com/EOX-A/EOxElements/issues/2590)) ([3677b05](https://github.com/EOX-A/EOxElements/commit/3677b0503c81d79686c9064763fa0a5d4e4b6a98))
+* Hide the datetime tool when layerDatetime has no`controlValues` ([#2606](https://github.com/EOX-A/EOxElements/issues/2606)) ([40884c0](https://github.com/EOX-A/EOxElements/commit/40884c0495144dca6386f8b9e903477cbe8622df))
+
+## [1.10.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.9.0...layercontrol-v1.10.0) (2026-10-15)
+
+
+### Features
+
+* Support multidimensional geozarr layer configuration and band switching ([#2570](https://github.com/EOX-A/EOxElements/issues/2570)) ([2f5b441](https://github.com/EOX-A/EOxElements/commit/2f5b4413fbe4b3e7640430ab5314578b5be4365b))
+
+
+### Bug Fixes
+
+* Alternative update without setting up or checking the zarr layer ([#2555](https://github.com/EOX-A/EOxElements/issues/2555)) ([7f24b7b](https://github.com/EOX-A/EOxElements/commit/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6))
+
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.3...layercontrol-v1.9.0) (2026-09-28)
+
+
+### Features
+
+* GeoZarr support ([#2497](https://github.com/EOX-A/EOxElements/issues/2497)) ([193e619](https://github.com/EOX-A/EOxElements/commit/193e619a4c3af9b9c390d309958ccb9367e4ff63))
+
 ## [1.8.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.2...layercontrol-v1.8.3) (2026-08-24)
 
 

@@ -2,8 +2,8 @@
  * Returns whether zoom layer state be enabled or not for a particular layer
  *
  * @param {import("ol/layer").Layer | import("ol/layer").Group} layer - The layer or layer group to check for zoom-based visibility.
- * @param {Boolean} showLayerZoomState - Flag indicating if zoom-based visibility is requested.
- * @returns {Boolean} - Indicates if the zoom-based layer visibility state is required.
+ * @param {boolean} showLayerZoomState - Flag indicating if zoom-based visibility is requested.
+ * @returns {boolean} - Indicates if the zoom-based layer visibility state is required.
  */
 export default function isLayerZoomStateRequired(layer, showLayerZoomState) {
   // Retrieve minimum and maximum zoom levels set for the layer

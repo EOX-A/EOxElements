@@ -103,6 +103,10 @@ export type TimeControlDateOptions = {
    */
   navigation?: boolean;
   /**
+   * Enables date text editing. Defaults to false; a timecontrol picker enables it on initialization.
+   */
+  editable?: boolean;
+  /**
    * Whether to disable default styling.
    */
   unstyled?: boolean;
@@ -362,9 +366,9 @@ export type FilterConfig = {
  */
 export type TimeControlConfig = {
   /**
-   * Reference to the eox-map element (can be a selector string or element instance).
+   * Map or comparison selector/reference, or an array of map selectors/references.
    */
-  for?: string | EOxMap;
+  for?: string | HTMLElement | Array<string | HTMLElement>;
   /**
    * Property key used to identify layers (default: "id").
    */
@@ -537,9 +541,10 @@ declare global {
      */
     controlValues: Array<any>;
     /**
-     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     * The initial date range as [startDate, endDate] in ISO/UTC format,
+     * or a date/keyword string, or array.
      */
-    initDate: DateRange | null;
+    initDate: DateRange | string | Array<string> | null;
     /**
      * Handler for date changes.
      */
@@ -562,6 +567,10 @@ declare global {
      * Whether navigation buttons are shown.
      */
     navigation: boolean;
+    /**
+     * Whether date navigation wraps at the first and last dates (default: true).
+     */
+    dateWrap: boolean;
     /**
      * Whether default styling is disabled.
      */

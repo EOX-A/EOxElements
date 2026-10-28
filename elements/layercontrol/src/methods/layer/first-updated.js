@@ -60,6 +60,18 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
       .getView()
       .on("change:resolution", () => updateLayerZoomVisibility());
   }
+
+  // Listen for dynamic property changes (e.g. GeoZarr layerDatetime, layerConfig, timeControlValues)
+  EOxLayerControlLayer.layer?.on?.("propertychange", (e) => {
+    const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
+    if (
+      propEvent.key === "layerDatetime" ||
+      propEvent.key === "layerConfig" ||
+      propEvent.key === "timeControlValues"
+    ) {
+      EOxLayerControlLayer.requestUpdate();
+    }
+  });
 };
 
 export default firstUpdatedMethod;

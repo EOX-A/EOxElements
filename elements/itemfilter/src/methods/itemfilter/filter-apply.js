@@ -7,9 +7,9 @@ import { DATE_TIME_FORMAT } from "../../enums/index.js";
 /**
  * Applies filters to the provided items based on the given configuration and updates the EOxItemFilter instance.
  *
- * @param {Object} config - The configuration object for the filters.
- * @param {Array<Object>} items - The items to be filtered.
- * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @param {object} config - The configuration object for the filters.
+ * @param {Array<object>} items - The items to be filtered.
+ * @param {object} EOxItemFilter - The EOxItemFilter component instance.
  * @returns {Array<string>} The aggregated results if config.aggregateResults is specified, otherwise an empty array.
  */
 function filterApplyMethod(config, items, EOxItemFilter) {
@@ -54,6 +54,8 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           }
           return;
         }
+        // Text filters use `keys`, so no state keys come from item values
+        if (filterProperty.type === "text") return;
         if (Array.isArray(item[filterProperty.key])) {
           item[filterProperty.key].forEach((prop) => {
             filterKeys[prop] = undefined;
@@ -153,6 +155,11 @@ function filterApplyMethod(config, items, EOxItemFilter) {
         existingFilter?.state || {},
         filterProperty.state,
       );
+      if (filterProperty.type === "text") {
+        EOxItemFilter.filters[filterKey].stringifiedState = Object.values(
+          EOxItemFilter.filters[filterKey].state,
+        ).find(Boolean);
+      }
 
       if (filterProperty.type === "range" && filterProperty.state) {
         const parseVal = (val) => {

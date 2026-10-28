@@ -43,6 +43,9 @@ export default function getSelectedDatesMethod(
       selectedDates.push(current.format(TIME_CONTROL_DATE_FORMAT));
       current = current.add(1, "day");
     }
+    if (selectedDates.length === 1) {
+      selectedDates.push(selectedDates[0]);
+    }
   } else {
     // Fallback if it's a single date selection or the user hasn't clicked the second date yet
     selectedDates.push(start.format(TIME_CONTROL_DATE_FORMAT));

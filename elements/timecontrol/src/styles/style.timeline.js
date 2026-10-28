@@ -8,6 +8,24 @@ export const styleTimeline = `
 .timeline-wrapper {
   position: relative;
 }
+.vis-timeline,
+.vis-panel.vis-center,
+.vis-panel.vis-left,
+.vis-panel.vis-right,
+.vis-panel.vis-top,
+.vis-panel.vis-bottom,
+.vis-labelset .vis-label,
+.vis-foreground .vis-group,
+.vis-time-axis .vis-grid.vis-major {
+  border-color: var(--outline-variant, #bfbfbf);
+}
+.vis-time-axis .vis-grid.vis-minor {
+  border-color: color-mix(in srgb, var(--outline-variant, #bfbfbf) 50%, transparent);
+}
+.vis-labelset .vis-label,
+.vis-time-axis .vis-text {
+  color: var(--on-surface, #4d4d4d);
+}
 .flex-center {
   display: flex;
   align-items: center;
@@ -101,7 +119,7 @@ export const styleTimeline = `
   opacity: 0.4 !important;
 }
 .vis-custom-time.multi-select-start {
-  background: rgb(var(--eox-theme-light-primary), 0.4) !important;
+  background: color-mix(in srgb, var(--primary) 40%, transparent) !important;
 }
 .vis-custom-time.multi-select-end {
   background: none;
@@ -157,14 +175,13 @@ export const styleTimeline = `
   text-transform: uppercase;
 }
 .vis-text.vis-major {
-  color: #96938A !important;
   padding-left: 10px;
   margin-left: -8px;
-  background: white;
+  background: transparent;
 }
 .vis-text.vis-minor {
   margin-left: -8px;
-  background: white;
+  background: transparent;
 }
 .vis-item .vis-item-content {
   display: none;
@@ -174,12 +191,12 @@ export const styleTimeline = `
   width: 2px;
 }
 .vis-custom-time.selected {
-  background-color: #202427 !important;
+  background-color: var(--on-surface, #202427) !important;
   width: 2px;
   z-index: 9;
 }
 .vis-custom-time-selected {
-  background: #111 !important;
+  background: var(--on-surface, #111) !important;
   width: 2px;
 }
 .load-wrapper-container {
@@ -215,7 +232,8 @@ export const styleTimeline = `
   height: 100px;
 }
 div.vis-tooltip {
-  background: white;
+  background: var(--surface-container, white);
+  color: var(--on-surface, #4d4d4d);
   border: none;
   border-radius: 6px;
   padding: 6px 10px;

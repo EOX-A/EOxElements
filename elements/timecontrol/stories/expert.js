@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Expert example showcasing all timecontrol features together
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ExpertStory = {
   args: {

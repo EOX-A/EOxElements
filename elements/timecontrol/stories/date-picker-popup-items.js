@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Calendar date picker displayed in popup mode and shows items in the popup
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const DatePickerPopupItemsStory = {
   argTypes: {

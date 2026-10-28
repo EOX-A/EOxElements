@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/EOX-A/EOxElements/compare/chart-v1.2.0...chart-v1.2.1) (2026-09-28)
+
+
+### Bug Fixes
+
+* Auto-resize vega view on element and container size changes ([#2542](https://github.com/EOX-A/EOxElements/issues/2542)) ([1feb028](https://github.com/EOX-A/EOxElements/commit/1feb0281ae72b446e24af072cd2f5544bf699f4c))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/chart-v1.1.0...chart-v1.2.0) (2026-05-05)
 
 

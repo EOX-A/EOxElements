@@ -17,6 +17,8 @@ import {
   registerProjectionFromCode,
   getLayerById,
   getFlatLayersArray,
+  isGeoZarrLayer,
+  setupGeoZarrLayer,
 } from "./helpers";
 import {
   animateToStateMethod,
@@ -624,7 +626,7 @@ export class EOxMap extends LitElement {
    * Adds or updates a layer on the map.
    *
    * @param {EoxLayer} json - The layer configuration in JSON format.
-   * @returns {Object} The added or updated layer.
+   * @returns {object} The added or updated layer.
    */
   addOrUpdateLayer(json) {
     return addOrUpdateLayerMethod(json, this);
@@ -695,11 +697,22 @@ export class EOxMap extends LitElement {
     firstUpdatedMethod(this.#zoomExtent, this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    window.__eoxMapRegistry = window.__eoxMapRegistry || {};
+    if (this.id) {
+      window.__eoxMapRegistry[this.id] = this;
+    }
+  }
+
   /**
    * Lifecycle method called when the component is removed from the DOM.
    * Ensures that any associated event listeners or observers are properly disconnected.
    */
   disconnectedCallback() {
+    if (this.id && window.__eoxMapRegistry) {
+      delete window.__eoxMapRegistry[this.id];
+    }
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
     }
@@ -726,7 +739,7 @@ export class EOxMap extends LitElement {
    * Converts an array of OpenLayers features into a GeoJSON object.
    *
    * @param {Array<import("ol/Feature").default>} features - An array of OpenLayers features to be converted.
-   * @returns {Object} - A GeoJSON object representing the provided features.
+   * @returns {object} - A GeoJSON object representing the provided features.
    */
   parseFeature(features) {
     return parseFeature(features);
@@ -741,7 +754,7 @@ export class EOxMap extends LitElement {
    * @param {EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
    * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
    * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
-   * @return {void}
+   * @returns {void}
    */
   parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate) {
     parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate);
@@ -840,6 +853,12 @@ export class EOxMap extends LitElement {
 }
 
 // Export Additional Helper Methods
-export { buffer, transform, transformExtent };
+export {
+  buffer,
+  transform,
+  transformExtent,
+  isGeoZarrLayer,
+  setupGeoZarrLayer,
+};
 
 customElements.define("eox-map", EOxMap);

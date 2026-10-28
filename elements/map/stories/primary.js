@@ -1,7 +1,7 @@
 /**
  * Basic map rendered using `eox-map` configuration
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const PrimaryStory = {
   args: {

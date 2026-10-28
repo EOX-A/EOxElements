@@ -15,6 +15,7 @@ import timezone from "dayjs/plugin/timezone.js";
 import duration from "dayjs/plugin/duration";
 import groupBy from "lodash.groupby";
 import filter from "lodash.filter";
+import updateGridClipMethod from "./update-grid-clip.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -135,7 +136,7 @@ function handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl) {
  * Handles the time changed event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  */
 function handleTimeChanged(props, EOxTimeControl) {
@@ -159,7 +160,7 @@ function handleTimeChanged(props, EOxTimeControl) {
  * Handles the click event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
@@ -215,10 +216,12 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
  * Handles the range changed event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 function handleRangeChanged(props, EOxTimeControlTimeline) {
+  if (!EOxTimeControlTimeline.isConnected) return;
+
   if (props.byUser) {
     drag = true;
     setTimeout(() => (drag = false));
@@ -251,13 +254,28 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const items = /** @type {Array<any>} */ (EOxTimeControl.items.get());
     const groups = EOxTimeControl.groups.get();
     const dates = items.map((item) => dayjs(item.start));
-    const min = dayjs.min(dates).subtract(50, "day").toDate();
-    const max = dayjs.max(dates).add(50, "day").format("YYYY-MM-DD");
+    const minDate = dayjs.min(dates).subtract(50, "day");
+    const maxDate = dayjs.max(dates).add(50, "day");
+    const min = minDate.toDate();
+    const max = maxDate.format("YYYY-MM-DD");
+
+    let previousWindow = null;
+    if (EOxTimeControlTimeline.visTimeline) {
+      try {
+        previousWindow = EOxTimeControlTimeline.visTimeline.getWindow();
+      } catch {
+        // ignore if not initialized
+      }
+    }
 
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
 
-    const initDateRange = getInitDate(EOxTimeControl.initDate);
+    const initDateRange = getInitDate(
+      EOxTimeControl.initDate,
+      items,
+      EOxTimeControl.showUTC,
+    );
     const { start, end } = getDateRange(EOxTimeControl, items, initDateRange);
 
     const options = {
@@ -343,7 +361,26 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         )
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
-    visTimeline.fit();
+    const prevStart = previousWindow?.start
+      ? new Date(previousWindow.start).getTime()
+      : NaN;
+    const prevEnd = previousWindow?.end
+      ? new Date(previousWindow.end).getTime()
+      : NaN;
+    const isWindowValid =
+      !isNaN(prevStart) &&
+      !isNaN(prevEnd) &&
+      prevEnd >= minDate.valueOf() &&
+      prevStart <= maxDate.valueOf();
+
+    if (isWindowValid) {
+      visTimeline.setWindow(previousWindow.start, previousWindow.end, {
+        animation: false,
+      });
+    } else {
+      visTimeline.fit();
+    }
+    updateGridClipMethod(EOxTimeControlTimeline);
     EOxTimeControlTimeline.requestUpdate();
 
     if (drawInterval) {
@@ -376,6 +413,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       }, 50);
 
     visTimeline.on("changed", () => {
+      updateGridClipMethod(EOxTimeControlTimeline);
       updateRangeElements(EOxTimeControlTimeline);
       handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl);
     });

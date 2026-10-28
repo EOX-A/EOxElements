@@ -266,6 +266,12 @@ export function transformEOxStorytelling(data, parentProps) {
   }
 
   const children = Array.isArray(data) ? data : data ? [data] : [];
+  if (children.length === 0 && parentProps?.markdown) {
+    return {
+      markdown: parentProps.markdown,
+      children: [],
+    };
+  }
   const markdownParts = [];
 
   for (const child of children) {

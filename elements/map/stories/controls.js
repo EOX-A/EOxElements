@@ -1,7 +1,7 @@
 /**
  * Renders different `Controls` for the `eox-map` using control config
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ControlsStory = {
   args: {

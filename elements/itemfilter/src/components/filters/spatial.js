@@ -12,8 +12,8 @@ import {
 /**
  * Determines if one geometry is within another using Turf.js booleanWithin function.
  *
- * @param {Object} itemGeometry - The geometry of the item.
- * @param {Object} filterGeometry - The geometry of the filter.
+ * @param {object} itemGeometry - The geometry of the item.
+ * @param {object} filterGeometry - The geometry of the filter.
  * @returns {boolean} - True if itemGeometry is within filterGeometry, otherwise false.
  */
 export const within = (itemGeometry, filterGeometry) => {
@@ -28,9 +28,9 @@ export const within = (itemGeometry, filterGeometry) => {
  * The component allows users to select a spatial filter mode (intersects or within) and apply it to a map.
  *
  * @module EOxItemFilterSpatial
- * @extends LitElement
- * @property {Object} filterObject - The filter object containing the state and geometry.
- * @property {Number} tabIndex - The tab index for the input elements.
+ * @augments LitElement
+ * @property {object} filterObject - The filter object containing the state and geometry.
+ * @property {number} tabIndex - The tab index for the input elements.
  */
 class EOxItemFilterSpatial extends LitElement {
   // Define properties with defaults and types
@@ -132,9 +132,9 @@ customElements.define("eox-itemfilter-spatial", EOxItemFilterSpatial);
  * It uses the LitElement base class and integrates with external methods for setup and reset functionalities.
  *
  * @module SpatialFilter
- * @extends LitElement
- * @property {Object} geometry - The geometry object used for the spatial filter.
- * @property {Object} eoxMap - The map object used to display and interact with the spatial filter.
+ * @augments LitElement
+ * @property {object} geometry - The geometry object used for the spatial filter.
+ * @property {object} eoxMap - The map object used to display and interact with the spatial filter.
  */
 class SpatialFilter extends LitElement {
   // Define properties with defaults and types

@@ -1,16 +1,20 @@
 import { LitElement, html } from "lit";
 import _debounce from "lodash.debounce";
 import { when } from "lit/directives/when.js";
-import { resetTextMethod, textInputHandlerMethod } from "../../methods/filters";
+import {
+  resetTextMethod,
+  appendTextMethod,
+  textInputHandlerMethod,
+} from "../../methods/filters";
 
 /**
  * EOxItemFilterText is a custom web component that provides a text input field for filtering items.
  *
  * @module EOxItemFilterText
- * @extends LitElement
- * @property {Object} filterObject - The filter object containing the state and placeholder.
- * @property {Number} tabIndex - The tab index for the input element.
- * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
+ * @augments LitElement
+ * @property {object} filterObject - The filter object containing the state and placeholder.
+ * @property {number} tabIndex - The tab index for the input element.
+ * @property {boolean} unstyled - Flag to determine if default styles should be applied.
  */
 export class EOxItemFilterText extends LitElement {
   // Define properties with defaults and types
@@ -87,6 +91,15 @@ export class EOxItemFilterText extends LitElement {
    */
   reset() {
     resetTextMethod(this);
+  }
+
+  /**
+   * Appends text to the input and applies it by calling the appendTextMethod with the current context.
+   *
+   * @param {string} text - The text to append.
+   */
+  appendText(text) {
+    appendTextMethod(text, this);
   }
 
   /**

@@ -2,7 +2,7 @@
  * Handles the toggle event for the accordion.
  *
  * @param {CustomEvent} event - The toggle event.
- * @param {Object} config - The configuration object for item-filter.
+ * @param {object} config - The configuration object for item-filter.
  * @param {Element} that
  */
 function toggleAccordion(event, config, that) {

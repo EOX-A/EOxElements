@@ -282,7 +282,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
    * @param {number} count Number of cluster members.
    * @param {Array<number>} clusterCenter Center coordinate of the cluster.
    * @param {number} resolution Current view resolution.
-   * @return {Array<Array<number>>} An array of coordinates representing the cluster members.
+   * @returns {Array<Array<number>>} An array of coordinates representing the cluster members.
    */
   #generatePointsCircle(count, clusterCenter, resolution) {
     const circumference =

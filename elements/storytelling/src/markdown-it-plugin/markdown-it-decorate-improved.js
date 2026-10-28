@@ -16,16 +16,14 @@ import {
  * This plugin is improved ES6 version of `markdown-it-decorate`
  * Ref - https://github.com/rstacruz/markdown-it-decorate
  *
- * @type {import("markdown-it").PluginSimple}
  * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 export default function attributes(md) {
-  md.core.ruler.push("curly_attributes", curlyAttrs);
+  md.core.ruler.push("curly_attributes", /** @type {any} */ (curlyAttrs));
 }
 
 /**
  * Main function to process tokens and apply attributes
- * @type {Parameters<import("markdown-it").default["core"]["ruler"]["push"]>[1]}
  * @param {import("../types").CustomMarkdownItState} state - Token state
  */
 function curlyAttrs(state) {
@@ -157,11 +155,11 @@ function curlyAttrs(state) {
 /**
  * Add new html section token
  *
- * @param {{Token?: any, tokens: Array<Object>}} state - Token state
- * @param {String} tag
- * @param {Number} level
- * @param {Number} nesting
- * @param {String} type
+ * @param {{Token?: any, tokens: Array<object>}} state - Token state
+ * @param {string} tag
+ * @param {number} level
+ * @param {number} nesting
+ * @param {string} type
  * @param {Array<Array> | null} attrs
  */
 function addNewHTMLSection(state, tag, level, nesting, type, attrs = null) {
@@ -175,7 +173,7 @@ function addNewHTMLSection(state, tag, level, nesting, type, attrs = null) {
 /**
  * Check if a token type is a block opener
  *
- * @param {String} type - Token type
+ * @param {string} type - Token type
  */
 function isOpener(type) {
   return (
@@ -186,8 +184,8 @@ function isOpener(type) {
 /**
  * Process fallback mode
  *
- * @param {Object} nextInlineToken - Next inline token
- * @return {{ shouldContinue: Boolean }} - Status to continue to next opening token or not
+ * @param {object} nextInlineToken - Next inline token
+ * @returns {{shouldContinue: boolean}} - Status to continue to next opening token or not
  */
 function parseFallBack(nextInlineToken) {
   const newLineRegex = /\r\n|\r|\n/;
@@ -219,15 +217,15 @@ function parseFallBack(nextInlineToken) {
 /**
  * Process inline tokens for attributes
  *
- * @param {Object} token - current token
- * @param {Object} stack
- * @param {Array<Object>} nav
- * @param {Array<Object>} finalTokens
- * @param {Number} sectionStartIndex
- * @param {Number} sectionStepsIndex
- * @param {Boolean} sectionSteps
+ * @param {object} token - current token
+ * @param {object} stack
+ * @param {Array<object>} nav
+ * @param {Array<object>} finalTokens
+ * @param {number} sectionStartIndex
+ * @param {number} sectionStepsIndex
+ * @param {boolean} sectionSteps
  * @param {import("../types").CustomMarkdownIt} md
- * @return {Array<Object>} finalTokens
+ * @returns {Array<object>} finalTokens
  *
  */
 function parseInlineContent(
@@ -241,7 +239,7 @@ function parseInlineContent(
   md,
 ) {
   /**
-   * @type {InstanceType<InstanceType<import("markdown-it").default["core"]["State"]>["Token"]>}
+   * @type {import("markdown-it").Token}
    */
   let lastText;
   const omissions = [];
@@ -338,16 +336,16 @@ function parseInlineContent(
 /**
  * Process section tokens with help of h1/h2 tag
  *
- * @param {Object} index - current token index
- * @param {Array<Object>} tokens - List of markdown tokens
- * @param {Array<Object>} finalTokens - Processed final set of markdown token
- * @param {Boolean} sectionStart - Section started or not
- * @param {Number} sectionStartIndex - Section start index
- * @param {Boolean} sectionSteps - Step Section started or not
- * @param {Number} sectionStepsIndex - Step Section start index
- * @param {{tokens: Array<Object>}} state - Token state
- * @param {Object} stack
- * @return {Object} - Final list of updated states
+ * @param {object} index - current token index
+ * @param {Array<object>} tokens - List of markdown tokens
+ * @param {Array<object>} finalTokens - Processed final set of markdown token
+ * @param {boolean} sectionStart - Section started or not
+ * @param {number} sectionStartIndex - Section start index
+ * @param {boolean} sectionSteps - Step Section started or not
+ * @param {number} sectionStepsIndex - Step Section start index
+ * @param {{tokens: Array<object>}} state - Token state
+ * @param {object} stack
+ * @returns {object} - Final list of updated states
  */
 function parseSection(
   index,
@@ -413,16 +411,16 @@ function parseSection(
 /**
  * Process step section tokens with help of h3 tag
  *
- * @param {Object} index - current token index
- * @param {Array<Object>} tokens - List of markdown tokens
- * @param {Array<Object>} finalTokens - Processed final set of markdown token
- * @param {Boolean} sectionStart - Section started or not
- * @param {Number} sectionStartIndex - Section start index
- * @param {Boolean} sectionSteps - Step Section started or not
- * @param {Number} sectionStepsIndex - Step Section start index
- * @param {{tokens: Array<Object>}} state - Token state
- * @param {Object} stack
- * @return {Object} - Final list of updated states
+ * @param {object} index - current token index
+ * @param {Array<object>} tokens - List of markdown tokens
+ * @param {Array<object>} finalTokens - Processed final set of markdown token
+ * @param {boolean} sectionStart - Section started or not
+ * @param {number} sectionStartIndex - Section start index
+ * @param {boolean} sectionSteps - Step Section started or not
+ * @param {number} sectionStepsIndex - Step Section start index
+ * @param {{tokens: Array<object>}} state - Token state
+ * @param {object} stack
+ * @returns {object} - Final list of updated states
  */
 function parseStepSection(
   index,
@@ -474,10 +472,10 @@ function parseStepSection(
 /**
  * Process hero section
  *
- * @param {Array<Object>} finalTokens - Processed final set of markdown token
- * @param {{tokens: Array<Object>}} state - Token state
- * @param {Object} stack
- * @return {Object} - Final processed markdown tokens
+ * @param {Array<object>} finalTokens - Processed final set of markdown token
+ * @param {{tokens: Array<object>}} state - Token state
+ * @param {object} stack
+ * @returns {object} - Final processed markdown tokens
  */
 function parseHeroSection(finalTokens, state, stack) {
   finalTokens.push(
@@ -500,8 +498,8 @@ function parseHeroSection(finalTokens, state, stack) {
 /**
  * Process and parse `as` section wrapper if mode is not present
  *
- * @param {Array<Object>} finalTokens - Processed final set of markdown token
- * @param {Number} sectionStartIndex - Section start index
+ * @param {Array<object>} finalTokens - Processed final set of markdown token
+ * @param {number} sectionStartIndex - Section start index
  */
 function parseAsSectionWrapper(finalTokens, sectionStartIndex) {
   const asSectionToken = finalTokens[sectionStartIndex + 1];
@@ -523,9 +521,9 @@ function parseAsSectionWrapper(finalTokens, sectionStartIndex) {
 /**
  * Process and push closing tags for section and step section
  *
- * @param {Array<Object>} finalTokens - Processed final set of markdown token
- * @param {Object} index - current token index
- * @param {{tokens: Array<Object>}} state - Token state
+ * @param {Array<object>} finalTokens - Processed final set of markdown token
+ * @param {object} index - current token index
+ * @param {{tokens: Array<object>}} state - Token state
  */
 function pushClosingTag(finalTokens, index, state) {
   const tag = finalTokens[index].tag;
@@ -536,8 +534,8 @@ function pushClosingTag(finalTokens, index, state) {
  * Get attribute value from 3d attribute array
  *
  * @param {Array<Array>} attrs - 3d array of attributes
- * @param {String} key - key which we need to get
- * @return {String | null} Attribute Value
+ * @param {string} key - key which we need to get
+ * @returns {string | null} Attribute Value
  *
  */
 function getAttr(attrs, key) {
@@ -547,9 +545,9 @@ function getAttr(attrs, key) {
 /**
  * Find parent token for applying attributes
  *
- * @param {Object} stack
- * @param {String} tag
- * @param {Number | String} depth
+ * @param {object} stack
+ * @param {string} tag
+ * @param {number | string} depth
  */
 function findParent(stack, tag, depth) {
   if (!tag) return stack.last;
@@ -573,8 +571,8 @@ function findParent(stack, tag, depth) {
 /**
  * Apply attributes to a token, correctly handling id and classes
  *
- * @param {Object} token
- * @param {String} attrs
+ * @param {object} token
+ * @param {string} attrs
  * @param {import("../types").CustomMarkdownIt} md
  */
 function applyToToken(token, attrs = "", md = null) {
@@ -667,10 +665,10 @@ function applyToToken(token, attrs = "", md = null) {
 /**
  * Function to add or append an attribute to a token
  *
- * @param {Object} token
- * @param {String} attr
- * @param {String} value
- * @param {Object} options
+ * @param {object} token
+ * @param {string} attr
+ * @param {string} value
+ * @param {object} options
  */
 function addAttr(token, attr, value, options = {}) {
   const idx = token.attrIndex(attr);
@@ -695,8 +693,8 @@ function addAttr(token, attr, value, options = {}) {
 /**
  * Push a token to the stack
  *
- * @param {Object} stack
- * @param {Object} token
+ * @param {object} stack
+ * @param {object} token
  */
 function sPush(stack, token) {
   const type = token.type.replace(/_(open|start)$/, "");
@@ -708,8 +706,8 @@ function sPush(stack, token) {
 /**
  * Trim whitespace from the right of a string
  *
- * @param {Object} obj
- * @param {String} attr
+ * @param {object} obj
+ * @param {string} attr
  */
 function trimRight(obj, attr) {
   obj[attr] = obj[attr].replace(/\s*$/, "");
@@ -718,7 +716,7 @@ function trimRight(obj, attr) {
 /**
  * Generate list of custom attributes for DOM sanitize whitelist.
  *
- * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {Array<object>} tokens - List of markdown tokens
  * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function generateCustomAttrsAndSectionMetaList(tokens, md) {
@@ -781,7 +779,7 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
 /**
  * Initialize sections meta list
  *
- * @param {Object} token - Markdown token
+ * @param {object} token - Markdown token
  * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function initializeSectionsMeta(token, md) {
@@ -800,7 +798,7 @@ function initializeSectionsMeta(token, md) {
 /**
  * Update section list based on attribute values mentioned in comment decorate
  *
- * @param {Object} token - Markdown token
+ * @param {object} token - Markdown token
  * @param {Array} attr - Attribute key & value
  * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
@@ -816,7 +814,7 @@ function updateSectionMetaBasedOnMarkup(token, attr, md) {
 /**
  * Update section list based on attribute values declared in <section-step>
  *
- * @param {Object} token - Markdown token
+ * @param {object} token - Markdown token
  * @param {Array} attr - Attribute key & value
  * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */

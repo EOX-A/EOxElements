@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import isequal from "lodash.isequal";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { getUTCLocalDateTime } from ".";
@@ -12,6 +13,25 @@ dayjs.extend(timezone);
  */
 
 /**
+ * Compares two slider value arrays by their timeline-relevant content
+ * (`layer`, `name`, `property`, `values`), ignoring transient layer instance references.
+ *
+ * @param {Array<SliderValue>} prevSliders - Previous slider values.
+ * @param {Array<SliderValue>} nextSliders - Next slider values.
+ * @returns {boolean} True if timeline content is identical.
+ */
+export function hasSameSliderContent(prevSliders = [], nextSliders = []) {
+  const project = (sliders) =>
+    sliders.map(({ layer, name, property, values }) => ({
+      layer,
+      name,
+      property,
+      values,
+    }));
+  return isequal(project(prevSliders), project(nextSliders));
+}
+
+/**
  * Updates the visibility of a timeline group and its associated items.
  * Shows or hides the group label and data elements based on the visibility parameter.
  *
@@ -22,8 +42,9 @@ dayjs.extend(timezone);
 export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
   const visTimeline =
     /** @type {import("vis-timeline/standalone").Timeline | any} */ (
-      EOxTimeControlTimeline.visTimeline
+      EOxTimeControlTimeline?.visTimeline
     );
+  if (!visTimeline?.dom) return;
   const labelEle = /** @type {any} */ (
     visTimeline.dom.leftContainer.querySelectorAll(".vis-label")[i]
   );
@@ -32,6 +53,7 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
       ".vis-foreground .vis-group",
     )[i]
   );
+  if (!labelEle || !dataEle) return;
   if (visibility) {
     labelEle.classList.remove("vis-label-hide");
     dataEle.classList.remove("vis-group-hide");
@@ -39,6 +61,41 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
     labelEle.classList.add("vis-label-hide");
     dataEle.classList.add("vis-group-hide");
   }
+}
+
+/**
+ * Registers OpenLayers `change:visible` listeners for each slider layer
+ * and syncs their current visibility to the timeline.
+ *
+ * @param {Array<SliderValue>} sliderValues - Array of slider configuration objects.
+ * @param {EOxTimeControlTimeline | null} EOxTimeControlTimeline - The timeline component instance, or null if not present.
+ * @returns {() => void} Cleanup function that removes all registered visibility listeners.
+ */
+export function setupVisibilityListeners(sliderValues, EOxTimeControlTimeline) {
+  const visibilityListenerRemovers = [];
+  for (let i = 0; i < sliderValues.length; i++) {
+    const slider = sliderValues[i];
+    const visibilityFunc = (props) => {
+      if (EOxTimeControlTimeline) {
+        const visibility = props.target.getVisible();
+        updateVisibility(EOxTimeControlTimeline, visibility, i);
+      }
+    };
+
+    slider.layerInstance?.on("change:visible", visibilityFunc);
+    visibilityListenerRemovers.push(() =>
+      slider.layerInstance?.un("change:visible", visibilityFunc),
+    );
+    if (EOxTimeControlTimeline && slider.layerInstance) {
+      updateVisibility(
+        EOxTimeControlTimeline,
+        slider.layerInstance.getVisible(),
+        i,
+      );
+    }
+  }
+  return () =>
+    visibilityListenerRemovers.forEach((removeListener) => removeListener());
 }
 
 /**
@@ -50,6 +107,7 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
  * @param {import("vis-data/standalone").DataSet} items - Timeline items DataSet to populate.
  * @param {EOxTimeControlTimeline | null} EOxTimeControlTimeline - The timeline component instance, or null if not present.
  * @param {boolean} showUTC - Whether to show UTC dates in the timeline.
+ * @returns {() => void} Removes visibility listeners when layers or maps change.
  */
 export default function updateTimelineItems(
   sliderValues,
@@ -63,14 +121,6 @@ export default function updateTimelineItems(
 
   for (let i = 0; i < sliderValues.length; i++) {
     const slider = sliderValues[i];
-    const visibilityFunc = (props) => {
-      if (EOxTimeControlTimeline) {
-        const visibility = props.target.getVisible();
-        updateVisibility(EOxTimeControlTimeline, visibility, i);
-      }
-    };
-    slider.layerInstance?.un("change:visible", visibilityFunc);
-    slider.layerInstance?.on("change:visible", visibilityFunc);
     groups.add({
       id: slider.layer,
       content: slider.name,
@@ -98,4 +148,5 @@ export default function updateTimelineItems(
       });
     }
   }
+  return setupVisibilityListeners(sliderValues, EOxTimeControlTimeline);
 }
