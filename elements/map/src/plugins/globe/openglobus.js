@@ -10,6 +10,7 @@ import {
   Entity,
   GlobusRgbTerrain,
   EmptyTerrain,
+  Extent as OgExtent,
 } from "@openglobus/og";
 import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
 import { distributeTileToIdealMap } from "./methods.js";
@@ -268,6 +269,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
 };
 
 export const enableGlobe = (map) => {
+  if (map.globeEnabled) return;
   if (map.shadowRoot) {
     /** @type {HTMLElement} */
     let globeDiv = map.shadowRoot.querySelector("#globe");
@@ -659,4 +661,94 @@ export const processLayers = (layers, globe, mapPool) => {
       );
     }
   });
+};
+
+const setYawPitch = (planet, options) => {
+  if (options?.pitch !== undefined) {
+    planet.camera.setPitch(options.pitch);
+  }
+  if (options?.heading !== undefined) {
+    planet.camera.setYaw(options.heading);
+  }
+};
+
+/**
+ * Initiates a 3D globe camera flight based on the OpenLayers animateOptions.
+ * Supports flying to center/zoom, or to an extent.
+ * Supports `pitch` and `heading` in the animateOptions.
+ *
+ * @param {import("../../main").EOxMap} EOxMap
+ * @param {Object} animateToOptions
+ */
+export const flyGlobeToState = (EOxMap, animateToOptions) => {
+  if (!EOxMap.globe || !EOxMap.globeEnabled) return;
+
+  const planet = EOxMap.globe.planet;
+  const duration = animateToOptions?.duration || 800;
+
+  // Unregister any active flyend listener to avoid duplicates and leaks
+  if (planet.camera._activeFlyEndListener) {
+    planet.camera.events.off("flyend", planet.camera._activeFlyEndListener);
+    planet.camera._activeFlyEndListener = null;
+  }
+
+  if (
+    animateToOptions?.pitch !== undefined ||
+    animateToOptions?.heading !== undefined
+  ) {
+    const handleFlyEnd = () => {
+      // Set pitch and heading if provided
+      setYawPitch(planet, animateToOptions);
+      // Unregister this listener immediately so it only runs once
+      planet.camera.events.off("flyend", handleFlyEnd);
+      if (planet.camera._activeFlyEndListener === handleFlyEnd) {
+        planet.camera._activeFlyEndListener = null;
+      }
+    };
+    planet.camera._activeFlyEndListener = handleFlyEnd;
+    planet.camera.events.on("flyend", handleFlyEnd);
+  }
+
+  // Check if an extent was requested
+  // @ts-expect-error - _requestedZoomExtent is a custom property
+  if (EOxMap._requestedZoomExtent) {
+    // @ts-expect-error - _requestedZoomExtent is a custom property
+    const extent = EOxMap._requestedZoomExtent;
+    // Transform OL extent to EPSG:4326
+    const minLonLat = transform(
+      [extent[0], extent[1]],
+      EOxMap.map.getView().getProjection().getCode(),
+      "EPSG:4326",
+    );
+    const maxLonLat = transform(
+      [extent[2], extent[3]],
+      EOxMap.map.getView().getProjection().getCode(),
+      "EPSG:4326",
+    );
+
+    planet.camera.flyExtent(
+      new OgExtent(
+        new LonLat(minLonLat[0], minLonLat[1]),
+        new LonLat(maxLonLat[0], maxLonLat[1]),
+      ),
+      null, // height (auto calculated)
+      { duration },
+    );
+    return;
+  }
+
+  // Otherwise fly to center/zoom
+  const { center, zoom } = EOxMap;
+  if (!center || zoom === undefined) return;
+
+  let currZoom = zoom - 1;
+  if (!EOxMap.globeConfig?.useHighLOD) {
+    currZoom = currZoom - 1;
+  }
+  const height = 21050000 / Math.pow(2, currZoom);
+
+  planet.camera.flyLonLat(
+    new LonLat(center[0], center[1], Math.max(0, height)),
+    { duration },
+  );
 };
