@@ -55,6 +55,6 @@
     "uuid": "^14.0.2",
     "vanilla-calendar-pro": "^3.4.0",
     "vis-data": "^8.0.4",
-    "vis-timeline": "^8.5.4"
+    "vis-timeline": "^8.5.5"
   }
 }
