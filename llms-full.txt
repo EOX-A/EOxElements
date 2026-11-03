@@ -14281,7 +14281,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-10-28T15:25:00.307Z",
+              default: "2026-11-03T14:11:15.554Z",
               options: {
                 hidden: true,
               },
@@ -16134,10 +16134,12 @@ The `eox-map` tooltip can also be used to display information about a feature in
 #### Globe
 
 Basic Globe rendered using `projection: "globe"`, and OpenGlobus as globe renderer.
-When the projection of the view can is set to "globe", the map will render as a 3D globe.
+When the projection of the view is set to "globe", the map will be rendered as a 3D globe.
 The `globeConfig` property allows to configure the globe, e.g. setting `terrain` to `true` to enable terrain rendering, or `useHighLOD` to `true` for higher level of detail.
-This example renders a globe centered on Austria, with 2 layers: an XYZ tile layer as base layer, and a GeoTiff layer on top.
-The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
+( Geotiff, Vector, WMS/WMTS) layers are supported natively in OpenGlobus, for these layer types, interaction configuration is also possible in the globe (click, pointermove).
+This example renders a globe centered on Austria, with 2 layers: an XYZ tile layer as base layer, and a Cloud Optimized GeoTiff (COG) layer on top.
+Both XYZ and COG layers are rendered natively in the OpenGlobus. For other layer types, the globe will fallback to OpenLayers rendering.
+The tooltip is displayed when hovering over COG on the globe.
 
 ```html
 <eox-map
@@ -16291,6 +16293,16 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
             },
           ],
         },
+        interactions: [
+          {
+            type: "select",
+            options: {
+              id: "globeTooltipInteraction",
+              condition: "pointermove",
+              coordinates: true,
+            },
+          },
+        ],
       },
     ],
   });
