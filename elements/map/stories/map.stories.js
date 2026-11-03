@@ -443,9 +443,9 @@ export const HelperMethods = HelperMethodsStory;
  * Basic Globe rendered using `projection: "globe"`, and OpenGlobus as globe renderer.
  * When the projection of the view is set to "globe", the map will be rendered as a 3D globe.
  * The `globeConfig` property allows to configure the globe, e.g. setting `terrain` to `true` to enable terrain rendering, or `useHighLOD` to `true` for higher level of detail.
- * For ( Geotiff, Vector, WMS/WMTS) layers, interaction configuration is also possible in the globe (click, pointermove).
+ * ( Geotiff, Vector, WMS/WMTS) layers are supported natively in OpenGlobus, for these layer types, interaction configuration is also possible in the globe (click, pointermove).
  * This example renders a globe centered on Austria, with 2 layers: an XYZ tile layer as base layer, and a Cloud Optimized GeoTiff (COG) layer on top.
- * The GeoTiff layer is rendered as a GeoTiff layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
+ * Both XYZ and COG layers are rendered natively in the OpenGlobus. For other layer types, the globe will fallback to OpenLayers rendering.
  * The tooltip is displayed when hovering over COG on the globe.
  */
 export const Globe = GlobeStory;
