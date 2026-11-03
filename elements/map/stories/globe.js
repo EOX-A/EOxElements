@@ -1,3 +1,5 @@
+import { html } from "lit";
+
 /**
  * Basic Globe rendered using `projection: "globe"`
  *
@@ -148,10 +150,32 @@ const GlobeStory = {
             },
           ],
         },
+        interactions: [
+          {
+            type: "select",
+            options: {
+              id: "globeTooltipInteraction",
+              condition: "pointermove",
+              coordinates: true,
+            },
+          },
+        ],
       },
     ],
     zoom: 4,
   },
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
+    <eox-map
+      .center=${args.center}
+      .controls=${args.controls}
+      .layers=${args.layers}
+      .projection=${args.projection}
+      .zoom=${args.zoom}
+      .globeConfig=${args.globeConfig}
+    >
+      <eox-map-tooltip></eox-map-tooltip>
+    </eox-map>
+  `,
 };
 
 export default GlobeStory;
