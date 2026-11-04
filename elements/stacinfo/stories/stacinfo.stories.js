@@ -10,6 +10,7 @@ import {
   TagsStory,
   UnstyledStory,
   FilterStory,
+  ClickLinkStory,
 } from "./";
 
 export default {
@@ -31,6 +32,7 @@ export default {
         .featured=${args.featured}
         .footer=${args.footer}
         ?unstyled=${args.unstyled}
+        @click:link=${args["click:link"]}
       ></eox-stacinfo>
     `,
 };
@@ -38,6 +40,16 @@ export default {
 /**
  * Basic usage of eox-stacinfo. Automatically fetches a STAC file and displays its properties in configurable sections (header, tags, body, featured, footer).
  * The `for` attribute/property should point to a valid STAC resource URL.
+ *
+ * ```html
+ * <eox-stacinfo
+ *   for="https://example.com/collection.json"
+ *   .header=${["title"]}
+ *   .body=${["satellite", "sensor", "updated"]}
+ *   .featured=${["description", "links"]}
+ *   @click:link=${(e) => console.log(e.detail)}
+ * ></eox-stacinfo>
+ * ```
  */
 export const Primary = PrimaryStory;
 
@@ -80,3 +92,22 @@ export const Filter = FilterStory;
  * Shows the unstyled version of the element. By setting the `unstyled` attribute/property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
  */
 export const Unstyled = UnstyledStory;
+
+/**
+ * Capturing link clicks within `eox-stacinfo`.
+ * When an anchor tag is clicked anywhere within `eox-stacinfo` (including inside shadow roots for markdown descriptions),
+ * a `click:link` CustomEvent is dispatched containing `{ href, text, section }` in `event.detail` without preventing navigation.
+ *
+ * ```html
+ * <eox-stacinfo
+ *   for="https://example.com/collection.json"
+ *   .body=${["description", "links"]}
+ *   @click:link=${(e) => {
+ *     console.log("Clicked URL:", e.detail.href);
+ *     console.log("Link text:", e.detail.text);
+ *     console.log("Section:", e.detail.section);
+ *   }}
+ * ></eox-stacinfo>
+ * ```
+ */
+export const ClickLink = ClickLinkStory;

@@ -1,6 +1,11 @@
 import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
-import { fetchSTAC, parseEntries, updateProperties } from "./helpers/index.js";
+import {
+  fetchSTAC,
+  handleLinkClick,
+  parseEntries,
+  updateProperties,
+} from "./helpers/index.js";
 import { styleEOX } from "./style.eox.js";
 import { Formatters } from "@radiantearth/stac-fields";
 import parseBody from "./components/body";
@@ -61,6 +66,7 @@ import "./components/shadow";
  * - **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
  *
  * @element eox-stacinfo
+ * @fires click:link - Fired when an anchor tag is clicked within the STAC info
  */
 export class EOxStacInfo extends LitElement {
   static get properties() {
@@ -140,6 +146,16 @@ export class EOxStacInfo extends LitElement {
      * @type {Array<any>}
      */
     this.stacProperties = [];
+  }
+
+  /**
+   * @param {import("lit").PropertyValues} _changedProperties
+   */
+  firstUpdated(_changedProperties) {
+    super.firstUpdated(_changedProperties);
+    this.renderRoot.addEventListener("click", (e) =>
+      handleLinkClick(/** @type {MouseEvent} */ (e), this),
+    );
   }
 
   /**

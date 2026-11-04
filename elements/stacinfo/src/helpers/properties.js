@@ -37,6 +37,14 @@ export function transformProperties(
       }
     }
 
+    // Format updated date to YYYY-MM-DD
+    if (key === "updated" && property.value) {
+      const date = new Date(property.value);
+      if (!isNaN(date.getTime())) {
+        property.formatted = date.toISOString().substring(0, 10);
+      }
+    }
+
     // Replace markdown links [text](url) with clickable HTML links.
     property.formatted = property.formatted.replace(
       /\[([^\]]+)\]\((http[s]?|ftp):\/\/[^)]+\)/gi,

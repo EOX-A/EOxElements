@@ -7,3 +7,4 @@ export { default as FooterStory } from "./footer";
 export { default as CustomSlotContentStory } from "./custom-slot-content";
 export { default as UnstyledStory } from "./unstyled";
 export { default as FilterStory } from "./filter";
+export { default as ClickLinkStory } from "./click-link";
