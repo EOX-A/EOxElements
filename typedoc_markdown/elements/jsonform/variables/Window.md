@@ -6,7 +6,7 @@
 
 # Variable: Window
 
-> **Window**: \{(): [`Window`](../interfaces/Window.md); `prototype`: [`Window`](../interfaces/Window.md); \}
+> **Window**: \{new (): [`Window`](../interfaces/Window.md); `prototype`: [`Window`](../interfaces/Window.md); \}
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:36358
 

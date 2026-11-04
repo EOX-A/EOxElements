@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/EOX-A/EOxElements/compare/map-v2.8.3...map-v2.9.0) (2026-11-04)
+
+
+### Features
+
+* Native GeoTIFF rendering and select interactions in globe mode ([#2630](https://github.com/EOX-A/EOxElements/issues/2630)) ([5d7a5c0](https://github.com/EOX-A/EOxElements/commit/5d7a5c0d80275d76b2896f891cb36ca5b6cbc554))
+
 ## [2.8.3](https://github.com/EOX-A/EOxElements/compare/map-v2.8.2...map-v2.8.3) (2026-10-26)
 
 

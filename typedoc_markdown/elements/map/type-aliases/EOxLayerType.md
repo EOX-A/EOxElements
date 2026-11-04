@@ -6,9 +6,19 @@
 
 # Type Alias: EOxLayerType\<T, S\>
 
-> **EOxLayerType**\<`T`, `S`\> = `OlLayerOption`\<`T`\> *extends* `object` ? `Omit`\<`OlLayerOption`\<`T`\>, `"sources"`\> & `object` : `OlLayerOption`\<`T`\> & `object` & \[`S`\] *extends* \[`never`\] ? `object` : `SourceProperties`\<`S`\>
+> **EOxLayerType**\<`T`, `S`\> = (`OlLayerOption`\<`T`\> *extends* `object` ? `Omit`\<`OlLayerOption`\<`T`\>, `"sources"`\> & `object` : `OlLayerOption`\<`T`\>) & `object` & (\[`S`\] *extends* \[`never`\] ? `object` : `SourceProperties`\<`S`\>)
 
-Defined in: [elements/map/src/layers.ts:144](https://github.com/EOX-A/EOxElements/blob/6278a1e7861c38f8549bcbeab4378116d57536d3/elements/map/src/layers.ts#L144)
+Defined in: [elements/map/src/layers.ts:144](https://github.com/EOX-A/EOxElements/blob/e776ce1e8aed7d24da27a27a087343ec08477872/elements/map/src/layers.ts#L144)
+
+## Type Parameters
+
+### T
+
+`T` *extends* keyof [`OLLayers`](OLLayers.md)
+
+### S
+
+`S` *extends* keyof [`OLSources`](OLSources.md) = `never`
 
 ## Type Declaration
 
@@ -43,13 +53,3 @@ Defined in: [elements/map/src/layers.ts:144](https://github.com/EOX-A/EOxElement
 ### zIndex?
 
 > `optional` **zIndex?**: `number`
-
-## Type Parameters
-
-### T
-
-`T` *extends* keyof [`OLLayers`](OLLayers.md)
-
-### S
-
-`S` *extends* keyof [`OLSources`](OLSources.md) = `never`
