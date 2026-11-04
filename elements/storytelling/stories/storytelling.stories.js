@@ -9,7 +9,6 @@ import {
   MarkdownHeroStory,
   MarkdownMapStory,
   MarkdownMapTourStory,
-  MarkdownGlobeTourStory,
   MarkdownImageTourStory,
   MarkdownShowcaseStory,
   MarkdownInitEventStory,
@@ -78,15 +77,6 @@ export const MarkdownMap = MarkdownMapStory;
  * `### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.
  */
 export const MarkdownMapTour = MarkdownMapTourStory;
-
-/**
- * Globe Tour story.
- * Demonstrates how to create a scroll-driven globe tour (scrollytelling) where the globe state changes as you scroll.
- * 1. Define the base globe tour section with an h2: `## Globe Tour <!--{ as="eox-map" mode="tour" }-->`
- * 2. Define each step in the tour with an h3 (`###`) and a configuration comment overriding the globe's state for that step:
- * `### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.
- */
-export const MarkdownGlobeTour = MarkdownGlobeTourStory;
 
 /**
  * Image Tour story.

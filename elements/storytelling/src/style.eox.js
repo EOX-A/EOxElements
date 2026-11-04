@@ -481,7 +481,6 @@ const styleEOX = `
     top:0;
     z-index: 0;
     object-fit: cover;
-    pointer-events: none;
   }
   .story-telling .tour section-step {
     background: rgb(255,255,255,0.8);

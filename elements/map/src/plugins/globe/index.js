@@ -1,6 +1,11 @@
 import { createGlobe, refreshGlobe, processLayers } from "./openglobus.js";
 import { createMapPool } from "./methods.js"; // Updated import
-import { setupLayerListeners, createGlobusLayer } from "./openglobus.js";
+import {
+  setupLayerListeners,
+  createGlobusLayer,
+  syncGlobeLayerOrder,
+  watchGlobeLayerOrder,
+} from "./openglobus.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
@@ -14,6 +19,14 @@ export const create = ({ EOxMap, target }) => {
   EOxMap.globe = globe;
 
   processLayers(EOxMap.map.getLayers().getArray(), globe, mapPool); // Call imported processLayers
+
+  // Apply the current OL layer order to the globe and keep it in sync
+  // (e.g. when layers are reordered via eox-layercontrol)
+  syncGlobeLayerOrder(EOxMap, globe);
+  /** @type {any} */ (globe)._layerOrderKey = watchGlobeLayerOrder(
+    EOxMap,
+    globe,
+  );
 
   // Sync layers when EOxMap layers change
   EOxMap.addEventListener("layerschanged", () => {
@@ -49,6 +62,8 @@ export const create = ({ EOxMap, target }) => {
         existing.opacity = ol.getOpacity();
       }
     });
+
+    syncGlobeLayerOrder(EOxMap, globe);
   });
 
   return globe;
