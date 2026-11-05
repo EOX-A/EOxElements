@@ -5,6 +5,7 @@ import {
   setDataValuesTest,
   clickChartTest,
   autoResizeTest,
+  base64LargeSpecTest,
 } from "./cases";
 import { TEST_SELECTORS, TEST_VALUES } from "../src/enums";
 
@@ -32,4 +33,7 @@ describe("Chart", () => {
   it("triggers an click:item event", () => clickChartTest());
 
   it("auto-resizes when container size changes", () => autoResizeTest());
+
+  it("encodes and decodes large chart specs without call stack overflow", () =>
+    base64LargeSpecTest());
 });
