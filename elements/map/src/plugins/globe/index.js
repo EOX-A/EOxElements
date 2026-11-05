@@ -1,5 +1,5 @@
 import { createGlobe, refreshGlobe, processLayers } from "./openglobus.js";
-import { createMapPool } from "./methods.js"; // Updated import
+import { createMapPool, syncMapPoolLayers } from "./methods.js";
 import {
   setupLayerListeners,
   createGlobusLayer,
@@ -31,6 +31,9 @@ export const create = ({ EOxMap, target }) => {
   // Sync layers when EOxMap layers change
   EOxMap.addEventListener("layerschanged", () => {
     if (!EOxMap.globeEnabled) return;
+
+    // Make the new layers available to the offscreen tile maps used for CanvasTiles
+    syncMapPoolLayers(mapPool, EOxMap);
 
     const currentOlLayers = EOxMap.getFlatLayersArray(
       EOxMap.map.getLayers().getArray(),
