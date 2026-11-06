@@ -210,6 +210,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
    * @param {{ detail: Record<string, any>; }} e
    */
   async #handleDataChange(e) {
+    const isUser = Boolean(/** @type {any} */ (e)?.isUser);
     const prevVar =
       this.#data?.variable ??
       this.#data?.band ??
@@ -315,11 +316,10 @@ export class EOxLayerControlLayerConfig extends LitElement {
         detail: {
           jsonformValue: this.#data,
           layer: this.layer,
-          isUser: Boolean(this._isUserDirty),
+          isUser,
         },
       }),
     );
-    this._isUserDirty = false;
     this.requestUpdate();
   }
 
@@ -402,9 +402,6 @@ export class EOxLayerControlLayerConfig extends LitElement {
             }}
             @eox:activity=${(/** @type {CustomEvent} */ e) => {
               e.stopPropagation();
-              if (e.detail?.action === "change") {
-                this._isUserDirty = true;
-              }
             }}
           ></eox-jsonform>
         `,

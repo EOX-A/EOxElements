@@ -222,6 +222,10 @@ export class EOxChart extends LitElement {
         const target =
           /** @type {HTMLInputElement | HTMLSelectElement | null} */ (e.target);
         if (target?.closest(".vega-bindings")) {
+          const value =
+            target instanceof HTMLInputElement && target.type === "checkbox"
+              ? target.checked
+              : target.value;
           emitActivity(
             this,
             "change:binding",
@@ -230,7 +234,7 @@ export class EOxChart extends LitElement {
                 target.getAttribute("name") ||
                 target.getAttribute("id") ||
                 target.className,
-              value: target.value,
+              value,
             },
             e,
           );

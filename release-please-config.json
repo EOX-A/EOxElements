@@ -69,7 +69,12 @@
     },
     "a2ui": {}
   },
-  "plugins": ["sentence-case"],
+  "plugins": [
+    "sentence-case",
+    {
+      "type": "node-workspace"
+    }
+  ],
   "bump-minor-pre-major": true,
   "pull-request-header": "New release prepared:",
   "release-type": "node",

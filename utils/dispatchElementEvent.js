@@ -108,6 +108,9 @@ export const dispatchElementEvent = (element, eventOrType, options = {}) => {
     cancelable,
   });
 
+  // Attach isUser flag directly to the CustomEvent instance for synchronous inspection
+  /** @type {any} */ (event).isUser = Boolean(options.activity);
+
   element.dispatchEvent(event);
 
   if (options.activity) {

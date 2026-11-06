@@ -107,6 +107,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     this.dispatchEvent(
       new CustomEvent("datetime:updated", {
         bubbles: true,
+        composed: true,
         detail: {
           datetime: currentStep,
           layer: this.layer,

@@ -293,6 +293,8 @@ export class EOxLayerControlLayerTools extends LitElement {
     `;
   };
 
+  #userClickedToolsSummary = false;
+
   render() {
     // Obtain actions and tools based on this.tools and this.layer
     const actions = _parseActions(this.tools, this.layer);
@@ -328,19 +330,26 @@ export class EOxLayerControlLayerTools extends LitElement {
                   /** @type {Event & { target: { open: boolean; }; }} */ evt,
                 ) => {
                   this.open = evt.target.open;
-                  const root = findHost(this, "eox-layercontrol") || this;
-                  emitActivity(
-                    root,
-                    "toggle:tools",
-                    {
-                      layer: this.layer?.get("id") || this.layer?.get("name"),
-                      open: this.open,
-                    },
-                    evt,
-                  );
+                  if (this.#userClickedToolsSummary) {
+                    this.#userClickedToolsSummary = false;
+                    const root = findHost(this, "eox-layercontrol") || this;
+                    emitActivity(
+                      root,
+                      "toggle:tools",
+                      {
+                        layer: this.layer?.get("id") || this.layer?.get("name"),
+                        open: this.open,
+                      },
+                      evt,
+                    );
+                  }
                 }}
               >
-                <summary></summary>
+                <summary
+                  @click=${() => {
+                    this.#userClickedToolsSummary = true;
+                  }}
+                ></summary>
                 <eox-layercontrol-tools-items
                   class="${this.toolsAsList ? "tools-list" : "tools-tab"}"
                   .noShadow=${false}

@@ -20,8 +20,11 @@ export function updateLayerSlice(layer, datetime) {
  * @param {boolean} [activity=false]
  */
 export function handleDatetimeUpdate(evt, element, activity = false) {
+  evt.stopPropagation();
   dispatchElementEvent(element, "datetime:updated", {
     detail: evt.detail,
+    bubbles: true,
+    composed: true,
     activity,
     action: "datetime:updated",
   });

@@ -3,6 +3,12 @@ declare module "*.css?inline" {
   export default content;
 }
 
+export declare function addCommonStylesheet(): void;
+
+export declare function getElement(
+  stringOrElement: string | HTMLElement | undefined,
+): HTMLElement | undefined;
+
 export interface EOxActivityDetail<T = unknown> {
   element: string;
   action: string;

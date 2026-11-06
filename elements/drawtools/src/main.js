@@ -391,7 +391,7 @@ export class EOxDrawTools extends LitElement {
    * @ignore
    */
   onModifyEnd() {
-    this.emitDrawnFeatures();
+    this.emitDrawnFeatures(true);
   }
 
   /**
@@ -408,9 +408,10 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * Triggers different events when the drawing of a shape is completed.
+   * @param {boolean} [isUser=false]
    * @ignore
    */
-  emitDrawnFeatures() {
+  emitDrawnFeatures(isUser = false) {
     /**
      * @param {import("./methods/draw/emit-drawn-features").EmitFormat} value
      */
@@ -422,7 +423,7 @@ export class EOxDrawTools extends LitElement {
        */
       dispatchElementEvent(this, "drawupdate", {
         detail: value,
-        activity: true,
+        activity: isUser,
         action: "drawupdate",
       });
     };

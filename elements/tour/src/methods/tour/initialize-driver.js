@@ -156,6 +156,8 @@ export function initializeDriver(EOxTour) {
         return step;
       }) || [],
     onNextClick: (element, step, opts) => {
+      const tourAny = /** @type {any} */ (EOxTour);
+      tourAny._userNavigated = true;
       if (EOxTour.config.onNextClick) {
         EOxTour.config.onNextClick(element, step, opts);
       }
@@ -168,6 +170,8 @@ export function initializeDriver(EOxTour) {
       );
     },
     onPrevClick: (element, step, opts) => {
+      const tourAny = /** @type {any} */ (EOxTour);
+      tourAny._userNavigated = true;
       if (EOxTour.config.onPrevClick) {
         EOxTour.config.onPrevClick(element, step, opts);
       }
@@ -180,10 +184,17 @@ export function initializeDriver(EOxTour) {
       );
     },
     onCloseClick: (element, step, opts) => {
+      const tourAny = /** @type {any} */ (EOxTour);
+      tourAny._userNavigated = true;
       if (EOxTour.config.onCloseClick) {
         EOxTour.config.onCloseClick(element, step, opts);
       }
       opts.driver.destroy();
+      dispatchElementEvent(EOxTour, "tour-destroy-started", {
+        detail: { element, step, options: opts },
+        activity: true,
+        action: "tour-destroy-started",
+      });
       if (window.parent !== window) {
         window.parent.postMessage(
           { type: "EOX_TOUR_DESTROY", tourId: EOxTour.id },
