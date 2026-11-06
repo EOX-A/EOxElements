@@ -289,7 +289,7 @@ export class EOxLayerControl extends LitElement {
             .colormapRegistry=${this.colormapRegistry}
             .customEditorInterfaces=${this.customEditorInterfaces}
             @changed=${this.#handleLayerControlLayerListChange}
-            @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this)}
+            @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this, true)}
             @layerConfig:change=${this.#handleLayerConfigChange}
           ></eox-layercontrol-layer-list>
         `,

@@ -4,4 +4,5 @@ export {
   ACTIVITY_EVENT_NAME,
   dispatchElementEvent,
   emitActivity,
+  findHost,
 } from "./dispatchElementEvent";

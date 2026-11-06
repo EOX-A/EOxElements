@@ -1,5 +1,9 @@
 import { AbstractEditor } from "@json-editor/json-editor/src/editor.js";
-import { dispatchElementEvent, emitActivity } from "@eox/elements-utils";
+import {
+  dispatchElementEvent,
+  emitActivity,
+  findHost,
+} from "@eox/elements-utils";
 
 class UploadEditor extends AbstractEditor {
   register() {
@@ -94,7 +98,7 @@ class UploadEditor extends AbstractEditor {
             this.jsoneditor.setValue(content);
             loader.remove();
           };
-          const storytelling = this.input.closest("eox-storytelling");
+          const storytelling = findHost(this.input, "eox-storytelling");
           dispatchElementEvent(this.input, "upload:file", {
             detail: { file, update },
             activity: false,

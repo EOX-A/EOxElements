@@ -212,9 +212,12 @@ export function initializeDriver(EOxTour) {
           stageRadius: EOxTour.config.stageRadius ?? 5,
         });
       }
+      const activeIndex = options?.driver?.getActiveIndex?.() ?? 0;
+      const tourAny = /** @type {any} */ (EOxTour);
+      const isInitialAutoStart = !tourAny._userNavigated && activeIndex === 0;
       dispatchElementEvent(EOxTour, "tour-highlight-started", {
         detail: { element, step, options },
-        activity: true,
+        activity: !isInitialAutoStart,
         action: "tour-highlight-started",
       });
       if (EOxTour.config.onHighlightStarted)
@@ -237,11 +240,16 @@ export function initializeDriver(EOxTour) {
         EOxTour.config.onDeselected(element, step, options);
     },
     onDestroyStarted: (element, step, options) => {
+      const tourAny = /** @type {any} */ (EOxTour);
+      const isUserAction = Boolean(
+        tourAny._userNavigated || !EOxTour.preventAutoStart,
+      );
       dispatchElementEvent(EOxTour, "tour-destroy-started", {
         detail: { element, step, options },
-        activity: true,
+        activity: isUserAction,
         action: "tour-destroy-started",
       });
+      tourAny._userNavigated = false;
       if (EOxTour.config.onDestroyStarted)
         EOxTour.config.onDestroyStarted(element, step, options);
     },
@@ -262,7 +270,21 @@ export function initializeDriver(EOxTour) {
         popover.wrapper.style.display = "none";
       }
 
+      const tourAny = /** @type {any} */ (EOxTour);
+      if (popover.nextButton) {
+        popover.nextButton.addEventListener("click", () => {
+          tourAny._userNavigated = true;
+        });
+      }
+      if (popover.closeButton) {
+        popover.closeButton.addEventListener("click", () => {
+          tourAny._userNavigated = true;
+        });
+      }
       if (popover.previousButton) {
+        popover.previousButton.addEventListener("click", () => {
+          tourAny._userNavigated = true;
+        });
         if (activeIndex === 0) {
           if (
             currentStep?.popover?.returnToParentBackward ||

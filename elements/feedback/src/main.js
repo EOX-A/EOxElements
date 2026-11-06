@@ -373,11 +373,11 @@ export class EOxFeedback extends HTMLElement {
     if (this.regionScreenshot) {
       this.regionScreenshot.close();
     }
-    this.remove();
     dispatchElementEvent(this, "close", {
       activity: isUser,
       action: "close",
     });
+    this.remove();
   }
 
   /** @private */

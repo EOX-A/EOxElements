@@ -315,6 +315,8 @@ export function showGlobeTooltip(
     wrapper.style.display = "block";
   }
 
+  const isHover = (options.condition || "click") === "pointermove";
+
   /**
    * Fired when a feature (or raster pixel) is selected in globe mode.
    */
@@ -324,7 +326,9 @@ export function showGlobeTooltip(
       originalEvent: event,
       feature,
     },
-    activity: true,
+    bubbles: !isHover,
+    composed: !isHover,
+    activity: !isHover,
     action: "select",
     originalEvent: event,
   });

@@ -17,11 +17,12 @@ export function updateLayerSlice(layer, datetime) {
  * Dispatches datetime updates from layer datetime to the layercontrol
  * @param {CustomEvent} evt
  * @param {HTMLElement} element
+ * @param {boolean} [activity=false]
  */
-export function handleDatetimeUpdate(evt, element) {
+export function handleDatetimeUpdate(evt, element, activity = false) {
   dispatchElementEvent(element, "datetime:updated", {
     detail: evt.detail,
-    activity: true,
+    activity,
     action: "datetime:updated",
   });
 }

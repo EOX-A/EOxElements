@@ -351,7 +351,7 @@ export class EOxStoryTelling extends LitElement {
     }
 
     this.#debounceUpdateMarkdown = _debounce((e) => {
-      if (e.detail) {
+      if (e.detail && this.markdown !== e.detail.Story) {
         this.#isEditorChange = true;
         this.markdown = e.detail.Story;
         this.requestUpdate();

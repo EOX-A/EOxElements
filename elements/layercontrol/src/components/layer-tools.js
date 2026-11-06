@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { emitActivity } from "@eox/elements-utils";
+import { emitActivity, findHost } from "@eox/elements-utils";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -221,7 +221,7 @@ export class EOxLayerControlLayerTools extends LitElement {
             @change=${(
               /** @type {Event & { target: { value: string; }; }} */ evt,
             ) => {
-              const root = this.closest("eox-layercontrol") || this;
+              const root = findHost(this, "eox-layercontrol") || this;
               emitActivity(
                 root,
                 "change:opacity",
@@ -328,7 +328,7 @@ export class EOxLayerControlLayerTools extends LitElement {
                   /** @type {Event & { target: { open: boolean; }; }} */ evt,
                 ) => {
                   this.open = evt.target.open;
-                  const root = this.closest("eox-layercontrol") || this;
+                  const root = findHost(this, "eox-layercontrol") || this;
                   emitActivity(
                     root,
                     "toggle:tools",

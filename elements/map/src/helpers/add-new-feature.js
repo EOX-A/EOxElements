@@ -84,9 +84,8 @@ export default function addNewFeature(
   );
 
   // Dispatch relevant events based on operation type.
-  const isAddFeaturesActivity =
-    ("type" in e && e.type === "addfeatures") ||
-    ("features" in e && Array.isArray(e.features));
+  const isDragAndDrop =
+    "type" in e && (e.type === "addfeatures" || e.type === "dragdrop");
   if (isDraw || replaceFeatures)
     dispatchEvt(EOxMap, "drawend", e, geoJsonObject, Boolean(isDraw));
   dispatchEvt(
@@ -94,7 +93,7 @@ export default function addNewFeature(
     "addfeatures",
     e,
     geoJsonObject,
-    Boolean(!isDraw && isAddFeaturesActivity),
+    Boolean(!isDraw && isDragAndDrop),
   );
 }
 

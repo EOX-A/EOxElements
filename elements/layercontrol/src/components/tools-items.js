@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { emitActivity } from "@eox/elements-utils";
+import { emitActivity, findHost } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import eoxStyle from "@eox/ui/style.css?inline";
@@ -100,7 +100,7 @@ export class EOxLayerControlTabs extends LitElement {
                           @click=${(/** @type {MouseEvent} */ e) => {
                             this.selectedTab = index;
                             const root =
-                              this.closest("eox-layercontrol") || this;
+                              findHost(this, "eox-layercontrol") || this;
                             emitActivity(root, "select:tool", { tool: tab }, e);
                           }}
                         >

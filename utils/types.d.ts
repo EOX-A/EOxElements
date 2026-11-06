@@ -23,6 +23,11 @@ export interface DispatchElementEventOptions<T = unknown> {
 
 export declare const ACTIVITY_EVENT_NAME = "eox:activity";
 
+export declare function findHost(
+  element: Element | null | undefined,
+  tagName: string,
+): HTMLElement | null;
+
 export declare function emitActivity<T = unknown>(
   element: HTMLElement | Element,
   action: string,

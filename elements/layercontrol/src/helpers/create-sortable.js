@@ -1,5 +1,5 @@
 import Sortable from "sortablejs";
-import { emitActivity } from "@eox/elements-utils";
+import { emitActivity, findHost } from "@eox/elements-utils";
 
 /** @param {Sortable.SortableEvent} e */
 const onStart = (e) => {
@@ -68,7 +68,7 @@ const onEnd = (e, that, childNodes, collection, idProperty, related) => {
     }
   }
 
-  const root = that.closest("eox-layercontrol") || that;
+  const root = findHost(that, "eox-layercontrol") || that;
   emitActivity(root, "sort:layer", {
     layer: layerId,
     oldIndex: e.oldIndex,

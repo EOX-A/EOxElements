@@ -1,5 +1,5 @@
 import { cleanJSONInput } from "../../helpers";
-import { emitActivity } from "@eox/elements-utils";
+import { emitActivity, findHost } from "@eox/elements-utils";
 
 /**
  * Handles the addition of one or multiple layers to the map based on the input.
@@ -29,7 +29,7 @@ const addLayer = (EoxLayerControlAddLayers) => {
   // Resetting `jsonInput` with null value and re-rendering the component
   EoxLayerControlAddLayers.jsonInput = null;
   const root =
-    EoxLayerControlAddLayers.closest("eox-layercontrol") ||
+    findHost(EoxLayerControlAddLayers, "eox-layercontrol") ||
     EoxLayerControlAddLayers;
   emitActivity(root, "add:layer", {
     layers: layers.data,

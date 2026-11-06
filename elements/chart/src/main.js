@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { dispatchElementEvent } from "@eox/elements-utils";
+import { dispatchElementEvent, emitActivity } from "@eox/elements-utils";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { renderChartMethod } from "./methods/render";
@@ -192,6 +192,50 @@ export class EOxChart extends LitElement {
         }
       `;
       document.head.appendChild(style);
+    }
+
+    const visContainer = /** @type {HTMLElement | null} */ (
+      this.renderRoot.querySelector("#vis")
+    );
+    if (visContainer) {
+      // Case B: Listen to clicks on vega-embed actions (Save as PNG/SVG, View Source, etc.)
+      visContainer.addEventListener("click", (e) => {
+        const target = /** @type {HTMLElement | null} */ (e.target);
+        const actionLink = /** @type {HTMLAnchorElement | null} */ (
+          target?.closest(".vega-actions a")
+        );
+        if (actionLink) {
+          emitActivity(
+            this,
+            "click:action",
+            {
+              action: actionLink.textContent?.trim() || "",
+              href: actionLink.getAttribute("href") || "",
+            },
+            e,
+          );
+        }
+      });
+
+      // Case B: Listen to changes on Vega input bindings (.vega-bindings)
+      visContainer.addEventListener("change", (e) => {
+        const target =
+          /** @type {HTMLInputElement | HTMLSelectElement | null} */ (e.target);
+        if (target?.closest(".vega-bindings")) {
+          emitActivity(
+            this,
+            "change:binding",
+            {
+              name:
+                target.getAttribute("name") ||
+                target.getAttribute("id") ||
+                target.className,
+              value: target.value,
+            },
+            e,
+          );
+        }
+      });
     }
   }
 

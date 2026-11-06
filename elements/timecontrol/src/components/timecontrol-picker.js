@@ -238,6 +238,7 @@ export class EOxTimeControlPicker extends LitElement {
           start: viewRange.start,
           end: viewRange.end,
         },
+        bubbles: false,
         activity: isUser,
       });
     });

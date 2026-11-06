@@ -23,6 +23,30 @@ export const ACTIVITY_EVENT_NAME = "eox:activity";
  */
 
 /**
+ * Walks up the DOM tree, crossing shadow DOM boundaries via `getRootNode().host`,
+ * to find an ancestor matching the given tag name.
+ *
+ * @param {Element | null | undefined} element - Starting element
+ * @param {string} tagName - Target custom element tag name in lowercase (e.g. "eox-layercontrol")
+ * @returns {HTMLElement | null} The matching ancestor element or null
+ */
+export const findHost = (element, tagName) => {
+  const targetTag = tagName.toLowerCase();
+  /** @type {any} */
+  let current = element;
+  while (current) {
+    if (current.tagName && current.tagName.toLowerCase() === targetTag) {
+      return current;
+    }
+    current =
+      current.parentElement ||
+      (current.getRootNode && current.getRootNode()?.host) ||
+      null;
+  }
+  return null;
+};
+
+/**
  * Emits a standardized `eox:activity` composed, bubbling CustomEvent from an EOxElement.
  *
  * @template [T=unknown]

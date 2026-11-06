@@ -188,14 +188,29 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
       !isBackgroundClick && props.item
         ? groupBy(EOxTimeControl.items.get(), "id")[props.item]
         : null;
-    const selectedDateTime = isBackgroundClick
-      ? getWrongLocalFormatToUTCFormat(props.time, EOxTimeControl.showUTC)
-      : selectedItem
-        ? selectedItem[0].utc
-        : props.time;
 
-    const startDate = dayjs(selectedDateTime).utc().format();
-    const endDate = dayjs(selectedDateTime).utc().add(duration).format();
+    let startDate;
+    let endDate;
+    if (isBackgroundClick) {
+      const utcFormattedDate = getWrongLocalFormatToUTCFormat(
+        props.time,
+        EOxTimeControl.showUTC,
+      );
+      startDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().format()
+        : dayjs(props.time).utc().format();
+      endDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().add(duration).format()
+        : dayjs(props.time).add(duration).utc().format();
+    } else {
+      const selectedDateTime = selectedItem ? selectedItem[0].utc : props.time;
+      startDate = EOxTimeControl.showUTC
+        ? dayjs(selectedDateTime).utc().format()
+        : dayjs(selectedDateTime).utc().format();
+      endDate = EOxTimeControl.showUTC
+        ? dayjs(selectedDateTime).utc().add(duration).format()
+        : dayjs(selectedDateTime).add(duration).utc().format();
+    }
 
     EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl, {
       activity: true,
@@ -227,6 +242,7 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
       start: viewRange.start,
       end: viewRange.end,
     },
+    bubbles: false,
     activity: Boolean(props.byUser),
   });
 }

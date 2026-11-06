@@ -49,12 +49,19 @@ export const createEditor = (element) => {
   formEle.addEventListener("input", removeHideErrors);
   formEle.addEventListener("change", removeHideErrors);
 
-  const markUserDirty = () => {
-    element._isUserDirty = true;
+  const markUserDirty = (e) => {
+    const target = /** @type {HTMLElement | null} */ (e.target);
+    if (
+      target &&
+      (target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT")
+    ) {
+      element._isUserDirty = true;
+    }
   };
   formEle.addEventListener("input", markUserDirty);
   formEle.addEventListener("change", markUserDirty);
-  formEle.addEventListener("click", markUserDirty);
 
   // Force validation on input for textareas and inputs
   formEle.addEventListener("input", (e) => {

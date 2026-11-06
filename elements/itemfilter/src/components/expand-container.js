@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from "lit";
-import { emitActivity } from "@eox/elements-utils";
+import { emitActivity, findHost } from "@eox/elements-utils";
 import { styleEOX } from "../style.eox";
 import { when } from "lit/directives/when.js";
 
@@ -49,7 +49,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         composed: true,
       }),
     );
-    const root = this.closest("eox-itemfilter");
+    const root = findHost(this, "eox-itemfilter");
     if (root) {
       emitActivity(
         root,

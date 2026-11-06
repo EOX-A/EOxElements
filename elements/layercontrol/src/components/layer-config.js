@@ -315,10 +315,11 @@ export class EOxLayerControlLayerConfig extends LitElement {
         detail: {
           jsonformValue: this.#data,
           layer: this.layer,
-          isUser: true,
+          isUser: Boolean(this._isUserDirty),
         },
       }),
     );
+    this._isUserDirty = false;
     this.requestUpdate();
   }
 
@@ -396,8 +397,15 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .options=${options}
             .noShadow=${true}
             .customEditorInterfaces=${this.customEditorInterfaces}
-            @change=${this.throttleDataChange}
-            @eox:activity=${(/** @type {Event} */ e) => e.stopPropagation()}
+            @change=${(/** @type {CustomEvent} */ e) => {
+              this.throttleDataChange(e);
+            }}
+            @eox:activity=${(/** @type {CustomEvent} */ e) => {
+              e.stopPropagation();
+              if (e.detail?.action === "change") {
+                this._isUserDirty = true;
+              }
+            }}
           ></eox-jsonform>
         `,
       )}

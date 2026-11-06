@@ -561,7 +561,7 @@ export class EOxItemFilter extends LitElement {
                 .filters=${this.filters}
                 .filterProperties=${this.filterProperties}
                 .inlineMode=${this.inlineMode || false}
-                @reset=${() => this.resetFilters()}
+                @reset=${() => resetFilterMethod(this, true)}
                 @filter=${() => this.search(true)}
               >
                 <section
