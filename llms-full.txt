@@ -14281,7 +14281,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-11-05T20:29:10.825Z",
+              default: "2026-11-06T07:15:33.851Z",
               options: {
                 hidden: true,
               },
@@ -17418,6 +17418,10 @@ Sections:
 - `stacInfo` (Array<any>): The state object containing the fetched STAC information (Default: `[]`)
 - `stacProperties` (Array<any>): The state object containing the parsed STAC properties (Default: `[]`)
 
+### Events
+
+- `click:link`: Fired when an anchor tag is clicked within the STAC info
+
 ### Examples
 
 #### CustomSlotContent
@@ -17429,7 +17433,7 @@ Demonstrates custom slot rendering for properties. Slots can be used to override
   for="/collection.json"
   header='["title"]'
   tags='["tags"]'
-  body='["satellite","sensor","agency","extent"]'
+  body='["satellite","sensor","agency","extent","updated"]'
   featured='["description","providers","assets","links"]'
   footer='["sci:citation"]'
   id="slot"
@@ -17451,6 +17455,11 @@ Demonstrates custom slot rendering for properties. Slots can be used to override
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
+
+  // Listen for events
+  eoxStacinfo.addEventListener("click:link", (e) =>
+    console.log("Link clicked! Detail: ", e.detail),
+  );
 
   globalThis.stacInfo = document.querySelector("eox-stacinfo#slot");
   stacInfo.addEventListener("loaded", () => {
@@ -17554,7 +17563,7 @@ The `for` attribute/property should point to a valid STAC resource URL.
   for="/collection.json"
   header='["title"]'
   tags='["tags"]'
-  body='["satellite","sensor","agency","extent"]'
+  body='["satellite","sensor","agency","extent","updated"]'
   featured='["description","providers","assets","links"]'
   footer='["sci:citation"]'
 ></eox-stacinfo>
@@ -17563,6 +17572,11 @@ The `for` attribute/property should point to a valid STAC resource URL.
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
+
+  // Listen for events
+  eoxStacinfo.addEventListener("click:link", (e) =>
+    console.log("Link clicked! Detail: ", e.detail),
+  );
 </script>
 
 ```
@@ -17606,7 +17620,7 @@ Shows the unstyled version of the element. By setting the `unstyled` attribute/p
   for="/collection.json"
   header='["title"]'
   tags='["tags"]'
-  body='["satellite","sensor","agency","extent"]'
+  body='["satellite","sensor","agency","extent","updated"]'
   featured='["description","providers","assets","links"]'
   footer='["sci:citation"]'
   unstyled
@@ -17616,6 +17630,11 @@ Shows the unstyled version of the element. By setting the `unstyled` attribute/p
   import "@eox/stacinfo/dist/eox-stacinfo.js";
 
   const eoxStacinfo = document.querySelector("eox-stacinfo");
+
+  // Listen for events
+  eoxStacinfo.addEventListener("click:link", (e) =>
+    console.log("Link clicked! Detail: ", e.detail),
+  );
 </script>
 
 ```
