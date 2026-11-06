@@ -31,6 +31,7 @@ export default {
         .featured=${args.featured}
         .footer=${args.footer}
         ?unstyled=${args.unstyled}
+        @click:link=${args["click:link"]}
       ></eox-stacinfo>
     `,
 };

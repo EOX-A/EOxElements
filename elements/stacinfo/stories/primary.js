@@ -8,9 +8,10 @@ const PrimaryStory = {
     for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
     header: ["title"],
     tags: ["tags"],
-    body: ["satellite", "sensor", "agency", "extent"],
+    body: ["satellite", "sensor", "agency", "extent", "updated"],
     featured: ["description", "providers", "assets", "links"],
     footer: ["sci:citation"],
+    "click:link": (e) => console.log("Link clicked! Detail: ", e.detail),
   },
 };
 
