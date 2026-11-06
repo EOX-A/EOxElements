@@ -1,3 +1,5 @@
+import { dispatchElementEvent } from "@eox/elements-utils";
+
 /**
  * Moves a sliced layer (e.g. GeoZarr) to the time slice mapped to the given datetime
  * @param {import("ol/layer").Layer} layer
@@ -17,7 +19,9 @@ export function updateLayerSlice(layer, datetime) {
  * @param {HTMLElement} element
  */
 export function handleDatetimeUpdate(evt, element) {
-  element.dispatchEvent(
-    new CustomEvent("datetime:updated", { detail: evt.detail, bubbles: true }),
-  );
+  dispatchElementEvent(element, "datetime:updated", {
+    detail: evt.detail,
+    activity: true,
+    action: "datetime:updated",
+  });
 }

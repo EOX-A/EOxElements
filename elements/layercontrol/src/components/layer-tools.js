@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { emitActivity } from "@eox/elements-utils";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -177,6 +178,7 @@ export class EOxLayerControlLayerTools extends LitElement {
         detail: {
           jsonformValue: evt.detail.jsonformValue,
           layer: evt.detail.layer,
+          isUser: evt.detail.isUser,
         },
       }),
     );
@@ -215,6 +217,20 @@ export class EOxLayerControlLayerTools extends LitElement {
             @input=${(/** @type {{ target: { value: string; }; }} */ evt) => {
               this.layer.setOpacity(parseFloat(evt.target.value));
               this.requestUpdate();
+            }}
+            @change=${(
+              /** @type {Event & { target: { value: string; }; }} */ evt,
+            ) => {
+              const root = this.closest("eox-layercontrol") || this;
+              emitActivity(
+                root,
+                "change:opacity",
+                {
+                  layer: this.layer?.get("id") || this.layer?.get("name"),
+                  opacity: parseFloat(evt.target.value),
+                },
+                evt,
+              );
             }}
           />
           <span class="small-text" style="width: 30px; text-align: right">${Math.round(this.layer?.getOpacity() * 100)}%</span>
@@ -309,9 +325,19 @@ export class EOxLayerControlLayerTools extends LitElement {
                 class="tools"
                 .open=${live(this.open)}
                 @toggle=${(
-                  /** @type {{ target: { open: boolean; }; }} */ evt,
+                  /** @type {Event & { target: { open: boolean; }; }} */ evt,
                 ) => {
                   this.open = evt.target.open;
+                  const root = this.closest("eox-layercontrol") || this;
+                  emitActivity(
+                    root,
+                    "toggle:tools",
+                    {
+                      layer: this.layer?.get("id") || this.layer?.get("name"),
+                      open: this.open,
+                    },
+                    evt,
+                  );
                 }}
               >
                 <summary></summary>

@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { renderChartMethod } from "./methods/render";
@@ -28,6 +29,9 @@ import { base64EncodeSpec } from "./methods/encode";
  * For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).
  *
  * @element eox-chart
+ * @fires {CustomEvent<{ event: MouseEvent, item: any }>} click:item - Chart item is clicked
+ * @fires {CustomEvent<{ event: PointerEvent, item: any }>} pointermove:item - Chart item is hovered
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
  */
 export class EOxChart extends LitElement {
   static properties = {
@@ -116,11 +120,12 @@ export class EOxChart extends LitElement {
      * Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)
      *
      */
-    this.dispatchEvent(
-      new CustomEvent("click:item", {
-        detail,
-      }),
-    );
+    dispatchElementEvent(this, "click:item", {
+      detail,
+      activity: true,
+      action: "click:item",
+      originalEvent: detail.event,
+    });
   }
 
   /**

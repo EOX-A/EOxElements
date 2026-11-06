@@ -2,6 +2,7 @@ import {
   isLayerVisibleBasedOnZoomState,
   isLayerZoomStateRequired,
 } from "../../helpers";
+import { dispatchElementEvent } from "@eox/elements-utils";
 
 /**
  * Check and update layer zoom visibility at beginning
@@ -41,9 +42,9 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     // if visibilityChanged trigger UI update
     if (visibilityChanged) {
       EOxLayerControlLayer.requestUpdate();
-      EOxLayerControlLayer.dispatchEvent(
-        new CustomEvent("change:resolution", { bubbles: true }),
-      );
+      dispatchElementEvent(EOxLayerControlLayer, "change:resolution", {
+        activity: false,
+      });
     }
   };
 

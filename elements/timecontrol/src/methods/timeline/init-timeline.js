@@ -2,6 +2,7 @@ import {
   DEFAULT_VIS_TIMELINE_OPTIONS,
   VIS_TIMELINE_DATE_FORMATS,
 } from "../../enums.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import * as vis from "vis-timeline/standalone";
 import {
   updateVisibility,
@@ -152,7 +153,10 @@ function handleTimeChanged(props, EOxTimeControl) {
     const sortedDateRange = [...newDateRange].sort((a, b) =>
       dayjs(a).isAfter(dayjs(b)) ? 1 : -1,
     );
-    EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl);
+    EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl, {
+      activity: true,
+      action: "select:timeline",
+    });
   }
 }
 
@@ -174,41 +178,30 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !props.event.shiftKey
   ) {
     const isBackgroundClick = Boolean(props.what == "background");
+    const duration = isBackgroundClick
+      ? dayjs.duration(
+          /** @type {any} */ (EOxTimeControlTimeline.selectionDuration),
+        )
+      : dayjs.duration({ seconds: 1 });
 
-    const utcFormattedDate = getWrongLocalFormatToUTCFormat(
-      props.time,
-      EOxTimeControl.showUTC,
-    );
-    if (isBackgroundClick) {
-      const selection = /** @type {any} */ (
-        EOxTimeControlTimeline.selectionDuration
-      );
-      const duration = dayjs.duration(selection);
-
-      const startDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().format()
-        : dayjs(props.time).utc().format();
-      const endDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().add(duration).format()
-        : dayjs(props.time).add(duration).utc().format();
-      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
-    } else {
-      const duration = dayjs.duration({
-        seconds: 1,
-      });
-      const selectedItem = props.item
+    const selectedItem =
+      !isBackgroundClick && props.item
         ? groupBy(EOxTimeControl.items.get(), "id")[props.item]
         : null;
-      const selectedDateTime = selectedItem ? selectedItem[0].utc : props.time;
+    const selectedDateTime = isBackgroundClick
+      ? getWrongLocalFormatToUTCFormat(props.time, EOxTimeControl.showUTC)
+      : selectedItem
+        ? selectedItem[0].utc
+        : props.time;
 
-      const startDate = EOxTimeControl.showUTC
-        ? dayjs(selectedDateTime).utc().format()
-        : dayjs(selectedDateTime).utc().format();
-      const endDate = EOxTimeControl.showUTC
-        ? dayjs(selectedDateTime).utc().add(duration).format()
-        : dayjs(selectedDateTime).add(duration).utc().format();
-      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
-    }
+    const startDate = dayjs(selectedDateTime).utc().format();
+    const endDate = dayjs(selectedDateTime).utc().add(duration).format();
+
+    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl, {
+      activity: true,
+      action: "select:timeline",
+      originalEvent: props.event,
+    });
   }
 }
 
@@ -229,15 +222,13 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
       updateRangeElements(EOxTimeControlTimeline);
   }
   const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
-  EOxTimeControlTimeline.dispatchEvent(
-    new CustomEvent("update:view", {
-      detail: {
-        start: viewRange.start,
-        end: viewRange.end,
-      },
-      composed: true,
-    }),
-  );
+  dispatchElementEvent(EOxTimeControlTimeline, "update:view", {
+    detail: {
+      start: viewRange.start,
+      end: viewRange.end,
+    },
+    activity: Boolean(props.byUser),
+  });
 }
 
 /**

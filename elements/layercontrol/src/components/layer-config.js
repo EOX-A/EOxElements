@@ -315,6 +315,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
         detail: {
           jsonformValue: this.#data,
           layer: this.layer,
+          isUser: true,
         },
       }),
     );
@@ -396,6 +397,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .noShadow=${true}
             .customEditorInterfaces=${this.customEditorInterfaces}
             @change=${this.throttleDataChange}
+            @eox:activity=${(/** @type {Event} */ e) => e.stopPropagation()}
           ></eox-jsonform>
         `,
       )}

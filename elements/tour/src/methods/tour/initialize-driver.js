@@ -1,4 +1,5 @@
 import { driver } from "driver.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { defaultConfig } from "../../helpers/default-config.js";
 import { showTourOrNot } from "./show-tour.js";
 
@@ -211,46 +212,36 @@ export function initializeDriver(EOxTour) {
           stageRadius: EOxTour.config.stageRadius ?? 5,
         });
       }
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-highlight-started", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      dispatchElementEvent(EOxTour, "tour-highlight-started", {
+        detail: { element, step, options },
+        activity: true,
+        action: "tour-highlight-started",
+      });
       if (EOxTour.config.onHighlightStarted)
         EOxTour.config.onHighlightStarted(element, step, options);
     },
     onHighlighted: (element, step, options) => {
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-highlighted", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      dispatchElementEvent(EOxTour, "tour-highlighted", {
+        detail: { element, step, options },
+        activity: false,
+      });
       if (EOxTour.config.onHighlighted)
         EOxTour.config.onHighlighted(element, step, options);
     },
     onDeselected: (element, step, options) => {
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-deselected", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      dispatchElementEvent(EOxTour, "tour-deselected", {
+        detail: { element, step, options },
+        activity: false,
+      });
       if (EOxTour.config.onDeselected)
         EOxTour.config.onDeselected(element, step, options);
     },
     onDestroyStarted: (element, step, options) => {
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-destroy-started", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      dispatchElementEvent(EOxTour, "tour-destroy-started", {
+        detail: { element, step, options },
+        activity: true,
+        action: "tour-destroy-started",
+      });
       if (EOxTour.config.onDestroyStarted)
         EOxTour.config.onDestroyStarted(element, step, options);
     },

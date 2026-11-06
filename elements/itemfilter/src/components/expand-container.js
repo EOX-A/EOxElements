@@ -1,4 +1,5 @@
 import { LitElement, html, nothing } from "lit";
+import { emitActivity } from "@eox/elements-utils";
 import { styleEOX } from "../style.eox";
 import { when } from "lit/directives/when.js";
 
@@ -48,6 +49,18 @@ export class EOxItemFilterExpandContainer extends LitElement {
         composed: true,
       }),
     );
+    const root = this.closest("eox-itemfilter");
+    if (root) {
+      emitActivity(
+        root,
+        "details-toggled",
+        {
+          key: this.filterObject?.key,
+          title: this.filterObject?.title,
+        },
+        event,
+      );
+    }
   }
 
   /**

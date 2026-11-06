@@ -9,5 +9,5 @@ export default function resetFilterMethod(EOxItemFilter) {
     .forEach((filter) => {
       if (typeof filter.reset === "function") filter.reset();
     });
-  EOxItemFilter.search();
+  EOxItemFilter.search(true);
 }

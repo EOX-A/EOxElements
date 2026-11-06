@@ -28,7 +28,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         .results=${EOxItemFilter.results}
         .unstyled=${EOxItemFilter.unstyled}
         @result=${EOxItemFilter.updateResult}
-        @filter=${() => EOxItemFilter.search()}
+        @filter=${() => EOxItemFilter.search(true)}
       ></eox-itemfilter-text>`;
 
     case "multiselect":
@@ -47,7 +47,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           ).filter((i) => i)}"
           type="${filterObject.type}"
           .unstyled=${EOxItemFilter.unstyled}
-          @filter=${() => EOxItemFilter.search()}
+          @filter=${() => EOxItemFilter.search(true)}
         ></eox-itemfilter-select>
       `;
     case "range":
@@ -64,7 +64,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
             flatMap(EOxItemFilter.items, filterObject.key),
           ).filter((i) => i)}"
           .unstyled=${EOxItemFilter.unstyled}
-          @filter=${() => EOxItemFilter.search()}
+          @filter=${() => EOxItemFilter.search(true)}
         ></eox-itemfilter-range>
       `;
     case "spatial":
@@ -76,7 +76,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
-          @filter=${() => EOxItemFilter.search()}
+          @filter=${() => EOxItemFilter.search(true)}
         ></eox-itemfilter-spatial>
       `;
 

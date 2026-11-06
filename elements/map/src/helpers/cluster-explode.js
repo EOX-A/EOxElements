@@ -5,6 +5,7 @@ import Style from "ol/style/Style";
 import { createEmpty, extend, getArea } from "ol/extent";
 import { LineString, Point } from "ol/geom";
 import VectorLayer from "ol/layer/Vector";
+import { dispatchElementEvent } from "@eox/elements-utils";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
@@ -63,13 +64,15 @@ export class EOxClusterExplodeInteraction extends Interaction {
   #explodedFeature = null;
 
   #fireSelectEvent(event, feature) {
-    const selectdEvt = new CustomEvent("clusterSelect", {
+    dispatchElementEvent(this.eoxMap, "clusterSelect", {
       detail: {
         originalEvent: event,
         feature: feature,
       },
+      activity: true,
+      action: "clusterSelect",
+      originalEvent: event,
     });
-    this.eoxMap.dispatchEvent(selectdEvt);
   }
 
   #closeCluster() {

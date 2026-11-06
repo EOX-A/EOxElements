@@ -1,4 +1,5 @@
 import { LitElement, html, nothing } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import "./components/list";
 import "./components/controller";
 import { styleEOX } from "./style.eox";
@@ -51,6 +52,7 @@ import {
  *
  * @element eox-drawtools
  * @fires {CustomEvent} drawupdate - Fires whenever features are added, modified or discarded
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
  */
 export class EOxDrawTools extends LitElement {
   // Define properties with defaults and types
@@ -418,7 +420,11 @@ export class EOxDrawTools extends LitElement {
        * is the `drawnFeatures` array
        * @type Array<import("ol").Feature>
        */
-      this.dispatchEvent(new CustomEvent("drawupdate", { detail: value }));
+      dispatchElementEvent(this, "drawupdate", {
+        detail: value,
+        activity: true,
+        action: "drawupdate",
+      });
     };
     emitDrawnFeaturesMethod(this, drawUpdateEvent);
   }

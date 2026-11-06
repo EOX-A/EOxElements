@@ -1,5 +1,6 @@
 // Import necessary OpenLayers formats
 import GeoJSON from "ol/format/GeoJSON";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import LineString from "ol/geom/LineString.js";
 import Polygon from "ol/geom/Polygon.js";
 import { getArea, getLength } from "ol/sphere";
@@ -83,9 +84,18 @@ export default function addNewFeature(
   );
 
   // Dispatch relevant events based on operation type.
+  const isAddFeaturesActivity =
+    ("type" in e && e.type === "addfeatures") ||
+    ("features" in e && Array.isArray(e.features));
   if (isDraw || replaceFeatures)
-    dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
-  dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject);
+    dispatchEvt(EOxMap, "drawend", e, geoJsonObject, Boolean(isDraw));
+  dispatchEvt(
+    EOxMap,
+    "addfeatures",
+    e,
+    geoJsonObject,
+    Boolean(!isDraw && isAddFeaturesActivity),
+  );
 }
 
 /**
@@ -95,16 +105,22 @@ export default function addNewFeature(
  * @param {string} type - A string specifying the type of the event to be dispatched.
  * @param {import("ol/interaction/Draw").DrawEvent | import("ol/interaction/DragAndDrop").DragAndDropEvent | { features: any }} e - An event object which can be of type DrawEvent, DragAndDropEvent, or an object with a features property.
  * @param {{ [p: string]: any }} geoJSON - An object representing GeoJSON data associated with the event.
+ * @param {boolean} [activity=false] - Whether the feature addition was user activity.
  */
-function dispatchEvt(EOxMap, type, e, geoJSON) {
-  // Create a new custom event with the specified type and detail, including the original event and GeoJSON data
-  const evt = new CustomEvent(type, {
+function dispatchEvt(EOxMap, type, e, geoJSON, activity = false) {
+  const originalEvent =
+    "originalEvent" in e
+      ? e.originalEvent
+      : typeof Event !== "undefined" && e instanceof Event
+        ? e
+        : undefined;
+  dispatchElementEvent(EOxMap, type, {
     detail: {
       originalEvent: e,
       geoJSON,
     },
+    activity,
+    action: type,
+    originalEvent,
   });
-
-  // Dispatch the custom event on the EOxMap object
-  EOxMap.dispatchEvent(evt);
 }

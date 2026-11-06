@@ -11,7 +11,8 @@ import { setSelectedDate } from "../../helpers/";
  *
  * @param {DateRange} value - The new date range as [startDate, endDate] in ISO format.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
+ * @param {object} [options] - Options for the selection update.
  */
-export default function dateChangeHandler(value, EOxTimeControl) {
-  setSelectedDate(value, EOxTimeControl.eoxMap, EOxTimeControl);
+export default function dateChangeHandler(value, EOxTimeControl, options) {
+  setSelectedDate(value, EOxTimeControl.eoxMap, EOxTimeControl, options);
 }

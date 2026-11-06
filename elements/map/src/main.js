@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import { LitElement, html } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import Map from "ol/Map";
 import View from "ol/View";
 import olCss from "ol/ol.css?inline";
@@ -142,6 +143,7 @@ addCommonStylesheet();
  * @fires {CustomEvent} resize - Fired when the map container is resized
  * @fires {CustomEvent} select - A feature is selected
  * @fires {CustomEvent} layerschanged - The layers have been changed
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
  *
  * @cssproperty --map-controls-bg - Background color for controls.
  * @cssproperty --map-controls-color - Text/icon color for controls.
@@ -459,9 +461,10 @@ export class EOxMap extends LitElement {
    */
   set layers(layers) {
     this.#layers = setLayersMethod(layers, this.#layers, this);
-    this.dispatchEvent(
-      new CustomEvent("layerschanged", { detail: { layers: this.#layers } }),
-    );
+    dispatchElementEvent(this, "layerschanged", {
+      detail: { layers: this.#layers },
+      activity: false,
+    });
   }
 
   /**
@@ -678,15 +681,14 @@ export class EOxMap extends LitElement {
     /**
      * @type {CustomEvent}
      */
-    this.dispatchEvent(
-      new CustomEvent("resize", {
-        detail: {
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
-          isSmall: entry.contentRect.width < 768,
-        },
-      }),
-    );
+    dispatchElementEvent(this, "resize", {
+      detail: {
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+        isSmall: entry.contentRect.width < 768,
+      },
+      activity: false,
+    });
   }
 
   /**

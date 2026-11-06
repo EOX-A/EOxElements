@@ -1,4 +1,5 @@
 import Overlay from "ol/Overlay.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import "../components/tooltip";
 import { createLayer } from "./generate";
 import Feature from "ol/Feature";
@@ -253,14 +254,19 @@ export class EOxSelectInteraction {
             }
           }
         }
-        const selectdEvt = new CustomEvent("select", {
+        const isHover = options.condition === "pointermove";
+        dispatchElementEvent(this.eoxMap, "select", {
           detail: {
             id: options.id,
             originalEvent: event,
             feature: feature,
           },
+          bubbles: !isHover,
+          composed: !isHover,
+          activity: !isHover,
+          action: "select",
+          originalEvent: event,
         });
-        this.eoxMap.dispatchEvent(selectdEvt);
       };
 
       // Set up the map event listener for the specified condition (e.g., click, pointermove)
