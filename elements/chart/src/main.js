@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { dispatchElementEvent, emitActivity } from "@eox/elements-utils";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { renderChartMethod } from "./methods/render";
@@ -28,6 +29,9 @@ import { base64EncodeSpec } from "./methods/encode";
  * For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).
  *
  * @element eox-chart
+ * @fires {CustomEvent<{ event: MouseEvent, item: any }>} click:item - Chart item is clicked
+ * @fires {CustomEvent<{ event: PointerEvent, item: any }>} pointermove:item - Chart item is hovered
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
  */
 export class EOxChart extends LitElement {
   static properties = {
@@ -116,11 +120,12 @@ export class EOxChart extends LitElement {
      * Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)
      *
      */
-    this.dispatchEvent(
-      new CustomEvent("click:item", {
-        detail,
-      }),
-    );
+    dispatchElementEvent(this, "click:item", {
+      detail,
+      activity: true,
+      action: "click:item",
+      originalEvent: detail.event,
+    });
   }
 
   /**
@@ -187,6 +192,54 @@ export class EOxChart extends LitElement {
         }
       `;
       document.head.appendChild(style);
+    }
+
+    const visContainer = /** @type {HTMLElement | null} */ (
+      this.renderRoot.querySelector("#vis")
+    );
+    if (visContainer) {
+      // Case B: Listen to clicks on vega-embed actions (Save as PNG/SVG, View Source, etc.)
+      visContainer.addEventListener("click", (e) => {
+        const target = /** @type {HTMLElement | null} */ (e.target);
+        const actionLink = /** @type {HTMLAnchorElement | null} */ (
+          target?.closest(".vega-actions a")
+        );
+        if (actionLink) {
+          emitActivity(
+            this,
+            "click:action",
+            {
+              action: actionLink.textContent?.trim() || "",
+              href: actionLink.getAttribute("href") || "",
+            },
+            e,
+          );
+        }
+      });
+
+      // Case B: Listen to changes on Vega input bindings (.vega-bindings)
+      visContainer.addEventListener("change", (e) => {
+        const target =
+          /** @type {HTMLInputElement | HTMLSelectElement | null} */ (e.target);
+        if (target?.closest(".vega-bindings")) {
+          const value =
+            target instanceof HTMLInputElement && target.type === "checkbox"
+              ? target.checked
+              : target.value;
+          emitActivity(
+            this,
+            "change:binding",
+            {
+              name:
+                target.getAttribute("name") ||
+                target.getAttribute("id") ||
+                target.className,
+              value,
+            },
+            e,
+          );
+        }
+      });
     }
   }
 

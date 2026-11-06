@@ -3,11 +3,12 @@
  *
  * @param {import("../../types").DateRange} dateRange - Selected start and end dates.
  * @param {import("../../main").EOxTimeControl} timeControl - The parent timecontrol instance.
+ * @param {object} [options] - Options for the selection update.
  */
-export default function selectDateRangeMethod(dateRange, timeControl) {
+export default function selectDateRangeMethod(dateRange, timeControl, options) {
   if (!timeControl) return;
 
-  timeControl.dateChange(dateRange, timeControl);
+  timeControl.dateChange(dateRange, timeControl, options);
   const start = new Date(dateRange[0]).getTime();
   const end = new Date(dateRange[1]).getTime();
   const midpoint = start + (end - start) / 2;

@@ -9,7 +9,7 @@ import {
   layerListChangeMethod,
 } from "./methods/layercontrol";
 import eoxStyle from "@eox/ui/style.css?inline";
-import { addCommonStylesheet } from "@eox/elements-utils";
+import { addCommonStylesheet, dispatchElementEvent } from "@eox/elements-utils";
 
 addCommonStylesheet();
 
@@ -43,6 +43,10 @@ addCommonStylesheet();
  * Usage: `import { updateVectorLayerStyle } from "@eox/layercontrol";`
  *
  * @element eox-layercontrol
+ * @fires {CustomEvent} layerchange - Fired when layers in the map change
+ * @fires {CustomEvent} layerConfig:change - Fired when layer configuration changes
+ * @fires {CustomEvent} datetime:updated - Fired when datetime is updated for a layer
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
  */
 export class EOxLayerControl extends LitElement {
   // Define static properties for the component
@@ -208,11 +212,19 @@ export class EOxLayerControl extends LitElement {
    */
   #handleLayerControlLayerListChange(evt) {
     layerListChangeMethod(evt, this);
+    const isUser = Boolean(
+      evt.detail &&
+      !("activity" in evt.detail && evt.detail.activity === false),
+    );
     /**
      * A generic layer change event; could be a layer visibility, group length updates and others.
      * Passes the changed layer in the `detail`.
      */
-    this.dispatchEvent(new CustomEvent("layerchange", { detail: evt.detail }));
+    dispatchElementEvent(this, "layerchange", {
+      detail: evt.detail,
+      activity: isUser,
+      action: "layerchange",
+    });
   }
 
   /**
@@ -220,9 +232,11 @@ export class EOxLayerControl extends LitElement {
    * @param {CustomEvent} evt
    */
   #handleLayerConfigChange(evt) {
-    this.dispatchEvent(
-      new CustomEvent("layerConfig:change", { detail: evt.detail }),
-    );
+    dispatchElementEvent(this, "layerConfig:change", {
+      detail: evt.detail,
+      activity: evt.detail?.isUser !== false,
+      action: "layerConfig:change",
+    });
   }
 
   render() {
@@ -275,7 +289,7 @@ export class EOxLayerControl extends LitElement {
             .colormapRegistry=${this.colormapRegistry}
             .customEditorInterfaces=${this.customEditorInterfaces}
             @changed=${this.#handleLayerControlLayerListChange}
-            @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this)}
+            @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this, true)}
             @layerConfig:change=${this.#handleLayerConfigChange}
           ></eox-layercontrol-layer-list>
         `,

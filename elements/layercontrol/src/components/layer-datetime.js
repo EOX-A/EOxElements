@@ -84,6 +84,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
    * @param {CustomEvent<{date:string[]}>} evt
    **/
   #handleStepChange(evt) {
+    evt.stopPropagation();
     const dateObj = new Date(evt.detail.date[0]);
 
     // Check if configuration implies datetime (ISO strings)
@@ -106,6 +107,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     this.dispatchEvent(
       new CustomEvent("datetime:updated", {
         bubbles: true,
+        composed: true,
         detail: {
           datetime: currentStep,
           layer: this.layer,
@@ -150,6 +152,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
               },
             ]}
             @select=${this.#handleStepChange}
+            @eox:activity=${(/** @type {Event} */ e) => e.stopPropagation()}
             .showUTC=${this.layerDatetime.showUTC || false}
           >
             <eox-timecontrol-date

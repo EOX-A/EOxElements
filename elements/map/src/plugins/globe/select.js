@@ -1,4 +1,5 @@
 import { mercator, utils } from "@openglobus/og";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import Feature from "ol/Feature";
 import ImageWMS from "ol/source/ImageWMS.js";
 import TileWMS from "ol/source/TileWMS.js";
@@ -314,17 +315,23 @@ export function showGlobeTooltip(
     wrapper.style.display = "block";
   }
 
-  const selectdEvt = new CustomEvent("select", {
+  const isHover = (options.condition || "click") === "pointermove";
+
+  /**
+   * Fired when a feature (or raster pixel) is selected in globe mode.
+   */
+  dispatchElementEvent(EOxMap, "select", {
     detail: {
       id: options.id,
       originalEvent: event,
       feature,
     },
+    bubbles: !isHover,
+    composed: !isHover,
+    activity: !isHover,
+    action: "select",
+    originalEvent: event,
   });
-  /**
-   * Fired when a feature (or raster pixel) is selected in globe mode.
-   */
-  EOxMap.dispatchEvent(selectdEvt);
 }
 
 /**

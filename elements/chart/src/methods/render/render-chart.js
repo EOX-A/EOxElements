@@ -13,11 +13,10 @@ import { DEFAULT_SPEC, DEFAULT_OPT } from "../../enums";
 const renderChartMethod = (EOxChart, spec, opt, dataValues) => {
   const mergedSpec = deepmerge(DEFAULT_SPEC, spec);
   const mergedOpt = deepmerge(DEFAULT_OPT, opt);
-  vegaEmbed(
-    /** @type {HTMLElement} */ (EOxChart.renderRoot.querySelector("#vis")),
-    mergedSpec,
-    mergedOpt,
-  ).then((res) => {
+  const visContainer = /** @type {HTMLElement} */ (
+    EOxChart.renderRoot.querySelector("#vis")
+  );
+  vegaEmbed(visContainer, mergedSpec, mergedOpt).then((res) => {
     if (dataValues) {
       Object.keys(dataValues).forEach((dataSourceName) => {
         res.view.insert(dataSourceName, dataValues[dataSourceName]);
@@ -34,6 +33,7 @@ const renderChartMethod = (EOxChart, spec, opt, dataValues) => {
       // @ts-expect-error using private method defined on EOxChart
       EOxChart._dispatchItemClickEvent({ event, item });
     });
+
     // @ts-expect-error using private method defined on EOxChart
     EOxChart._vegaView = res.view;
   });

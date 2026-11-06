@@ -3,6 +3,7 @@
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
 import { toFeature } from "ol/render/Feature";
+import { dispatchElementEvent } from "@eox/elements-utils";
 
 const createSelectHandler = (EoxDrawTool) => {
   /**
@@ -21,9 +22,11 @@ const createSelectHandler = (EoxDrawTool) => {
       e.detail.feature = toFeature(e.detail.feature);
     }
     EoxDrawTool.drawLayer.getSource().addFeature(e.detail.feature);
-    EoxDrawTool.eoxMap.dispatchEvent(
-      new CustomEvent("addfeatures", { detail: e.detail }),
-    );
+    dispatchElementEvent(EoxDrawTool.eoxMap, "addfeatures", {
+      detail: e.detail,
+      activity: true,
+      action: "addfeatures",
+    });
   };
 
   /**

@@ -25,7 +25,7 @@ function createResetMethod(filterObject, tabIndex, EOxItemFilter) {
             if (filterElement && typeof filterElement.reset === "function") {
               filterElement.reset();
             }
-            EOxItemFilter.search();
+            EOxItemFilter.search(true);
             EOxItemFilter.requestUpdate();
           }}
         >

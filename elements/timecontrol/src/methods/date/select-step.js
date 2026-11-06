@@ -30,5 +30,6 @@ export default function selectStepMethod(nextDate, EOxTimeControlDate) {
   selectDateRangeMethod(
     [start.utc().format(), end.utc().format()],
     EOxTimeControl,
+    { activity: true, action: "select:step" },
   );
 }

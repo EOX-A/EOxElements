@@ -1,4 +1,5 @@
 import { LitElement, html, nothing } from "lit";
+import { emitActivity, findHost } from "@eox/elements-utils";
 import { styleEOX } from "../style.eox";
 import { when } from "lit/directives/when.js";
 
@@ -34,6 +35,8 @@ export class EOxItemFilterExpandContainer extends LitElement {
     this.unstyled = false;
   }
 
+  #userClickedSummary = false;
+
   /**
    * Handles the toggle event for the details element.
    * Dispatches a custom event "details-toggled" with the event details.
@@ -48,6 +51,21 @@ export class EOxItemFilterExpandContainer extends LitElement {
         composed: true,
       }),
     );
+    if (this.#userClickedSummary) {
+      this.#userClickedSummary = false;
+      const root = findHost(this, "eox-itemfilter");
+      if (root) {
+        emitActivity(
+          root,
+          "details-toggled",
+          {
+            key: this.filterObject?.key,
+            title: this.filterObject?.title,
+          },
+          event,
+        );
+      }
+    }
   }
 
   /**
@@ -68,7 +86,12 @@ export class EOxItemFilterExpandContainer extends LitElement {
             class="details-filter max-width"
             ?open=${this.filterObject.expanded || nothing}
           >
-            <summary class="square">
+            <summary
+              class="square"
+              @click=${() => {
+                this.#userClickedSummary = true;
+              }}
+            >
               <nav class="responsive tiny-space">
                 <i class="small">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

@@ -1,4 +1,5 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { SimplemdeEditor } from "@json-editor/json-editor/src/editors/simplemde.js";
 import EasyMDE from "easymde/dist/easymde.min.js";
 import AceEditor from "ace-builds";
@@ -48,6 +49,22 @@ export const createEditor = (element) => {
   formEle.addEventListener("input", removeHideErrors);
   formEle.addEventListener("change", removeHideErrors);
 
+  const markUserDirty = (e) => {
+    const target = /** @type {HTMLElement | null} */ (e.target);
+    if (
+      target &&
+      (target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        Boolean(target.closest("button:not([type=submit])")))
+    ) {
+      element._isUserDirty = true;
+    }
+  };
+  formEle.addEventListener("input", markUserDirty);
+  formEle.addEventListener("change", markUserDirty);
+  formEle.addEventListener("click", markUserDirty);
+
   // Force validation on input for textareas and inputs
   formEle.addEventListener("input", (e) => {
     const target = /** @type {HTMLElement} */ (e.target);
@@ -68,13 +85,11 @@ export const createEditor = (element) => {
   JSONEditor.defaults.callbacks.button = {
     ...(JSONEditor.defaults.callbacks.button || {}),
     onSubmit: function () {
-      element.dispatchEvent(
-        new CustomEvent(`submit`, {
-          detail: element.value,
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      dispatchElementEvent(element, "submit", {
+        detail: element.value,
+        activity: true,
+        action: "submit",
+      });
     },
   };
 

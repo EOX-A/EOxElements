@@ -135,7 +135,8 @@ export class EOxItemFilterRange extends LitElement {
                   this.filterObject.state.max || this.filterObject.max,
                 ).format(),
               ]}
-              @select=${(e) =>
+              @select=${(e) => {
+                e.stopPropagation();
                 rangeInputHandlerMethod(
                   new CustomEvent("values", {
                     detail: {
@@ -146,7 +147,9 @@ export class EOxItemFilterRange extends LitElement {
                     },
                   }),
                   this,
-                )}
+                );
+              }}
+              @eox:activity=${(e) => e.stopPropagation()}
             >
               <eox-timecontrol-date
                 .format=${DATE_TIME_FORMAT}

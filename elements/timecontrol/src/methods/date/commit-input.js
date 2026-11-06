@@ -72,5 +72,6 @@ export default function commitInputMethod(
   EOxTimeControl.dateChange(
     [start.utc().toISOString(), end.utc().toISOString()],
     EOxTimeControl,
+    { activity: true, action: "select:date" },
   );
 }

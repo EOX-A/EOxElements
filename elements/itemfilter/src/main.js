@@ -1,4 +1,5 @@
 import { LitElement, html, nothing } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { style } from "./style";
@@ -53,6 +54,7 @@ import {
  * @fires mouseenter:result - When a result is hovered
  * @fires mouseleave:result - When a result is un-hovered
  * @fires click:result-action - When a result action button is clicked
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
  */
 export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
@@ -134,13 +136,17 @@ export class EOxItemFilter extends LitElement {
      */
     this.selectedResult = null;
 
-    /**
-     * @type Function
-     * @private
-     */
-    this.search = _debounce(this.searchHandler, 100, {
+    this._debouncedSearch = _debounce(this.searchHandler, 100, {
       leading: true,
     });
+
+    /**
+     * @type Function
+     */
+    this.search = (isUser = false) => {
+      if (isUser) this._isUserFilter = true;
+      this._debouncedSearch();
+    };
 
     /**
      * Aggregate results by a property key
@@ -329,20 +335,20 @@ export class EOxItemFilter extends LitElement {
    * Requests an update after the search completes.
    */
   async searchHandler() {
+    const isUser = Boolean(this._isUserFilter);
+    this._isUserFilter = false;
     await searchMethod(this.#config, this.#items, this);
     /**
      * Fires when the filters are changed; event detail includes `filters` and `results`
      */
-    this.dispatchEvent(
-      new CustomEvent("filter", {
-        detail: {
-          results: this.results,
-          filters: this.filters,
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "filter", {
+      detail: {
+        results: this.results,
+        filters: this.filters,
+      },
+      activity: isUser,
+      action: "filter",
+    });
     if (this.inlineMode)
       /** @type {import("./components/itemfilter-container").EOxItemFilterContainer} **/ (
         this.renderRoot.querySelector("eox-itemfilter-container")
@@ -465,13 +471,11 @@ export class EOxItemFilter extends LitElement {
     /**
      * Fires when a result is selected; event detail is `selectedResult`
      */
-    this.dispatchEvent(
-      new CustomEvent("select", {
-        detail: this.selectedResult,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "select", {
+      detail: this.selectedResult,
+      activity: true,
+      action: "select",
+    });
     this.requestUpdate();
   }
 
@@ -520,13 +524,11 @@ export class EOxItemFilter extends LitElement {
     /**
      * Fires when a result-action is clicked; event detail is `result`
      */
-    this.dispatchEvent(
-      new CustomEvent("click:result-action", {
-        detail: evt.detail,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "click:result-action", {
+      detail: evt.detail,
+      activity: true,
+      action: "click:result-action",
+    });
   }
 
   /**
@@ -559,8 +561,8 @@ export class EOxItemFilter extends LitElement {
                 .filters=${this.filters}
                 .filterProperties=${this.filterProperties}
                 .inlineMode=${this.inlineMode || false}
-                @reset=${() => this.resetFilters()}
-                @filter=${() => this.search()}
+                @reset=${() => resetFilterMethod(this, true)}
+                @filter=${() => this.search(true)}
               >
                 <section
                   slot="section"

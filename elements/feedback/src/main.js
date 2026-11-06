@@ -1,4 +1,5 @@
 import RegionScreenshot from "region-screenshot-js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import "./feedback-button.js";
@@ -37,6 +38,7 @@ import "./feedback-button.js";
  *
  * @fires close - The modal was closed.
  * @fires submit - The feedback was submitted. The `CustomEvent.detail` contains the FormData object.
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
  */
 export class EOxFeedback extends HTMLElement {
   static observedAttributes = ["endpoint", "unstyled"];
@@ -123,7 +125,7 @@ export class EOxFeedback extends HTMLElement {
       .addEventListener("click", () => this.onSubmit());
     this.shadowRoot
       .querySelector("button#cancel")
-      .addEventListener("click", () => this.onCancel());
+      .addEventListener("click", () => this.onCancel(true));
 
     const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
     if (jsonForm) {
@@ -165,7 +167,7 @@ export class EOxFeedback extends HTMLElement {
   /** @private */
   onKeyboardInput(e) {
     if (e.keyCode === 27) {
-      this.onCancel();
+      this.onCancel(true);
     }
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       const submitButton = this.shadowRoot.querySelector("button#submit");
@@ -347,7 +349,11 @@ export class EOxFeedback extends HTMLElement {
         <p class="red-text middle-align center-align">Oh no - something went wrong! Apologies, we'll try to find out what happened.</p>
         `;
     }
-    this.dispatchEvent(new CustomEvent("submit", { detail: requestBody }));
+    dispatchElementEvent(this, "submit", {
+      detail: requestBody,
+      activity: true,
+      action: "submit",
+    });
 
     form.classList.add("hidden");
     container.appendChild(message);
@@ -355,17 +361,23 @@ export class EOxFeedback extends HTMLElement {
     container.classList.remove("disabled");
     progress.classList.add("hidden");
     setTimeout(() => {
-      this.onCancel();
+      this.onCancel(false);
     }, 4000);
   }
 
-  /** @private */
-  onCancel() {
+  /**
+   * @param {boolean} [isUser=false]
+   * @private
+   */
+  onCancel(isUser = false) {
     if (this.regionScreenshot) {
       this.regionScreenshot.close();
     }
+    dispatchElementEvent(this, "close", {
+      activity: isUser,
+      action: "close",
+    });
     this.remove();
-    this.dispatchEvent(new Event("close"));
   }
 
   /** @private */
@@ -477,6 +489,7 @@ export class EOxFeedback extends HTMLElement {
       /** @type {import("@eox/jsonform").EOxJSONForm} */
       const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
       jsonForm.schema = this.schema;
+      jsonForm.addEventListener("eox:activity", (e) => e.stopPropagation());
     }
   }
 }
