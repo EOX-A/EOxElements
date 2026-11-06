@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/EOX-A/EOxElements/compare/chart-v1.2.1...chart-v1.2.2) (2026-11-06)
+
+
+### Bug Fixes
+
+* Chunk base64 spec encoding to prevent call stack overflow ([#2645](https://github.com/EOX-A/EOxElements/issues/2645)) ([51b6b9f](https://github.com/EOX-A/EOxElements/commit/51b6b9fdf7485568e15446a587fb2004676e3356))
+
 ## [1.2.1](https://github.com/EOX-A/EOxElements/compare/chart-v1.2.0...chart-v1.2.1) (2026-09-28)
 
 
