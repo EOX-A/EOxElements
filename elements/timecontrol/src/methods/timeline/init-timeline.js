@@ -17,6 +17,7 @@ import duration from "dayjs/plugin/duration";
 import groupBy from "lodash.groupby";
 import filter from "lodash.filter";
 import updateGridClipMethod from "./update-grid-clip.js";
+import destroyTimelineMethod from "./destroy-timeline.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -29,7 +30,6 @@ dayjs.extend(duration);
  */
 
 let drag = false;
-let drawInterval = null;
 
 const labelDateFormat = "DD MMM YYYY HH:mm:ss";
 
@@ -255,6 +255,7 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 export default function initTimelineMethod(EOxTimeControlTimeline) {
+  if (!EOxTimeControlTimeline.isConnected) return;
   const EOxTimeControl = EOxTimeControlTimeline.getEOxTimeControl();
 
   if (EOxTimeControl) {
@@ -266,14 +267,8 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const min = minDate.toDate();
     const max = maxDate.format("YYYY-MM-DD");
 
-    let previousWindow = null;
-    if (EOxTimeControlTimeline.visTimeline) {
-      try {
-        previousWindow = EOxTimeControlTimeline.visTimeline.getWindow();
-      } catch {
-        // ignore if not initialized
-      }
-    }
+    destroyTimelineMethod(EOxTimeControlTimeline);
+    const previousWindow = EOxTimeControlTimeline._timelineWindow;
 
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
@@ -390,34 +385,30 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     updateGridClipMethod(EOxTimeControlTimeline);
     EOxTimeControlTimeline.requestUpdate();
 
-    if (drawInterval) {
-      clearInterval(drawInterval);
-      drawInterval = null;
-    }
-
-    if (drawInterval === null)
-      drawInterval = setInterval(() => {
-        const vt =
-          /** @type {import("vis-timeline/standalone").Timeline | any} */ (
-            EOxTimeControlTimeline.visTimeline
-          );
-        if (
-          vt &&
-          vt.initialRangeChangeDone &&
-          vt.initialFitDone &&
-          !vt.initialDrawDone
-        ) {
-          vt.redraw();
-          clearInterval(drawInterval);
-        } else if (
-          vt &&
-          vt.initialRangeChangeDone &&
-          vt.initialFitDone &&
-          vt.initialDrawDone
-        ) {
-          clearInterval(drawInterval);
-        }
-      }, 50);
+    EOxTimeControlTimeline._timelineDrawInterval = setInterval(() => {
+      const vt =
+        /** @type {import("vis-timeline/standalone").Timeline | any} */ (
+          EOxTimeControlTimeline.visTimeline
+        );
+      if (
+        vt &&
+        vt.initialRangeChangeDone &&
+        vt.initialFitDone &&
+        !vt.initialDrawDone
+      ) {
+        vt.redraw();
+        clearInterval(EOxTimeControlTimeline._timelineDrawInterval);
+        EOxTimeControlTimeline._timelineDrawInterval = null;
+      } else if (
+        vt &&
+        vt.initialRangeChangeDone &&
+        vt.initialFitDone &&
+        vt.initialDrawDone
+      ) {
+        clearInterval(EOxTimeControlTimeline._timelineDrawInterval);
+        EOxTimeControlTimeline._timelineDrawInterval = null;
+      }
+    }, 50);
 
     visTimeline.on("changed", () => {
       updateGridClipMethod(EOxTimeControlTimeline);

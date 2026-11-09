@@ -77,6 +77,9 @@ export class EOxJSONForm extends LitElement {
    * @type {{[key: string]: any}}
    */
   #editor = null;
+
+  /** @type {unknown} Last editor value snapshot for activity comparison. */
+  #previousEditorValue;
   constructor() {
     super();
 
@@ -220,13 +223,18 @@ export class EOxJSONForm extends LitElement {
     this.#editor.on("ready", () => {
       this.#emitReady();
       this._value = this.#editor.getValue();
+      this.#previousEditorValue = structuredClone(this._value);
       this.#emitValue(false);
     });
 
     this.#editor.on("change", () => {
-      const isUser = Boolean(this._isUserDirty);
+      const value = this.#editor.getValue();
+      const isUser =
+        Boolean(this._isUserDirty) &&
+        !isEqual(this.#previousEditorValue, value);
       this._isUserDirty = false;
-      this._value = this.#editor.getValue();
+      this.#previousEditorValue = structuredClone(value);
+      this._value = value;
       this.#emitValue(isUser);
     });
   }

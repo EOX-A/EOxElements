@@ -43,6 +43,9 @@ import "./feedback-button.js";
 export class EOxFeedback extends HTMLElement {
   static observedAttributes = ["endpoint", "unstyled"];
 
+  /** @type {AbortController | null} */
+  #listenerController = null;
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -111,6 +114,9 @@ export class EOxFeedback extends HTMLElement {
   }
 
   connectedCallback() {
+    this.#listenerController?.abort();
+    this.#listenerController = new AbortController();
+    const { signal } = this.#listenerController;
     this.endpoint =
       this.endpoint ||
       this.getAttribute("endpoint") ||
@@ -119,49 +125,36 @@ export class EOxFeedback extends HTMLElement {
     this.render();
     this.shadowRoot
       .querySelector("input[type=checkbox]")
-      .addEventListener("click", (e) => this.onToggleScreenshot(e));
+      .addEventListener("click", (e) => this.onToggleScreenshot(e), { signal });
     this.shadowRoot
       .querySelector("button#submit")
-      .addEventListener("click", () => this.onSubmit());
+      .addEventListener("click", () => this.onSubmit(), { signal });
     this.shadowRoot
       .querySelector("button#cancel")
-      .addEventListener("click", () => this.onCancel(true));
+      .addEventListener("click", () => this.onCancel(true), { signal });
 
     const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
     if (jsonForm) {
-      jsonForm.addEventListener("change", () => this.onJsonFormChange());
+      jsonForm.addEventListener("change", () => this.onJsonFormChange(), {
+        signal,
+      });
     }
 
     const textarea = this.shadowRoot.querySelector("textarea#message");
     if (textarea) {
-      textarea.addEventListener("input", () => this.onTextareaInput());
+      textarea.addEventListener("input", () => this.onTextareaInput(), {
+        signal,
+      });
     }
 
-    document.addEventListener("keyup", (e) => this.onKeyboardInput(e));
+    document.addEventListener("keyup", (e) => this.onKeyboardInput(e), {
+      signal,
+    });
   }
 
   disconnectedCallback() {
-    this.shadowRoot
-      .querySelector("input[type=checkbox]")
-      .removeEventListener("click", (e) => this.onToggleScreenshot(e));
-    this.shadowRoot
-      .querySelector("button#submit")
-      .removeEventListener("click", () => this.onSubmit());
-    this.shadowRoot
-      .querySelector("button#cancel")
-      .removeEventListener("click", () => this.onCancel());
-
-    const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
-    if (jsonForm) {
-      jsonForm.removeEventListener("change", () => this.onJsonFormChange());
-    }
-
-    const textarea = this.shadowRoot.querySelector("textarea#message");
-    if (textarea) {
-      textarea.removeEventListener("input", () => this.onTextareaInput());
-    }
-
-    document.removeEventListener("keyup", (e) => this.onKeyboardInput(e));
+    this.#listenerController?.abort();
+    this.#listenerController = null;
   }
 
   /** @private */

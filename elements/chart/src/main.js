@@ -91,10 +91,16 @@ export class EOxChart extends LitElement {
     /**
      * Vega view instance
      *
-     * @type {any}
+     * @type {import("vega").View | null}
      * @private
      */
     this._vegaView = null;
+
+    /** @type {import("vega-embed").Result | null} @private */
+    this._embedResult = null;
+
+    /** @type {object | null} @private */
+    this._renderRequest = null;
   }
 
   /**
@@ -141,10 +147,34 @@ export class EOxChart extends LitElement {
     }
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.hasUpdated) {
+      this._observeResize();
+      this.requestUpdate("spec", Symbol());
+    }
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (this._resizeObserver) {
-      this._resizeObserver.disconnect();
+    this._resizeObserver?.disconnect();
+    this._disposeChart();
+  }
+
+  /** @private */
+  _disposeChart() {
+    this._renderRequest = null;
+    const result = this._embedResult;
+    this._embedResult = null;
+    this._vegaView = null;
+    result?.finalize();
+  }
+
+  /** @private */
+  _observeResize() {
+    this._resizeObserver?.observe(this);
+    if (this.parentElement) {
+      this._resizeObserver?.observe(this.parentElement);
     }
   }
 
@@ -159,10 +189,7 @@ export class EOxChart extends LitElement {
           this._vegaView.resize().runAsync();
         }
       });
-      this._resizeObserver.observe(this);
-      if (this.parentElement) {
-        this._resizeObserver.observe(this.parentElement);
-      }
+      this._observeResize();
     }
 
     if (!this.unstyled) {

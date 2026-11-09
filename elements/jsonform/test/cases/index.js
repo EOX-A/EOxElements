@@ -1,5 +1,14 @@
 // Exported test methods
 
+export {
+  programmaticActivityTest,
+  inputActivityTest,
+  noOpActivityTest,
+  arrayActivityTest,
+  customButtonActivityTest,
+  recreatedActivityTest,
+} from "./activity";
+
 export { default as loadJsonFormTest } from "./load-jsonform";
 export { default as loadJsonFormNoShadowTest } from "./load-jsonform-no-shadow";
 export { default as loadExternalSchemaTest } from "./load-external-schema";

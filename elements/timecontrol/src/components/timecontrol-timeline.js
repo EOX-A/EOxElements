@@ -5,6 +5,7 @@ import { styleTimeline } from "../styles/style.timeline.js";
 import visTimelineCSS from "vis-timeline/styles/vis-timeline-graph2d.css?inline";
 import {
   initTimelineMethod,
+  destroyTimelineMethod,
   setDateRangeMethod,
 } from "../methods/timeline/index.js";
 import { when } from "lit/directives/when.js";
@@ -43,6 +44,15 @@ export class EOxTimeControlTimeline extends LitElement {
    * @type {import("vis-timeline/standalone").Timeline}
    */
   #visTimeline = null;
+
+  /** @type {ReturnType<typeof setTimeout> | null} */
+  _timelineInitTimeout = null;
+
+  /** @type {ReturnType<typeof setInterval> | null} */
+  _timelineDrawInterval = null;
+
+  /** @type {{ start: Date; end: Date } | null} */
+  _timelineWindow = null;
 
   /**
    * Whether the timecontrol is loading.
@@ -171,7 +181,23 @@ export class EOxTimeControlTimeline extends LitElement {
    * Should be called after the timecontrol has populated its items and groups DataSets.
    */
   initTimeline() {
-    setTimeout(() => initTimelineMethod(this));
+    clearTimeout(this._timelineInitTimeout);
+    this._timelineInitTimeout = setTimeout(() => {
+      this._timelineInitTimeout = null;
+      if (this.isConnected) initTimelineMethod(this);
+    });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.hasUpdated && this.getEOxTimeControl()?.items?.length) {
+      this.initTimeline();
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    destroyTimelineMethod(this);
   }
 
   /**

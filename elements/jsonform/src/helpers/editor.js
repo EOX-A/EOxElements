@@ -7,6 +7,8 @@ import addCustomInputs from "../custom-inputs";
 import { FALLBACK_SCHEMA } from "../enums";
 
 const inputHandlerMap = new WeakMap();
+/** @type {WeakMap<HTMLFormElement, AbortController>} */
+const formListenerControllers = new WeakMap();
 let deleteFunc = null;
 document.body.addEventListener("focusout", () => {
   if (deleteFunc) {
@@ -43,41 +45,75 @@ export const createEditor = (element) => {
   const formEle = element.renderRoot.querySelector("form");
   while (formEle.firstChild) formEle.removeChild(formEle.firstChild);
 
+  formListenerControllers.get(formEle)?.abort();
+  const controller = new AbortController();
+  formListenerControllers.set(formEle, controller);
+  const { signal } = controller;
+  element._isUserDirty = false;
+
   // Workaround for https://github.com/json-editor/json-editor/issues/856
   formEle.classList.add("hide-errors");
   const removeHideErrors = () => formEle.classList.remove("hide-errors");
-  formEle.addEventListener("input", removeHideErrors);
-  formEle.addEventListener("change", removeHideErrors);
+  formEle.addEventListener("input", removeHideErrors, { signal });
+  formEle.addEventListener("change", removeHideErrors, { signal });
 
-  const markUserDirty = (e) => {
-    const target = /** @type {HTMLElement | null} */ (e.target);
+  /** @param {Event} event - An input interaction or value-mutating button click */
+  const markUserDirty = (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const isValueInput =
+      event.type !== "click" &&
+      target.matches("input, textarea, select, [contenteditable]");
+    const mutationButton = target.closest(
+      "button.json-editor-btn-add, button.json-editor-btn-delete, " +
+        "button.json-editor-btn-subtract, button.json-editor-btn-copy, " +
+        "button.json-editor-btn-moveup, button.json-editor-btn-movedown, " +
+        "button.json-editor-btn-moveleft, button.json-editor-btn-moveright, " +
+        "button.json-editor-btn-save, [data-schematype=button] button",
+    );
+    const button = target.closest("button");
+    const path = button
+      ?.closest("[data-schemapath]")
+      ?.getAttribute("data-schemapath");
+    const isCustomButton =
+      path && element.editor?.getEditor(path)?.schema?.format === "button";
     if (
-      target &&
-      (target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.tagName === "SELECT" ||
-        Boolean(target.closest("button:not([type=submit])")))
-    ) {
-      element._isUserDirty = true;
-    }
+      !isValueInput &&
+      !(event.type === "click" && (mutationButton || isCustomButton))
+    )
+      return;
+    if (button?.matches("[type=submit]")) return;
+
+    element._isUserDirty = true;
+    // JSONEditor queues change callbacks in requestAnimationFrame. Register
+    // expiry after event handlers have queued their changes, including no-ops.
+    queueMicrotask(() => {
+      requestAnimationFrame(() => {
+        if (!signal.aborted) element._isUserDirty = false;
+      });
+    });
   };
-  formEle.addEventListener("input", markUserDirty);
-  formEle.addEventListener("change", markUserDirty);
-  formEle.addEventListener("click", markUserDirty);
+  formEle.addEventListener("input", markUserDirty, { capture: true, signal });
+  formEle.addEventListener("change", markUserDirty, { capture: true, signal });
+  formEle.addEventListener("click", markUserDirty, { capture: true, signal });
 
   // Force validation on input for textareas and inputs
-  formEle.addEventListener("input", (e) => {
-    const target = /** @type {HTMLElement} */ (e.target);
-    if (
-      target.tagName === "TEXTAREA" ||
-      (target.tagName === "INPUT" &&
-        target.getAttribute("type") !== "checkbox" &&
-        target.getAttribute("type") !== "radio" &&
-        target.getAttribute("type") !== "file")
-    ) {
-      e.target.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-  });
+  formEle.addEventListener(
+    "input",
+    (e) => {
+      const target = /** @type {HTMLElement} */ (e.target);
+      if (
+        target.tagName === "TEXTAREA" ||
+        (target.tagName === "INPUT" &&
+          target.getAttribute("type") !== "checkbox" &&
+          target.getAttribute("type") !== "radio" &&
+          target.getAttribute("type") !== "file")
+      ) {
+        e.target.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    },
+    { signal },
+  );
 
   // Add default button callback for submit
   // see https://github.com/json-editor/json-editor?tab=readme-ov-file#button-editor

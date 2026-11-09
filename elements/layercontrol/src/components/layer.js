@@ -162,12 +162,35 @@ export class EOxLayerControlLayer extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
-  /**
-   * Check and update layer zoom visibility at beginning
-   * and register "change:resolution" ones at the beginning if `showLayerZoomState` is present
-   */
-  firstUpdated() {
-    firstUpdatedMethod(this);
+  /** @type {(() => void) | undefined} */
+  #releaseSubscriptions;
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.hasUpdated) this.#subscribe();
+  }
+
+  disconnectedCallback() {
+    this.#releaseSubscriptions?.();
+    this.#releaseSubscriptions = undefined;
+    super.disconnectedCallback();
+  }
+
+  /** @param {import("lit").PropertyValues} changedProperties */
+  updated(changedProperties) {
+    if (
+      this.isConnected &&
+      (changedProperties.has("layer") ||
+        changedProperties.has("map") ||
+        changedProperties.has("showLayerZoomState"))
+    ) {
+      this.#subscribe();
+    }
+  }
+
+  #subscribe() {
+    this.#releaseSubscriptions?.();
+    this.#releaseSubscriptions = firstUpdatedMethod(this);
   }
 
   /**
