@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.13.1...storytelling-v1.14.0) (2026-11-09)
+
+
+### Features
+
+* Support globe tour in storytelling ([#2643](https://github.com/EOX-A/EOxElements/issues/2643)) ([1c365c2](https://github.com/EOX-A/EOxElements/commit/1c365c246eb9ea201850e02b363d038673028718))
+
 ## [1.13.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.13.0...storytelling-v1.13.1) (2026-10-26)
 
 
