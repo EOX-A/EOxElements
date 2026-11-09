@@ -5,6 +5,8 @@ import {
   noOpActivityTest,
   arrayActivityTest,
   customButtonActivityTest,
+  genericButtonActivityTest,
+  submitButtonAttributionTest,
   recreatedActivityTest,
 } from "./cases";
 
@@ -19,6 +21,14 @@ describe("JSONForm activity attribution", () => {
   it(
     "reports custom button mutations but ignores no-op clicks",
     customButtonActivityTest,
+  );
+  it(
+    "handles classless buttons and nested click targets",
+    genericButtonActivityTest,
+  );
+  it(
+    "excludes explicit and default submit buttons from edit attribution",
+    submitButtonAttributionTest,
   );
   it("replaces listeners when the editor is recreated", recreatedActivityTest);
 });

@@ -6,6 +6,8 @@ export {
   noOpActivityTest,
   arrayActivityTest,
   customButtonActivityTest,
+  genericButtonActivityTest,
+  submitButtonAttributionTest,
   recreatedActivityTest,
 } from "./activity";
 

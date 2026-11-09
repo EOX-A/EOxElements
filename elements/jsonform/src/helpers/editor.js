@@ -57,32 +57,17 @@ export const createEditor = (element) => {
   formEle.addEventListener("input", removeHideErrors, { signal });
   formEle.addEventListener("change", removeHideErrors, { signal });
 
-  /** @param {Event} event - An input interaction or value-mutating button click */
+  /** @param {Event} event - A candidate interaction that may change the value */
   const markUserDirty = (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
     const isValueInput =
       event.type !== "click" &&
       target.matches("input, textarea, select, [contenteditable]");
-    const mutationButton = target.closest(
-      "button.json-editor-btn-add, button.json-editor-btn-delete, " +
-        "button.json-editor-btn-subtract, button.json-editor-btn-copy, " +
-        "button.json-editor-btn-moveup, button.json-editor-btn-movedown, " +
-        "button.json-editor-btn-moveleft, button.json-editor-btn-moveright, " +
-        "button.json-editor-btn-save, [data-schematype=button] button",
-    );
     const button = target.closest("button");
-    const path = button
-      ?.closest("[data-schemapath]")
-      ?.getAttribute("data-schemapath");
-    const isCustomButton =
-      path && element.editor?.getEditor(path)?.schema?.format === "button";
-    if (
-      !isValueInput &&
-      !(event.type === "click" && (mutationButton || isCustomButton))
-    )
-      return;
-    if (button?.matches("[type=submit]")) return;
+    const isButtonClick =
+      event.type === "click" && button && button.type !== "submit";
+    if (!isValueInput && !isButtonClick) return;
 
     element._isUserDirty = true;
     // JSONEditor queues change callbacks in requestAnimationFrame. Register

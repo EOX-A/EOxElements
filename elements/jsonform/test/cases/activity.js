@@ -187,6 +187,75 @@ export const customButtonActivityTest = () => {
   cy.get("@activity").should("have.been.calledOnce");
 };
 
+/** Classless buttons must be attributed by value changes, not editor markup. */
+export const genericButtonActivityTest = () => {
+  mountForm();
+  cy.get("eox-jsonform").then(([element]) => {
+    const form = /** @type {import("../../src/main").EOxJSONForm} */ (element);
+    const container = form.renderRoot.querySelector("form");
+    const noOp = document.createElement("button");
+    noOp.type = "button";
+    noOp.id = "generic-no-op";
+    noOp.textContent = "No change";
+    container.append(noOp);
+    const mutate = document.createElement("button");
+    mutate.type = "button";
+    mutate.id = "generic-mutation";
+    mutate.innerHTML = "<strong>Change value</strong>";
+    mutate.addEventListener("click", () => {
+      form.editor.getEditor("root.title").setValue("from generic button");
+    });
+    container.append(mutate);
+  });
+  cy.get("eox-jsonform").shadow().find("#generic-no-op").click();
+  settle();
+  cy.get("@activity").should("not.have.been.called");
+  cy.get("eox-jsonform").then(([element]) => {
+    /** @type {import("../../src/main").EOxJSONForm} */ (
+      element
+    ).editor.setValue({
+      title: "programmatic after no-op",
+    });
+  });
+  settle();
+  cy.get("@activity").should("not.have.been.called");
+  cy.get("eox-jsonform").shadow().find("#generic-mutation strong").click();
+  settle();
+  cy.get("@activity").should("have.been.calledOnce");
+  cy.get("@activity")
+    .its("lastCall.args.0.detail.payload.title")
+    .should("equal", "from generic button");
+  // The same button is now a no-op even if JSONEditor emits change again.
+  cy.get("eox-jsonform").shadow().find("#generic-mutation strong").click();
+  settle();
+  cy.get("@activity").should("have.been.calledOnce");
+};
+
+/** Explicit and default submit buttons must not establish edit attribution. */
+export const submitButtonAttributionTest = () => {
+  mountForm();
+  cy.get("eox-jsonform").then(([element]) => {
+    const form = /** @type {import("../../src/main").EOxJSONForm} */ (element);
+    for (const explicit of [true, false]) {
+      const button = document.createElement("button");
+      if (explicit) button.type = "submit";
+      button.id = explicit ? "explicit-submit" : "default-submit";
+      button.textContent = "Submit";
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        form.editor.setValue({ title: button.id });
+      });
+      form.renderRoot.querySelector("form").append(button);
+    }
+  });
+  cy.get("eox-jsonform").shadow().find("#explicit-submit").click();
+  settle();
+  cy.get("@activity").should("not.have.been.called");
+  cy.get("eox-jsonform").shadow().find("#default-submit").click();
+  settle();
+  cy.get("@activity").should("not.have.been.called");
+};
+
 /** Recreating an editor must abort old form listeners and keep edits working. */
 export const recreatedActivityTest = () => {
   mountForm();
