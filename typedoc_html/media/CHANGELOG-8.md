@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.0](https://github.com/EOX-A/EOxElements/compare/map-v2.9.0...map-v2.10.0) (2026-11-09)
+
+
+### Features
+
+* Support for 3D globe storytelling tours ([#2444](https://github.com/EOX-A/EOxElements/issues/2444)) ([c9f5cea](https://github.com/EOX-A/EOxElements/commit/c9f5cea6ec3efb8b74c864f1634ff6e9f1fbd99e))
+
 ## [2.9.0](https://github.com/EOX-A/EOxElements/compare/map-v2.8.3...map-v2.9.0) (2026-11-04)
 
 
