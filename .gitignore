@@ -1,4 +1,5 @@
 # Logs
+/session-*.md
 logs
 *.log
 npm-debug.log*

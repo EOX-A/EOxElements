@@ -44,6 +44,10 @@ import {
 import eoxStyle from "@eox/ui/style.css?inline";
 import { addCommonStylesheet } from "@eox/elements-utils";
 import { enableGlobe, disableGlobe } from "./plugins/globe/openglobus";
+import {
+  connectGlobeSynchronization,
+  disconnectGlobeSynchronization,
+} from "./plugins/globe/lifecycle.js";
 
 addCommonStylesheet();
 
@@ -702,6 +706,7 @@ export class EOxMap extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    connectGlobeSynchronization(this.globe);
     window.__eoxMapRegistry = window.__eoxMapRegistry || {};
     if (this.id) {
       window.__eoxMapRegistry[this.id] = this;
@@ -713,6 +718,7 @@ export class EOxMap extends LitElement {
    * Ensures that any associated event listeners or observers are properly disconnected.
    */
   disconnectedCallback() {
+    disconnectGlobeSynchronization(this.globe);
     if (this.id && window.__eoxMapRegistry) {
       delete window.__eoxMapRegistry[this.id];
     }
