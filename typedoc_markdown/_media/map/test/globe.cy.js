@@ -7,6 +7,8 @@ import {
   testGlobeSelect,
   testGlobeSelectStyle,
   testGeoTIFFSourceOptions,
+  testGlobeLayerOrder,
+  testGlobeFlyPitch,
 } from "./cases/globe";
 
 /**
@@ -41,4 +43,15 @@ describe("globe", () => {
    */
   it("accepts single url and multi source COGs for native globe rendering", () =>
     testGeoTIFFSourceOptions());
+
+  /**
+   * Test case to mirror the OL layer order (groups, zIndex, reordering) onto the globe layers
+   */
+  it("syncs the OL layer order to the globe layers", () =>
+    testGlobeLayerOrder());
+
+  /**
+   * Test case to animate pitch changes as part of the globe flight
+   */
+  it("animates pitch changes during globe flights", () => testGlobeFlyPitch());
 });

@@ -14281,7 +14281,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-11-06T07:15:33.851Z",
+              default: "2026-11-09T09:54:13.252Z",
               options: {
                 hidden: true,
               },
@@ -17724,6 +17724,56 @@ Useful for dynamic or externally managed story content. Pass the URL to the \`ma
 
 ```
 
+#### MarkdownGlobeTour
+
+Globe Tour story.
+Demonstrates how to create a scroll-driven globe tour (scrollytelling) where the globe state changes as you scroll.
+1. Define the base globe tour section with an h2: `## Globe Tour <!--{ as="eox-map" mode="tour" }-->`
+2. Define each step in the tour with an h3 (`###`) and a configuration comment overriding the globe's state for that step:
+`### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.
+
+```html
+<eox-storytelling
+  markdown='## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
+
+### <!--{ projection="globe" layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]&apos; center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
+#### This is a map tour.
+It allows you to have different layers, zoom and center settings for each tour "step".
+
+You achieve this by starting a new step with an *h3* (*###*) heading and passing properties inside a configuration comment:
+
+```markdown
+### <!--{ projection="globe" layers=&apos;[...]&apos; center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
+```
+
+### <!--{ projection="globe" layers=&apos;[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}},{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]&apos; center=[12.46,41.89] zoom="10" animationOptions="{duration:500}" }-->
+#### Second tour step.
+Each tour step is described as an *h3* (*###*) heading.
+
+### <!--{ projection="globe" layers=&apos;[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}, {"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]&apos; center="[16.36,48.2]" zoom="15" animationOptions="{duration:1000, pitch:-120}" }-->
+#### Third tour step.
+
+### <!--{ projection="globe" layers=&apos;[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}, {"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]&apos; center="[16.36,48.2]" zoom="15" animationOptions="{duration:1000,}" }-->
+#### Fourth tour step.
+
+To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map'
+  id="markdown-globe-tour"
+></eox-storytelling>
+
+<script type="module">
+  import "@eox/storytelling/dist/eox-storytelling.js";
+
+  const eoxStorytelling = document.querySelector("eox-storytelling");
+
+  // Assign properties
+  Object.assign(eoxStorytelling, {
+    showNav: true,
+  });
+</script>
+
+```
+
 #### MarkdownHero
 
 Hero Section story.
@@ -18104,6 +18154,7 @@ MarkdownSlotStory,
 MarkdownHeroStory,
 MarkdownMapStory,
 MarkdownMapTourStory,
+MarkdownGlobeTourStory,
 MarkdownImageTourStory,
 MarkdownShowcaseStory,
 MarkdownInitEventStory,
