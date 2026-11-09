@@ -70,13 +70,6 @@ export const createEditor = (element) => {
     if (!isValueInput && !isButtonClick) return;
 
     element._isUserDirty = true;
-    // JSONEditor queues change callbacks in requestAnimationFrame. Register
-    // expiry after event handlers have queued their changes, including no-ops.
-    queueMicrotask(() => {
-      requestAnimationFrame(() => {
-        if (!signal.aborted) element._isUserDirty = false;
-      });
-    });
   };
   formEle.addEventListener("input", markUserDirty, { capture: true, signal });
   formEle.addEventListener("change", markUserDirty, { capture: true, signal });
@@ -209,6 +202,11 @@ export const createEditor = (element) => {
 
   // Create the editor instance
   let editor = initEditor();
+  const originalSetValue = editor.setValue.bind(editor);
+  editor.setValue = function (value, ...rest) {
+    element._isUserDirty = false;
+    return originalSetValue(value, ...rest);
+  };
 
   // Event listener for the 'ready' event
   editor.on("ready", () => {

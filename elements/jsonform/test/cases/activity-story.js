@@ -74,6 +74,32 @@ export function userStoryTest() {
   assertUserAndProgrammaticEvents();
 }
 
+/** Realistic human typing with keystroke delays reliably emits activity. */
+export function humanTypingStoryTest() {
+  mountActivityStory();
+  cy.get("[data-clear-log]").click();
+  cy.get("eox-jsonform").shadow().find("input[name='root[title]']").clear();
+  cy.get("eox-jsonform")
+    .shadow()
+    .find("input[name='root[title]']")
+    .type("I am an e", { delay: 40 });
+  cy.get("[data-activity-log]").should(($log) => {
+    const log = entries($log.text());
+    expect(
+      log.some((entry) => entry.event === "change" && entry.isUser === true),
+    ).to.equal(true);
+    expect(
+      log.some(
+        (entry) =>
+          entry.event === "eox:activity" &&
+          entry.element === "eox-jsonform" &&
+          entry.action === "change" &&
+          entry.payload.title === "I am an e",
+      ),
+    ).to.equal(true);
+  });
+}
+
 /** Exercise the same attribution behavior for either the live or exported demo. */
 function assertUserAndProgrammaticEvents() {
   cy.get("[data-clear-log]").click();

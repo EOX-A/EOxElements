@@ -2,6 +2,7 @@ import "../src/main.js";
 import {
   programmaticStoryTest,
   userStoryTest,
+  humanTypingStoryTest,
   frameworkExportsTest,
   vanillaExportStoryTest,
 } from "./cases/activity-story.js";
@@ -22,5 +23,9 @@ describe("Activity Storybook example", () => {
   it(
     "reports form edits as activity but not later programmatic updates",
     userStoryTest,
+  );
+  it(
+    "reports user activity during human typing with keystroke delays",
+    humanTypingStoryTest,
   );
 });
