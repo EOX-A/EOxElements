@@ -5,14 +5,14 @@ import { render as renderReact } from "../../../../.storybook/custom-panels/meth
 import { render as renderVue } from "../../../../.storybook/custom-panels/methods/vue.js";
 import { render as renderSvelte } from "../../../../.storybook/custom-panels/methods/svelte.js";
 import { parse } from "@babel/parser";
-import { extractArgTypes } from "../../../../.storybook/utils.js";
-import manifest from "../../../../custom-elements.json";
-
-// Same context contract used by scripts/generate-snippets.mjs, not story.render.
+// Minimal argTypes defining properties and events without requiring generated manifest in CI.
 const exportContext = {
   component: "eox-jsonform",
   args: ActivityStory.args,
-  argTypes: extractArgTypes("eox-jsonform", manifest, {}),
+  argTypes: {
+    schema: { table: { category: "properties" } },
+    ready: { table: { category: "events" } },
+  },
 };
 
 /**
