@@ -502,6 +502,7 @@ export class EOxMap extends LitElement {
    */
   set animationOptions(animationOptions) {
     this.#animationOptions = animationOptions;
+    animateToStateMethod(this);
   }
 
   /**

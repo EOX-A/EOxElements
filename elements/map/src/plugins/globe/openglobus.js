@@ -11,6 +11,8 @@ import {
   Entity,
   GlobusRgbTerrain,
   EmptyTerrain,
+  Extent as OgExtent,
+  Quat,
 } from "@openglobus/og";
 import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
 import { distributeTileToIdealMap } from "./methods.js";
@@ -22,6 +24,7 @@ import Vector_ol from "ol/source/Vector.js";
 import GeoTIFF_ol from "ol/source/GeoTIFF.js";
 import { get as getProjection, equivalent } from "ol/proj";
 import FullScreen from "ol/control/FullScreen";
+import { unByKey } from "ol/Observable";
 import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
 import { translateOLColorExpression } from "./colorScale.js";
@@ -253,6 +256,8 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
           });
 
           vectorLayer.addTo(globus.planet);
+          // the vector layer is added asynchronously, so re-apply the OL order
+          syncGlobeLayerOrder(EOxMap, globus);
           attachGlobeSelect(EOxMap, olLayer, vectorLayer);
           const olStyle = olLayer.getStyle();
 
@@ -342,6 +347,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
 };
 
 export const enableGlobe = (map) => {
+  if (map.globeEnabled) return;
   if (map.shadowRoot) {
     /** @type {HTMLElement} */
     let globeDiv = map.shadowRoot.querySelector("#globe");
@@ -525,6 +531,10 @@ export const enableGlobe = (map) => {
 export const disableGlobe = (map) => {
   if (map.globe) {
     const globe = map.globe;
+    if (globe._layerOrderKey) {
+      unByKey(globe._layerOrderKey);
+      globe._layerOrderKey = null;
+    }
     const planet = globe.planet;
 
     // 1. Determine the target point on the terrain at the center of the viewport
@@ -724,6 +734,63 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
 };
 
 /**
+ * Mirrors the OpenLayers rendering order onto the OpenGlobus layers by
+ * assigning each globe layer a z-index equal to its position in the OL render
+ * order (bottom = 0). The OL order is derived from the layer states array
+ * (which respects nested groups) stably sorted by `zIndex`, exactly as the OL
+ * map renderer does.
+ *
+ * Limitation: OpenGlobus always renders base layers (`isBaseLayer`) below all
+ * other tile layers and renders vector layers in a separate pass above tile
+ * layers, so the order is only reflected within those categories.
+ *
+ * @param {import("../../main").EOxMap} EOxMap - Instance of EOxMap class.
+ * @param {import("@openglobus/og").Globe} globe - The OpenGlobus globe instance.
+ */
+export const syncGlobeLayerOrder = (EOxMap, globe) => {
+  if (!globe?.planet || !EOxMap?.map) return;
+  const states = EOxMap.map
+    .getLayerGroup()
+    .getLayerStatesArray()
+    .map((state, index) => ({ state, index }))
+    .sort(
+      (a, b) =>
+        (a.state.zIndex ?? 0) - (b.state.zIndex ?? 0) || a.index - b.index,
+    );
+
+  states.forEach(({ state }, i) => {
+    const id = state.layer.get("id");
+    if (id === undefined) return;
+    const globusLayer = globe.planet.getLayerByName(id);
+    if (globusLayer && globusLayer.getZIndex() !== i) {
+      globusLayer.setZIndex(i);
+    }
+  });
+};
+
+/**
+ * Listens for changes of the OL layer tree (adding, removing or reordering
+ * layers in any nested collection, or `zIndex` changes) and re-syncs the
+ * globe layer order. Calls are batched per animation frame so that e.g. a
+ * `removeAt` + `insertAt` pair (as done by eox-layercontrol sorting) only
+ * triggers a single sync.
+ *
+ * @param {import("../../main").EOxMap} EOxMap - Instance of EOxMap class.
+ * @param {import("@openglobus/og").Globe} globe - The OpenGlobus globe instance.
+ * @returns {import("ol/events").EventsKey} The listener key, to be removed via `unByKey`.
+ */
+export const watchGlobeLayerOrder = (EOxMap, globe) => {
+  let frame = null;
+  return EOxMap.map.getLayerGroup().on("change", () => {
+    if (!EOxMap.globeEnabled || frame !== null) return;
+    frame = requestAnimationFrame(() => {
+      frame = null;
+      syncGlobeLayerOrder(EOxMap, globe);
+    });
+  });
+};
+
+/**
  * @param {import("ol/Collection").default<import("ol/layer/Base").default>} layers
  * @param {import("@openglobus/og").Globe} globe
  * @param {Array<any>} mapPool
@@ -745,4 +812,122 @@ export const processLayers = (layers, globe, mapPool) => {
       );
     }
   });
+};
+
+/**
+ * Computes the camera orientation (as `look` point and `up` vector) that a
+ * globe flight should end in, given a target `eye` position and optional `pitch` and `heading`.
+ *
+ * @param {import("@openglobus/og").Planet} planet - The OpenGlobus planet.
+ * @param {Vec3} eye - Target camera position (cartesian).
+ * @param {{pitch?: number, heading?: number}} options - Target pitch and heading in radians.
+ * @param {number} [distance] - Distance of the returned look point from the eye.
+ * @returns {{look: Vec3, up: Vec3}} Flight parameters for `camera.flyCartesian`.
+ */
+export const getGlobeTargetOrientation = (
+  planet,
+  eye,
+  options,
+  distance = 1,
+) => {
+  // default flight orientation: looking at the planet center, north up
+  const forward = eye.getNormal().negateTo();
+  const defaultUp = Vec3.proj_b_to_plane(Vec3.NORTH, forward).normalize();
+  const defaultRotation = Quat.getLookRotation(forward, defaultUp).conjugate();
+
+  // express it in the local planet frame (same as PlanetCamera.getPitch/getYaw)
+  const frame = planet.getFrameRotation(eye);
+  const local = frame.conjugate().inverse().mul(defaultRotation);
+
+  // same as PlanetCamera.setPitch/setYaw
+  const rotation = new Quat().setPitchYawRoll(
+    options?.pitch ?? local.getPitch(),
+    options?.heading ?? local.getYaw(),
+    local.getRoll(),
+    frame,
+  );
+  const up = rotation.mulVec3(new Vec3(0, 1, 0));
+  const backward = rotation.mulVec3(new Vec3(0, 0, 1));
+  return { look: eye.sub(backward.scaleTo(Math.max(1, distance))), up };
+};
+
+/**
+ * Initiates a 3D globe camera flight based on the OpenLayers animateOptions.
+ * Supports flying to center/zoom, or to an extent.
+ * Supports `pitch` and `heading` (radians) in the animateOptions, which are
+ * animated together with the flight.
+ *
+ * @param {import("../../main").EOxMap} EOxMap
+ * @param {object} animateToOptions
+ */
+export const flyGlobeToState = (EOxMap, animateToOptions) => {
+  if (!EOxMap.globe || !EOxMap.globeEnabled) return;
+
+  const planet = EOxMap.globe.planet;
+  const duration = animateToOptions?.duration || 800;
+  const hasOrientation =
+    animateToOptions?.pitch !== undefined ||
+    animateToOptions?.heading !== undefined;
+
+  /**
+   * Flies to the given eye position, animating pitch/heading if provided.
+   *
+   * @param {Vec3} eye
+   */
+  const flyWithOrientation = (eye) =>
+    planet.camera.flyCartesian(eye, {
+      duration,
+      ...getGlobeTargetOrientation(
+        planet,
+        eye,
+        animateToOptions,
+        planet.ellipsoid.cartesianToLonLat(eye).height,
+      ),
+    });
+
+  // Check if an extent was requested
+  // @ts-expect-error - _requestedZoomExtent is a custom property
+  if (EOxMap._requestedZoomExtent) {
+    // @ts-expect-error - _requestedZoomExtent is a custom property
+    const extent = EOxMap._requestedZoomExtent;
+    // Transform OL extent to EPSG:4326
+    const minLonLat = transform(
+      [extent[0], extent[1]],
+      EOxMap.map.getView().getProjection().getCode(),
+      "EPSG:4326",
+    );
+    const maxLonLat = transform(
+      [extent[2], extent[3]],
+      EOxMap.map.getView().getProjection().getCode(),
+      "EPSG:4326",
+    );
+    const ogExtent = new OgExtent(
+      new LonLat(minLonLat[0], minLonLat[1]),
+      new LonLat(maxLonLat[0], maxLonLat[1]),
+    );
+
+    if (hasOrientation) {
+      flyWithOrientation(planet.camera.getExtentPosition(ogExtent));
+    } else {
+      planet.camera.flyExtent(ogExtent, null, { duration });
+    }
+    return;
+  }
+
+  // Otherwise fly to center/zoom
+  const { center, zoom } = EOxMap;
+  if (!center || zoom === undefined) return;
+
+  let currZoom = zoom - 1;
+  if (!EOxMap.globeConfig?.useHighLOD) {
+    currZoom = currZoom - 1;
+  }
+  const height = 21050000 / Math.pow(2, currZoom);
+  const lonLat = new LonLat(center[0], center[1], Math.max(0, height));
+
+  if (hasOrientation) {
+    flyWithOrientation(planet.ellipsoid.lonLatToCartesian(lonLat));
+  } else {
+    planet.camera.flyLonLat(lonLat, { duration });
+  }
 };
