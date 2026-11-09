@@ -1,4 +1,5 @@
 export { default as PrimaryStory } from "./primary"; // Basic primary json form
+export { default as ActivityStory } from "./activity"; // User and programmatic event attribution
 export { default as ButtonsEditorStory } from "./buttons-editor"; // Story for ButtonsEditor custom input
 export { default as MinMaxEditorStory } from "./minmax-editor"; // Story for MinMaxEditor custom input
 export { default as BinaryCheckboxEditorStory } from "./binary-checkbox-editor"; // Story for BinaryCheckboxEditor custom input

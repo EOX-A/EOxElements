@@ -251,6 +251,10 @@ export class EOxStoryTelling extends LitElement {
       if (this.markdown) {
         const isUser = Boolean(this.#isEditorChange);
         this.#isEditorChange = false;
+        /**
+         * Fires changed with the updated markdown content.
+         * Only edits from the built-in editor also emit eox:activity.
+         */
         dispatchElementEvent(this, "changed", {
           detail: this.markdown,
           activity: isUser,

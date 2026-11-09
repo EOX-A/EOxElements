@@ -11,6 +11,16 @@ export function initializeDriver(EOxTour) {
     EOxTour.driver.destroy();
   }
 
+  // Only synchronous navigation initiated by driver UI hooks is user activity.
+  // Consume the marker at the first dispatch and always clear it on hook exit.
+  let userInteraction = false;
+  let destroyNotified = false;
+  const consumeUserInteraction = () => {
+    const isUserInteraction = userInteraction;
+    userInteraction = false;
+    return isUserInteraction;
+  };
+
   const getTargetIframe = (step) =>
     step?.targetIframe || step?.popover?.targetIframe;
 
@@ -156,50 +166,59 @@ export function initializeDriver(EOxTour) {
         return step;
       }) || [],
     onNextClick: (element, step, opts) => {
-      const tourAny = /** @type {any} */ (EOxTour);
-      tourAny._userNavigated = true;
-      if (EOxTour.config.onNextClick) {
-        EOxTour.config.onNextClick(element, step, opts);
+      userInteraction = true;
+      try {
+        if (EOxTour.config.onNextClick) {
+          EOxTour.config.onNextClick(element, step, opts);
+        }
+        const activeIndex = opts.driver.getActiveIndex() ?? 0;
+        handleStepChange(
+          opts.config.steps[activeIndex + 1],
+          activeIndex + 1,
+          "moveNext",
+          opts,
+        );
+      } finally {
+        userInteraction = false;
       }
-      const activeIndex = opts.driver.getActiveIndex() ?? 0;
-      handleStepChange(
-        opts.config.steps[activeIndex + 1],
-        activeIndex + 1,
-        "moveNext",
-        opts,
-      );
     },
     onPrevClick: (element, step, opts) => {
-      const tourAny = /** @type {any} */ (EOxTour);
-      tourAny._userNavigated = true;
-      if (EOxTour.config.onPrevClick) {
-        EOxTour.config.onPrevClick(element, step, opts);
+      userInteraction = true;
+      try {
+        if (EOxTour.config.onPrevClick) {
+          EOxTour.config.onPrevClick(element, step, opts);
+        }
+        const activeIndex = opts.driver.getActiveIndex() ?? 0;
+        handleStepChange(
+          opts.config.steps[activeIndex - 1],
+          activeIndex - 1,
+          "movePrevious",
+          opts,
+        );
+      } finally {
+        userInteraction = false;
       }
-      const activeIndex = opts.driver.getActiveIndex() ?? 0;
-      handleStepChange(
-        opts.config.steps[activeIndex - 1],
-        activeIndex - 1,
-        "movePrevious",
-        opts,
-      );
     },
     onCloseClick: (element, step, opts) => {
-      const tourAny = /** @type {any} */ (EOxTour);
-      tourAny._userNavigated = true;
-      if (EOxTour.config.onCloseClick) {
-        EOxTour.config.onCloseClick(element, step, opts);
-      }
-      opts.driver.destroy();
-      dispatchElementEvent(EOxTour, "tour-destroy-started", {
-        detail: { element, step, options: opts },
-        activity: true,
-        action: "tour-destroy-started",
-      });
-      if (window.parent !== window) {
-        window.parent.postMessage(
-          { type: "EOX_TOUR_DESTROY", tourId: EOxTour.id },
-          "*",
-        );
+      userInteraction = true;
+      destroyNotified = false;
+      try {
+        if (EOxTour.config.onCloseClick) {
+          EOxTour.config.onCloseClick(element, step, opts);
+        }
+        opts.driver.destroy();
+        // driver.destroy() can bypass onDestroyStarted; notify only once.
+        if (!destroyNotified) {
+          finalConfig.onDestroyStarted(element, step, opts);
+        }
+        if (window.parent !== window) {
+          window.parent.postMessage(
+            { type: "EOX_TOUR_DESTROY", tourId: EOxTour.id },
+            "*",
+          );
+        }
+      } finally {
+        userInteraction = false;
       }
     },
     onHighlightStarted: (element, step, options) => {
@@ -223,18 +242,22 @@ export function initializeDriver(EOxTour) {
           stageRadius: EOxTour.config.stageRadius ?? 5,
         });
       }
-      const activeIndex = options?.driver?.getActiveIndex?.() ?? 0;
-      const tourAny = /** @type {any} */ (EOxTour);
-      const isInitialAutoStart = !tourAny._userNavigated && activeIndex === 0;
+      /**
+       * Fires tour-highlight-started when a step starts highlighting.
+       * Only navigation initiated by a driver UI interaction also emits activity.
+       */
       dispatchElementEvent(EOxTour, "tour-highlight-started", {
         detail: { element, step, options },
-        activity: !isInitialAutoStart,
+        activity: consumeUserInteraction(),
         action: "tour-highlight-started",
       });
       if (EOxTour.config.onHighlightStarted)
         EOxTour.config.onHighlightStarted(element, step, options);
     },
     onHighlighted: (element, step, options) => {
+      /**
+       * Fires tour-highlighted when a step finishes highlighting.
+       */
       dispatchElementEvent(EOxTour, "tour-highlighted", {
         detail: { element, step, options },
         activity: false,
@@ -243,6 +266,9 @@ export function initializeDriver(EOxTour) {
         EOxTour.config.onHighlighted(element, step, options);
     },
     onDeselected: (element, step, options) => {
+      /**
+       * Fires tour-deselected when a step is deselected.
+       */
       dispatchElementEvent(EOxTour, "tour-deselected", {
         detail: { element, step, options },
         activity: false,
@@ -251,16 +277,16 @@ export function initializeDriver(EOxTour) {
         EOxTour.config.onDeselected(element, step, options);
     },
     onDestroyStarted: (element, step, options) => {
-      const tourAny = /** @type {any} */ (EOxTour);
-      const isUserAction = Boolean(
-        tourAny._userNavigated || !EOxTour.preventAutoStart,
-      );
+      destroyNotified = true;
+      /**
+       * Fires tour-destroy-started when tour destruction is requested.
+       * Only destruction initiated by a driver UI interaction also emits activity.
+       */
       dispatchElementEvent(EOxTour, "tour-destroy-started", {
         detail: { element, step, options },
-        activity: isUserAction,
+        activity: consumeUserInteraction(),
         action: "tour-destroy-started",
       });
-      tourAny._userNavigated = false;
       if (EOxTour.config.onDestroyStarted)
         EOxTour.config.onDestroyStarted(element, step, options);
     },
@@ -281,21 +307,7 @@ export function initializeDriver(EOxTour) {
         popover.wrapper.style.display = "none";
       }
 
-      const tourAny = /** @type {any} */ (EOxTour);
-      if (popover.nextButton) {
-        popover.nextButton.addEventListener("click", () => {
-          tourAny._userNavigated = true;
-        });
-      }
-      if (popover.closeButton) {
-        popover.closeButton.addEventListener("click", () => {
-          tourAny._userNavigated = true;
-        });
-      }
       if (popover.previousButton) {
-        popover.previousButton.addEventListener("click", () => {
-          tourAny._userNavigated = true;
-        });
         if (activeIndex === 0) {
           if (
             currentStep?.popover?.returnToParentBackward ||

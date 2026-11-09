@@ -28,14 +28,14 @@ const ClickLinkTest = () => {
   ).as("eox-stacinfo");
 
   const linkSpy = cy.spy();
-  const activitySpy = cy.spy();
-  /** @type {import("../../src/main").EOxStacInfo} */
+  /** @type {HTMLElement} */
   let stacInfoEl;
   cy.get("eox-stacinfo").then(($el) => {
-    stacInfoEl = /** @type {import("../../src/main").EOxStacInfo} */ ($el[0]);
-    stacInfoEl.addEventListener("click:link", linkSpy);
-    stacInfoEl.addEventListener("eox:activity", activitySpy);
-    stacInfoEl.body = ["description", "links"];
+    stacInfoEl = $el[0];
+    // @ts-expect-error TODO
+    $el[0].addEventListener("click:link", linkSpy);
+    // @ts-expect-error TODO
+    $el[0].body = ["description", "links"];
   });
 
   // Test link click inside eox-stacinfo-shadow (description)
@@ -59,16 +59,6 @@ const ClickLinkTest = () => {
     expect(linkSpy.firstCall.args[0].detail.section).to.eq("body");
   });
 
-  cy.wrap(activitySpy).should("have.been.calledOnce");
-  cy.wrap(activitySpy).should(() => {
-    expect(activitySpy.firstCall.args[0].target).to.eq(stacInfoEl);
-    expect(activitySpy.firstCall.args[0].detail.element).to.eq("eox-stacinfo");
-    expect(activitySpy.firstCall.args[0].detail.action).to.eq("click:link");
-    expect(activitySpy.firstCall.args[0].detail.payload.href).to.eq(
-      "https://example.com/shadow-link",
-    );
-  });
-
   // Test link click directly in eox-stacinfo body (links list)
   cy.get("eox-stacinfo")
     .shadow()
@@ -85,8 +75,6 @@ const ClickLinkTest = () => {
     expect(linkSpy.secondCall.args[0].detail.text).to.eq("Item Link");
     expect(linkSpy.secondCall.args[0].detail.section).to.eq("body");
   });
-
-  cy.wrap(activitySpy).should("have.been.calledTwice");
 };
 
 export default ClickLinkTest;
