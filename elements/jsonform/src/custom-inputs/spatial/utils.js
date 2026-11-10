@@ -108,26 +108,17 @@ export const satisfiesType = (val, type) => {
  * Converts an array of bounding boxes to an array of features
  */
 export const bboxesToFeatures = (bboxes) => {
-  if (!Array.isArray(bboxes) || bboxes.length < 1) return [];
-  // Ensure we have a valid bbox array [minX, minY, maxX, maxY]
-  if (Array.isArray(bboxes[0])) {
-    return bboxes
-      .filter((b) => Array.isArray(b) && b.length === 4)
-      .map((bbox) => bboxPolygon(bbox));
-  }
-  if (bboxes.length === 4 && typeof bboxes[0] === "number") {
-    return [
-      bboxPolygon(/** @type {[number, number, number, number]} */ (bboxes)),
-    ];
-  }
-  return [];
+  if (bboxes.length < 1) return [];
+  return bboxes.map((bbox) => bboxPolygon(bbox));
 };
 
 /**
  * Converts a value to a FeatureCollection based on the schema
  */
 export const valueToFeatureCollection = (value, schema) => {
-  if (!value) return { type: "FeatureCollection", features: [] };
+  if (!value || (Array.isArray(value) && value.length === 0)) {
+    return { type: "FeatureCollection", features: [] };
+  }
 
   let features = [];
 

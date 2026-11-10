@@ -283,15 +283,19 @@ export class SpatialEditor extends AbstractEditor {
   setValue(value, initial) {
     super.setValue(value, initial);
     if (value && this.input && !isSelection(this.schema)) {
-      const featureCollection = valueToFeatureCollection(value, this.schema);
-      if (featureCollection.features.length > 0) {
-        this.input.updateComplete.then(() => {
-          this.input.handleFeatureChange(
-            JSON.stringify(featureCollection),
-            true,
-            false,
-          );
-        });
+      try {
+        const featureCollection = valueToFeatureCollection(value, this.schema);
+        if (featureCollection?.features?.length > 0) {
+          this.input.updateComplete.then(() => {
+            this.input.handleFeatureChange(
+              JSON.stringify(featureCollection),
+              true,
+              false,
+            );
+          });
+        }
+      } catch (err) {
+        console.warn("[eox-jsonform] failed to parse spatial value:", err);
       }
     }
   }
