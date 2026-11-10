@@ -116,7 +116,13 @@ export const bboxesToFeatures = (bboxes) => {
  * Converts a value to a FeatureCollection based on the schema
  */
 export const valueToFeatureCollection = (value, schema) => {
-  if (!value || (Array.isArray(value) && value.length === 0)) {
+  if (
+    !value ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "object" &&
+      !Array.isArray(value) &&
+      Object.keys(value).length === 0)
+  ) {
     return { type: "FeatureCollection", features: [] };
   }
 
@@ -126,6 +132,8 @@ export const valueToFeatureCollection = (value, schema) => {
     const bboxes = isMulti(schema) ? value : [value];
     features = bboxesToFeatures(bboxes);
   } else if (isPolygon(schema)) {
+    if (!Array.isArray(value))
+      return { type: "FeatureCollection", features: [] };
     const coords = isMulti(schema) ? value : [value];
     features = coords.map((c) => ({
       type: "Feature",
@@ -133,6 +141,8 @@ export const valueToFeatureCollection = (value, schema) => {
       geometry: { type: "Polygon", coordinates: c },
     }));
   } else if (isPoint(schema)) {
+    if (!Array.isArray(value))
+      return { type: "FeatureCollection", features: [] };
     const coords = isMulti(schema) ? value : [value];
     features = coords.map((c) => ({
       type: "Feature",
@@ -140,6 +150,8 @@ export const valueToFeatureCollection = (value, schema) => {
       geometry: { type: "Point", coordinates: c },
     }));
   } else if (isLine(schema)) {
+    if (!Array.isArray(value))
+      return { type: "FeatureCollection", features: [] };
     const coords = isMulti(schema) ? value : [value];
     features = coords.map((c) => ({
       type: "Feature",
