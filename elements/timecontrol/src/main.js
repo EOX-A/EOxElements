@@ -82,7 +82,7 @@ import getChildElement from "./helpers/get-child-element.js";
  * @element eox-timecontrol
  * @fires {CustomEvent} select - Fired when the date selection changes
  * @fires {CustomEvent} update:view - Fired when the view range changes
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
  */
 export class EOxTimeControl extends LitElement {
   /**

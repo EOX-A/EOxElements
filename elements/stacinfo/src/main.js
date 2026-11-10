@@ -68,7 +68,7 @@ import "./components/shadow";
  * @element eox-stacinfo
  * @fires {CustomEvent} loaded - Fired when the STAC data has been loaded
  * @fires {CustomEvent<{ href: string, text: string, section?: string }>} click:link - Fired when an anchor tag is clicked within the STAC info
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
  */
 export class EOxStacInfo extends LitElement {
   static get properties() {

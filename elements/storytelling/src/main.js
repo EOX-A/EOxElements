@@ -61,7 +61,7 @@ md.use(markdownitFootnote);
  * @fires {CustomEvent} init - Fires when eox-storytelling has initialized
  * @fires {CustomEvent} changed - Fires when markdown content has changed
  * @fires {CustomEvent} upload:file - Fires when a file is uploaded via the built-in editor
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
  */
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types

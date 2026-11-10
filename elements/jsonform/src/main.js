@@ -57,7 +57,7 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
  * @fires {CustomEvent} ready - Editor has loaded schema and API is ready to be used
  * @fires {CustomEvent} change - The value of the form has changed
  * @fires {CustomEvent} submit - Form has been submitted
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
  */
 export class EOxJSONForm extends LitElement {
   static properties = {

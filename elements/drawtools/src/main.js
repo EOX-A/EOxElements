@@ -52,7 +52,7 @@ import {
  *
  * @element eox-drawtools
  * @fires {CustomEvent} drawupdate - Fires whenever features are added, modified or discarded
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
  */
 export class EOxDrawTools extends LitElement {
   // Define properties with defaults and types

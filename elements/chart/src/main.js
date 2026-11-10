@@ -31,7 +31,7 @@ import { base64EncodeSpec } from "./methods/encode";
  * @element eox-chart
  * @fires {CustomEvent<{ event: MouseEvent, item: any }>} click:item - Chart item is clicked
  * @fires {CustomEvent<{ event: PointerEvent, item: any }>} pointermove:item - Chart item is hovered
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired on user-initiated interactions
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
  */
 export class EOxChart extends LitElement {
   static properties = {
