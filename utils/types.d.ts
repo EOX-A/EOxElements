@@ -45,4 +45,4 @@ export declare function dispatchElementEvent<T = unknown>(
   element: HTMLElement | Element,
   eventOrType: string | Event | CustomEvent<T>,
   options?: DispatchElementEventOptions<T>,
-): CustomEvent<T>;
+): CustomEvent<T> & { isUser?: boolean };

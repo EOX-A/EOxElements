@@ -9,6 +9,7 @@ export {
   genericButtonActivityTest,
   submitButtonAttributionTest,
   recreatedActivityTest,
+  openLayersFeatureValueTest,
 } from "./activity";
 
 export { default as loadJsonFormTest } from "./load-jsonform";

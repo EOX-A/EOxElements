@@ -5,6 +5,7 @@ import {
   userNavigationEmitsOnce,
   programmaticNavigationAfterClickIsSilent,
   keyboardNavigationEmitsOnce,
+  doneButtonActivityTest,
 } from "./cases/index.js";
 
 describe("eox-tour activity attribution", () => {
@@ -34,5 +35,9 @@ describe("eox-tour activity attribution", () => {
   it(
     "attributes arrow-key navigation through driver UI callbacks",
     keyboardNavigationEmitsOnce,
+  );
+  it(
+    "attributes Done click on final step and invokes onDestroyStarted before teardown",
+    doneButtonActivityTest,
   );
 });

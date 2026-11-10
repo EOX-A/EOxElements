@@ -126,3 +126,17 @@ export const keyboardNavigationEmitsOnce = () => {
   cy.get("@tour-highlighted").should("have.been.calledThrice");
   cy.get("@activity").should("have.been.calledTwice");
 };
+
+/** Clicking the Done button on the last step must emit activity and fire onDestroyStarted before teardown. */
+export const doneButtonActivityTest = () => {
+  mountActivityTour();
+  cy.get("eox-tour").then(([$tour]) => $tour.driver.drive(2));
+  expectStep(2);
+  cy.document()
+    .find(".driver-popover-next-btn")
+    .should("contain.text", "Done")
+    .click();
+  cy.get("@activity").should("have.been.calledOnce");
+  cy.get("@tour-destroy-started").should("have.been.calledOnce");
+  cy.get("@onDestroyStarted").should("have.been.calledOnce");
+};

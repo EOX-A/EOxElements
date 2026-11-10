@@ -761,12 +761,27 @@ export class EOxMap extends LitElement {
    * @param {string} text - The string containing the geographic data to be parsed.
    * @param {import("ol/layer").Vector} vectorLayer - The vector layer to which the parsed features will be added.
    * @param {EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
-   * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
-   * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
+   * @param {boolean} [replaceFeatures=false] - Optional boolean flag indicating whether to replace the existing features with the new ones.
+   * @param {boolean} [animate=true] - Optional boolean flag indicating whether to animate the map on feature change.
+   * @param {boolean} [isUser=false] - Optional boolean flag indicating whether the parse was user-initiated.
    * @returns {void}
    */
-  parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate) {
-    parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate);
+  parseTextToFeature(
+    text,
+    vectorLayer,
+    EOxMap,
+    replaceFeatures,
+    animate,
+    isUser = false,
+  ) {
+    parseTextToFeature(
+      text,
+      vectorLayer,
+      EOxMap,
+      replaceFeatures,
+      animate,
+      isUser,
+    );
   }
 
   /**

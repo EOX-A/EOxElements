@@ -25,6 +25,7 @@ export default function addNewFeature(
   isDraw = false,
   replaceFeatures = false,
   animate = true,
+  isUser = isDraw,
 ) {
   // Determine the source of the features based on the event type and isDraw flag.
   // @ts-expect-error - Property 'feature' does not exist on type 'DrawEvent | DragAndDropEvent
@@ -83,17 +84,22 @@ export default function addNewFeature(
     format.writeFeatures(features, READ_FEATURES_OPTIONS),
   );
 
-  // Dispatch relevant events based on operation type.
-  const isDragAndDrop =
-    "type" in e && (e.type === "addfeatures" || e.type === "dragdrop");
   if (isDraw || replaceFeatures)
-    dispatchEvt(EOxMap, "drawend", e, geoJsonObject, Boolean(isDraw));
+    dispatchEvt(
+      EOxMap,
+      "drawend",
+      e,
+      geoJsonObject,
+      Boolean(isDraw),
+      Boolean(isUser),
+    );
   dispatchEvt(
     EOxMap,
     "addfeatures",
     e,
     geoJsonObject,
-    Boolean(!isDraw && isDragAndDrop),
+    Boolean(!isDraw && isUser),
+    Boolean(isUser),
   );
 }
 
@@ -105,15 +111,23 @@ export default function addNewFeature(
  * @param {import("ol/interaction/Draw").DrawEvent | import("ol/interaction/DragAndDrop").DragAndDropEvent | { features: any }} e - An event object which can be of type DrawEvent, DragAndDropEvent, or an object with a features property.
  * @param {{ [p: string]: any }} geoJSON - An object representing GeoJSON data associated with the event.
  * @param {boolean} [activity=false] - Whether the feature addition was user activity.
+ * @param {boolean} [isUser=activity] - Whether the feature addition was initiated by a user.
  */
-function dispatchEvt(EOxMap, type, e, geoJSON, activity = false) {
+function dispatchEvt(
+  EOxMap,
+  type,
+  e,
+  geoJSON,
+  activity = false,
+  isUser = activity,
+) {
   const originalEvent =
     "originalEvent" in e
       ? e.originalEvent
       : typeof Event !== "undefined" && e instanceof Event
         ? e
         : undefined;
-  dispatchElementEvent(EOxMap, type, {
+  const event = dispatchElementEvent(EOxMap, type, {
     detail: {
       originalEvent: e,
       geoJSON,
@@ -122,4 +136,5 @@ function dispatchEvt(EOxMap, type, e, geoJSON, activity = false) {
     action: type,
     originalEvent,
   });
+  event.isUser = isUser;
 }

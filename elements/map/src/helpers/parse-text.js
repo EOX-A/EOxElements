@@ -64,6 +64,7 @@ export default function parseTextToFeature(
   EOxMap,
   replaceFeatures = false,
   animate = true,
+  isUser = false,
 ) {
   try {
     // Attempt to parse the input text in various formats
@@ -89,6 +90,7 @@ export default function parseTextToFeature(
       false,
       replaceFeatures,
       animate,
+      isUser,
     );
   } catch (err) {
     console.error("Error parsing data:", err);

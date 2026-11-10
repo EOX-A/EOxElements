@@ -6,4 +6,5 @@ export {
   userNavigationEmitsOnce,
   programmaticNavigationAfterClickIsSilent,
   keyboardNavigationEmitsOnce,
+  doneButtonActivityTest,
 } from "./activity.js";

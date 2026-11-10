@@ -53,6 +53,11 @@ export function initializeDriver(EOxTour) {
         }
       }
 
+      finalConfig.onDestroyStarted(
+        opts.driver.getActiveElement(),
+        currentStep,
+        opts,
+      );
       opts.driver.destroy();
       return;
     }
@@ -206,11 +211,8 @@ export function initializeDriver(EOxTour) {
         if (EOxTour.config.onCloseClick) {
           EOxTour.config.onCloseClick(element, step, opts);
         }
+        finalConfig.onDestroyStarted(element, step, opts);
         opts.driver.destroy();
-        // driver.destroy() can bypass onDestroyStarted; notify only once.
-        if (!destroyNotified) {
-          finalConfig.onDestroyStarted(element, step, opts);
-        }
         if (window.parent !== window) {
           window.parent.postMessage(
             { type: "EOX_TOUR_DESTROY", tourId: EOxTour.id },
@@ -277,6 +279,7 @@ export function initializeDriver(EOxTour) {
         EOxTour.config.onDeselected(element, step, options);
     },
     onDestroyStarted: (element, step, options) => {
+      if (destroyNotified) return;
       destroyNotified = true;
       /**
        * Fires tour-destroy-started when tour destruction is requested.

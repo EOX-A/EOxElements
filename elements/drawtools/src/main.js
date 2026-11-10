@@ -341,9 +341,10 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
+   * @param {boolean} [isUser=false]
    */
-  discardDrawing() {
-    discardDrawingMethod(this);
+  discardDrawing(isUser = false) {
+    discardDrawingMethod(this, isUser);
   }
 
   /**
@@ -364,17 +365,24 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * @param {string} text - The string representation of the features to be parsed.
-   * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
-   * @param {boolean} animate - A boolean flag indicating whether to animate the map on feature change.
+   * @param {boolean} [replaceFeatures=false] - A boolean flag indicating whether to replace the existing features.
+   * @param {boolean} [animate=true] - A boolean flag indicating whether to animate the map on feature change.
+   * @param {boolean} [isUser=false] - Whether the change was user-initiated.
    * @ignore
    */
-  handleFeatureChange(text, replaceFeatures = false, animate = true) {
+  handleFeatureChange(
+    text,
+    replaceFeatures = false,
+    animate = true,
+    isUser = false,
+  ) {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
       this.eoxMap,
       replaceFeatures,
       animate,
+      isUser,
     );
   }
 
@@ -541,9 +549,9 @@ export class EOxDrawTools extends LitElement {
       <eox-drawtools-controller
         .drawFunc=${{
           start: () => this.startDrawing(),
-          discard: () => this.discardDrawing(),
+          discard: () => this.discardDrawing(true),
           editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
-            this.handleFeatureChange(evt.target.value, true),
+            this.handleFeatureChange(evt.target.value, true, true, true),
           import: (/** @type {DragEvent} */ evt) => this.handleFilesChange(evt),
         }}
         ?select=${!!this.layerId}

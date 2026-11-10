@@ -142,6 +142,7 @@ export class EOxItemFilter extends LitElement {
 
     /**
      * @type Function
+     * @private
      */
     this.search = (isUser = false) => {
       if (isUser) this._isUserFilter = true;
@@ -392,9 +393,10 @@ export class EOxItemFilter extends LitElement {
 
   /**
    * Resets all applied filters.
+   * @param {boolean} [isUser=false]
    */
-  resetFilters() {
-    resetFilterMethod(this);
+  resetFilters(isUser = false) {
+    resetFilterMethod(this, isUser);
   }
 
   /**
@@ -475,6 +477,8 @@ export class EOxItemFilter extends LitElement {
       detail: this.selectedResult,
       activity: true,
       action: "select",
+      bubbles: true,
+      composed: true,
     });
     this.requestUpdate();
   }
@@ -528,6 +532,8 @@ export class EOxItemFilter extends LitElement {
       detail: evt.detail,
       activity: true,
       action: "click:result-action",
+      bubbles: true,
+      composed: true,
     });
   }
 
@@ -589,7 +595,7 @@ export class EOxItemFilter extends LitElement {
                               id="filter-reset"
                               class="reset-icon border small"
                               data-cy="filter-reset"
-                              @click=${() => this.resetFilters()}
+                              @click=${() => this.resetFilters(true)}
                             >
                               ${this.unstyled
                                 ? nothing

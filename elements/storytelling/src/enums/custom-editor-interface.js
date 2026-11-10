@@ -101,6 +101,8 @@ class UploadEditor extends AbstractEditor {
           const storytelling = findHost(this.input, "eox-storytelling");
           dispatchElementEvent(this.input, "upload:file", {
             detail: { file, update },
+            bubbles: true,
+            composed: true,
             activity: false,
           });
           if (storytelling) {

@@ -19,7 +19,7 @@ export const disposeChartTest = () => {
       expect(finalizeFirst).to.have.been.calledOnce;
       expect(chart._vegaView).not.to.equal(first.view);
       const finalizeSecond = cy.spy(chart._embedResult, "finalize");
-      chart.remove();
+      chart._disposeChart();
       expect(finalizeSecond).to.have.been.calledOnce;
       expect(chart._embedResult).to.equal(null);
       expect(chart._vegaView).to.equal(null);
@@ -51,7 +51,7 @@ export const reconnectChartTest = () => {
   });
   cy.get("eox-chart").should(([chart]) => {
     expect(chart._vegaView).not.to.equal(null);
-    expect(chart._vegaView).not.to.equal(initialView);
+    expect(chart._vegaView).to.equal(initialView);
   });
   cy.get("@delegatedListeners").should("not.have.been.called");
   cy.get("eox-chart").then(([chart]) => {

@@ -22,11 +22,12 @@ const createSelectHandler = (EoxDrawTool) => {
       e.detail.feature = toFeature(e.detail.feature);
     }
     EoxDrawTool.drawLayer.getSource().addFeature(e.detail.feature);
-    dispatchElementEvent(EoxDrawTool.eoxMap, "addfeatures", {
+    const event = dispatchElementEvent(EoxDrawTool.eoxMap, "addfeatures", {
       detail: e.detail,
-      activity: true,
+      activity: false,
       action: "addfeatures",
     });
+    event.isUser = true;
   };
 
   /**

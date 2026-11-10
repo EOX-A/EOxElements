@@ -401,14 +401,18 @@ class EOxGeoSearch extends LitElement {
       
         <div class="${this.button ? (this.small ? "button small circle small-elevate" : "button extra circle") : "field small prefix round surface border active"}" data-ui="#search"
         @click=${(/** @type {MouseEvent} */ e) => {
+          if (e.target instanceof Element && e.target.closest("menu#search")) {
+            return;
+          }
+          const wasOpen = this._isListVisible;
           this._isListVisible = true;
-          if (this.button) {
+          if (this.button && !wasOpen) {
             emitActivity(this, "click:button", { open: true }, e);
           }
           setTimeout(() => {
             /** @type HTMLInputElement */ (
               this.renderRoot.querySelector("menu#search input")
-            ).focus();
+            )?.focus();
           }, 500);
         }}
         >

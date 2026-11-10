@@ -8,6 +8,7 @@ import {
   genericButtonActivityTest,
   submitButtonAttributionTest,
   recreatedActivityTest,
+  openLayersFeatureValueTest,
 } from "./cases";
 
 describe("JSONForm activity attribution", () => {
@@ -31,4 +32,8 @@ describe("JSONForm activity attribution", () => {
     submitButtonAttributionTest,
   );
   it("replaces listeners when the editor is recreated", recreatedActivityTest);
+  it(
+    "supports values containing OpenLayers Features without throwing DataCloneError",
+    openLayersFeatureValueTest,
+  );
 });

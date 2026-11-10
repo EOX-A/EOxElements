@@ -233,14 +233,15 @@ export class EOxTimeControlPicker extends LitElement {
   #emitUpdateEvent(isUser = false) {
     const viewRange = this.getViewRange();
     setTimeout(() => {
-      dispatchElementEvent(this, "update:view", {
+      const event = dispatchElementEvent(this, "update:view", {
         detail: {
           start: viewRange.start,
           end: viewRange.end,
         },
         bubbles: false,
-        activity: isUser,
+        activity: false,
       });
+      event.isUser = Boolean(isUser);
     });
   }
 

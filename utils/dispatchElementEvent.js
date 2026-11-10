@@ -17,8 +17,8 @@ export const ACTIVITY_EVENT_NAME = "eox:activity";
  * @property {string} [action] - Optional action name override for `eox:activity` (defaults to the event `type`)
  * @property {unknown} [activityPayload] - Optional payload override for `eox:activity` (defaults to the event `detail`)
  * @property {unknown} [originalEvent] - Optional original DOM/library event
- * @property {boolean} [bubbles=true] - Whether the event bubbles (defaults to true)
- * @property {boolean} [composed=true] - Whether the event crosses shadow DOM boundaries (defaults to true)
+ * @property {boolean} [bubbles=false] - Whether the functional event bubbles (defaults to false)
+ * @property {boolean} [composed=false] - Whether the functional event crosses shadow DOM boundaries (defaults to false)
  * @property {boolean} [cancelable=false] - Whether the event is cancelable
  */
 
@@ -73,15 +73,14 @@ export const emitActivity = (element, action, payload, originalEvent) => {
 
 /**
  * Wraps and dispatches an EOxElement event so that:
- * 1. The functional event is dispatched with `{ bubbles: true, composed: true }` by default
- *    while preserving its exact event name and `detail` for backward compatibility.
- * 2. When `options.activity` is `true`, a standardized `eox:activity` event is also dispatched.
+ * 1. The functional event is dispatched preserving its exact event name, `detail`, and scoping (default bubbles: false, composed: false).
+ * 2. When `options.activity` is `true`, a standardized `eox:activity` event is also dispatched with `{ bubbles: true, composed: true }`.
  *
  * @template [T=unknown]
  * @param {HTMLElement | Element} element - The host element dispatching the event
  * @param {string | Event | CustomEvent<T>} eventOrType - Event type string or an existing Event/CustomEvent instance
  * @param {DispatchElementEventOptions<T>} [options={}] - Dispatch and activity options
- * @returns {CustomEvent<T>} The dispatched functional CustomEvent
+ * @returns {CustomEvent<T> & { isUser?: boolean }} The dispatched functional CustomEvent
  */
 export const dispatchElementEvent = (element, eventOrType, options = {}) => {
   const isEventInstance =
@@ -92,8 +91,8 @@ export const dispatchElementEvent = (element, eventOrType, options = {}) => {
   const detail = isEventInstance
     ? /** @type {CustomEvent} */ (eventOrType).detail
     : options.detail;
-  const bubbles = options.bubbles !== undefined ? options.bubbles : true;
-  const composed = options.composed !== undefined ? options.composed : true;
+  const bubbles = options.bubbles !== undefined ? options.bubbles : false;
+  const composed = options.composed !== undefined ? options.composed : false;
   const cancelable =
     options.cancelable !== undefined
       ? options.cancelable

@@ -237,14 +237,15 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
       updateRangeElements(EOxTimeControlTimeline);
   }
   const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
-  dispatchElementEvent(EOxTimeControlTimeline, "update:view", {
+  const event = dispatchElementEvent(EOxTimeControlTimeline, "update:view", {
     detail: {
       start: viewRange.start,
       end: viewRange.end,
     },
     bubbles: false,
-    activity: Boolean(props.byUser),
+    activity: false,
   });
+  event.isUser = Boolean(props.byUser);
 }
 
 /**

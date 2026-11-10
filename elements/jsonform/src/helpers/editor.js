@@ -65,8 +65,13 @@ export const createEditor = (element) => {
       event.type !== "click" &&
       target.matches("input, textarea, select, [contenteditable]");
     const button = target.closest("button");
-    const isButtonClick =
-      event.type === "click" && button && button.type !== "submit";
+    const isExcludedButton =
+      button &&
+      (button.type === "submit" ||
+        button.matches(
+          ".json-editor-btntype-toggle, .json-editor-btn-collapse, .json-editor-btntype-properties, .json-editor-btntype-editjson, .json-editor-btntype-cancel",
+        ));
+    const isButtonClick = event.type === "click" && button && !isExcludedButton;
     if (!isValueInput && !isButtonClick) return;
 
     element._isUserDirty = true;
@@ -103,6 +108,8 @@ export const createEditor = (element) => {
         detail: element.value,
         activity: true,
         action: "submit",
+        bubbles: true,
+        composed: true,
       });
     },
   };

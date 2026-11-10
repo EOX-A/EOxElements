@@ -13,6 +13,28 @@ import isEqual from "lodash.isequal";
 import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
 
 /**
+ * Safely clones editor values, including OpenLayers Features which throw DataCloneError in structuredClone.
+ * @param {unknown} val
+ * @returns {unknown}
+ */
+const safeCloneValue = (val) => {
+  if (val === null || typeof val !== "object") return val;
+  // @ts-expect-error - OL features or similar instances with .clone()
+  if (typeof val.clone === "function") return val.clone();
+  if (Array.isArray(val)) return val.map(safeCloneValue);
+  try {
+    return structuredClone(val);
+  } catch {
+    /** @type {Record<string, unknown>} */
+    const copy = {};
+    for (const key of Object.keys(val)) {
+      copy[key] = safeCloneValue(val[key]);
+    }
+    return copy;
+  }
+};
+
+/**
  * `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.
  * It is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.
  * Also check out the [JSON Editor Documentation](https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md) for full details on schema syntax, options, and built-in editors.
@@ -213,6 +235,8 @@ export class EOxJSONForm extends LitElement {
       detail: this.value,
       activity: isUser,
       action: "change",
+      bubbles: true,
+      composed: true,
     });
   }
 
@@ -223,7 +247,7 @@ export class EOxJSONForm extends LitElement {
     this.#editor.on("ready", () => {
       this.#emitReady();
       this._value = this.#editor.getValue();
-      this.#previousEditorValue = structuredClone(this._value);
+      this.#previousEditorValue = safeCloneValue(this._value);
       this.#emitValue(false);
     });
 
@@ -233,7 +257,7 @@ export class EOxJSONForm extends LitElement {
         Boolean(this._isUserDirty) &&
         !isEqual(this.#previousEditorValue, value);
       this._isUserDirty = false;
-      this.#previousEditorValue = structuredClone(value);
+      this.#previousEditorValue = safeCloneValue(value);
       this._value = value;
       this.#emitValue(isUser);
     });
@@ -253,6 +277,8 @@ export class EOxJSONForm extends LitElement {
       detail: "dummy",
       activity: true,
       action: "submit",
+      bubbles: true,
+      composed: true,
     });
   }
 

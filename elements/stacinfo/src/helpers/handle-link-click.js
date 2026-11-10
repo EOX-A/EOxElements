@@ -45,6 +45,8 @@ export default function handleLinkClick(e, that) {
       text: anchor.textContent?.trim() || "",
       section,
     },
+    bubbles: true,
+    composed: true,
     activity: true,
     action: "click:link",
     originalEvent: e,

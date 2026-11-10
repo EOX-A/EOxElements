@@ -295,3 +295,26 @@ export const recreatedActivityTest = () => {
   settle();
   cy.get("@activity").should("have.been.calledOnce");
 };
+
+/** Form values containing non-serializable objects (like OpenLayers Features) must not throw DataCloneError. */
+export const openLayersFeatureValueTest = () => {
+  mountForm();
+  cy.get("eox-jsonform").then(([element]) => {
+    const form = /** @type {import("../../src/main").EOxJSONForm} */ (element);
+    form.addEventListener("change", cy.stub().as("change"));
+    // Simulate a custom input setting a feature on the editor
+    const mockFeature = {
+      clone() {
+        return { ...this };
+      },
+      values_: { name: "test" },
+      on: () => {},
+      un: () => {},
+    };
+    expect(() => {
+      form.editor.setValue({ ...form.value, feature: mockFeature });
+    }).not.to.throw();
+  });
+  settle();
+  cy.get("@change").should("have.been.called");
+};

@@ -151,14 +151,12 @@ export class EOxChart extends LitElement {
     super.connectedCallback();
     if (this.hasUpdated) {
       this._observeResize();
-      this.requestUpdate("spec", Symbol());
     }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this._resizeObserver?.disconnect();
-    this._disposeChart();
   }
 
   /** @private */

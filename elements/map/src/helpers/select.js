@@ -266,15 +266,16 @@ export class EOxSelectInteraction {
           }
         }
         const isHover = options.condition === "pointermove";
+        const isInternalSelect = options.id === "SelectLayerClickInteraction";
         dispatchElementEvent(this.eoxMap, "select", {
           detail: {
             id: options.id,
             originalEvent: event,
             feature: feature,
           },
-          bubbles: !isHover,
-          composed: !isHover,
-          activity: !isHover,
+          bubbles: false,
+          composed: false,
+          activity: !isHover && !isInternalSelect,
           action: "select",
           originalEvent: event,
         });

@@ -227,6 +227,8 @@ export class EOxStoryTelling extends LitElement {
      */
     dispatchElementEvent(this, "upload:file", {
       detail: "dummy",
+      bubbles: true,
+      composed: true,
       activity: true,
       action: "upload:file",
     });
@@ -248,9 +250,9 @@ export class EOxStoryTelling extends LitElement {
       changedProperties.has("markdown") ||
       changedProperties.has("showMapLoadingIndicator")
     ) {
+      const isUser = Boolean(this.#isEditorChange);
+      this.#isEditorChange = false;
       if (this.markdown) {
-        const isUser = Boolean(this.#isEditorChange);
-        this.#isEditorChange = false;
         /**
          * Fires changed with the updated markdown content.
          * Only edits from the built-in editor also emit eox:activity.

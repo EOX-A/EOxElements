@@ -45,6 +45,8 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     if (visibilityChanged) {
       EOxLayerControlLayer.requestUpdate();
       dispatchElementEvent(EOxLayerControlLayer, "change:resolution", {
+        bubbles: true,
+        composed: false,
         activity: false,
       });
     }

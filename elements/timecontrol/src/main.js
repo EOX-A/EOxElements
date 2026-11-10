@@ -378,7 +378,7 @@ export class EOxTimeControl extends LitElement {
     return getChildElement(this, "eox-timecontrol-picker");
   }
 
-  #emitUpdateEvent(EOxTimeControl) {
+  #emitUpdateEvent(EOxTimeControl, isUser = false) {
     const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
       EOxTimeControl.getTimeControlTimeline()
     );
@@ -404,7 +404,8 @@ export class EOxTimeControl extends LitElement {
             }
           : {}),
       },
-      activity: false,
+      activity: isUser,
+      action: "update:view",
     });
   }
 
