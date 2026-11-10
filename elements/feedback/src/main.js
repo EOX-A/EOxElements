@@ -38,7 +38,7 @@ import "./feedback-button.js";
  *
  * @fires close - The modal was closed.
  * @fires submit - The feedback was submitted. The `CustomEvent.detail` contains the FormData object.
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxFeedback extends HTMLElement {
   static observedAttributes = ["endpoint", "unstyled"];

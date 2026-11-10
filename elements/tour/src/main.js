@@ -27,7 +27,7 @@ import { handleMessage, initializeDriver } from "./methods/tour/index.js";
  * @fires {CustomEvent} tour-highlighted - Fired when driver.js `onHighlighted` is called.
  * @fires {CustomEvent} tour-deselected - Fired when driver.js `onDeselected` is called.
  * @fires {CustomEvent} tour-destroy-started - Fired when driver.js `onDestroyStarted` is called.
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxTour extends LitElement {
   static get properties() {

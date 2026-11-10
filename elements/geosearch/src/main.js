@@ -62,7 +62,7 @@ const loaderSvg = `
  *
  * @element eox-geosearch
  * @fires {CustomEvent} geosearchSelect - The select event, including the details of the selected item
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 class EOxGeoSearch extends LitElement {
   static get properties() {

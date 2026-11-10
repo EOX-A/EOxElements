@@ -147,7 +147,7 @@ addCommonStylesheet();
  * @fires {CustomEvent} resize - Fired when the map container is resized
  * @fires {CustomEvent} select - A feature is selected
  * @fires {CustomEvent} layerschanged - The layers have been changed
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).
  *
  * @cssproperty --map-controls-bg - Background color for controls.
  * @cssproperty --map-controls-color - Text/icon color for controls.

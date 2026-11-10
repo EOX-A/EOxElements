@@ -46,7 +46,7 @@ addCommonStylesheet();
  * @fires {CustomEvent} layerchange - Fired when layers in the map change
  * @fires {CustomEvent} layerConfig:change - Fired when layer configuration changes
  * @fires {CustomEvent} datetime:updated - Fired when datetime is updated for a layer
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxLayerControl extends LitElement {
   // Define static properties for the component

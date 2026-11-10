@@ -54,7 +54,7 @@ import {
  * @fires mouseenter:result - When a result is hovered
  * @fires mouseleave:result - When a result is un-hovered
  * @fires click:result-action - When a result action button is clicked
- * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fired only on user-initiated interactions and is to be used for analytics.
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
