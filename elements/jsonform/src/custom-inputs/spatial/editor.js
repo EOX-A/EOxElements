@@ -108,10 +108,9 @@ export class SpatialEditor extends AbstractEditor {
 
     if (!("for" in drawToolsOptions) || !drawToolsOptions.for) {
       // We need to create a map
-      const eoxmapEl =
-        /**
-         * @type import("@eox/map").EOxMap
-         */ (document.createElement("eox-map"));
+      const eoxmapEl = /**
+       * @type import("@eox/map").EOxMap
+       */ (document.createElement("eox-map"));
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
       let firstLoad = false;
       eoxmapEl.addEventListener("loadend", () => {
