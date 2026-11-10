@@ -192,6 +192,7 @@ describe("LayerControl: LayerConfig", () => {
           $jsonform[0].dispatchEvent(new CustomEvent("change", { detail }));
         });
 
+    cy.clock();
     cy.mount(html`
       <eox-layercontrol-layerconfig
         .layer=${mockLayer}
@@ -205,8 +206,8 @@ describe("LayerControl: LayerConfig", () => {
       source = secondSource;
       propertyChangeListener({ key: "source" });
     });
-    // let the 1000 ms throttle window pass so the next change is applied immediately
-    cy.wait(1100);
+    // move past the 1000 ms throttle window so the next change is applied immediately
+    cy.tick(1000);
     dispatchFormChange({ rescale: "2,3" });
 
     cy.wrap(secondSource.setTileUrlFunction).should("have.been.called");
