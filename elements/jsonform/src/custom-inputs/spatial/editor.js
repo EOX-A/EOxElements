@@ -108,9 +108,10 @@ export class SpatialEditor extends AbstractEditor {
 
     if (!("for" in drawToolsOptions) || !drawToolsOptions.for) {
       // We need to create a map
-      const eoxmapEl = /**
-       * @type import("@eox/map").EOxMap
-       */ (document.createElement("eox-map"));
+      const eoxmapEl =
+        /**
+         * @type import("@eox/map").EOxMap
+         */ (document.createElement("eox-map"));
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
       let firstLoad = false;
       eoxmapEl.addEventListener("loadend", () => {
@@ -278,6 +279,22 @@ export class SpatialEditor extends AbstractEditor {
       ),
     );
     this.container.appendChild(this.control);
+  }
+
+  setValue(value, initial) {
+    super.setValue(value, initial);
+    if (value && this.input && !isSelection(this.schema)) {
+      const featureCollection = valueToFeatureCollection(value, this.schema);
+      if (featureCollection.features.length > 0) {
+        this.input.updateComplete.then(() => {
+          this.input.handleFeatureChange(
+            JSON.stringify(featureCollection),
+            true,
+            false,
+          );
+        });
+      }
+    }
   }
 
   refreshValue() {
