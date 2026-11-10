@@ -38,6 +38,7 @@ import {
   loadStepsEditorConditionalTest,
   loadMinMaxEditorTest,
   loadMinMaxBranchSwitchTest,
+  setSpatialValueTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -93,4 +94,6 @@ describe("Jsonform", () => {
     loadMinMaxEditorTest());
   it("applies branch defaults when switching anyOf branches with minmax slider", () =>
     loadMinMaxBranchSwitchTest());
+  it("updates drawtools features when setValue is called on external map", () =>
+    setSpatialValueTest());
 });
