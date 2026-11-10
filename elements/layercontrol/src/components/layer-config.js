@@ -129,6 +129,10 @@ export class EOxLayerControlLayerConfig extends LitElement {
 
   #layerPropertyChangeListener = (e) => {
     const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
+    if (propEvent.key === "source") {
+      // remove outdated function
+      this.#originalTileUrlFunction = undefined;
+    }
     if (propEvent.key === "layerConfig") {
       this.layerConfig = this.layer.get("layerConfig");
       const freshStartVals = getStartVals(this.layer, this.layerConfig) || {};
