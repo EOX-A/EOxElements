@@ -21,3 +21,7 @@ Additionally to being usable in JavaScript, there is also a wrapper for Jupyter 
 ## Model Context Protocol (MCP) Server
 
 For usage with AI coding agents, EOxElements provides a server that exposes a set of tools via the Model Context Protocol. For more information, see the [MCP documentation](/docs/mcp--docs).
+
+## Analytics
+
+All human interactions except for pointer and mouse move related events on the EOxElements are recorded using a **eox:activity** `bubbles: true` event. It is then a responsibility of integrating app to listen on the document to pass through a whitelisted selection or all events to the analytics system of their choice.
