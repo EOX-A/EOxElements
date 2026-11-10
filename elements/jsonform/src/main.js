@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { dispatchElementEvent } from "@eox/elements-utils";
+import { dispatchElementEvent, safeCloneValue } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import {
   createEditor,
@@ -11,28 +11,6 @@ import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
 import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
-
-/**
- * Safely clones editor values, including OpenLayers Features which throw DataCloneError in structuredClone.
- * @param {unknown} val
- * @returns {unknown}
- */
-const safeCloneValue = (val) => {
-  if (val === null || typeof val !== "object") return val;
-  // @ts-expect-error - OL features or similar instances with .clone()
-  if (typeof val.clone === "function") return val.clone();
-  if (Array.isArray(val)) return val.map(safeCloneValue);
-  try {
-    return structuredClone(val);
-  } catch {
-    /** @type {Record<string, unknown>} */
-    const copy = {};
-    for (const key of Object.keys(val)) {
-      copy[key] = safeCloneValue(val[key]);
-    }
-    return copy;
-  }
-};
 
 /**
  * `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.

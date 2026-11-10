@@ -5,7 +5,7 @@ import Style from "ol/style/Style";
 import { createEmpty, extend, getArea } from "ol/extent";
 import { LineString, Point } from "ol/geom";
 import VectorLayer from "ol/layer/Vector";
-import { dispatchElementEvent } from "@eox/elements-utils";
+import { dispatchElementEvent, safeCloneValue } from "@eox/elements-utils";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
@@ -41,7 +41,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
     };
 
     // keep the options object immutable, while keeping the sub-properties of the default options
-    const _options = structuredClone(options);
+    const _options = safeCloneValue(options);
     if (_options.fitOptions) {
       defaultOptions.fitOptions = {
         ...defaultOptions.fitOptions,

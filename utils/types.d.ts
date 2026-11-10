@@ -46,3 +46,5 @@ export declare function dispatchElementEvent<T = unknown>(
   eventOrType: string | Event | CustomEvent<T>,
   options?: DispatchElementEventOptions<T>,
 ): CustomEvent<T> & { isUser?: boolean };
+
+export declare function safeCloneValue<T = unknown>(val: T): T;

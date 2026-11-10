@@ -6,3 +6,4 @@ export {
   emitActivity,
   findHost,
 } from "./dispatchElementEvent";
+export { safeCloneValue } from "./safeCloneValue";
