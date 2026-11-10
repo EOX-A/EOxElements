@@ -211,8 +211,7 @@ describe("LayerControl: LayerConfig", () => {
 
     cy.wrap(secondSource.setTileUrlFunction).should("have.been.called");
     cy.then(() => {
-      const tileUrlFunction =
-        secondSource.setTileUrlFunction.lastCall.args[0];
+      const tileUrlFunction = secondSource.setTileUrlFunction.lastCall.args[0];
       const resultUrl = decodeURIComponent(tileUrlFunction([8, 133, 91]));
       expect(resultUrl).to.contain("datetime=2026-02-01");
       expect(resultUrl).to.contain("rescale=2,3");
