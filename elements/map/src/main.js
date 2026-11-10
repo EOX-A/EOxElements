@@ -468,6 +468,8 @@ export class EOxMap extends LitElement {
     dispatchElementEvent(this, "layerschanged", {
       detail: { layers: this.#layers },
       activity: false,
+      bubbles: true,
+      composed: true,
     });
   }
 
