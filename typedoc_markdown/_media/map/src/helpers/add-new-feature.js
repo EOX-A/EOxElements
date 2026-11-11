@@ -1,5 +1,6 @@
 // Import necessary OpenLayers formats
 import GeoJSON from "ol/format/GeoJSON";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import LineString from "ol/geom/LineString.js";
 import Polygon from "ol/geom/Polygon.js";
 import { getArea, getLength } from "ol/sphere";
@@ -24,6 +25,7 @@ export default function addNewFeature(
   isDraw = false,
   replaceFeatures = false,
   animate = true,
+  isUser = isDraw,
 ) {
   // Determine the source of the features based on the event type and isDraw flag.
   // @ts-expect-error - Property 'feature' does not exist on type 'DrawEvent | DragAndDropEvent
@@ -82,10 +84,23 @@ export default function addNewFeature(
     format.writeFeatures(features, READ_FEATURES_OPTIONS),
   );
 
-  // Dispatch relevant events based on operation type.
   if (isDraw || replaceFeatures)
-    dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
-  dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject);
+    dispatchEvt(
+      EOxMap,
+      "drawend",
+      e,
+      geoJsonObject,
+      Boolean(isDraw),
+      Boolean(isUser),
+    );
+  dispatchEvt(
+    EOxMap,
+    "addfeatures",
+    e,
+    geoJsonObject,
+    Boolean(!isDraw && isUser),
+    Boolean(isUser),
+  );
 }
 
 /**
@@ -95,16 +110,31 @@ export default function addNewFeature(
  * @param {string} type - A string specifying the type of the event to be dispatched.
  * @param {import("ol/interaction/Draw").DrawEvent | import("ol/interaction/DragAndDrop").DragAndDropEvent | { features: any }} e - An event object which can be of type DrawEvent, DragAndDropEvent, or an object with a features property.
  * @param {{ [p: string]: any }} geoJSON - An object representing GeoJSON data associated with the event.
+ * @param {boolean} [activity=false] - Whether the feature addition was user activity.
+ * @param {boolean} [isUser=activity] - Whether the feature addition was initiated by a user.
  */
-function dispatchEvt(EOxMap, type, e, geoJSON) {
-  // Create a new custom event with the specified type and detail, including the original event and GeoJSON data
-  const evt = new CustomEvent(type, {
+function dispatchEvt(
+  EOxMap,
+  type,
+  e,
+  geoJSON,
+  activity = false,
+  isUser = activity,
+) {
+  const originalEvent =
+    "originalEvent" in e
+      ? e.originalEvent
+      : typeof Event !== "undefined" && e instanceof Event
+        ? e
+        : undefined;
+  const event = dispatchElementEvent(EOxMap, type, {
     detail: {
       originalEvent: e,
       geoJSON,
     },
+    activity,
+    action: type,
+    originalEvent,
   });
-
-  // Dispatch the custom event on the EOxMap object
-  EOxMap.dispatchEvent(evt);
+  event.isUser = isUser;
 }

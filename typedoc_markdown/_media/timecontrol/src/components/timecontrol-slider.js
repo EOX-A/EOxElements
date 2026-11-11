@@ -334,7 +334,11 @@ export class EOxTimeControlSlider extends LitElement {
       end === EOxTimeControl.selectedDateRange[1]
     )
       return;
-    EOxTimeControl.dateChange([start, end], EOxTimeControl);
+    EOxTimeControl.dateChange([start, end], EOxTimeControl, {
+      activity: true,
+      action: "select:slider",
+      originalEvent: evt,
+    });
   }
 
   /**

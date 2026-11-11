@@ -2,6 +2,7 @@ import {
   DEFAULT_VIS_TIMELINE_OPTIONS,
   VIS_TIMELINE_DATE_FORMATS,
 } from "../../enums.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import * as vis from "vis-timeline/standalone";
 import {
   updateVisibility,
@@ -16,6 +17,7 @@ import duration from "dayjs/plugin/duration";
 import groupBy from "lodash.groupby";
 import filter from "lodash.filter";
 import updateGridClipMethod from "./update-grid-clip.js";
+import destroyTimelineMethod from "./destroy-timeline.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -28,7 +30,6 @@ dayjs.extend(duration);
  */
 
 let drag = false;
-let drawInterval = null;
 
 const labelDateFormat = "DD MMM YYYY HH:mm:ss";
 
@@ -152,7 +153,10 @@ function handleTimeChanged(props, EOxTimeControl) {
     const sortedDateRange = [...newDateRange].sort((a, b) =>
       dayjs(a).isAfter(dayjs(b)) ? 1 : -1,
     );
-    EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl);
+    EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl, {
+      activity: true,
+      action: "select:timeline",
+    });
   }
 }
 
@@ -174,41 +178,45 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !props.event.shiftKey
   ) {
     const isBackgroundClick = Boolean(props.what == "background");
+    const duration = isBackgroundClick
+      ? dayjs.duration(
+          /** @type {any} */ (EOxTimeControlTimeline.selectionDuration),
+        )
+      : dayjs.duration({ seconds: 1 });
 
-    const utcFormattedDate = getWrongLocalFormatToUTCFormat(
-      props.time,
-      EOxTimeControl.showUTC,
-    );
-    if (isBackgroundClick) {
-      const selection = /** @type {any} */ (
-        EOxTimeControlTimeline.selectionDuration
-      );
-      const duration = dayjs.duration(selection);
-
-      const startDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().format()
-        : dayjs(props.time).utc().format();
-      const endDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().add(duration).format()
-        : dayjs(props.time).add(duration).utc().format();
-      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
-    } else {
-      const duration = dayjs.duration({
-        seconds: 1,
-      });
-      const selectedItem = props.item
+    const selectedItem =
+      !isBackgroundClick && props.item
         ? groupBy(EOxTimeControl.items.get(), "id")[props.item]
         : null;
-      const selectedDateTime = selectedItem ? selectedItem[0].utc : props.time;
 
-      const startDate = EOxTimeControl.showUTC
+    let startDate;
+    let endDate;
+    if (isBackgroundClick) {
+      const utcFormattedDate = getWrongLocalFormatToUTCFormat(
+        props.time,
+        EOxTimeControl.showUTC,
+      );
+      startDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().format()
+        : dayjs(props.time).utc().format();
+      endDate = EOxTimeControl.showUTC
+        ? dayjs(utcFormattedDate).utc().add(duration).format()
+        : dayjs(props.time).add(duration).utc().format();
+    } else {
+      const selectedDateTime = selectedItem ? selectedItem[0].utc : props.time;
+      startDate = EOxTimeControl.showUTC
         ? dayjs(selectedDateTime).utc().format()
         : dayjs(selectedDateTime).utc().format();
-      const endDate = EOxTimeControl.showUTC
+      endDate = EOxTimeControl.showUTC
         ? dayjs(selectedDateTime).utc().add(duration).format()
         : dayjs(selectedDateTime).add(duration).utc().format();
-      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
     }
+
+    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl, {
+      activity: true,
+      action: "select:timeline",
+      originalEvent: props.event,
+    });
   }
 }
 
@@ -229,15 +237,15 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
       updateRangeElements(EOxTimeControlTimeline);
   }
   const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
-  EOxTimeControlTimeline.dispatchEvent(
-    new CustomEvent("update:view", {
-      detail: {
-        start: viewRange.start,
-        end: viewRange.end,
-      },
-      composed: true,
-    }),
-  );
+  const event = dispatchElementEvent(EOxTimeControlTimeline, "update:view", {
+    detail: {
+      start: viewRange.start,
+      end: viewRange.end,
+    },
+    bubbles: false,
+    activity: false,
+  });
+  event.isUser = Boolean(props.byUser);
 }
 
 /**
@@ -248,6 +256,7 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 export default function initTimelineMethod(EOxTimeControlTimeline) {
+  if (!EOxTimeControlTimeline.isConnected) return;
   const EOxTimeControl = EOxTimeControlTimeline.getEOxTimeControl();
 
   if (EOxTimeControl) {
@@ -259,14 +268,8 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     const min = minDate.toDate();
     const max = maxDate.format("YYYY-MM-DD");
 
-    let previousWindow = null;
-    if (EOxTimeControlTimeline.visTimeline) {
-      try {
-        previousWindow = EOxTimeControlTimeline.visTimeline.getWindow();
-      } catch {
-        // ignore if not initialized
-      }
-    }
+    destroyTimelineMethod(EOxTimeControlTimeline);
+    const previousWindow = EOxTimeControlTimeline._timelineWindow;
 
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
@@ -383,34 +386,30 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     updateGridClipMethod(EOxTimeControlTimeline);
     EOxTimeControlTimeline.requestUpdate();
 
-    if (drawInterval) {
-      clearInterval(drawInterval);
-      drawInterval = null;
-    }
-
-    if (drawInterval === null)
-      drawInterval = setInterval(() => {
-        const vt =
-          /** @type {import("vis-timeline/standalone").Timeline | any} */ (
-            EOxTimeControlTimeline.visTimeline
-          );
-        if (
-          vt &&
-          vt.initialRangeChangeDone &&
-          vt.initialFitDone &&
-          !vt.initialDrawDone
-        ) {
-          vt.redraw();
-          clearInterval(drawInterval);
-        } else if (
-          vt &&
-          vt.initialRangeChangeDone &&
-          vt.initialFitDone &&
-          vt.initialDrawDone
-        ) {
-          clearInterval(drawInterval);
-        }
-      }, 50);
+    EOxTimeControlTimeline._timelineDrawInterval = setInterval(() => {
+      const vt =
+        /** @type {import("vis-timeline/standalone").Timeline | any} */ (
+          EOxTimeControlTimeline.visTimeline
+        );
+      if (
+        vt &&
+        vt.initialRangeChangeDone &&
+        vt.initialFitDone &&
+        !vt.initialDrawDone
+      ) {
+        vt.redraw();
+        clearInterval(EOxTimeControlTimeline._timelineDrawInterval);
+        EOxTimeControlTimeline._timelineDrawInterval = null;
+      } else if (
+        vt &&
+        vt.initialRangeChangeDone &&
+        vt.initialFitDone &&
+        vt.initialDrawDone
+      ) {
+        clearInterval(EOxTimeControlTimeline._timelineDrawInterval);
+        EOxTimeControlTimeline._timelineDrawInterval = null;
+      }
+    }, 50);
 
     visTimeline.on("changed", () => {
       updateGridClipMethod(EOxTimeControlTimeline);

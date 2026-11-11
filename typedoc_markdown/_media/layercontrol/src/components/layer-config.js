@@ -210,6 +210,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
    * @param {{ detail: Record<string, any>; }} e
    */
   async #handleDataChange(e) {
+    const isUser = Boolean(/** @type {any} */ (e)?.isUser);
     const prevVar =
       this.#data?.variable ??
       this.#data?.band ??
@@ -315,6 +316,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
         detail: {
           jsonformValue: this.#data,
           layer: this.layer,
+          isUser,
         },
       }),
     );
@@ -395,7 +397,12 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .options=${options}
             .noShadow=${true}
             .customEditorInterfaces=${this.customEditorInterfaces}
-            @change=${this.throttleDataChange}
+            @change=${(/** @type {CustomEvent} */ e) => {
+              this.throttleDataChange(e);
+            }}
+            @eox:activity=${(/** @type {CustomEvent} */ e) => {
+              e.stopPropagation();
+            }}
           ></eox-jsonform>
         `,
       )}

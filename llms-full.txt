@@ -235,8 +235,9 @@ For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` e
 
 ### Events
 
-- `pointermove:item`: Chart item is hovered. Event detail includes `event` (pointermove event) and `item` (the hovered item on the chart)
-- `click:item`: Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)
+- `pointermove:item`: Chart item is hovered
+- `click:item`: Chart item is clicked
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).
 
 ### Examples
 
@@ -1538,6 +1539,7 @@ This measurement is also displayed as a text label on the map using OpenLayers f
 ### Events
 
 - `drawupdate`: Fires whenever features are added, modified or discarded
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
 
@@ -2211,8 +2213,9 @@ building an email).
 
 ### Events
 
-- `submit`: The feedback was submitted. The `CustomEvent.detail` contains the FormData object.
 - `close`: The modal was closed.
+- `submit`: The feedback was submitted. The `CustomEvent.detail` contains the FormData object.
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
 
@@ -2437,6 +2440,7 @@ Example: { language: "en", limit: 10, countrycode: "us" } (Default: `undefined`)
 ### Events
 
 - `geosearchSelect`: The select event, including the details of the selected item
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
 
@@ -2854,11 +2858,12 @@ Supports passing a function which recieves the current item as parameter and is 
 
 ### Events
 
-- `filter`: When filters are applied, with `results` and `filters` in event detail
-- `select`: When a result is selected, with `selectedResult` in event detail
 - `mouseenter:result`: When a result is hovered
 - `mouseleave:result`: When a result is un-hovered
+- `filter`: When filters are applied, with `results` and `filters` in event detail
+- `select`: When a result is selected, with `selectedResult` in event detail
 - `click:result-action`: When a result action button is clicked
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
 
@@ -10211,10 +10216,103 @@ https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html (
 ### Events
 
 - `ready`: Editor has loaded schema and API is ready to be used
-- `change`: The value of the form has changed. Event detail includes the new value
-- `submit`: Form has been submitted (if a submit button is present). Event detail includes the current value
+- `change`: The value of the form has changed
+- `submit`: Form has been submitted
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
+
+#### Activity
+
+User activity attribution with a runnable parent event log in vanilla JS, React,
+Vue, and Svelte examples. Edit the title to emit a functional change with
+isUser=true and an eox:activity envelope containing element, action, and payload.
+Use Set value programmatically to assign form.value from the host: its change
+remains functional (isUser=false) without activity, even when a human clicks
+that host button. Initialization also emits functional events without activity.
+Parent listeners cross the form's shadow DOM. The log omits originalEvent.
+
+```html
+<section data-activity-demo>
+  <p>
+    Edit the title to emit activity. Assigning the value from the host updates
+    the form without activity.
+  </p>
+
+  <eox-jsonform></eox-jsonform>
+
+  <button type="button" data-programmatic-update disabled>
+    Set value programmatically
+  </button>
+  <button type="button" data-clear-log>Clear event log</button>
+  <h3>Functional and activity events</h3>
+  <pre data-activity-log aria-live="polite"></pre>
+</section>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          default: "Initial title",
+        },
+      },
+    },
+  });
+
+  // Listen for events
+  eoxJsonform.addEventListener("ready", (event) => {
+    const form = /** @type {HTMLElement & { value: { title: string } }} */ (
+      event.currentTarget
+    );
+    const host = form.closest("[data-activity-demo]");
+    const button = /** @type {HTMLButtonElement} */ (
+      host.querySelector("[data-programmatic-update]")
+    );
+    // Schema reinitialization must not register duplicate parent listeners.
+    if (!button.disabled) return;
+    const log = host.querySelector("[data-activity-log]");
+    let updates = 0;
+    /** @param {CustomEvent & { isUser?: boolean }} notification - A functional or activity event. */
+    const record = (notification) => {
+      if (!(notification instanceof CustomEvent)) return;
+      const entry =
+        notification.type === "eox:activity"
+          ? {
+              event: notification.type,
+              element: notification.detail.element,
+              action: notification.detail.action,
+              payload: notification.detail.payload,
+            }
+          : {
+              event: notification.type,
+              isUser: notification.isUser,
+              value: notification.detail,
+            };
+      log.textContent += `${JSON.stringify(entry)}\n`;
+    };
+    host.addEventListener("change", record);
+    host.addEventListener("eox:activity", record);
+    button.onclick = () => {
+      form.value = { title: `Programmatic update ${++updates}` };
+    };
+    /** @type {HTMLButtonElement} */ (
+      host.querySelector("[data-clear-log]")
+    ).onclick = () => {
+      log.textContent = "";
+    };
+    button.disabled = false;
+  });
+</script>
+
+```
 
 #### BinaryCheckboxEditor
 
@@ -14281,7 +14379,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-11-09T10:54:16.223Z",
+              default: "2026-11-11T07:49:13.843Z",
               options: {
                 hidden: true,
               },
@@ -14438,9 +14536,10 @@ https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html (
 
 ### Events
 
-- `layerchange`: A generic layer change event; could be a layer visibility, group length updates and others.
-Passes the changed layer in the `detail`.
-- `layerConfig:change`: 
+- `layerchange`: Fired when layers in the map change
+- `layerConfig:change`: Fired when layer configuration changes
+- `datetime:updated`: Fired when datetime is updated for a layer
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ---
 
@@ -14867,12 +14966,13 @@ Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
 
 ### Events
 
-- `resize`: Fired when the map container is resized
 - `clusterSelect`: A cluster is selected
 - `loadend`: The map has finished loading
 - `mapmounted`: The map has been successfully mounted
+- `resize`: Fired when the map container is resized
 - `select`: A feature is selected
 - `layerschanged`: The layers have been changed
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).
 
 ### CSS Custom Properties
 
@@ -17420,7 +17520,9 @@ Sections:
 
 ### Events
 
+- `loaded`: Fired when the STAC data has been loaded
 - `click:link`: Fired when an anchor tag is clicked within the STAC info
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
 
@@ -17695,11 +17797,10 @@ Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--ma
 
 ### Events
 
-- `init`: Fires when `eox-storytelling` has initialized; allowing to add custom logic
-regarding the integrated `eox-maps` etc. The event detail contains the initialized element.
-- `upload:file`: Fires when a file is uploaded via the built-in editor. The event detail contains the uploaded file as well
-as a callback function that can be used to update the file url end handle errors.
-- `changed`: 
+- `init`: Fires when eox-storytelling has initialized
+- `changed`: Fires when markdown content has changed
+- `upload:file`: Fires when a file is uploaded via the built-in editor
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
 
@@ -18243,7 +18344,8 @@ Layers must have the following properties to work with timecontrol:
 
 ## Events
 
-- `stepchange`: Fired when the current time step changes (not currently implemented).
+- `select`: Fired when the selected date or date range changes.
+- `update:view`: Fired when the timeline or picker view range changes.
 
 ### Attributes
 
@@ -18274,6 +18376,12 @@ including maps whose views are linked with `sync`. (Default: `undefined`)
 - `controlValues` (Array<object>): Array of control values. (Default: `[]`)
 - `initDate` (DateRange | string | Array<string> | null): The initial date range as [startDate, endDate] in ISO/UTC format,
 or a date/keyword string, or array. (Default: `null`)
+
+### Events
+
+- `select`: Fired when the date selection changes
+- `update:view`: Fired when the view range changes
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).
 
 ### Examples
 
@@ -18331,9 +18439,6 @@ matching the current filter criteria. Filtered-out dates are displayed with redu
     ],
     externalMapRendering: true,
     animate: true,
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -18349,6 +18454,11 @@ matching the current filter criteria. Filtered-out dates are displayed with redu
     range: true,
     showDots: true,
     popup: true,
+  });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
   });
 </script>
 
@@ -18380,9 +18490,6 @@ The date is displayed in the UTC format and not the local timezone format.
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
     showUTC: true,
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -18845,6 +18952,11 @@ The date is displayed in the UTC format and not the local timezone format.
     showDots: true,
     popup: true,
   });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
+  });
 </script>
 
 ```
@@ -18875,9 +18987,6 @@ The calendar appears as a popup overlay when clicking on the date input field (p
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -19339,6 +19448,11 @@ The calendar appears as a popup overlay when clicking on the date input field (p
     format: "YYYY-MM-DD",
     showDots: true,
     popup: true,
+  });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
   });
 </script>
 
@@ -19400,9 +19514,6 @@ show-time
     itemTitleKey: undefined,
     showTime: true,
     timeFormat: "HH:mm",
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -19869,6 +19980,11 @@ show-time
     showTime: true,
     timeFormat: "HH:mm",
   });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
+  });
 </script>
 
 ```
@@ -19897,9 +20013,6 @@ interfaces.
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -20356,6 +20469,11 @@ interfaces.
     format: "YYYY-MM-DD",
     showDots: true,
   });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
+  });
 </script>
 
 ```
@@ -20383,9 +20501,6 @@ which sets the initial date range. Also, it uses the date `format` of `D. MMMM Y
   // Assign properties
   Object.assign(eoxTimecontrol, {
     initDate: ["2021-02-28"],
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -20840,6 +20955,11 @@ which sets the initial date range. Also, it uses the date `format` of `D. MMMM Y
 
   Object.assign(eoxTimecontrolDate, {
     format: "D. MMMM YYYY",
+  });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
   });
 </script>
 
@@ -21427,7 +21547,6 @@ The picker enables editing automatically, and time is shown only when included i
     initDate: "first",
     layerIdKey: "id",
     titleKey: "name",
-    select: (event) => console.log("Selected date range:", event.detail.date),
   });
 
   Object.assign(eoxMap, {
@@ -21891,6 +22010,11 @@ The picker enables editing automatically, and time is shown only when included i
     position: ["bottom", "left"],
     showDots: true,
   });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (event) =>
+    console.log("Selected date range:", event.detail.date),
+  );
 </script>
 
 ```
@@ -21956,9 +22080,6 @@ multiple interaction methods and visualization options.
     ],
     externalMapRendering: true,
     animate: true,
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -21974,6 +22095,11 @@ multiple interaction methods and visualization options.
     range: true,
     showDots: true,
     popup: true,
+  });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
   });
 </script>
 
@@ -22015,9 +22141,6 @@ time step, or when using map rendering services that require special handling.
     titleKey: "name",
     externalMapRendering: true,
     animate: true,
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -22035,6 +22158,11 @@ time step, or when using map rendering services that require special handling.
     showDots: true,
     showItems: true,
     popup: true,
+  });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
   });
 </script>
 
@@ -22090,9 +22218,6 @@ This is useful when you want to use timecontrol for date selection without map i
     navigation: true,
     popup: true,
     position: ["bottom", "left"],
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxTimecontrolDate, {
@@ -22105,6 +22230,11 @@ This is useful when you want to use timecontrol for date selection without map i
     showDots: true,
     popup: true,
     position: ["bottom", "left"],
+  });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
   });
 </script>
 
@@ -27983,9 +28113,6 @@ comprehensive time navigation interface.
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    select: (e) => {
-      console.log(e.detail);
-    },
   });
 
   Object.assign(eoxMap, {
@@ -28446,6 +28573,11 @@ comprehensive time navigation interface.
     showDots: true,
     popup: true,
     showItems: true,
+  });
+
+  // Listen for events
+  eoxTimecontrol.addEventListener("select", (e) => {
+    console.log(e.detail);
   });
 </script>
 
@@ -30472,6 +30604,7 @@ If true, the tour must be started manually via the `start()` method. (Default: `
 - `tour-highlighted`: Fired when driver.js `onHighlighted` is called.
 - `tour-deselected`: Fired when driver.js `onDeselected` is called.
 - `tour-destroy-started`: Fired when driver.js `onDestroyStarted` is called.
+- `eox:activity`: Fires on genuine user interactions, wrapping the original event for analytics tracking.
 
 ### Examples
 

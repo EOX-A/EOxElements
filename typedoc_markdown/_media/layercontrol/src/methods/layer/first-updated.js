@@ -2,12 +2,15 @@ import {
   isLayerVisibleBasedOnZoomState,
   isLayerZoomStateRequired,
 } from "../../helpers";
+import { dispatchElementEvent } from "@eox/elements-utils";
+import { unByKey } from "ol/Observable.js";
 
 /**
  * Check and update layer zoom visibility at beginning
- * and register "change:resolution" ones at the beginning if `showLayerZoomState` is present
+ * and subscribe to layer/view changes for the current connection.
  *
  * @param {import("../../components/layer").EOxLayerControlLayer} EOxLayerControlLayer - Instance of EOxLayerControlLayer
+ * @returns {() => void} Releases all subscriptions for this connection.
  */
 const firstUpdatedMethod = (EOxLayerControlLayer) => {
   /**
@@ -41,37 +44,55 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     // if visibilityChanged trigger UI update
     if (visibilityChanged) {
       EOxLayerControlLayer.requestUpdate();
-      EOxLayerControlLayer.dispatchEvent(
-        new CustomEvent("change:resolution", { bubbles: true }),
-      );
+      dispatchElementEvent(EOxLayerControlLayer, "change:resolution", {
+        bubbles: true,
+        composed: false,
+        activity: false,
+      });
     }
   };
 
-  if (
-    isLayerZoomStateRequired(
-      EOxLayerControlLayer.layer,
-      EOxLayerControlLayer.showLayerZoomState,
-    )
-  ) {
-    updateLayerZoomVisibility();
-
-    // Initialize change:resolution event ones
-    EOxLayerControlLayer.map
-      .getView()
-      .on("change:resolution", () => updateLayerZoomVisibility());
-  }
+  /** @type {import("ol/events").EventsKey | undefined} */
+  let resolutionKey;
+  const subscribeView = () => {
+    if (resolutionKey) unByKey(resolutionKey);
+    resolutionKey = undefined;
+    if (
+      EOxLayerControlLayer.map &&
+      isLayerZoomStateRequired(
+        EOxLayerControlLayer.layer,
+        EOxLayerControlLayer.showLayerZoomState,
+      )
+    ) {
+      resolutionKey = EOxLayerControlLayer.map
+        .getView()
+        .on("change:resolution", updateLayerZoomVisibility);
+    }
+    if (EOxLayerControlLayer.map) updateLayerZoomVisibility();
+  };
+  subscribeView();
+  const viewKey = EOxLayerControlLayer.map?.on?.("change:view", subscribeView);
 
   // Listen for dynamic property changes (e.g. GeoZarr layerDatetime, layerConfig, timeControlValues)
-  EOxLayerControlLayer.layer?.on?.("propertychange", (e) => {
-    const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
-    if (
-      propEvent.key === "layerDatetime" ||
-      propEvent.key === "layerConfig" ||
-      propEvent.key === "timeControlValues"
-    ) {
-      EOxLayerControlLayer.requestUpdate();
-    }
-  });
+  const propertyKey = EOxLayerControlLayer.layer?.on?.(
+    "propertychange",
+    (e) => {
+      const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
+      if (
+        propEvent.key === "layerDatetime" ||
+        propEvent.key === "layerConfig" ||
+        propEvent.key === "timeControlValues"
+      ) {
+        EOxLayerControlLayer.requestUpdate();
+      }
+    },
+  );
+
+  return () => {
+    if (resolutionKey) unByKey(resolutionKey);
+    if (viewKey) unByKey(viewKey);
+    if (propertyKey) unByKey(propertyKey);
+  };
 };
 
 export default firstUpdatedMethod;

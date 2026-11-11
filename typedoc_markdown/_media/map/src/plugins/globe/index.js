@@ -1,4 +1,4 @@
-import { createGlobe, refreshGlobe, processLayers } from "./openglobus.js";
+import { createGlobe, refreshGlobe } from "./openglobus.js";
 import { createMapPool, syncMapPoolLayers } from "./methods.js";
 import {
   setupLayerListeners,
@@ -6,9 +6,112 @@ import {
   syncGlobeLayerOrder,
   watchGlobeLayerOrder,
 } from "./openglobus.js";
+import {
+  registerGlobeSynchronization,
+  connectGlobeSynchronization,
+} from "./lifecycle.js";
 
-/** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
+/**
+ * @typedef {import("../../main").EOxMap} EOxMap
+ * @typedef {import("@openglobus/og").Globe} Globe
+ * @typedef {import("./types").ExtendedOLLayer} OLLayer
+ * @typedef {ReturnType<typeof createMapPool>} MapPool
+ */
 
+/**
+ * Owns layer synchronization for a globe, including reconnectable subscriptions.
+ *
+ * @param {EOxMap} EOxMap - The root map element.
+ * @param {Globe} globe - The globe belonging to this map.
+ * @param {MapPool} mapPool - Its offscreen tile maps.
+ */
+export function registerGlobeLayerSynchronization(EOxMap, globe, mapPool) {
+  let renderedLayers = new Set(EOxMap.map.getAllLayers());
+
+  registerGlobeSynchronization(globe, () => {
+    const controller = new AbortController();
+    /** @type {Map<OLLayer, () => void>} */
+    const subscriptions = new Map();
+
+    /** @param {OLLayer} layer - The OL layer to observe. */
+    const subscribe = (layer) => {
+      if (!subscriptions.has(layer)) {
+        subscriptions.set(layer, setupLayerListeners(layer, globe, mapPool));
+      }
+    };
+
+    const synchronize = () => {
+      if (!EOxMap.globeEnabled || EOxMap.globe !== globe) return;
+
+      const currentLayers = EOxMap.map.getAllLayers();
+      const currentLayerSet = new Set(currentLayers);
+      const currentIds = new Set(currentLayers.map((layer) => layer.get("id")));
+
+      // Subscription and selection ownership follow OL instances, not layer IDs.
+      subscriptions.forEach((release, layer) => {
+        if (!currentLayerSet.has(layer)) {
+          release();
+          subscriptions.delete(layer);
+        }
+      });
+      renderedLayers.forEach((layer) => {
+        if (!currentLayerSet.has(layer)) {
+          const previous = globe.planet.getLayerByName(layer.get("id"));
+          if (previous) globe.planet.removeLayer(previous);
+        }
+      });
+
+      syncMapPoolLayers(mapPool, EOxMap);
+
+      globe.planet.layers.slice().forEach((layer) => {
+        if (!currentIds.has(layer.name)) globe.planet.removeLayer(layer);
+      });
+
+      currentLayers.forEach((layer) => {
+        const existing = globe.planet.getLayerByName(layer.get("id"));
+        if (!existing) {
+          const globeLayer = createGlobusLayer(layer, mapPool, EOxMap);
+          if (globeLayer) globe.planet.addLayer(globeLayer);
+        } else {
+          existing.setVisibility(layer.getVisible());
+          existing.opacity = layer.getOpacity();
+        }
+        subscribe(layer);
+      });
+
+      renderedLayers = currentLayerSet;
+      syncGlobeLayerOrder(EOxMap, globe);
+    };
+
+    EOxMap.map.getAllLayers().forEach(subscribe);
+    EOxMap.addEventListener(
+      "layerschanged",
+      (event) => {
+        // event.target is retargeted to this host for nested shadow-DOM maps.
+        if (event.composedPath()[0] === EOxMap) synchronize();
+      },
+      { signal: controller.signal },
+    );
+    watchGlobeLayerOrder(EOxMap, globe, controller.signal);
+
+    // Reconcile changes made while the host was disconnected.
+    synchronize();
+
+    return () => {
+      controller.abort();
+      subscriptions.forEach((release) => release());
+      subscriptions.clear();
+    };
+  });
+  if (EOxMap.isConnected) connectGlobeSynchronization(globe);
+}
+
+/**
+ * Creates a globe and registers the synchronization owned by its map.
+ *
+ * @param {{ EOxMap: EOxMap, target: HTMLElement }} options - The map and globe container.
+ * @returns {Globe} The created globe.
+ */
 export const create = ({ EOxMap, target }) => {
   const mapPool = createMapPool(
     navigator.hardwareConcurrency || 4,
@@ -18,56 +121,8 @@ export const create = ({ EOxMap, target }) => {
   const globe = createGlobe({ EOxMap, target, mapPool });
   EOxMap.globe = globe;
 
-  processLayers(EOxMap.map.getLayers().getArray(), globe, mapPool); // Call imported processLayers
-
-  // Apply the current OL layer order to the globe and keep it in sync
-  // (e.g. when layers are reordered via eox-layercontrol)
   syncGlobeLayerOrder(EOxMap, globe);
-  /** @type {any} */ (globe)._layerOrderKey = watchGlobeLayerOrder(
-    EOxMap,
-    globe,
-  );
-
-  // Sync layers when EOxMap layers change
-  EOxMap.addEventListener("layerschanged", () => {
-    if (!EOxMap.globeEnabled) return;
-
-    // Make the new layers available to the offscreen tile maps used for CanvasTiles
-    syncMapPoolLayers(mapPool, EOxMap);
-
-    const currentOlLayers = EOxMap.getFlatLayersArray(
-      EOxMap.map.getLayers().getArray(),
-    ).filter((l) => l.get("type") !== "Group");
-
-    // Remove globe layers that are no longer in OL map
-    const globusLayers = globe.planet.layers.slice();
-    globusLayers.forEach((gl) => {
-      const stillExists = currentOlLayers.find(
-        (ol) => ol.get("id") === gl.name,
-      );
-      if (!stillExists) {
-        globe.planet.removeLayer(gl);
-      }
-    });
-
-    // Add new OL layers to globe
-    currentOlLayers.forEach((ol) => {
-      const existing = globe.planet.getLayerByName(ol.get("id"));
-      if (!existing) {
-        const newGlLayer = createGlobusLayer(ol, mapPool);
-        if (newGlLayer) {
-          globe.planet.addLayer(newGlLayer);
-          setupLayerListeners(ol, globe, mapPool);
-        }
-      } else {
-        // Ensure properties like visibility and opacity are synced
-        existing.setVisibility(ol.getVisible());
-        existing.opacity = ol.getOpacity();
-      }
-    });
-
-    syncGlobeLayerOrder(EOxMap, globe);
-  });
+  registerGlobeLayerSynchronization(EOxMap, globe, mapPool);
 
   return globe;
 };

@@ -1311,6 +1311,10 @@
               "type": "array",
               "items": {}
             },
+            "_debouncedSearch": {
+              "description": "",
+              "type": "string"
+            },
             "externalFilter": {
               "description": "Use an external search endpoint instead of fuse search.\nPassed properties: input string, filters object.\nThe function can return a URL string, or an object containing a `url,\nan optional `fetchFn` to handle the request, or/and an optional `key` to\nreturn a specific property from the fetched data.\nThis is a property-only field as it expects a function.",
               "type": "string"

@@ -32,6 +32,16 @@
               "privacy": "private"
             },
             {
+              "kind": "method",
+              "name": "_disposeChart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_observeResize",
+              "privacy": "private"
+            },
+            {
               "kind": "field",
               "name": "spec",
               "privacy": "public",
@@ -100,9 +110,27 @@
               "kind": "field",
               "name": "_vegaView",
               "type": {
-                "text": "any"
+                "text": "View | null"
               },
               "description": "Vega view instance",
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_embedResult",
+              "type": {
+                "text": "Result | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_renderRequest",
+              "type": {
+                "text": "object | null"
+              },
               "privacy": "private",
               "default": "null"
             }
@@ -111,16 +139,23 @@
             {
               "name": "pointermove:item",
               "type": {
-                "text": "CustomEvent"
+                "text": "CustomEvent<{ event: PointerEvent, item: any }>"
               },
-              "description": "Chart item is hovered. Event detail includes `event` (pointermove event) and `item` (the hovered item on the chart)"
+              "description": "Chart item is hovered"
             },
             {
-              "name": "click:item",
               "type": {
-                "text": "CustomEvent"
+                "text": "CustomEvent<{ event: MouseEvent, item: any }>"
               },
-              "description": "Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)"
+              "description": "Chart item is clicked",
+              "name": "click:item"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -224,6 +259,15 @@
           "members": [
             {
               "kind": "field",
+              "name": "#listenerController",
+              "privacy": "private",
+              "type": {
+                "text": "AbortController | null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
               "name": "endpoint",
               "return": {
                 "type": {
@@ -302,6 +346,16 @@
             {
               "kind": "method",
               "name": "onCancel",
+              "parameters": [
+                {
+                  "name": "isUser",
+                  "default": "false",
+                  "optional": true,
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
               "privacy": "private"
             },
             {
@@ -378,18 +432,19 @@
           ],
           "events": [
             {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+              "description": "The modal was closed.",
+              "name": "close"
             },
             {
-              "name": "close",
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object.",
+              "name": "submit"
+            },
+            {
               "type": {
-                "text": "Event"
+                "text": "CustomEvent<EOxActivityDetail>"
               },
-              "description": "The modal was closed."
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -552,6 +607,16 @@
             {
               "kind": "method",
               "name": "discardDrawing",
+              "parameters": [
+                {
+                  "name": "isUser",
+                  "default": "false",
+                  "optional": true,
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
               "description": "Triggers discarding/stopping the drawing interaction and deleting the drawn shapes."
             },
             {
@@ -806,11 +871,18 @@
           ],
           "events": [
             {
-              "name": "drawupdate",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Fires whenever features are added, modified or discarded"
+              "description": "Fires whenever features are added, modified or discarded",
+              "name": "drawupdate"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -1264,11 +1336,18 @@
           ],
           "events": [
             {
-              "name": "geosearchSelect",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "The select event, including the details of the selected item"
+              "description": "The select event, including the details of the selected item",
+              "name": "geosearchSelect"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -1565,6 +1644,16 @@
             {
               "kind": "method",
               "name": "resetFilters",
+              "parameters": [
+                {
+                  "name": "isUser",
+                  "default": "false",
+                  "optional": true,
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
               "description": "Resets all applied filters."
             },
             {
@@ -1664,6 +1753,10 @@
               "description": "The currently selected result",
               "default": "null",
               "attribute": "selectedResult"
+            },
+            {
+              "kind": "field",
+              "name": "_debouncedSearch"
             },
             {
               "kind": "field",
@@ -1917,20 +2010,6 @@
           ],
           "events": [
             {
-              "name": "filter",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "When filters are applied, with `results` and `filters` in event detail"
-            },
-            {
-              "name": "select",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "When a result is selected, with `selectedResult` in event detail"
-            },
-            {
               "name": "mouseenter:result",
               "type": {
                 "text": "CustomEvent"
@@ -1945,11 +2024,23 @@
               "description": "When a result is un-hovered"
             },
             {
-              "name": "click:result-action",
+              "description": "When filters are applied, with `results` and `filters` in event detail",
+              "name": "filter"
+            },
+            {
+              "description": "When a result is selected, with `selectedResult` in event detail",
+              "name": "select"
+            },
+            {
+              "description": "When a result action button is clicked",
+              "name": "click:result-action"
+            },
+            {
               "type": {
-                "text": "CustomEvent"
+                "text": "CustomEvent<EOxActivityDetail>"
               },
-              "description": "When a result action button is clicked"
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -2209,6 +2300,15 @@
             },
             {
               "kind": "field",
+              "name": "#previousEditorValue",
+              "privacy": "private",
+              "description": "Last editor value snapshot for activity comparison.",
+              "type": {
+                "text": "unknown"
+              }
+            },
+            {
+              "kind": "field",
               "name": "editor",
               "description": "Getter for the JSONEditor instance",
               "readonly": true
@@ -2265,6 +2365,16 @@
               "kind": "method",
               "name": "#emitValue",
               "privacy": "private",
+              "parameters": [
+                {
+                  "name": "isUser",
+                  "default": "false",
+                  "optional": true,
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
               "description": "Value object has been changed"
             },
             {
@@ -2348,25 +2458,32 @@
           ],
           "events": [
             {
-              "name": "ready",
-              "type": {
-                "text": "Event"
-              },
-              "description": "Editor has loaded schema and API is ready to be used"
-            },
-            {
-              "name": "change",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "The value of the form has changed. Event detail includes the new value"
+              "description": "Editor has loaded schema and API is ready to be used",
+              "name": "ready"
             },
             {
-              "name": "submit",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Form has been submitted (if a submit button is present). Event detail includes the current value"
+              "description": "The value of the form has changed",
+              "name": "change"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Form has been submitted",
+              "name": "submit"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -2701,17 +2818,32 @@
           ],
           "events": [
             {
-              "name": "layerchange",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "A generic layer change event; could be a layer visibility, group length updates and others.\nPasses the changed layer in the `detail`."
+              "description": "Fired when layers in the map change",
+              "name": "layerchange"
             },
             {
-              "name": "layerConfig:change",
               "type": {
                 "text": "CustomEvent"
-              }
+              },
+              "description": "Fired when layer configuration changes",
+              "name": "layerConfig:change"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when datetime is updated for a layer",
+              "name": "datetime:updated"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -3675,6 +3807,7 @@
                 {
                   "name": "replaceFeatures",
                   "description": "Optional boolean flag indicating whether to replace the existing features with the new ones.",
+                  "optional": true,
                   "type": {
                     "text": "boolean"
                   }
@@ -3682,6 +3815,16 @@
                 {
                   "name": "animate",
                   "description": "Optional boolean flag indicating whether to animate the map on feature change.",
+                  "optional": true,
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "isUser",
+                  "default": "false",
+                  "description": "Optional boolean flag indicating whether the parse was user-initiated.",
+                  "optional": true,
                   "type": {
                     "text": "boolean"
                   }
@@ -3815,13 +3958,6 @@
           ],
           "events": [
             {
-              "name": "resize",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Fired when the map container is resized"
-            },
-            {
               "type": {
                 "text": "CustomEvent"
               },
@@ -3846,6 +3982,13 @@
               "type": {
                 "text": "CustomEvent"
               },
+              "description": "Fired when the map container is resized",
+              "name": "resize"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
               "description": "A feature is selected",
               "name": "select"
             },
@@ -3855,6 +3998,13 @@
               },
               "description": "The layers have been changed",
               "name": "layerschanged"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -4325,8 +4475,25 @@
           ],
           "events": [
             {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when the STAC data has been loaded",
+              "name": "loaded"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<{ href: string, text: string, section?: string }>"
+              },
               "description": "Fired when an anchor tag is clicked within the STAC info",
               "name": "click:link"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -4468,6 +4635,15 @@
               },
               "default": "null",
               "description": "Debounce update markdown"
+            },
+            {
+              "kind": "field",
+              "name": "#isEditorChange",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
             },
             {
               "kind": "method",
@@ -4634,25 +4810,32 @@
           ],
           "events": [
             {
-              "name": "init",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Fires when `eox-storytelling` has initialized; allowing to add custom logic\nregarding the integrated `eox-maps` etc. The event detail contains the initialized element."
+              "description": "Fires when eox-storytelling has initialized",
+              "name": "init"
             },
             {
-              "name": "upload:file",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Fires when a file is uploaded via the built-in editor. The event detail contains the uploaded file as well\nas a callback function that can be used to update the file url end handle errors.",
-              "deprecated": "Will be removed in the next major version"
+              "description": "Fires when markdown content has changed",
+              "name": "changed"
             },
             {
-              "name": "changed",
               "type": {
                 "text": "CustomEvent"
-              }
+              },
+              "description": "Fires when a file is uploaded via the built-in editor",
+              "name": "upload:file"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -4791,7 +4974,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.\n\n## Basic usage:\n\n```\nimport \"@eox/timecontrol\"\n\n<eox-timecontrol for=\"eox-map#my-map\">\n  <eox-timecontrol-date></eox-timecontrol-date>\n  <eox-timecontrol-slider></eox-timecontrol-slider>\n  <eox-timecontrol-timeline></eox-timecontrol-timeline>\n  <eox-timecontrol-timelapse></eox-timecontrol-timelapse>\n  <eox-timecontrol-picker></eox-timecontrol-picker>\n</eox-timecontrol>\n```\n\n## Features\n\n- **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.\n- **Multiple Maps:** Target an `eox-map-compare` or pass an array of map selectors/references through the `for` property to share one timeline and picker.\n- **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.\n- **Navigation Controls:** Previous/next buttons for stepping through time periods.\n- **Date Formatting:** Customizable display format using dayjs tokens (default: \"YYYY-MM-DD\").\n- **Filtering:** Integration with `<eox-itemfilter>` for filtering timeline items by metadata properties.\n- **Timelapse Export:** Export animated GIFs or MP4s from time series data.\n- **Standalone Mode:** Can be used without a map for time selection purposes.\n\n## Component Structure\n\nThe timecontrol element acts as a container for child components:\n- `<eox-timecontrol-date>`: Displays the current selected date(s) with optional navigation buttons.\n- `<eox-timecontrol-picker>`: Calendar-based date picker (popup or inline, single or range selection).\n- `<eox-timecontrol-slider>`: Range slider for selecting date ranges.\n- `<eox-timecontrol-timeline>`: Timeline visualization using vis-timeline.\n- `<eox-timecontrol-timelapse>`: Timelapse export functionality.\n\n## Layer Configuration\n\nLayers must have the following properties to work with timecontrol:\n- `properties.timeControlValues`: Array of objects with `date` and optional metadata.\n- `properties.timeControlProperty`: Property name used in WMS requests (e.g., \"TIME\").\n- `properties.id`: Layer identifier (used for grouping in timeline).\n- `properties.name`: Display name (used in timeline groups).\n\n## Events\n\n- `stepchange`: Fired when the current time step changes (not currently implemented).",
+          "description": "The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.\n\n## Basic usage:\n\n```\nimport \"@eox/timecontrol\"\n\n<eox-timecontrol for=\"eox-map#my-map\">\n  <eox-timecontrol-date></eox-timecontrol-date>\n  <eox-timecontrol-slider></eox-timecontrol-slider>\n  <eox-timecontrol-timeline></eox-timecontrol-timeline>\n  <eox-timecontrol-timelapse></eox-timecontrol-timelapse>\n  <eox-timecontrol-picker></eox-timecontrol-picker>\n</eox-timecontrol>\n```\n\n## Features\n\n- **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.\n- **Multiple Maps:** Target an `eox-map-compare` or pass an array of map selectors/references through the `for` property to share one timeline and picker.\n- **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.\n- **Navigation Controls:** Previous/next buttons for stepping through time periods.\n- **Date Formatting:** Customizable display format using dayjs tokens (default: \"YYYY-MM-DD\").\n- **Filtering:** Integration with `<eox-itemfilter>` for filtering timeline items by metadata properties.\n- **Timelapse Export:** Export animated GIFs or MP4s from time series data.\n- **Standalone Mode:** Can be used without a map for time selection purposes.\n\n## Component Structure\n\nThe timecontrol element acts as a container for child components:\n- `<eox-timecontrol-date>`: Displays the current selected date(s) with optional navigation buttons.\n- `<eox-timecontrol-picker>`: Calendar-based date picker (popup or inline, single or range selection).\n- `<eox-timecontrol-slider>`: Range slider for selecting date ranges.\n- `<eox-timecontrol-timeline>`: Timeline visualization using vis-timeline.\n- `<eox-timecontrol-timelapse>`: Timelapse export functionality.\n\n## Layer Configuration\n\nLayers must have the following properties to work with timecontrol:\n- `properties.timeControlValues`: Array of objects with `date` and optional metadata.\n- `properties.timeControlProperty`: Property name used in WMS requests (e.g., \"TIME\").\n- `properties.id`: Layer identifier (used for grouping in timeline).\n- `properties.name`: Display name (used in timeline groups).\n\n## Events\n\n- `select`: Fired when the selected date or date range changes.\n- `update:view`: Fired when the timeline or picker view range changes.",
           "name": "EOxTimeControl",
           "members": [
             {
@@ -5034,6 +5217,10 @@
               "parameters": [
                 {
                   "name": "EOxTimeControl"
+                },
+                {
+                  "name": "isUser",
+                  "default": "false"
                 }
               ]
             },
@@ -5160,6 +5347,29 @@
               "description": "The initial date range as [startDate, endDate] in ISO/UTC format,\nor a date/keyword string, or array.",
               "default": "null",
               "attribute": "init-date"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when the date selection changes",
+              "name": "select"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when the view range changes",
+              "name": "update:view"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).",
+              "name": "eox:activity"
             }
           ],
           "attributes": [
@@ -5370,6 +5580,13 @@
               },
               "description": "Fired when driver.js `onDestroyStarted` is called.",
               "name": "tour-destroy-started"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
             }
           ],
           "attributes": [

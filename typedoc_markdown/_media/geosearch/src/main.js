@@ -6,7 +6,11 @@ import _debounce from "lodash.debounce";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
-import { getElement } from "@eox/elements-utils";
+import {
+  dispatchElementEvent,
+  emitActivity,
+  getElement,
+} from "@eox/elements-utils";
 
 const loaderSvg = `
   <svg
@@ -55,6 +59,10 @@ const loaderSvg = `
  * - Additional OpenCage API parameters via args
  * - Button mode for compact UI
  * - Flexible alignment and direction options
+ *
+ * @element eox-geosearch
+ * @fires {CustomEvent} geosearchSelect - The select event, including the details of the selected item
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 class EOxGeoSearch extends LitElement {
   static get properties() {
@@ -304,11 +312,11 @@ class EOxGeoSearch extends LitElement {
     /**
      * The select event, including the details of the selected item
      */
-    this.dispatchEvent(
-      new CustomEvent("geosearchSelect", {
-        detail: event,
-      }),
-    );
+    dispatchElementEvent(this, "geosearchSelect", {
+      detail: event,
+      activity: true,
+      action: "geosearchSelect",
+    });
   }
 
   updateMap() {
@@ -392,12 +400,19 @@ class EOxGeoSearch extends LitElement {
       >
       
         <div class="${this.button ? (this.small ? "button small circle small-elevate" : "button extra circle") : "field small prefix round surface border active"}" data-ui="#search"
-        @click=${() => {
+        @click=${(/** @type {MouseEvent} */ e) => {
+          if (e.target instanceof Element && e.target.closest("menu#search")) {
+            return;
+          }
+          const wasOpen = this._isListVisible;
           this._isListVisible = true;
+          if (this.button && !wasOpen) {
+            emitActivity(this, "click:button", { open: true }, e);
+          }
           setTimeout(() => {
             /** @type HTMLInputElement */ (
               this.renderRoot.querySelector("menu#search input")
-            ).focus();
+            )?.focus();
           }, 500);
         }}
         >

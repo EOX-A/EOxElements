@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { emitActivity, findHost } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import eoxStyle from "@eox/ui/style.css?inline";
@@ -96,7 +97,12 @@ export class EOxLayerControlTabs extends LitElement {
                       (tab, index) => html`
                         <label
                           class=${this.#labelHighlightClass(index)}
-                          @click=${() => (this.selectedTab = index)}
+                          @click=${(/** @type {MouseEvent} */ e) => {
+                            this.selectedTab = index;
+                            const root =
+                              findHost(this, "eox-layercontrol") || this;
+                            emitActivity(root, "select:tool", { tool: tab }, e);
+                          }}
                         >
                           <!-- Customizable icon for each tab -->
                           <slot name=${`${tab}-icon`}>${tab}</slot>

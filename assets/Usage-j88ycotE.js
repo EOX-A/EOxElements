@@ -174,4 +174,11 @@ export class AppComponent {
   ></eox-map>
   <eox-layercontrol for="eox-map" style="flex-basis: 30%;"></eox-layercontrol>
 </div>
+`})}),`
+`,(0,o.jsx)(t.h3,{id:`analytics`,children:`Analytics`}),`
+`,(0,o.jsx)(t.p,{children:`Instead of digging through shadow roots and attaching element-specific listeners, an app or dashboard can listen once at the document or layout level for user activity related events:`}),`
+`,(0,o.jsx)(t.pre,{children:(0,o.jsx)(t.code,{className:`language-js`,children:`document.addEventListener("eox:activity", (evt) => {
+  const { element, action, payload } = evt.detail; // Captures user actions across all EOx elements in one
+  place;
+});
 `})})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=t(),r()})))()}s();export{a as default};

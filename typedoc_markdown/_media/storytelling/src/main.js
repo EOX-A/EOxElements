@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import markdownitFootnote from "markdown-it-footnote";
@@ -57,6 +58,10 @@ md.use(markdownitFootnote);
  * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
  *
  * @element eox-storytelling
+ * @fires {CustomEvent} init - Fires when eox-storytelling has initialized
+ * @fires {CustomEvent} changed - Fires when markdown content has changed
+ * @fires {CustomEvent} upload:file - Fires when a file is uploaded via the built-in editor
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
@@ -101,6 +106,11 @@ export class EOxStoryTelling extends LitElement {
    * @type {object}
    */
   #debounceUpdateMarkdown = null;
+  /**
+   * @type {boolean}
+   */
+  #isEditorChange = false;
+
   constructor() {
     super();
 
@@ -197,11 +207,10 @@ export class EOxStoryTelling extends LitElement {
      * Fires when `eox-storytelling` has initialized; allowing to add custom logic
      * regarding the integrated `eox-maps` etc. The event detail contains the initialized element.
      */
-    this.dispatchEvent(
-      new CustomEvent("init", {
-        detail: element,
-      }),
-    );
+    dispatchElementEvent(this, "init", {
+      detail: element,
+      activity: false,
+    });
   }
 
   /**
@@ -216,13 +225,13 @@ export class EOxStoryTelling extends LitElement {
      * as a callback function that can be used to update the file url end handle errors.
      * @deprecated Will be removed in the next major version
      */
-    this.dispatchEvent(
-      new CustomEvent("upload:file", {
-        detail: "dummy",
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "upload:file", {
+      detail: "dummy",
+      bubbles: true,
+      composed: true,
+      activity: true,
+      action: "upload:file",
+    });
   }
 
   /**
@@ -241,15 +250,18 @@ export class EOxStoryTelling extends LitElement {
       changedProperties.has("markdown") ||
       changedProperties.has("showMapLoadingIndicator")
     ) {
+      const isUser = Boolean(this.#isEditorChange);
+      this.#isEditorChange = false;
       if (this.markdown) {
-        this.dispatchEvent(
-          /**
-           * Fires when the markdown content has changed. The event detail contains the updated markdown string.
-           */
-          new CustomEvent("changed", {
-            detail: this.markdown,
-          }),
-        );
+        /**
+         * Fires changed with the updated markdown content.
+         * Only edits from the built-in editor also emit eox:activity.
+         */
+        dispatchElementEvent(this, "changed", {
+          detail: this.markdown,
+          activity: isUser,
+          action: "changed",
+        });
       }
 
       md.showMapLoadingIndicator = this.showMapLoadingIndicator;
@@ -345,7 +357,8 @@ export class EOxStoryTelling extends LitElement {
     }
 
     this.#debounceUpdateMarkdown = _debounce((e) => {
-      if (e.detail) {
+      if (e.detail && this.markdown !== e.detail.Story) {
+        this.#isEditorChange = true;
         this.markdown = e.detail.Story;
         this.requestUpdate();
       }
@@ -399,6 +412,7 @@ export class EOxStoryTelling extends LitElement {
               .storyId=${this.id}
               show-editor=${this.showEditor}
               @change=${this.#debounceUpdateMarkdown}
+              @eox:activity=${(/** @type {Event} */ e) => e.stopPropagation()}
               .markdown=${this.markdown}
               .disableAutosave=${this.disableAutosave}
             ></eox-storytelling-editor>

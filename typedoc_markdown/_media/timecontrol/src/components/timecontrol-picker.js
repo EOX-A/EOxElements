@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -227,19 +228,20 @@ export class EOxTimeControlPicker extends LitElement {
 
   /**
    * Emits the update:view event for the calendar picker.
+   * @param {boolean} [isUser=false]
    */
-  #emitUpdateEvent() {
+  #emitUpdateEvent(isUser = false) {
     const viewRange = this.getViewRange();
     setTimeout(() => {
-      this.dispatchEvent(
-        new CustomEvent("update:view", {
-          detail: {
-            start: viewRange.start,
-            end: viewRange.end,
-          },
-          composed: true,
-        }),
-      );
+      const event = dispatchElementEvent(this, "update:view", {
+        detail: {
+          start: viewRange.start,
+          end: viewRange.end,
+        },
+        bubbles: false,
+        activity: false,
+      });
+      event.isUser = Boolean(isUser);
     });
   }
 
@@ -520,9 +522,9 @@ export class EOxTimeControlPicker extends LitElement {
           positionToInput: this.position,
           selectedWeekends: [],
           popups: popups,
-          onClickArrow: () => this.#emitUpdateEvent(),
-          onClickMonth: () => this.#emitUpdateEvent(),
-          onClickYear: () => this.#emitUpdateEvent(),
+          onClickArrow: () => this.#emitUpdateEvent(true),
+          onClickMonth: () => this.#emitUpdateEvent(true),
+          onClickYear: () => this.#emitUpdateEvent(true),
           onClickDate: (self) => {
             const lengthOfDates = self.context.selectedDates.length - 1;
             const start = self.context.selectedDates[0] || lastClickDate;
@@ -541,11 +543,17 @@ export class EOxTimeControlPicker extends LitElement {
 
               if (this.range) {
                 if (lengthOfDates || lastClickDate === start) {
-                  selectDateRangeMethod([startDate, endDate], EOxTimeControl);
+                  selectDateRangeMethod([startDate, endDate], EOxTimeControl, {
+                    activity: true,
+                    action: "select:calendar",
+                  });
                   lastClickDate = null;
                 } else lastClickDate = start;
               } else {
-                selectDateRangeMethod([startDate, endDate], EOxTimeControl);
+                selectDateRangeMethod([startDate, endDate], EOxTimeControl, {
+                  activity: true,
+                  action: "select:calendar",
+                });
               }
             }
           },

@@ -6,6 +6,7 @@
 
 ## Modules
 
+- [elements/feedback](elements/feedback/README.md)
 - [elements/jsonform](elements/jsonform/README.md)
 - [elements/map](elements/map/README.md)
 - [elements/storytelling](elements/storytelling/README.md)

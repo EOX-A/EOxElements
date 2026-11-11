@@ -10,4 +10,4 @@
 
 ### default
 
-Re-exports [default](../../../feedback/src/css/variables/default.md)
+Re-exports [default](../../../elements/feedback/variables/default.md)

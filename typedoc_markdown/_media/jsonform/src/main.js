@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { dispatchElementEvent, safeCloneValue } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import {
   createEditor,
@@ -45,9 +46,18 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
  * - Supports unstyled rendering for custom design integration.
  *
  * See the stories for usage examples covering validation, custom editors, branching variants, spatial inputs, opt-in/optional properties, external loading, and more.
- *
+ */
+
+/**
  * @typedef {JSON & {properties: object}} JsonSchema
+ */
+
+/**
  * @element eox-jsonform
+ * @fires {CustomEvent} ready - Editor has loaded schema and API is ready to be used
+ * @fires {CustomEvent} change - The value of the form has changed
+ * @fires {CustomEvent} submit - Form has been submitted
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxJSONForm extends LitElement {
   static properties = {
@@ -67,6 +77,9 @@ export class EOxJSONForm extends LitElement {
    * @type {{[key: string]: any}}
    */
   #editor = null;
+
+  /** @type {unknown} Last editor value snapshot for activity comparison. */
+  #previousEditorValue;
   constructor() {
     super();
 
@@ -172,6 +185,7 @@ export class EOxJSONForm extends LitElement {
    * @param {JsonSchema} newVal
    */
   set value(newVal) {
+    this._isUserDirty = false;
     if (this.#editor && this.#editor.ready && !isEqual(this._value, newVal))
       this.#editor.setValue(newVal);
 
@@ -182,41 +196,48 @@ export class EOxJSONForm extends LitElement {
     /**
      * Editor has loaded schema and API is ready to be used
      */
-    this.dispatchEvent(new Event("ready"));
+    dispatchElementEvent(this, "ready", { activity: false });
   }
 
   /**
    * Value object has been changed
+   * @param {boolean} [isUser=false]
    */
-  #emitValue() {
+  #emitValue(isUser = false) {
     if (this.options?.show_opt_in) setTimeout(() => initShowOptInElement(this));
 
     /**
      * The value of the form has changed. Event detail includes the new value
      */
-    this.dispatchEvent(
-      new CustomEvent(`change`, {
-        detail: this.value,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "change", {
+      detail: this.value,
+      activity: isUser,
+      action: "change",
+      bubbles: true,
+      composed: true,
+    });
   }
 
   /**
    * Dispatch same function for multiple event type
    */
   #dispatchEvent() {
-    const events = ["ready", "change"];
+    this.#editor.on("ready", () => {
+      this.#emitReady();
+      this._value = this.#editor.getValue();
+      this.#previousEditorValue = safeCloneValue(this._value);
+      this.#emitValue(false);
+    });
 
-    events.map((evt) => {
-      this.#editor.on(evt, () => {
-        if (evt === "ready") {
-          this.#emitReady();
-        }
-        this._value = this.#editor.getValue();
-        this.#emitValue();
-      });
+    this.#editor.on("change", () => {
+      const value = this.#editor.getValue();
+      const isUser =
+        Boolean(this._isUserDirty) &&
+        !isEqual(this.#previousEditorValue, value);
+      this._isUserDirty = false;
+      this.#previousEditorValue = safeCloneValue(value);
+      this._value = value;
+      this.#emitValue(isUser);
     });
   }
 
@@ -230,13 +251,13 @@ export class EOxJSONForm extends LitElement {
     /**
      * Form has been submitted (if a submit button is present). Event detail includes the current value
      */
-    this.dispatchEvent(
-      new CustomEvent("submit", {
-        detail: "dummy",
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "submit", {
+      detail: "dummy",
+      activity: true,
+      action: "submit",
+      bubbles: true,
+      composed: true,
+    });
   }
 
   /**
