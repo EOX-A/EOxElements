@@ -1,4 +1,5 @@
 import { driver } from "driver.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { defaultConfig } from "../../helpers/default-config.js";
 import { showTourOrNot } from "./show-tour.js";
 
@@ -9,6 +10,16 @@ export function initializeDriver(EOxTour) {
   if (EOxTour.driver) {
     EOxTour.driver.destroy();
   }
+
+  // Only synchronous navigation initiated by driver UI hooks is user activity.
+  // Consume the marker at the first dispatch and always clear it on hook exit.
+  let userInteraction = false;
+  let destroyNotified = false;
+  const consumeUserInteraction = () => {
+    const isUserInteraction = userInteraction;
+    userInteraction = false;
+    return isUserInteraction;
+  };
 
   const getTargetIframe = (step) =>
     step?.targetIframe || step?.popover?.targetIframe;
@@ -42,6 +53,11 @@ export function initializeDriver(EOxTour) {
         }
       }
 
+      finalConfig.onDestroyStarted(
+        opts.driver.getActiveElement(),
+        currentStep,
+        opts,
+      );
       opts.driver.destroy();
       return;
     }
@@ -155,39 +171,56 @@ export function initializeDriver(EOxTour) {
         return step;
       }) || [],
     onNextClick: (element, step, opts) => {
-      if (EOxTour.config.onNextClick) {
-        EOxTour.config.onNextClick(element, step, opts);
+      userInteraction = true;
+      try {
+        if (EOxTour.config.onNextClick) {
+          EOxTour.config.onNextClick(element, step, opts);
+        }
+        const activeIndex = opts.driver.getActiveIndex() ?? 0;
+        handleStepChange(
+          opts.config.steps[activeIndex + 1],
+          activeIndex + 1,
+          "moveNext",
+          opts,
+        );
+      } finally {
+        userInteraction = false;
       }
-      const activeIndex = opts.driver.getActiveIndex() ?? 0;
-      handleStepChange(
-        opts.config.steps[activeIndex + 1],
-        activeIndex + 1,
-        "moveNext",
-        opts,
-      );
     },
     onPrevClick: (element, step, opts) => {
-      if (EOxTour.config.onPrevClick) {
-        EOxTour.config.onPrevClick(element, step, opts);
+      userInteraction = true;
+      try {
+        if (EOxTour.config.onPrevClick) {
+          EOxTour.config.onPrevClick(element, step, opts);
+        }
+        const activeIndex = opts.driver.getActiveIndex() ?? 0;
+        handleStepChange(
+          opts.config.steps[activeIndex - 1],
+          activeIndex - 1,
+          "movePrevious",
+          opts,
+        );
+      } finally {
+        userInteraction = false;
       }
-      const activeIndex = opts.driver.getActiveIndex() ?? 0;
-      handleStepChange(
-        opts.config.steps[activeIndex - 1],
-        activeIndex - 1,
-        "movePrevious",
-        opts,
-      );
     },
     onCloseClick: (element, step, opts) => {
-      if (EOxTour.config.onCloseClick) {
-        EOxTour.config.onCloseClick(element, step, opts);
-      }
-      opts.driver.destroy();
-      if (window.parent !== window) {
-        window.parent.postMessage(
-          { type: "EOX_TOUR_DESTROY", tourId: EOxTour.id },
-          "*",
-        );
+      userInteraction = true;
+      destroyNotified = false;
+      try {
+        if (EOxTour.config.onCloseClick) {
+          EOxTour.config.onCloseClick(element, step, opts);
+        }
+        finalConfig.onDestroyStarted(element, step, opts);
+        opts.driver.destroy();
+        if (window.parent !== window) {
+          window.parent.postMessage(
+            { type: "EOX_TOUR_DESTROY", tourId: EOxTour.id },
+            "*",
+          );
+        }
+      } finally {
+        userInteraction = false;
       }
     },
     onHighlightStarted: (element, step, options) => {
@@ -211,46 +244,52 @@ export function initializeDriver(EOxTour) {
           stageRadius: EOxTour.config.stageRadius ?? 5,
         });
       }
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-highlight-started", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      /**
+       * Fires tour-highlight-started when a step starts highlighting.
+       * Only navigation initiated by a driver UI interaction also emits activity.
+       */
+      dispatchElementEvent(EOxTour, "tour-highlight-started", {
+        detail: { element, step, options },
+        activity: consumeUserInteraction(),
+        action: "tour-highlight-started",
+      });
       if (EOxTour.config.onHighlightStarted)
         EOxTour.config.onHighlightStarted(element, step, options);
     },
     onHighlighted: (element, step, options) => {
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-highlighted", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      /**
+       * Fires tour-highlighted when a step finishes highlighting.
+       */
+      dispatchElementEvent(EOxTour, "tour-highlighted", {
+        detail: { element, step, options },
+        activity: false,
+      });
       if (EOxTour.config.onHighlighted)
         EOxTour.config.onHighlighted(element, step, options);
     },
     onDeselected: (element, step, options) => {
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-deselected", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      /**
+       * Fires tour-deselected when a step is deselected.
+       */
+      dispatchElementEvent(EOxTour, "tour-deselected", {
+        detail: { element, step, options },
+        activity: false,
+      });
       if (EOxTour.config.onDeselected)
         EOxTour.config.onDeselected(element, step, options);
     },
     onDestroyStarted: (element, step, options) => {
-      EOxTour.dispatchEvent(
-        new CustomEvent("tour-destroy-started", {
-          detail: { element, step, options },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      if (destroyNotified) return;
+      destroyNotified = true;
+      /**
+       * Fires tour-destroy-started when tour destruction is requested.
+       * Only destruction initiated by a driver UI interaction also emits activity.
+       */
+      dispatchElementEvent(EOxTour, "tour-destroy-started", {
+        detail: { element, step, options },
+        activity: consumeUserInteraction(),
+        action: "tour-destroy-started",
+      });
       if (EOxTour.config.onDestroyStarted)
         EOxTour.config.onDestroyStarted(element, step, options);
     },

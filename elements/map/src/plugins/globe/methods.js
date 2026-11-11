@@ -3,6 +3,19 @@ import { getFlatLayersArray } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
+// Offscreen maps are an implementation detail, not additional public map sources.
+const INTERNAL_MAP_EVENTS = [
+  "layerschanged",
+  "mapmounted",
+  "loadend",
+  "resize",
+  "select",
+  "clusterSelect",
+  "drawend",
+  "addfeatures",
+  "eox:activity",
+];
+
 /**
  * Returns the serializable definitions of all (non-group) layers of the main map.
  *
@@ -59,6 +72,10 @@ export const createMapPool = (maxMaps, EOxMap, target) => {
       position: "absolute",
       top: `-9999px`,
       left: `-9999px`,
+    });
+
+    INTERNAL_MAP_EVENTS.forEach((type) => {
+      tileMap.addEventListener(type, (event) => event.stopPropagation());
     });
 
     // Initialize the tileMap with its own instances of all layers

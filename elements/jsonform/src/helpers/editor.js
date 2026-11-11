@@ -1,4 +1,5 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { SimplemdeEditor } from "@json-editor/json-editor/src/editors/simplemde.js";
 import EasyMDE from "easymde/dist/easymde.min.js";
 import AceEditor from "ace-builds";
@@ -6,6 +7,8 @@ import addCustomInputs from "../custom-inputs";
 import { FALLBACK_SCHEMA } from "../enums";
 
 const inputHandlerMap = new WeakMap();
+/** @type {WeakMap<HTMLFormElement, AbortController>} */
+const formListenerControllers = new WeakMap();
 let deleteFunc = null;
 document.body.addEventListener("focusout", () => {
   if (deleteFunc) {
@@ -42,25 +45,58 @@ export const createEditor = (element) => {
   const formEle = element.renderRoot.querySelector("form");
   while (formEle.firstChild) formEle.removeChild(formEle.firstChild);
 
+  formListenerControllers.get(formEle)?.abort();
+  const controller = new AbortController();
+  formListenerControllers.set(formEle, controller);
+  const { signal } = controller;
+  element._isUserDirty = false;
+
   // Workaround for https://github.com/json-editor/json-editor/issues/856
   formEle.classList.add("hide-errors");
   const removeHideErrors = () => formEle.classList.remove("hide-errors");
-  formEle.addEventListener("input", removeHideErrors);
-  formEle.addEventListener("change", removeHideErrors);
+  formEle.addEventListener("input", removeHideErrors, { signal });
+  formEle.addEventListener("change", removeHideErrors, { signal });
+
+  /** @param {Event} event - A candidate interaction that may change the value */
+  const markUserDirty = (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const isValueInput =
+      event.type !== "click" &&
+      target.matches("input, textarea, select, [contenteditable]");
+    const button = target.closest("button");
+    const isExcludedButton =
+      button &&
+      (button.type === "submit" ||
+        button.matches(
+          ".json-editor-btntype-toggle, .json-editor-btn-collapse, .json-editor-btntype-properties, .json-editor-btntype-editjson, .json-editor-btntype-cancel",
+        ));
+    const isButtonClick = event.type === "click" && button && !isExcludedButton;
+    if (!isValueInput && !isButtonClick) return;
+
+    element._isUserDirty = true;
+  };
+  formEle.addEventListener("input", markUserDirty, { capture: true, signal });
+  formEle.addEventListener("change", markUserDirty, { capture: true, signal });
+  formEle.addEventListener("click", markUserDirty, { capture: true, signal });
 
   // Force validation on input for textareas and inputs
-  formEle.addEventListener("input", (e) => {
-    const target = /** @type {HTMLElement} */ (e.target);
-    if (
-      target.tagName === "TEXTAREA" ||
-      (target.tagName === "INPUT" &&
-        target.getAttribute("type") !== "checkbox" &&
-        target.getAttribute("type") !== "radio" &&
-        target.getAttribute("type") !== "file")
-    ) {
-      e.target.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-  });
+  formEle.addEventListener(
+    "input",
+    (e) => {
+      const target = /** @type {HTMLElement} */ (e.target);
+      if (
+        target.tagName === "TEXTAREA" ||
+        (target.tagName === "INPUT" &&
+          target.getAttribute("type") !== "checkbox" &&
+          target.getAttribute("type") !== "radio" &&
+          target.getAttribute("type") !== "file")
+      ) {
+        e.target.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    },
+    { signal },
+  );
 
   // Add default button callback for submit
   // see https://github.com/json-editor/json-editor?tab=readme-ov-file#button-editor
@@ -68,13 +104,13 @@ export const createEditor = (element) => {
   JSONEditor.defaults.callbacks.button = {
     ...(JSONEditor.defaults.callbacks.button || {}),
     onSubmit: function () {
-      element.dispatchEvent(
-        new CustomEvent(`submit`, {
-          detail: element.value,
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      dispatchElementEvent(element, "submit", {
+        detail: element.value,
+        activity: true,
+        action: "submit",
+        bubbles: true,
+        composed: true,
+      });
     },
   };
 
@@ -173,6 +209,11 @@ export const createEditor = (element) => {
 
   // Create the editor instance
   let editor = initEditor();
+  const originalSetValue = editor.setValue.bind(editor);
+  editor.setValue = function (value, ...rest) {
+    element._isUserDirty = false;
+    return originalSetValue(value, ...rest);
+  };
 
   // Event listener for the 'ready' event
   editor.on("ready", () => {

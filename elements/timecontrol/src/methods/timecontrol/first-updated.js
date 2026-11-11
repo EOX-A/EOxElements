@@ -43,7 +43,8 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
   const maps = resolveMapsMethod(EOxTimeControl);
   EOxTimeControl.eoxMap = maps[0] || null;
   const eventListenerRemovers = [];
-  const onUpdateView = () => emitUpdateEvent(EOxTimeControl);
+  const onUpdateView = (evt) =>
+    emitUpdateEvent(EOxTimeControl, Boolean(evt?.isUser));
   let itemFilterAdded = false;
   let disposed = false;
   let removeTimelineVisibilityListeners;

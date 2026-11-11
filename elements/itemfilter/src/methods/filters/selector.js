@@ -7,7 +7,7 @@ import Fuse from "fuse.js";
  * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 export function resetSelectorMethod(EOxItemFilterSelector) {
-  removeItemSelectorMethod(-1, EOxItemFilterSelector);
+  removeItemSelectorMethod(-1, EOxItemFilterSelector, false);
 
   resetFilter(EOxItemFilterSelector.filterObject);
   EOxItemFilterSelector.requestUpdate();
@@ -18,15 +18,20 @@ export function resetSelectorMethod(EOxItemFilterSelector) {
  *
  * @param {number} index - The index of the item to remove, or -1 to remove all items.
  * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {boolean} [emitEvent=true] - Whether to emit the filter event.
  */
-export function removeItemSelectorMethod(index, EOxItemFilterSelector) {
+export function removeItemSelectorMethod(
+  index,
+  EOxItemFilterSelector,
+  emitEvent = true,
+) {
   EOxItemFilterSelector.selectedItems =
     index === -1
       ? []
       : EOxItemFilterSelector.selectedItems.filter((_, i) => i !== index);
 
   updateSuggestions(EOxItemFilterSelector);
-  updateFilterList(EOxItemFilterSelector);
+  updateFilterList(EOxItemFilterSelector, emitEvent);
 }
 
 /**
@@ -191,8 +196,9 @@ function updateSuggestions(EOxItemFilterSelector) {
  * Updates the filter list based on the selected items.
  *
  * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {boolean} [emitEvent=true] - Whether to dispatch the filter custom event.
  */
-function updateFilterList(EOxItemFilterSelector) {
+function updateFilterList(EOxItemFilterSelector, emitEvent = true) {
   // Update the state of the filter object based on the selected items
   Object.keys(EOxItemFilterSelector.filterObject.state).forEach((k) => {
     EOxItemFilterSelector.filterObject.state[k] =
@@ -211,6 +217,8 @@ function updateFilterList(EOxItemFilterSelector) {
   );
 
   // Dispatch a custom event named "filter" and request an update
-  EOxItemFilterSelector.dispatchEvent(new CustomEvent("filter"));
+  if (emitEvent) {
+    EOxItemFilterSelector.dispatchEvent(new CustomEvent("filter"));
+  }
   EOxItemFilterSelector.requestUpdate();
 }

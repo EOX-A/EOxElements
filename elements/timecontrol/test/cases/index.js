@@ -1,3 +1,7 @@
+export {
+  replacedTimelineTest,
+  reconnectedTimelineTest,
+} from "./timeline-lifecycle";
 export { default as loadOnlyDates } from "./load-only-dates.js";
 export { default as editDate } from "./edit-date.js";
 export { default as loadDateRangeWithTime } from "./date-time.js";

@@ -201,3 +201,14 @@ export class AppComponent {
   <eox-layercontrol for="eox-map" style="flex-basis: 30%;"></eox-layercontrol>
 </div>
 ```
+
+### Analytics
+
+Instead of digging through shadow roots and attaching element-specific listeners, an app or dashboard can listen once at the document or layout level for user activity related events:
+
+```js
+document.addEventListener("eox:activity", (evt) => {
+  const { element, action, payload } = evt.detail; // Captures user actions across all EOx elements in one
+  place;
+});
+```

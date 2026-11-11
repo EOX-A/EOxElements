@@ -66,7 +66,9 @@ import "./components/shadow";
  * - **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
  *
  * @element eox-stacinfo
- * @fires click:link - Fired when an anchor tag is clicked within the STAC info
+ * @fires {CustomEvent} loaded - Fired when the STAC data has been loaded
+ * @fires {CustomEvent<{ href: string, text: string, section?: string }>} click:link - Fired when an anchor tag is clicked within the STAC info
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxStacInfo extends LitElement {
   static get properties() {

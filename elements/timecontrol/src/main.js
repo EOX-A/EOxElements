@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import { LitElement, html } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { style } from "./styles/style.js";
 import { styleEOX } from "./styles/style.eox.js";
 import { DataSet } from "vis-data/standalone";
@@ -75,9 +76,13 @@ import getChildElement from "./helpers/get-child-element.js";
  *
  * ## Events
  *
- * - `stepchange`: Fired when the current time step changes (not currently implemented).
+ * - `select`: Fired when the selected date or date range changes.
+ * - `update:view`: Fired when the timeline or picker view range changes.
  *
  * @element eox-timecontrol
+ * @fires {CustomEvent} select - Fired when the date selection changes
+ * @fires {CustomEvent} update:view - Fired when the view range changes
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).
  */
 export class EOxTimeControl extends LitElement {
   /**
@@ -373,37 +378,35 @@ export class EOxTimeControl extends LitElement {
     return getChildElement(this, "eox-timecontrol-picker");
   }
 
-  #emitUpdateEvent(EOxTimeControl) {
+  #emitUpdateEvent(EOxTimeControl, isUser = false) {
     const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
       EOxTimeControl.getTimeControlTimeline()
     );
     const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
       EOxTimeControl.getTimeControlPicker()
     );
-    EOxTimeControl.dispatchEvent(
-      new CustomEvent("update:view", {
-        detail: {
-          ...(EOxTimeControlTimeline
-            ? {
-                timeline: [
-                  EOxTimeControlTimeline.getViewRange().start,
-                  EOxTimeControlTimeline.getViewRange().end,
-                ],
-              }
-            : {}),
-          ...(EOxTimeControlPicker
-            ? {
-                picker: [
-                  EOxTimeControlPicker.getViewRange().start,
-                  EOxTimeControlPicker.getViewRange().end,
-                ],
-              }
-            : {}),
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(EOxTimeControl, "update:view", {
+      detail: {
+        ...(EOxTimeControlTimeline
+          ? {
+              timeline: [
+                EOxTimeControlTimeline.getViewRange().start,
+                EOxTimeControlTimeline.getViewRange().end,
+              ],
+            }
+          : {}),
+        ...(EOxTimeControlPicker
+          ? {
+              picker: [
+                EOxTimeControlPicker.getViewRange().start,
+                EOxTimeControlPicker.getViewRange().end,
+              ],
+            }
+          : {}),
+      },
+      activity: isUser,
+      action: "update:view",
+    });
   }
 
   /**

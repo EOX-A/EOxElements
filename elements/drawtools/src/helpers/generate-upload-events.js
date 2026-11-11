@@ -85,6 +85,6 @@ function importFile(file, EOxDrawTool) {
   // Define the onloadend event handler
   reader.onloadend = function () {
     if (typeof reader.result === "string")
-      EOxDrawTool.handleFeatureChange(reader.result);
+      EOxDrawTool.handleFeatureChange(reader.result, false, true, true);
   };
 }

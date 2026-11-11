@@ -1,5 +1,10 @@
 // Exported test methods
 
+export {
+  selectSubscriptionLifecycle,
+  selectDeferredSubscriptionCleanup,
+} from "./subscription-lifecycle.js";
+
 export { default as addSelectInteractionVectorTile } from "./add-select-interaction-vector-tile";
 export { default as addSelectInteractionVector } from "./add-select-interaction-vector";
 export { default as addSelectInteractionToExistingLayer } from "./add-select-interaction-to-existing-layer";

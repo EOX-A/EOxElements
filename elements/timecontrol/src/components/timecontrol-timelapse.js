@@ -1,4 +1,5 @@
 import { LitElement, html, render } from "lit";
+import { dispatchElementEvent, emitActivity } from "@eox/elements-utils";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import { styleTimelapse } from "../styles/style.timelapse.js";
@@ -417,6 +418,8 @@ export class EOxTimeControlTimelapse extends LitElement {
       element.classList.remove("pause-icon");
       this.exportConfig.play = false;
     }
+    const root = this.getEOxTimeControl() || this;
+    emitActivity(root, "toggle:play", { play: this.exportConfig.play });
     this.requestUpdate();
   }
 
@@ -430,16 +433,20 @@ export class EOxTimeControlTimelapse extends LitElement {
     if (detail) {
       this.#loading = true;
       this.requestUpdate();
+      const root = this.getEOxTimeControl() || this;
       if (this.getEOxTimeControl().externalMapRendering) {
-        this.dispatchEvent(
-          new CustomEvent("export", {
-            detail: {
-              ...detail,
-              generate: async (config) => await this.generateExport(config),
-            },
-          }),
-        );
+        dispatchElementEvent(this, "export", {
+          detail: {
+            ...detail,
+            generate: async (config) => await this.generateExport(config),
+          },
+          activity: false,
+        });
+        emitActivity(root, "export", detail);
       } else {
+        emitActivity(root, "export", {
+          selectedRangeItems: detail.selectedRangeItems,
+        });
         const mapLayers = [];
         for (const dateKey in detail.selectedRangeItems) {
           const date = detail.selectedRangeItems[dateKey];

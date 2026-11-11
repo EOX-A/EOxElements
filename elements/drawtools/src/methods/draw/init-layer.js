@@ -122,7 +122,10 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   }
 
   const onModifyEnd = () => EoxDrawTool.onModifyEnd();
-  const onAddFeatures = () => onDrawEndMethod(EoxDrawTool);
+  const onAddFeatures = (evt) => {
+    const isUser = Boolean(/** @type {any} */ (evt)?.isUser);
+    onDrawEndMethod(EoxDrawTool, isUser);
+  };
 
   EoxDrawTool.modify?.on("modifyend", onModifyEnd);
 

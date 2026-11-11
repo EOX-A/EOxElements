@@ -8,6 +8,7 @@ import {
   CodeMarkdownToolbarStory,
   CodeMarkdownToolbarUploadStory,
   PrimaryStory,
+  ActivityStory,
   ButtonsEditorStory,
   BinaryCheckboxEditorStory,
   MinMaxEditorStory,
@@ -59,6 +60,17 @@ export default {
  * Basic JSON Form example. Renders a form based on a provided JSON schema.
  */
 export const Primary = PrimaryStory;
+
+/**
+ * User activity attribution with a runnable parent event log in vanilla JS, React,
+ * Vue, and Svelte examples. Edit the title to emit a functional change with
+ * isUser=true and an eox:activity envelope containing element, action, and payload.
+ * Use Set value programmatically to assign form.value from the host: its change
+ * remains functional (isUser=false) without activity, even when a human clicks
+ * that host button. Initialization also emits functional events without activity.
+ * Parent listeners cross the form's shadow DOM. The log omits originalEvent.
+ */
+export const Activity = ActivityStory;
 
 /**
  * Validation example. Includes a submit button that is only enabled when validation passes.

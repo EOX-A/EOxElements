@@ -28,6 +28,7 @@ import { unByKey } from "ol/Observable";
 import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
 import { translateOLColorExpression } from "./colorScale.js";
+import { disposeGlobeSynchronization } from "./lifecycle.js";
 import {
   attachGlobeSelect,
   mountGlobeTooltip,
@@ -531,10 +532,7 @@ export const enableGlobe = (map) => {
 export const disableGlobe = (map) => {
   if (map.globe) {
     const globe = map.globe;
-    if (globe._layerOrderKey) {
-      unByKey(globe._layerOrderKey);
-      globe._layerOrderKey = null;
-    }
+    disposeGlobeSynchronization(globe);
     const planet = globe.planet;
 
     // 1. Determine the target point on the terrain at the center of the viewport
@@ -661,34 +659,56 @@ export const disableGlobe = (map) => {
 /**
  * Creates a debounced function that delays invoking func until after wait milliseconds have elapsed
  * since the last time the debounced function was invoked.
- * @param {Function} func The function to debounce.
+ * @param {() => void} func The function to debounce.
  * @param {number} wait The number of milliseconds to delay.
- * @returns {Function} Returns the new debounced function.
+ * @returns {(() => void) & { cancel: () => void }} The cancellable debounced function.
  */
 function debounce(func, wait) {
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
+  const executedFunction = () => {
     clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
+    timeout = setTimeout(() => {
+      timeout = undefined;
+      func();
+    }, wait);
   };
+  executedFunction.cancel = () => {
+    clearTimeout(timeout);
+    timeout = undefined;
+  };
+  return executedFunction;
 }
 
 /**
  * @param {ExtendedOLLayer} olLayer
  * @param {import("@openglobus/og").Globe} globe
  * @param {Array<any>} mapPool
+ * @returns {() => void} Disposes layer listeners and cancels queued refreshes.
  */
 export const setupLayerListeners = (olLayer, globe, mapPool) => {
+  let disposed = false;
+  /** @type {Map<CanvasTiles, ReturnType<typeof setTimeout>>} */
+  const animationTimers = new Map();
   const debouncedRefresh = debounce(() => {
-    refreshGlobe();
+    if (disposed) return;
+    globe.planet.layers.forEach((layer) => {
+      if (!(layer instanceof CanvasTiles)) return;
+      layer.abortLoading();
+      layer.animated = true;
+      clearTimeout(animationTimers.get(layer));
+      animationTimers.set(
+        layer,
+        setTimeout(() => {
+          animationTimers.delete(layer);
+          if (!disposed) layer.animated = false;
+        }, 200),
+      );
+    });
   }, 200);
 
-  olLayer.on("change", () => {
-    if (olLayer.styleVariables_) {
+  const changeKey = olLayer.on("change", () => {
+    if (!disposed && olLayer.styleVariables_) {
       const layerId = olLayer.get("id");
       const newStyleVariables = /** @type {Record<string, number>} */ (
         olLayer.styleVariables_
@@ -719,7 +739,8 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
     }
   });
 
-  olLayer.on("propertychange", ({ key }) => {
+  const propertyKey = olLayer.on("propertychange", ({ key }) => {
+    if (disposed) return;
     const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
     if (!globusLayer) return;
     switch (key) {
@@ -731,6 +752,18 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
         break;
     }
   });
+
+  return () => {
+    if (disposed) return;
+    disposed = true;
+    unByKey([changeKey, propertyKey]);
+    debouncedRefresh.cancel();
+    animationTimers.forEach((timeout, layer) => {
+      clearTimeout(timeout);
+      layer.animated = false;
+    });
+    animationTimers.clear();
+  };
 };
 
 /**
@@ -777,41 +810,32 @@ export const syncGlobeLayerOrder = (EOxMap, globe) => {
  *
  * @param {import("../../main").EOxMap} EOxMap - Instance of EOxMap class.
  * @param {import("@openglobus/og").Globe} globe - The OpenGlobus globe instance.
+ * @param {AbortSignal} [signal] Aborts the subscription and any queued animation frame.
  * @returns {import("ol/events").EventsKey} The listener key, to be removed via `unByKey`.
  */
-export const watchGlobeLayerOrder = (EOxMap, globe) => {
+export const watchGlobeLayerOrder = (EOxMap, globe, signal) => {
+  /** @type {number | null} */
   let frame = null;
-  return EOxMap.map.getLayerGroup().on("change", () => {
-    if (!EOxMap.globeEnabled || frame !== null) return;
+  let disposed = false;
+  const key = EOxMap.map.getLayerGroup().on("change", () => {
+    if (disposed || !EOxMap.globeEnabled || frame !== null) return;
     frame = requestAnimationFrame(() => {
       frame = null;
-      syncGlobeLayerOrder(EOxMap, globe);
+      if (!disposed) syncGlobeLayerOrder(EOxMap, globe);
     });
   });
-};
-
-/**
- * @param {import("ol/Collection").default<import("ol/layer/Base").default>} layers
- * @param {import("@openglobus/og").Globe} globe
- * @param {Array<any>} mapPool
- */
-export const processLayers = (layers, globe, mapPool) => {
-  layers.forEach((olLayer) => {
-    if (olLayer.get("id")) {
-      setupLayerListeners(
-        /** @type {ExtendedOLLayer} */ (olLayer),
-        globe,
-        mapPool,
-      );
+  const dispose = () => {
+    if (disposed) return;
+    disposed = true;
+    unByKey(key);
+    if (frame !== null) {
+      cancelAnimationFrame(frame);
+      frame = null;
     }
-    if (/** @type {any} */ (olLayer).getLayers) {
-      processLayers(
-        /** @type {any} */ (olLayer).getLayers().getArray(),
-        globe,
-        mapPool,
-      );
-    }
-  });
+  };
+  if (signal?.aborted) dispose();
+  else signal?.addEventListener("abort", dispose, { once: true });
+  return key;
 };
 
 /**
