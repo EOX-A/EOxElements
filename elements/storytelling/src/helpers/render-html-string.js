@@ -1,5 +1,5 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
-import { scrollIntoView } from "./misc.js";
+import { scrollIntoView, isCustomElement } from "./misc.js";
 import GLightbox from "glightbox";
 
 // Set up empty Lightbox
@@ -473,14 +473,15 @@ function fadeLayer(element, layerId, start, end, duration) {
  */
 function processNode(node, initDispatchFunc, that) {
   if (node.nodeType === Node.ELEMENT_NODE) {
-    const isCustomTag = (tagName) => /^[a-z]+(-[a-z0-9]+)+$/i.test(tagName);
-
-    const childElements = [
-      ...(isCustomTag(node.tagName) ? [node] : []),
+    const targetElements = [
+      ...(isCustomElement(node.tagName) ? [node] : []),
       ...Array.from(node.querySelectorAll("*")),
     ];
-    childElements.forEach((element) => {
-      if (isCustomTag(element.tagName)) {
+    targetElements.forEach((element) => {
+      if (
+        isCustomElement(element.tagName) &&
+        node.classList.contains("section-custom")
+      ) {
         Array.from(element.attributes).forEach((attr) => {
           if (attr.name !== "style" && attr.name !== "class") {
             element[attr.name] = convertAttributeValueBasedOnItsType(

@@ -45,13 +45,23 @@ export function scrollIntoView(that) {
 }
 
 /**
+ * Checks whether a tag name represents a valid custom element.
+ *
+ * @param {string} tagName - HTML tag name to test.
+ * @returns {boolean} True if tag name is a valid custom element.
+ */
+export function isCustomElement(tagName) {
+  return /^[a-z]+(-[a-z0-9]+)+$/i.test(tagName);
+}
+
+/**
  * Generate custom element handling config.
  *
  * @param {import("../types").CustomMarkdownIt} [_md] - Markdown-It instances
  * @returns {{tagNameCheck: RegExp | ((tagName: string) => boolean), attributeNameCheck: RegExp | ((attributeName: string) => boolean), allowCustomizedBuiltInElements: boolean}}
  */
 export function getCustomEleHandling(_md) {
-  const tagNameCheck = (tagName) => /^[a-z]+(-[a-z0-9]+)+$/i.test(tagName);
+  const tagNameCheck = (tagName) => isCustomElement(tagName);
   const attributeNameCheck = (attr) =>
     !attr.toLowerCase().startsWith("on") &&
     !attr.toLowerCase().startsWith("javascript:");
