@@ -473,20 +473,22 @@ function fadeLayer(element, layerId, start, end, duration) {
  */
 function processNode(node, initDispatchFunc, that) {
   if (node.nodeType === Node.ELEMENT_NODE) {
-    const childElements = node.querySelectorAll("*");
+    const isCustomTag = (tagName) => /^[a-z]+(-[a-z0-9]+)+$/i.test(tagName);
+
+    const childElements = [
+      ...(isCustomTag(node.tagName) ? [node] : []),
+      ...Array.from(node.querySelectorAll("*")),
+    ];
     childElements.forEach((element) => {
-      if (
-        /^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase()) &&
-        node.classList.contains("section-custom")
-      ) {
-        Array.from(element.attributes).forEach(
-          // Update the attribute with its converted value
-          (attr) =>
-            (element[attr.name] = convertAttributeValueBasedOnItsType(
+      if (isCustomTag(element.tagName)) {
+        Array.from(element.attributes).forEach((attr) => {
+          if (attr.name !== "style" && attr.name !== "class") {
+            element[attr.name] = convertAttributeValueBasedOnItsType(
               /** @type {HTMLElement} */ (element),
               attr.name,
-            )),
-        );
+            );
+          }
+        });
       }
       const dispatchTimeout = setTimeout(() => initDispatchFunc(element), 100);
       sectionTimeouts.push(dispatchTimeout);

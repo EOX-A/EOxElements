@@ -47,14 +47,14 @@ export function scrollIntoView(that) {
 /**
  * Generate custom element handling config.
  *
- * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} [_md] - Markdown-It instances
  * @returns {{tagNameCheck: RegExp | ((tagName: string) => boolean), attributeNameCheck: RegExp | ((attributeName: string) => boolean), allowCustomizedBuiltInElements: boolean}}
  */
-export function getCustomEleHandling(md) {
-  const tagNameCheck = (tagName) =>
-    tagName.match(new RegExp(/^[a-z]+(-[a-z0-9]+)*$/));
+export function getCustomEleHandling(_md) {
+  const tagNameCheck = (tagName) => /^[a-z]+(-[a-z0-9]+)+$/i.test(tagName);
   const attributeNameCheck = (attr) =>
-    attr.match(new RegExp(md.attrs.keys.join("|")));
+    !attr.toLowerCase().startsWith("on") &&
+    !attr.toLowerCase().startsWith("javascript:");
 
   return {
     tagNameCheck,
