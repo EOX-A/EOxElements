@@ -102,6 +102,30 @@ export const eoxA2uiElementSlotRenderTest = () => {
 };
 
 /**
+ * Test EOxA2uiElement rendering via node (0.15.0 unified node pipeline)
+ */
+export const eoxA2uiElementNodeRenderTest = () => {
+  const el = /** @type {any} */ (document.createElement("eox-a2ui-element"));
+  el.node = {
+    componentId: "node-comp-1",
+    type: "EOxMapWorkspace",
+  };
+  expect(el.componentType).to.eq("EOxMapWorkspace");
+  expect(el.componentId).to.eq("node-comp-1");
+
+  el.controller = {
+    props: {
+      slot: "map",
+      children: [],
+    },
+  };
+  const templateResult = el.render();
+  expect(templateResult).to.exist;
+  expect(templateResult.strings.join("")).to.include("slot=");
+  expect(templateResult.values).to.include("node-comp-1");
+};
+
+/**
  * Test EOxA2uiWrapper custom CSS injection
  */
 export const eoxA2uiWrapperCustomStylesTest = () => {

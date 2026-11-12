@@ -40,6 +40,36 @@ export class EOxA2uiElement extends A2uiLitElement {
     this._appliedProps = {};
   }
 
+  get componentType() {
+    return this.node?.type || this.context?.componentModel?.type || undefined;
+  }
+
+  get componentId() {
+    return (
+      this.node?.componentId || this.context?.componentModel?.id || undefined
+    );
+  }
+
+  get componentModel() {
+    return this.node?.context?.componentModel || this.context?.componentModel;
+  }
+
+  get surfaceModel() {
+    return (
+      this.node?.context?.dataContext?.surface ||
+      this.context?.dataContext?.surface ||
+      this.context?.surfaceModel
+    );
+  }
+
+  get surfaceComponents() {
+    return (
+      this.node?.context?.surfaceComponents ||
+      this.context?.surfaceComponents ||
+      this.surfaceModel?.componentsModel
+    );
+  }
+
   get controller() {
     return this._controller;
   }
@@ -61,8 +91,12 @@ export class EOxA2uiElement extends A2uiLitElement {
   }
 
   createController() {
-    const type = this.context.componentModel.type;
-    const api = eoxCatalog.components.get(type);
+    if (!this.context && this.node?.context) {
+      this.context = this.node.context;
+    }
+    const type = this.componentType;
+    const api =
+      this.node?.impl || (type ? eoxCatalog.components.get(type) : undefined);
     if (!api) {
       throw new Error(
         `Component implementation not found in eoxCatalog for type: ${type}`,
@@ -71,10 +105,17 @@ export class EOxA2uiElement extends A2uiLitElement {
     return new A2uiController(this, api);
   }
 
+  renderNode(childRef, customPath) {
+    if (!this.context && this.node?.context) {
+      this.context = this.node.context;
+    }
+    return super.renderNode(childRef, customPath);
+  }
+
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
     const element = this._elementRef.value;
-    const type = this.context?.componentModel?.type;
+    const type = this.componentType;
 
     if (type === "EOxMapWorkspace") {
       this.style.cssText =
@@ -161,7 +202,8 @@ export class EOxA2uiElement extends A2uiLitElement {
     }
 
     if (element) {
-      const api = eoxCatalog.components.get(type);
+      const api =
+        this.node?.impl || (type ? eoxCatalog.components.get(type) : undefined);
       const eventsToForward = api?.events || [];
 
       eventsToForward.forEach((eventName) => {
@@ -182,14 +224,15 @@ export class EOxA2uiElement extends A2uiLitElement {
     super.updated(changedProperties);
     const element = this._elementRef.value;
     if (element && this.controller?.props) {
-      const type = this.context.componentModel.type;
-      const transformer = componentTransformers[type];
+      const type = this.componentType;
+      const transformer = type ? componentTransformers[type] : undefined;
       let transformedProps = {};
 
       if (transformer) {
         const children = Array.isArray(this.controller.props.children)
           ? this.controller.props.children
           : [];
+        const surfaceComponents = this.surfaceComponents;
         const resolvedChildren = children
           .map((child) => {
             const isReference =
@@ -225,7 +268,7 @@ export class EOxA2uiElement extends A2uiLitElement {
                         ? nestedChild.id
                         : nestedChild;
                     const nestedChildModel =
-                      this.context.surfaceComponents.get(nestedChildId);
+                      surfaceComponents?.get(nestedChildId);
                     if (nestedChildModel) {
                       return {
                         id: nestedChildModel.id,
@@ -250,7 +293,7 @@ export class EOxA2uiElement extends A2uiLitElement {
 
             const childId =
               typeof child === "object" && child !== null ? child.id : child;
-            const childModel = this.context.surfaceComponents.get(childId);
+            const childModel = surfaceComponents?.get(childId);
             if (childModel) {
               let nestedChildren = [];
               if (Array.isArray(childModel.properties?.children)) {
@@ -272,7 +315,7 @@ export class EOxA2uiElement extends A2uiLitElement {
                         ? nestedChild.id
                         : nestedChild;
                     const nestedChildModel =
-                      this.context.surfaceComponents.get(nestedChildId);
+                      surfaceComponents?.get(nestedChildId);
                     if (nestedChildModel) {
                       return {
                         id: nestedChildModel.id,
@@ -351,8 +394,9 @@ export class EOxA2uiElement extends A2uiLitElement {
   }
 
   render() {
-    const type = this.context.componentModel.type;
-    const api = eoxCatalog.components.get(type);
+    const type = this.componentType;
+    const api =
+      this.node?.impl || (type ? eoxCatalog.components.get(type) : undefined);
     if (!api) {
       return nothing;
     }
@@ -364,17 +408,18 @@ export class EOxA2uiElement extends A2uiLitElement {
       : [];
 
     const slotVal = this.controller?.props?.slot;
+    const compId = this.componentId;
 
     if (slotVal) {
       return html`<${targetTag}
-        id=${this.context.componentModel.id}
+        id=${compId}
         slot=${slotVal}
         ${ref(this._elementRef)}
       >${hasTransformer ? nothing : children.map((child) => this.renderNode(child))}</${targetTag}>`;
     }
 
     return html`<${targetTag}
-      id=${this.context.componentModel.id}
+      id=${compId}
       ${ref(this._elementRef)}
     >${hasTransformer ? nothing : children.map((child) => this.renderNode(child))}</${targetTag}>`;
   }
