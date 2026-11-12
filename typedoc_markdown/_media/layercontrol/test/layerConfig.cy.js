@@ -148,6 +148,78 @@ describe("LayerControl: LayerConfig", () => {
     });
   });
 
+  it("builds tile URLs from the new source after the layer source is replaced", () => {
+    const createMockSource = (datetime) => ({
+      getTileUrlFunction: () => () =>
+        `https://tiles.com/8/133/91?rescale=0,1&datetime=${datetime}`,
+      setTileUrlFunction: cy.spy(),
+      setKey: () => {},
+      getUrls: () => [
+        `https://tiles.com/{z}/{x}/{y}?rescale=0,1&datetime=${datetime}`,
+      ],
+      on: () => {},
+      un: () => {},
+      getState: () => "ready",
+    });
+    const firstSource = createMockSource("2026-01-01");
+    const secondSource = createMockSource("2026-02-01");
+
+    let source = firstSource;
+    let propertyChangeListener;
+    const mockLayer = {
+      getSource: () => source,
+      get: (prop) => (prop === "id" ? "test-mosaic" : null),
+      on: (_type, listener) => {
+        propertyChangeListener = listener;
+      },
+      un: () => {},
+    };
+
+    const layerConfig = {
+      type: "tileUrl",
+      schema: {
+        type: "object",
+        properties: { rescale: { type: "string" } },
+      },
+    };
+
+    const dispatchFormChange = (detail) =>
+      cy
+        .get("eox-layercontrol-layerconfig")
+        .shadow()
+        .find("eox-jsonform", { timeout: 10000 })
+        .then(($jsonform) => {
+          $jsonform[0].dispatchEvent(new CustomEvent("change", { detail }));
+        });
+
+    cy.clock();
+    cy.mount(html`
+      <eox-layercontrol-layerconfig
+        .layer=${mockLayer}
+        .layerConfig=${layerConfig}
+      ></eox-layercontrol-layerconfig>
+    `);
+
+    dispatchFormChange({ rescale: "0,1" });
+    cy.then(() => {
+      // mirrors OL's layer.setSource(), which fires propertychange with key "source"
+      source = secondSource;
+      propertyChangeListener({ key: "source" });
+    });
+    // move past the 1000 ms throttle window so the next change is applied immediately
+    cy.tick(1000);
+    dispatchFormChange({ rescale: "2,3" });
+
+    cy.wrap(secondSource.setTileUrlFunction).should("have.been.called");
+    cy.then(() => {
+      const tileUrlFunction = secondSource.setTileUrlFunction.lastCall.args[0];
+      const resultUrl = decodeURIComponent(tileUrlFunction([8, 133, 91]));
+      expect(resultUrl).to.contain("datetime=2026-02-01");
+      expect(resultUrl).to.contain("rescale=2,3");
+      expect(resultUrl).to.not.contain("datetime=2026-01-01");
+    });
+  });
+
   /**
    * Mounts a layerconfig for a mock tile layer and yields the value seeded into eox-jsonform.
    */
