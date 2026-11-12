@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlType
 
-Defined in: [elements/timecontrol/src/main.js:87](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L87)
+Defined in: [elements/timecontrol/src/main.js:87](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L87)
 
 The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.
 
@@ -1168,7 +1168,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11125
 
 > **controlValues**: `any`[]
 
-Defined in: [elements/timecontrol/src/main.js:231](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L231)
+Defined in: [elements/timecontrol/src/main.js:231](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L231)
 
 Array of control values.
 
@@ -1208,7 +1208,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16067
 
 > **dateChange**: `Function` = `dateChangeHandlerMethod`
 
-Defined in: [elements/timecontrol/src/main.js:334](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L334)
+Defined in: [elements/timecontrol/src/main.js:334](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L334)
 
 Handler for date change events. Updates the selected date range and applies it to map layers.
 
@@ -1438,7 +1438,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:21840
 
 > **externalMapRendering**: `boolean`
 
-Defined in: [elements/timecontrol/src/main.js:215](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L215)
+Defined in: [elements/timecontrol/src/main.js:215](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L215)
 
 Whether external map rendering is enabled for timelapse export.
 
@@ -1448,7 +1448,7 @@ Whether external map rendering is enabled for timelapse export.
 
 > **filter**: `Function` = `filterHandlerMethod`
 
-Defined in: [elements/timecontrol/src/main.js:514](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L514)
+Defined in: [elements/timecontrol/src/main.js:514](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L514)
 
 Handler for filter events from eox-itemfilter. Updates timeline item visibility based on filter results.
 
@@ -1502,7 +1502,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **for**: `string` \| `HTMLElement` \| (`string` \| `HTMLElement`)[]
 
-Defined in: [elements/timecontrol/src/main.js:224](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L224)
+Defined in: [elements/timecontrol/src/main.js:224](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L224)
 
 Selector or element reference for an `eox-map` or `eox-map-compare`.
 Pass an array of selectors/references as a property to control multiple maps,
@@ -1562,7 +1562,7 @@ The HTMLElement property **`inert`** reflects the value of the element's `inert`
 
 > **initDate**: `string` \| `string`[] \| [`DateRange`](../type-aliases/DateRange.md)
 
-Defined in: [elements/timecontrol/src/main.js:239](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L239)
+Defined in: [elements/timecontrol/src/main.js:239](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L239)
 
 The initial date range as [startDate, endDate] in ISO/UTC format,
 or a date/keyword string, or array.
@@ -1697,7 +1697,7 @@ Returns the last child that is an element, and null otherwise.
 
 > **layerIdKey**: `string`
 
-Defined in: [elements/timecontrol/src/main.js:201](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L201)
+Defined in: [elements/timecontrol/src/main.js:201](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L201)
 
 Property key used to identify layers (default: "id").
 
@@ -5023,7 +5023,7 @@ The **`scrollWidth`** read-only property of the Element interface is a measureme
 
 > **selectedDateRange**: [`DateRange`](../type-aliases/DateRange.md)
 
-Defined in: [elements/timecontrol/src/main.js:187](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L187)
+Defined in: [elements/timecontrol/src/main.js:187](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L187)
 
 The currently selected date range as [startDate, endDate] in ISO format.
 
@@ -5049,7 +5049,7 @@ The `Element.shadowRoot` read-only property represents the shadow root hosted by
 
 > **showUTC**: `boolean`
 
-Defined in: [elements/timecontrol/src/main.js:208](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L208)
+Defined in: [elements/timecontrol/src/main.js:208](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L208)
 
 Whether to show UTC dates in the timecontrol (default: false).
 
@@ -5151,7 +5151,7 @@ The **`HTMLElement.title`** property represents the title of the element: the te
 
 > **titleKey**: `string`
 
-Defined in: [elements/timecontrol/src/main.js:194](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L194)
+Defined in: [elements/timecontrol/src/main.js:194](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L194)
 
 Property key used to retrieve layer titles (default: "name").
 
@@ -5177,7 +5177,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/main.js:180](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L180)
+Defined in: [elements/timecontrol/src/main.js:180](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L180)
 
 Whether default styling is disabled.
 
@@ -5243,7 +5243,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10714
 
 > **get** **eoxMap**(): [`EOxMapType`](EOxMapType.md)
 
-Defined in: [elements/timecontrol/src/main.js:267](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L267)
+Defined in: [elements/timecontrol/src/main.js:267](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L267)
 
 Gets the reference to the associated eox-map element.
 
@@ -5257,7 +5257,7 @@ The eox-map instance or null if not found.
 
 > **set** **eoxMap**(`value`): `void`
 
-Defined in: [elements/timecontrol/src/main.js:276](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L276)
+Defined in: [elements/timecontrol/src/main.js:276](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L276)
 
 Sets the reference to the associated eox-map element.
 
@@ -5281,7 +5281,7 @@ The eox-map instance to associate.
 
 > **get** **groups**(): `DataSet`\<[`TimelineGroup`](../type-aliases/TimelineGroup.md), `"id"`\>
 
-Defined in: [elements/timecontrol/src/main.js:286](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L286)
+Defined in: [elements/timecontrol/src/main.js:286](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L286)
 
 Gets the DataSet containing timeline groups.
 
@@ -5295,7 +5295,7 @@ The groups DataSet.
 
 > **set** **groups**(`value`): `void`
 
-Defined in: [elements/timecontrol/src/main.js:295](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L295)
+Defined in: [elements/timecontrol/src/main.js:295](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L295)
 
 Sets the DataSet containing timeline groups.
 
@@ -5319,7 +5319,7 @@ The groups DataSet.
 
 > **get** **items**(): `DataSet`\<[`TimelineItem`](../type-aliases/TimelineItem.md), `"id"`\>
 
-Defined in: [elements/timecontrol/src/main.js:305](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L305)
+Defined in: [elements/timecontrol/src/main.js:305](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L305)
 
 Gets the DataSet containing timeline items.
 
@@ -5333,7 +5333,7 @@ The items DataSet.
 
 > **set** **items**(`value`): `void`
 
-Defined in: [elements/timecontrol/src/main.js:314](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L314)
+Defined in: [elements/timecontrol/src/main.js:314](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L314)
 
 Sets the DataSet containing timeline items.
 
@@ -5395,7 +5395,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10792
 
 > **get** **sliderValues**(): [`SliderValue`](../type-aliases/SliderValue.md)[]
 
-Defined in: [elements/timecontrol/src/main.js:248](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L248)
+Defined in: [elements/timecontrol/src/main.js:248](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L248)
 
 Gets the array of slider values extracted from map layers.
 
@@ -5409,7 +5409,7 @@ The slider values array.
 
 > **set** **sliderValues**(`value`): `void`
 
-Defined in: [elements/timecontrol/src/main.js:257](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L257)
+Defined in: [elements/timecontrol/src/main.js:257](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L257)
 
 Sets the array of slider values.
 
@@ -5735,7 +5735,7 @@ The **`Element.attachShadow()`** method attaches a shadow DOM tree to the specif
 
 > **attributeChangedCallback**(`name`, `oldVal`, `newVal`): `void`
 
-Defined in: [elements/timecontrol/src/main.js:442](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L442)
+Defined in: [elements/timecontrol/src/main.js:442](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L442)
 
 Handles attribute changes, supporting "initdate" as an alias for "init-date".
 
@@ -6049,7 +6049,7 @@ The **`computedStyleMap()`** method of the Element interface returns a StyleProp
 
 > **connectedCallback**(): `void`
 
-Defined in: [elements/timecontrol/src/main.js:456](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L456)
+Defined in: [elements/timecontrol/src/main.js:456](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L456)
 
 Lifecycle method called when the component is connected to the DOM.
 
@@ -6093,7 +6093,7 @@ The **`contains()`** method of the Node interface returns a boolean value indica
 
 > **disconnectedCallback**(): `void`
 
-Defined in: [elements/timecontrol/src/main.js:501](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L501)
+Defined in: [elements/timecontrol/src/main.js:501](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L501)
 
 Lifecycle method called when the component is disconnected from the DOM.
 Removes the map layer listener so it does not leak across re-mounts.
@@ -6138,7 +6138,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/timecontrol/src/main.js:415](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L415)
+Defined in: [elements/timecontrol/src/main.js:415](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L415)
 
 Resolves associated maps and initializes the timecontrol after its first render.
 
@@ -6376,7 +6376,7 @@ The **`getClientRects()`** method of the Element interface returns a collection 
 
 > **getContainer**(): `Element`
 
-Defined in: [elements/timecontrol/src/main.js:323](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L323)
+Defined in: [elements/timecontrol/src/main.js:323](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L323)
 
 Gets the container element for the timeslider (legacy method).
 
@@ -6708,7 +6708,7 @@ The **`getRootNode()`** method of the Node interface returns the context object'
 
 > **getTimeControlDate**(): [`EOxTimeControlChild`](../type-aliases/EOxTimeControlChild.md)
 
-Defined in: [elements/timecontrol/src/main.js:341](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L341)
+Defined in: [elements/timecontrol/src/main.js:341](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L341)
 
 Gets the EOxTimeControlDate instance.
 
@@ -6724,7 +6724,7 @@ The EOxTimeControlDate instance or null if not found.
 
 > **getTimeControlPicker**(): [`EOxTimeControlChild`](../type-aliases/EOxTimeControlChild.md)
 
-Defined in: [elements/timecontrol/src/main.js:377](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L377)
+Defined in: [elements/timecontrol/src/main.js:377](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L377)
 
 Gets the EOxTimeControlPicker instance.
 
@@ -6740,7 +6740,7 @@ The EOxTimeControlChild instance or null if not found.
 
 > **getTimeControlSlider**(): [`EOxTimeControlChild`](../type-aliases/EOxTimeControlChild.md)
 
-Defined in: [elements/timecontrol/src/main.js:350](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L350)
+Defined in: [elements/timecontrol/src/main.js:350](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L350)
 
 Gets the EOxTimeControlSlider instance.
 
@@ -6756,7 +6756,7 @@ The EOxTimeControlChild instance or null if not found.
 
 > **getTimeControlTimelapse**(): [`EOxTimeControlChild`](../type-aliases/EOxTimeControlChild.md)
 
-Defined in: [elements/timecontrol/src/main.js:368](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L368)
+Defined in: [elements/timecontrol/src/main.js:368](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L368)
 
 Gets the EOxTimeControlTimelapse instance.
 
@@ -6772,7 +6772,7 @@ The EOxTimeControlChild instance or null if not found.
 
 > **getTimeControlTimeline**(): [`EOxTimeControlChild`](../type-aliases/EOxTimeControlChild.md)
 
-Defined in: [elements/timecontrol/src/main.js:359](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L359)
+Defined in: [elements/timecontrol/src/main.js:359](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L359)
 
 Gets the EOxTimeControlTimeline instance.
 
@@ -8336,7 +8336,7 @@ The **`togglePopover()`** method of the HTMLElement interface toggles a Popover_
 
 > **updated**(`changedProperties`): `void`
 
-Defined in: [elements/timecontrol/src/main.js:475](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L475)
+Defined in: [elements/timecontrol/src/main.js:475](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L475)
 
 Lifecycle method called after property updates.
 
@@ -8431,7 +8431,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/main.js:516](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/timecontrol/src/main.js#L516)
+Defined in: [elements/timecontrol/src/main.js:516](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/timecontrol/src/main.js#L516)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a

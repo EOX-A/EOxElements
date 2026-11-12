@@ -6,7 +6,7 @@
 
 # Interface: EOxItemFilterType
 
-Defined in: [elements/itemfilter/src/main.js:59](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L59)
+Defined in: [elements/itemfilter/src/main.js:59](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L59)
 
 The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.
 
@@ -221,7 +221,7 @@ An element may be re-connected after being disconnected.
 
 > **\_debouncedSearch**: `DebouncedFuncLeading`\<() => `Promise`\<`void`\>\>
 
-Defined in: [elements/itemfilter/src/main.js:139](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L139)
+Defined in: [elements/itemfilter/src/main.js:139](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L139)
 
 ***
 
@@ -229,7 +229,7 @@ Defined in: [elements/itemfilter/src/main.js:139](https://github.com/EOX-A/EOxEl
 
 > **\_isUserFilter**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:148](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L148)
+Defined in: [elements/itemfilter/src/main.js:148](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L148)
 
 ***
 
@@ -269,7 +269,7 @@ The **`HTMLElement.accessKeyLabel`** read-only property returns a string contain
 
 > **aggregateResults**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:157](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L157)
+Defined in: [elements/itemfilter/src/main.js:157](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L157)
 
 Aggregate results by a property key
 
@@ -1095,7 +1095,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16065
 
 > **autoSpreadSingle**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:165](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L165)
+Defined in: [elements/itemfilter/src/main.js:165](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L165)
 
 Automatically spread single item summaries
 removing the summary header
@@ -1490,7 +1490,7 @@ node is an element.
 
 > **enableHighlighting**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:172](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L172)
+Defined in: [elements/itemfilter/src/main.js:172](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L172)
 
 Highlighting of search result character matches
 
@@ -1500,7 +1500,7 @@ Highlighting of search result character matches
 
 > **enableResultAction**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:296](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L296)
+Defined in: [elements/itemfilter/src/main.js:296](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L296)
 
 Enable result action button (a secondary action besides the normal result selection)
 
@@ -1548,7 +1548,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:21840
 
 > **expandMultipleFilters**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:269](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L269)
+Defined in: [elements/itemfilter/src/main.js:269](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L269)
 
 Allow opening multiple filter accordions in parallel
 
@@ -1558,7 +1558,7 @@ Allow opening multiple filter accordions in parallel
 
 > **expandMultipleResults**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:282](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L282)
+Defined in: [elements/itemfilter/src/main.js:282](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L282)
 
 Allow opening multiple result accordions in parallel
 
@@ -1568,7 +1568,7 @@ Allow opening multiple result accordions in parallel
 
 > **expandResults**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:276](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L276)
+Defined in: [elements/itemfilter/src/main.js:276](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L276)
 
 Initialize result accordions expanded
 
@@ -1578,7 +1578,7 @@ Initialize result accordions expanded
 
 > **externalFilter**: () => `string` \| (() => `object`)
 
-Defined in: [elements/itemfilter/src/main.js:184](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L184)
+Defined in: [elements/itemfilter/src/main.js:184](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L184)
 
 Use an external search endpoint instead of fuse search.
 Passed properties: input string, filters object.
@@ -1597,7 +1597,7 @@ This is a property-only field as it expects a function.
 
 > **filterProperties**: `object`[]
 
-Defined in: [elements/itemfilter/src/main.js:190](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L190)
+Defined in: [elements/itemfilter/src/main.js:190](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L190)
 
 The filter properties. Can be passed as a property or stringified JSON attribute.
 
@@ -1639,7 +1639,7 @@ The filter properties. Can be passed as a property or stringified JSON attribute
 
 > **filters**: `any`
 
-Defined in: [elements/itemfilter/src/main.js:125](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L125)
+Defined in: [elements/itemfilter/src/main.js:125](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L125)
 
 The state object containing the applied filters.
 
@@ -1681,7 +1681,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **fuseConfig**: `any`
 
-Defined in: [elements/itemfilter/src/main.js:197](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L197)
+Defined in: [elements/itemfilter/src/main.js:197](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L197)
 
 Native fuse.js config override
 
@@ -1723,7 +1723,7 @@ The **`id`** property of the Element interface represents the element's identifi
 
 > **idProperty**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:262](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L262)
+Defined in: [elements/itemfilter/src/main.js:262](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L262)
 
 Unique id property of items
 
@@ -1733,7 +1733,7 @@ Unique id property of items
 
 > **imageProperty**: `string` \| `Function`
 
-Defined in: [elements/itemfilter/src/main.js:243](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L243)
+Defined in: [elements/itemfilter/src/main.js:243](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L243)
 
 The property of the result items used for an image
 Supports passing a function which recieves the current item as parameter and is expected to return a string
@@ -1760,7 +1760,7 @@ The HTMLElement property **`inert`** reflects the value of the element's `inert`
 
 > **inlineMode**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:205](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L205)
+Defined in: [elements/itemfilter/src/main.js:205](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L205)
 
 Inline mode, for rendering the itemfilter in a very condensed space.
 Expects showResults to be false
@@ -1847,7 +1847,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11131
 
 > **items**: `any`[]
 
-Defined in: [elements/itemfilter/src/main.js:119](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L119)
+Defined in: [elements/itemfilter/src/main.js:119](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L119)
 
 The items to be filtered. Can be passed as a property or stringified JSON attribute.
 
@@ -1921,7 +1921,7 @@ The **`Element.localName`** read-only property returns the local part of the qua
 
 > **matchAllWhenEmpty**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:212](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L212)
+Defined in: [elements/itemfilter/src/main.js:212](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L212)
 
 Show all result items if nothing is input by the user
 
@@ -5153,7 +5153,7 @@ node is a ProcessingInstruction node.
 
 > **resultActionIcon**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:303](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L303)
+Defined in: [elements/itemfilter/src/main.js:303](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L303)
 
 Icon for result action. Supports html
 
@@ -5163,7 +5163,7 @@ Icon for result action. Supports html
 
 > **results**: `any`[]
 
-Defined in: [elements/itemfilter/src/main.js:131](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L131)
+Defined in: [elements/itemfilter/src/main.js:131](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L131)
 
 The state object containing the filtered results.
 
@@ -5173,7 +5173,7 @@ The state object containing the filtered results.
 
 > **resultSorting**: `string` \| `false` \| `Function` \| \{ `key`: `string`; `order?`: `"desc"` \| `"asc"`; \}
 
-Defined in: [elements/itemfilter/src/main.js:255](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L255)
+Defined in: [elements/itemfilter/src/main.js:255](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L255)
 
 Sorting behavior for the results. Can be:
 - undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)
@@ -5188,7 +5188,7 @@ Sorting behavior for the results. Can be:
 
 > **resultType**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:289](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L289)
+Defined in: [elements/itemfilter/src/main.js:289](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L289)
 
 Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element)
 
@@ -5276,7 +5276,7 @@ The **`scrollWidth`** read-only property of the Element interface is a measureme
 
 > **selectedResult**: `any`
 
-Defined in: [elements/itemfilter/src/main.js:137](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L137)
+Defined in: [elements/itemfilter/src/main.js:137](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L137)
 
 The currently selected result
 
@@ -5302,7 +5302,7 @@ The `Element.shadowRoot` read-only property represents the shadow root hosted by
 
 > **showResults**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:219](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L219)
+Defined in: [elements/itemfilter/src/main.js:219](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L219)
 
 Display results list
 
@@ -5344,7 +5344,7 @@ The **`spellcheck`** property of the HTMLElement interface represents a boolean 
 
 > **styleOverride**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:310](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L310)
+Defined in: [elements/itemfilter/src/main.js:310](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L310)
 
 Overrides elements current CSS.
 
@@ -5354,7 +5354,7 @@ Overrides elements current CSS.
 
 > **subTitleProperty**: `string` \| `Function`
 
-Defined in: [elements/itemfilter/src/main.js:235](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L235)
+Defined in: [elements/itemfilter/src/main.js:235](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L235)
 
 The property of the result items used for a subtitle
 Supports passing a function which recieves the current item as parameter and is expected to return a string
@@ -5425,7 +5425,7 @@ The **`HTMLElement.title`** property represents the title of the element: the te
 
 > **titleProperty**: `string` \| `Function`
 
-Defined in: [elements/itemfilter/src/main.js:227](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L227)
+Defined in: [elements/itemfilter/src/main.js:227](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L227)
 
 The property of the result items used for display
 Supports passing a function which recieves the current item as parameter and is expected to return a string
@@ -5452,7 +5452,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:315](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L315)
+Defined in: [elements/itemfilter/src/main.js:315](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L315)
 
 Render the element without additional styles
 
@@ -5812,7 +5812,7 @@ The **`appendChild()`** method of the Node interface adds a node to the end of t
 
 > **apply**(): `void`
 
-Defined in: [elements/itemfilter/src/main.js:321](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L321)
+Defined in: [elements/itemfilter/src/main.js:321](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L321)
 
 Applies the filters to the items and updates the result aggregation.
 
@@ -6200,7 +6200,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **emitResultAction**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:527](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L527)
+Defined in: [elements/itemfilter/src/main.js:527](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L527)
 
 Emits "click:result-action" event.
 
@@ -6224,7 +6224,7 @@ Emits "click:result-action" event.
 
 > **firstUpdated**(`_changedProperties`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:408](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L408)
+Defined in: [elements/itemfilter/src/main.js:408](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L408)
 
 Lifecycle method called after the first update.
 Initializes the configuration and items, and applies the filters.
@@ -7211,7 +7211,7 @@ The **`matches()`** method of the Element interface tests whether the element wo
 
 > **mouseEnterResult**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:491](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L491)
+Defined in: [elements/itemfilter/src/main.js:491](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L491)
 
 Dispatches an event when result component triggers the "mouseenter:result" event.
 
@@ -7235,7 +7235,7 @@ Dispatches an event when result component triggers the "mouseenter:result" event
 
 > **mouseLeaveResult**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:509](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L509)
+Defined in: [elements/itemfilter/src/main.js:509](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L509)
 
 Dispatches an event when result component triggers the "mouseleave:result" event.
 
@@ -7813,7 +7813,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/itemfilter/src/main.js:543](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L543)
+Defined in: [elements/itemfilter/src/main.js:543](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L543)
 
 Renders the HTML template for the component.
 
@@ -7975,7 +7975,7 @@ The **`requestPointerLock()`** method of the Element interface lets you asynchro
 
 > **resetFilters**(`isUser?`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:398](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L398)
+Defined in: [elements/itemfilter/src/main.js:398](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L398)
 
 Resets all applied filters.
 
@@ -8177,7 +8177,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11052
 
 > **searchHandler**(): `Promise`\<`void`\>
 
-Defined in: [elements/itemfilter/src/main.js:338](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L338)
+Defined in: [elements/itemfilter/src/main.js:338](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L338)
 
 Performs a search based on the current configuration and items.
 Requests an update after the search completes.
@@ -8380,7 +8380,7 @@ The **`showPopover()`** method of the HTMLElement interface shows a Popover_API 
 
 > **sortResults**(`items`, `options?`): `any`[]
 
-Defined in: [elements/itemfilter/src/main.js:368](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L368)
+Defined in: [elements/itemfilter/src/main.js:368](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L368)
 
 Sorts the given items based on the current configuration.
 
@@ -8470,7 +8470,7 @@ The **`togglePopover()`** method of the HTMLElement interface toggles a Popover_
 
 > **updated**(`changedProperties`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:430](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L430)
+Defined in: [elements/itemfilter/src/main.js:430](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L430)
 
 Called when the element is updated.
 Re-Initialize itemfilter when `config` and `items` changes.
@@ -8497,7 +8497,7 @@ The properties that have changed.
 
 > **updateResult**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:471](https://github.com/EOX-A/EOxElements/blob/37643fcc119cb82fe564be6b7716acf4d7952eb6/elements/itemfilter/src/main.js#L471)
+Defined in: [elements/itemfilter/src/main.js:471](https://github.com/EOX-A/EOxElements/blob/d109fc7c837a91e9e7877ca2c2c0bc18609102e1/elements/itemfilter/src/main.js#L471)
 
 Updates selected result when result component triggers the "result" event.
 
