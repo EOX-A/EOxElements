@@ -7,3 +7,10 @@ export type ExtendedOLLayer = OLLayer & {
   styleVariables_?: object;
   updateStyleVariables?: (vars: object) => void;
 };
+
+/** A screen point (camera pixels) and where its ray hits the ellipsoid. */
+export type ScreenHit = {
+  x: number;
+  y: number;
+  hit: import("@openglobus/og").Vec3;
+};
