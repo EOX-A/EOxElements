@@ -8,3 +8,4 @@ export {
   testGlobePolarAndAsyncCanvasTiles,
   testGlobeGeoZarrPoolSync,
 } from "./wms-and-geozarr-pool.js";
+export { testGlobeLonLatExtent } from "./lonlat-extent.js";
