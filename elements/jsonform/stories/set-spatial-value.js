@@ -19,17 +19,7 @@ const schema = {
           for: "eox-map#spatial-map",
         },
       },
-    },
-    polygonArea: {
-      type: "array",
-      title: "Target Area (Polygon)",
-      format: "polygon",
-      options: {
-        drawtools: {
-          for: "eox-map#spatial-map",
-        },
-      },
-    },
+    }
   },
 };
 
@@ -38,16 +28,7 @@ const initialValue = {
 };
 
 const updatedBboxValue = {
-  area: [-5.0, 36.0, 2.0, 43.0],
-  polygonArea: [
-    [
-      [10.0, 45.0],
-      [15.0, 45.0],
-      [15.0, 48.0],
-      [10.0, 48.0],
-      [10.0, 45.0],
-    ],
-  ],
+  area: [-5.0, 36.0, 2.0, 43.0]
 };
 
 export default {
