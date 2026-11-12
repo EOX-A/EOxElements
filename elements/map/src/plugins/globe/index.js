@@ -10,6 +10,7 @@ import {
   registerGlobeSynchronization,
   connectGlobeSynchronization,
 } from "./lifecycle.js";
+import { unByKey } from "ol/Observable";
 
 /**
  * @typedef {import("../../main").EOxMap} EOxMap
@@ -27,17 +28,48 @@ import {
  */
 export function registerGlobeLayerSynchronization(EOxMap, globe, mapPool) {
   let renderedLayers = new Set(EOxMap.map.getAllLayers());
+  // The source each globe layer was built from; `updateLayer` swaps sources on the same OL layer.
+  /** @type {WeakMap<OLLayer, import("ol/source/Source").default | null>} */
+  const builtSources = new WeakMap(
+    EOxMap.map.getAllLayers().map((layer) => [layer, layer.getSource()]),
+  );
 
   registerGlobeSynchronization(globe, () => {
     const controller = new AbortController();
     /** @type {Map<OLLayer, () => void>} */
     const subscriptions = new Map();
+    let synchronizeQueued = false;
 
     /** @param {OLLayer} layer - The OL layer to observe. */
     const subscribe = (layer) => {
       if (!subscriptions.has(layer)) {
         subscriptions.set(layer, setupLayerListeners(layer, globe, mapPool));
       }
+    };
+
+    // The layer group also changes on visibility, opacity and vector data,
+    // which the per-layer listeners already mirror.
+    const layersOutOfSync = () => {
+      const layers = EOxMap.map.getAllLayers();
+      return (
+        layers.length !== renderedLayers.size ||
+        layers.some(
+          (layer) =>
+            !renderedLayers.has(layer) ||
+            builtSources.get(layer) !== layer.getSource(),
+        )
+      );
+    };
+
+    // `addOrUpdateLayer` changes layers without `layerschanged`, and `set layers`
+    // calls it once per layer: one check per microtask covers the batch.
+    const scheduleSynchronize = () => {
+      if (synchronizeQueued) return;
+      synchronizeQueued = true;
+      queueMicrotask(() => {
+        synchronizeQueued = false;
+        if (!controller.signal.aborted && layersOutOfSync()) synchronize();
+      });
     };
 
     const synchronize = () => {
@@ -68,10 +100,15 @@ export function registerGlobeLayerSynchronization(EOxMap, globe, mapPool) {
       });
 
       currentLayers.forEach((layer) => {
-        const existing = globe.planet.getLayerByName(layer.get("id"));
+        let existing = globe.planet.getLayerByName(layer.get("id"));
+        if (existing && builtSources.get(layer) !== layer.getSource()) {
+          globe.planet.removeLayer(existing);
+          existing = undefined;
+        }
         if (!existing) {
           const globeLayer = createGlobusLayer(layer, mapPool, EOxMap);
           if (globeLayer) globe.planet.addLayer(globeLayer);
+          builtSources.set(layer, layer.getSource());
         } else {
           existing.setVisibility(layer.getVisible());
           existing.opacity = layer.getOpacity();
@@ -93,11 +130,16 @@ export function registerGlobeLayerSynchronization(EOxMap, globe, mapPool) {
       { signal: controller.signal },
     );
     watchGlobeLayerOrder(EOxMap, globe, controller.signal);
+    // Covers nested group children and source swaps on the same OL layer.
+    const groupKey = EOxMap.map
+      .getLayerGroup()
+      .on("change", scheduleSynchronize);
 
     // Reconcile changes made while the host was disconnected.
     synchronize();
 
     return () => {
+      unByKey(groupKey);
       controller.abort();
       subscriptions.forEach((release) => release());
       subscriptions.clear();
