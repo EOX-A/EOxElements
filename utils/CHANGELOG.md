@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.2.0...elements-utils-v1.3.0) (2026-11-12)
+
+
+### Features
+
+* Standardize user activity events across EOxElements ([#2648](https://github.com/EOX-A/EOxElements/issues/2648)) ([37643fc](https://github.com/EOX-A/EOxElements/commit/37643fcc119cb82fe564be6b7716acf4d7952eb6))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.1.2...elements-utils-v1.2.0) (2026-06-10)
 
 

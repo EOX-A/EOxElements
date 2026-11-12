@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.11.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.10.1...layercontrol-v1.11.0) (2026-11-12)
+
+
+### Features
+
+* Standardize user activity events across EOxElements ([#2648](https://github.com/EOX-A/EOxElements/issues/2648)) ([37643fc](https://github.com/EOX-A/EOxElements/commit/37643fcc119cb82fe564be6b7716acf4d7952eb6))
+
+
+### Bug Fixes
+
+* Update cached tile url after a source update ([#2659](https://github.com/EOX-A/EOxElements/issues/2659)) ([10ccc6e](https://github.com/EOX-A/EOxElements/commit/10ccc6e416662c538250db21c644bfd445590aad))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @eox/elements-utils bumped from ^1.2.0 to ^1.3.0
+  * devDependencies
+    * @eox/jsonform bumped from * to 1.15.0
+    * @eox/map bumped from * to 2.11.0
+  * peerDependencies
+    * @eox/jsonform bumped from * to 1.15.0
+    * @eox/timecontrol bumped from >=2.0.0 to >=2.11.0
+
 ## [1.10.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.10.0...layercontrol-v1.10.1) (2026-10-20)
 
 
