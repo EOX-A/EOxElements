@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.19.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.18.0...itemfilter-v1.19.0) (2026-11-12)
+
+
+### Features
+
+* Standardize user activity events across EOxElements ([#2648](https://github.com/EOX-A/EOxElements/issues/2648)) ([37643fc](https://github.com/EOX-A/EOxElements/commit/37643fcc119cb82fe564be6b7716acf4d7952eb6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @eox/elements-utils bumped from ^1.2.0 to ^1.3.0
+  * peerDependencies
+    * @eox/map bumped from >=2.0.0 || >=2.1.0-dev.1 to >=2.11.0
+    * @eox/timecontrol bumped from >=2.0.0 to >=2.11.0
+
 ## [1.18.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.17.5...itemfilter-v1.18.0) (2026-10-20)
 
 
