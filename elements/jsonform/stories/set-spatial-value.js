@@ -19,7 +19,7 @@ const schema = {
           for: "eox-map#spatial-map",
         },
       },
-    }
+    },
   },
 };
 
@@ -28,7 +28,7 @@ const initialValue = {
 };
 
 const updatedBboxValue = {
-  area: [-5.0, 36.0, 2.0, 43.0]
+  area: [-5.0, 36.0, 2.0, 43.0],
 };
 
 export default {
