@@ -2,6 +2,7 @@
  * Renders storytelling showcasing a combination of markdown, maps, and tours.
  */
 import { html } from "lit";
+import "color-legend-element";
 
 export const MarkdownShowcase = {
   argTypes: {
@@ -129,6 +130,21 @@ Each tour step is described as an *h3* (*###*) heading.
 ### <!--{ src="https://picsum.photos/900/800" style="background: #e2fffc;" }-->
 #### Third tour step.
 ![](https://placehold.co/200x100)
+
+## Custom Elements
+Custom elements (Web Components) can be embedded directly within markdown stories. Attributes and properties are preserved, making it easy to incorporate interactive widgets such as color legends or specialized components:
+
+\`\`\`markdown
+<color-legend
+  domain="[0, 100]"
+  scaletype="discrete"
+  range='["#eff3ff","#6baed6","#08519c", "#666666"]'
+  titletext="Snowfall (mm)"
+  style="--cle-background: transparent;"
+></color-legend>
+\`\`\`
+
+<color-legend domain="[0,100]" scaletype="discrete" range='["#eff3ff","#6baed6","#08519c", "#666666"]' titletext="Snowfall (mm)" style="--cle-background: transparent;"></color-legend>
 
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
