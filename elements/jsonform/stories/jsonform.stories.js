@@ -32,6 +32,7 @@ import {
   GridStrictStory,
   StepsEditorStory,
   BranchingStory,
+  SetSpatialValueStory,
 } from "./index.js";
 
 export default {
@@ -287,6 +288,14 @@ export const FeatureSelection = FeatureSelectionStory;
  * Demonstrates output format customization for spatial inputs.
  */
 export const WKT = WKTStory;
+
+/**
+ * Programmatic Spatial Value example (`setValue` on spatial inputs).
+ * Demonstrates how calling `editor.setValue()` or passing dynamic `.value` coordinates
+ * (bounding boxes, polygons, points) updates the underlying `eox-drawtools` instance on external maps,
+ * enabling state synchronization, URL restoration, and dynamic resets without manual re-drawing.
+ */
+export const SetSpatialValue = SetSpatialValueStory;
 
 /**
  * GeoJSON example. Returns drawn features as GeoJSON.
