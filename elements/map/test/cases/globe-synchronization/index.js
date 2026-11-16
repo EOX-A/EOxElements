@@ -373,3 +373,43 @@ export function testAddOrUpdateLayerGroupChild() {
     });
   });
 }
+
+/** An XYZ URL edited in place on the same source (as eox-layercontrol does) reaches the globe. */
+export function testInPlaceXyzUrlChange() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [xyzDefinition("a")];
+    const { planet } = activate(map);
+    const source = /** @type {any} */ (map.getLayerById("mosaic").getSource());
+    const updatedUrl = `${source.getUrls()[0]}?rescale=2`;
+    // mirrors eox-layercontrol: keep the source, store the URL, bump the key
+    source._updatedUrl = updatedUrl;
+    source.setKey("edited");
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic").url, "globe layer").to.equal(
+        updatedUrl,
+      );
+    });
+  });
+}
+
+/** WMS params updated in place on the same source reach the globe. */
+export function testInPlaceWmsParamsChange() {
+  cy.intercept("**/test-wms*", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [wmsDefinition()];
+    const { planet } = activate(map);
+    const source = /** @type {any} */ (map.getLayerById("dynamic").getSource());
+    source.updateParams({ TIME: "2020-01-01" });
+    cy.wrap(planet).should((p) => {
+      // og WMS keeps all non-layer params only in its private request string
+      expect(p.getLayerByName("dynamic")._extra, "globe layer").to.contain(
+        "TIME=2020-01-01",
+      );
+    });
+  });
+}
