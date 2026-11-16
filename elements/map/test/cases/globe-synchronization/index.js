@@ -77,6 +77,106 @@ function wmsDefinition() {
   });
 }
 
+/**
+ * @param {(map: EOxMap, planet: ReturnType<typeof createGlobeStub>["planet"]) => void} test
+ * @param {{ minZoom?: number, maxZoom?: number, preload?: number }} [zoomRange] - OL tile layer loading options.
+ */
+function withXyzGlobe(test, zoomRange) {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    const { planet } = activate(map);
+    map.layers = [{ ...xyzDefinition("zoom"), ...zoomRange }];
+    test(map, planet);
+  });
+}
+
+/** An OL zoom range gates globe tile requests per tile and skips the low-zoom loads. */
+export function testGlobeLayerZoomRange() {
+  withXyzGlobe(
+    (_, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      expect(layer).to.include({
+        minZoom: 8,
+        minNativeZoom: 8,
+        maxZoom: 12,
+        maxNativeZoom: 12,
+        waitForParentMaterial: false,
+      });
+      expect(layer._preLoadZoomLevels).to.deep.equal([]);
+    },
+    { minZoom: 8, maxZoom: 12 },
+  );
+}
+
+/** Fractional OL zooms map to the tile zoom OL requests (nearest by resolution). */
+export function testFractionalGlobeLayerZoomRange() {
+  withXyzGlobe(
+    (map, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      expect(layer.minNativeZoom).to.equal(8);
+      map.map.getAllLayers()[0].setMinZoom(8.5);
+      expect(layer.minNativeZoom).to.equal(9);
+    },
+    { minZoom: 8.3 },
+  );
+}
+
+/** Layers without an OL zoom range keep the default zooms but load like OL. */
+export function testGlobeLayerWithoutZoomRange() {
+  withXyzGlobe((_, planet) => {
+    const layer = planet.getLayerByName("mosaic");
+    expect(layer).to.include({
+      minZoom: 0,
+      minNativeZoom: 0,
+      maxZoom: 50,
+      waitForParentMaterial: false,
+    });
+    expect(layer._preLoadZoomLevels).to.deep.equal([]);
+  });
+}
+
+/** OL preload maps to the ancestor walk, which cannot respect an OL minZoom. */
+export function testGlobeLayerPreload() {
+  withXyzGlobe(
+    (map, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      expect(layer.waitForParentMaterial).to.be.true;
+      const olLayer = map.map.getAllLayers()[0];
+      olLayer.setMinZoom(8);
+      expect(layer.waitForParentMaterial).to.be.false;
+      // OL preload reaches z0 for a minZoom of 0.
+      olLayer.setMinZoom(0);
+      expect(layer.waitForParentMaterial).to.be.true;
+    },
+    { preload: Infinity },
+  );
+}
+
+/** Zoom range edits on a live OL layer reach the same globe layer. */
+export function testLiveGlobeLayerZoomRange() {
+  withXyzGlobe(
+    (map, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      const olLayer = map.map.getAllLayers()[0];
+      const redraw = cy.spy(layer, "redraw");
+      olLayer.setMinZoom(10);
+      olLayer.setMaxZoom(14);
+      // The `layers` setter workaround must not clear loaded tiles.
+      olLayer.setMinZoom(10 - 1e-12);
+      expect(planet.getLayerByName("mosaic")).to.equal(layer);
+      expect(layer).to.include({ minZoom: 10, minNativeZoom: 10, maxZoom: 14 });
+      expect(redraw).to.have.been.calledOnce;
+      olLayer.setMinZoom(-Infinity);
+      olLayer.setMaxZoom(Infinity);
+      expect(layer).to.include({ minZoom: 0, minNativeZoom: 0, maxZoom: 50 });
+      expect(redraw).to.have.been.calledTwice;
+    },
+    { minZoom: 8, maxZoom: 12 },
+  );
+}
+
 /** Internal map events remain local, while root map events still bubble and compose. */
 export function testPoolEventIsolation() {
   withMap((map) => {
