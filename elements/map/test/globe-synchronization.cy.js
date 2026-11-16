@@ -11,6 +11,8 @@ import {
   testAddOrUpdateLayerAdd,
   testAddOrUpdateLayerUpdate,
   testAddOrUpdateLayerGroupChild,
+  testInPlaceXyzUrlChange,
+  testInPlaceWmsParamsChange,
 } from "./cases/globe-synchronization/index.js";
 
 describe("globe synchronization ownership", () => {
@@ -54,5 +56,10 @@ describe("globe synchronization ownership", () => {
   it(
     "syncs group children added through addOrUpdateLayer",
     testAddOrUpdateLayerGroupChild,
+  );
+  it("syncs an XYZ URL edited in place to the globe", testInPlaceXyzUrlChange);
+  it(
+    "syncs WMS params updated in place to the globe",
+    testInPlaceWmsParamsChange,
   );
 });
