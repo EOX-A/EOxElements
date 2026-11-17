@@ -30,7 +30,7 @@ export const EOxChart = {
   name: "EOxChart",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-chart",
-  events: ["pointermove:item", "click:item"],
+  events: ["pointermove:item", "click:item", "eox:activity"],
   schema: z.object({
     /** Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object. */
     dataValues: z.any().optional(),
@@ -78,7 +78,7 @@ export const EOxDrawtools = {
   name: "EOxDrawtools",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-drawtools",
-  events: ["drawupdate"],
+  events: ["drawupdate", "eox:activity"],
   schema: z.object({
     /** Allow modifying the drawn feature(s) */
     allowModify: z.boolean().optional(),
@@ -158,7 +158,7 @@ export const EOxFeedback = {
   name: "EOxFeedback",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-feedback",
-  events: ["submit", "close"],
+  events: ["close", "submit", "eox:activity"],
   schema: z.object({
     /** The endpoint to send the feedback to as POST message. */
     endpoint: z.string().optional(),
@@ -187,7 +187,7 @@ export const EOxGeosearch = {
   name: "EOxGeosearch",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-geosearch",
-  events: ["geosearchSelect"],
+  events: ["geosearchSelect", "eox:activity"],
   schema: z.object({
     /** The OpenCage API endpoint to use for the search, including the key but without the query parameter. */
     endpoint: z.string().optional(),
@@ -247,11 +247,12 @@ export const EOxItemfilter = {
   tagName: "eox-a2ui-element",
   targetTagName: "eox-itemfilter",
   events: [
-    "filter",
-    "select",
     "mouseenter:result",
     "mouseleave:result",
+    "filter",
+    "select",
     "click:result-action",
+    "eox:activity",
   ],
   schema: z.object({
     /** The items to be filtered. Can be passed as a property or stringified JSON attribute. */
@@ -304,6 +305,8 @@ export const EOxItemfilter = {
     filters: z.any().optional(),
     /** The state object containing the filtered results. */
     results: z.array(z.any()).optional(),
+    /**  */
+    _debouncedSearch: z.any().optional(),
     /** Use an external search endpoint instead of fuse search. Passed properties: input string, filters object. The function can return a URL string, or an object containing a `url, an optional `fetchFn` to handle the request, or/and an optional `key` to return a specific property from the fetched data. This is a property-only field as it expects a function. */
     externalFilter: z.any().optional(),
   }),
@@ -348,7 +351,7 @@ export const EOxJsonform = {
   name: "EOxJsonform",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-jsonform",
-  events: ["ready", "change", "submit"],
+  events: ["ready", "change", "submit", "eox:activity"],
   schema: z.object({
     /** Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: "minmax"`). */
     schema: z.any().optional(),
@@ -404,7 +407,12 @@ export const EOxLayercontrol = {
   name: "EOxLayercontrol",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-layercontrol",
-  events: ["layerchange", "layerConfig:change"],
+  events: [
+    "layerchange",
+    "layerConfig:change",
+    "datetime:updated",
+    "eox:activity",
+  ],
   schema: z.object({
     /** Query selector of an `eox-map` (`String`, passed as an attribute or property) or an `eox-map` DOM element (`HTMLElement`, passed as property) */
     for: z.any().optional(),
@@ -504,135 +512,6 @@ export const EOxLayoutItem = {
 };
 
 /**
- * ### Introduction
- * Working with STAC catalogs, collections and items often times requires
- * to fetch a JSON file, parse its contents and display some of its fields
- * in some formatted way. To make these steps reusable, the `eox-stacinfo`
- * element offers a set of functionalities:
- * - **automatically fetch a STAC file** as soon as the element loads
- * - offer a **property whitelist** functionality to choose which properties to display
- * - display the properties in **configurable sections** (header, body, featured, footer)
- * - allow to **override** any property display for application-specific custom needs
- *
- * The use case for this element is alongside a map which displays STAC files
- * or in a catalog browsing scenario where a quick look at the most important properties
- * is needed.
- *
- * #### Technology
- * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
- *
- * #### Usage
- * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
- *
- * Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.
- *
- * A `Filter` object has the following structure:
- * ```javascript
- * {
- *   key: "links",
- *   filter: (link) => {
- *     // Return true/false to include/exclude items from a list (e.g. assets, links)
- *     return link.rel === "example";
- *   }
- * }
- * ```
- *
- * Sections:
- * - `header`: Array of property keys or Filters to display at the top
- * - `tags`: Array of property keys or Filters to display as tags
- * - `body`: Array of property keys or Filters for the main content
- * - `featured`: Array of property keys or Filters for prominent display
- * - `footer`: Array of property keys or Filters for the bottom section
- *
- * #### Customization
- * - **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.
- * - **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
- */
-export const EOxStacinfo = {
-  name: "EOxStacinfo",
-  tagName: "eox-a2ui-element",
-  targetTagName: "eox-stacinfo",
-  events: [],
-  schema: z.object({
-    /** Whether to allow HTML in the property display */
-    allowHtml: z.boolean().optional(),
-    /** Whether to use unstyled mode */
-    unstyled: z.boolean().optional(),
-    /** The identifier for the STAC resource to fetch */
-    for: z.string().optional(),
-    /** Keys of properties to display in the header */
-    header: z.array(z.any()).optional(),
-    /** Keys of properties to display to display as tags */
-    tags: z.array(z.any()).optional(),
-    /** Keys of properties to display to display in the main body */
-    body: z.array(z.any()).optional(),
-    /** Keys of properties to display in the featured section */
-    featured: z.array(z.any()).optional(),
-    /** Keys of properties to display in the footer */
-    footer: z.array(z.any()).optional(),
-    /** The state object containing the fetched STAC information */
-    stacInfo: z.array(z.any()).optional(),
-    /** The state object containing the parsed STAC properties */
-    stacProperties: z.array(z.any()).optional(),
-  }),
-};
-
-/**
- * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, and custom initialization logic via events.
- *
- * ## Usage
- * Place `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.
- *
- * ## Features
- * - **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.
- * - **Slot Content:** Accepts Markdown via slot for flexible content injection.
- * - **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.
- * - **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.
- * - **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup).
- *
- * ## Custom Markdown Extensions
- * In order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key="value" }-->`. Here are some of the supported extensions:
- * - **Section Configuration:** Define sections with attributes like `as`, `id`, `class`, `style`, and more.
- * - **Hero Section:** Create a full-screen hero section using `#` (Header 1) with additional attributes for images or videos.
- * - **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.
- * - **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.
- *
- * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
- */
-export const EOxStorytelling = {
-  name: "EOxStorytelling",
-  tagName: "eox-a2ui-element",
-  targetTagName: "eox-storytelling",
-  events: ["init", "upload:file", "changed"],
-  schema: z.object({
-    /** Markdown Content */
-    markdown: z.string().optional(),
-    /** Markdown Content URL */
-    markdownURL: z.string().optional(),
-    /** Enable or disable navigation */
-    showNav: z.boolean().optional(),
-    /** Enable or disable editor */
-    showEditor: z.any().optional(),
-    /** Enable or disable hero scroll indicator */
-    showHeroScrollIndicator: z.boolean().optional(),
-    /** Enable or disable map loading indicator by default */
-    showMapLoadingIndicator: z.boolean().optional(),
-    /** Renders the element without a shadow root */
-    noShadow: z.boolean().optional(),
-    /** Disable auto save */
-    disableAutosave: z.boolean().optional(),
-    /** Render the element without additional styles */
-    unstyled: z.boolean().optional(),
-    /** custom section index */
-    addCustomSectionIndex: z.number().optional(),
-    /** Selected custom element object */
-    selectedCustomElement: z.any().optional(),
-    /** List of items in navigation */
-    nav: z.array(z.any()).optional(),
-  }),
-};
-
-/**
  * The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.
  *
  * ## Basic usage:
@@ -708,22 +587,21 @@ export const EOxStorytelling = {
  *
  * - `buffer`: Applies a buffer around an extent
  * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
- * - `isGeoZarrLayer`: Checks if a layer is a GeoZarr layer.
- * - `setupGeoZarrLayer`: Sets up a GeoZarr layer with the necessary configurations.
  *
- * Usage: `import { buffer, transform, transformExtent, isGeoZarrLayer, setupGeoZarrLayer } from "@eox/map";`
+ * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
  */
 export const EOxMap = {
   name: "EOxMap",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-map",
   events: [
-    "resize",
     "clusterSelect",
     "loadend",
     "mapmounted",
+    "resize",
     "select",
     "layerschanged",
+    "eox:activity",
   ],
   schema: z.object({
     /** Gets the current configuration of the map. */
@@ -772,6 +650,135 @@ export const EOxMap = {
 };
 
 /**
+ * ### Introduction
+ * Working with STAC catalogs, collections and items often times requires
+ * to fetch a JSON file, parse its contents and display some of its fields
+ * in some formatted way. To make these steps reusable, the `eox-stacinfo`
+ * element offers a set of functionalities:
+ * - **automatically fetch a STAC file** as soon as the element loads
+ * - offer a **property whitelist** functionality to choose which properties to display
+ * - display the properties in **configurable sections** (header, body, featured, footer)
+ * - allow to **override** any property display for application-specific custom needs
+ *
+ * The use case for this element is alongside a map which displays STAC files
+ * or in a catalog browsing scenario where a quick look at the most important properties
+ * is needed.
+ *
+ * #### Technology
+ * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
+ *
+ * #### Usage
+ * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
+ *
+ * Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects. These can be passed as properties or stringified JSON attributes.
+ *
+ * A `Filter` object has the following structure:
+ * ```javascript
+ * {
+ *   key: "links",
+ *   filter: (link) => {
+ *     // Return true/false to include/exclude items from a list (e.g. assets, links)
+ *     return link.rel === "example";
+ *   }
+ * }
+ * ```
+ *
+ * Sections:
+ * - `header`: Array of property keys or Filters to display at the top
+ * - `tags`: Array of property keys or Filters to display as tags
+ * - `body`: Array of property keys or Filters for the main content
+ * - `featured`: Array of property keys or Filters for prominent display
+ * - `footer`: Array of property keys or Filters for the bottom section
+ *
+ * #### Customization
+ * - **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.
+ * - **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
+ */
+export const EOxStacinfo = {
+  name: "EOxStacinfo",
+  tagName: "eox-a2ui-element",
+  targetTagName: "eox-stacinfo",
+  events: ["loaded", "click:link", "eox:activity"],
+  schema: z.object({
+    /** Whether to allow HTML in the property display */
+    allowHtml: z.boolean().optional(),
+    /** Whether to use unstyled mode */
+    unstyled: z.boolean().optional(),
+    /** The identifier for the STAC resource to fetch */
+    for: z.string().optional(),
+    /** Keys of properties to display in the header */
+    header: z.array(z.any()).optional(),
+    /** Keys of properties to display to display as tags */
+    tags: z.array(z.any()).optional(),
+    /** Keys of properties to display to display in the main body */
+    body: z.array(z.any()).optional(),
+    /** Keys of properties to display in the featured section */
+    featured: z.array(z.any()).optional(),
+    /** Keys of properties to display in the footer */
+    footer: z.array(z.any()).optional(),
+    /** The state object containing the fetched STAC information */
+    stacInfo: z.array(z.any()).optional(),
+    /** The state object containing the parsed STAC properties */
+    stacProperties: z.array(z.any()).optional(),
+  }),
+};
+
+/**
+ * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, and custom initialization logic via events.
+ *
+ * ## Usage
+ * Place `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.
+ *
+ * ## Features
+ * - **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.
+ * - **Slot Content:** Accepts Markdown via slot for flexible content injection.
+ * - **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.
+ * - **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.
+ * - **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup).
+ *
+ * ## Custom Markdown Extensions
+ * In order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key="value" }-->`. Here are some of the supported extensions:
+ * - **Section Configuration:** Define sections with attributes like `as`, `id`, `class`, `style`, and more.
+ * - **Hero Section:** Create a full-screen hero section using `#` (Header 1) with additional attributes for images or videos.
+ * - **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.
+ * - **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.
+ *
+ * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
+ */
+export const EOxStorytelling = {
+  name: "EOxStorytelling",
+  tagName: "eox-a2ui-element",
+  targetTagName: "eox-storytelling",
+  events: ["init", "changed", "upload:file", "eox:activity"],
+  schema: z.object({
+    /** Markdown Content */
+    markdown: z.string().optional(),
+    /** Markdown Content URL */
+    markdownURL: z.string().optional(),
+    /** Enable or disable navigation */
+    showNav: z.boolean().optional(),
+    /** Enable or disable editor */
+    showEditor: z.any().optional(),
+    /** Enable or disable hero scroll indicator */
+    showHeroScrollIndicator: z.boolean().optional(),
+    /** Enable or disable map loading indicator by default */
+    showMapLoadingIndicator: z.boolean().optional(),
+    /** Renders the element without a shadow root */
+    noShadow: z.boolean().optional(),
+    /** Disable auto save */
+    disableAutosave: z.boolean().optional(),
+    /** Render the element without additional styles */
+    unstyled: z.boolean().optional(),
+    /** custom section index */
+    addCustomSectionIndex: z.number().optional(),
+    /** Selected custom element object */
+    selectedCustomElement: z.any().optional(),
+    /** List of items in navigation */
+    nav: z.array(z.any()).optional(),
+  }),
+};
+
+/**
  * The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.
  *
  * ## Basic usage:
@@ -791,6 +798,7 @@ export const EOxMap = {
  * ## Features
  *
  * - **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.
+ * - **Multiple Maps:** Target an `eox-map-compare` or pass an array of map selectors/references through the `for` property to share one timeline and picker.
  * - **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.
  * - **Navigation Controls:** Previous/next buttons for stepping through time periods.
  * - **Date Formatting:** Customizable display format using dayjs tokens (default: "YYYY-MM-DD").
@@ -817,16 +825,17 @@ export const EOxMap = {
  *
  * ## Events
  *
- * - `stepchange`: Fired when the current time step changes (not currently implemented).
+ * - `select`: Fired when the selected date or date range changes.
+ * - `update:view`: Fired when the timeline or picker view range changes.
  */
 export const EOxTimecontrol = {
   name: "EOxTimecontrol",
   tagName: "eox-a2ui-element",
   targetTagName: "eox-timecontrol",
-  events: [],
+  events: ["select", "update:view", "eox:activity"],
   schema: z.object({
-    /** Query selector of an `eox-map` (`String`, passed as an attribute or property) or an `eox-map` DOM element (`HTMLElement`, passed as property) */
-    for: z.any().optional(),
+    /** Selector or element reference for an `eox-map` or `eox-map-compare`. Pass an array of selectors/references as a property to control multiple maps, including maps whose views are linked with `sync`. */
+    for: z.array(z.any()).optional(),
     /** Whether default styling is disabled. */
     unstyled: z.boolean().optional(),
     /** Property key used to retrieve layer titles (default: "name"). */
@@ -841,8 +850,8 @@ export const EOxTimecontrol = {
     selectedDateRange: z.any().optional(),
     /** Array of control values. */
     controlValues: z.array(z.any()).optional(),
-    /** The initial date range as [startDate, endDate] in ISO/UTC format. */
-    initDate: z.any().optional(),
+    /** The initial date range as [startDate, endDate] in ISO/UTC format, or a date/keyword string, or array. */
+    initDate: z.array(z.any()).optional(),
     /** Sets the array of slider values. */
     sliderValues: z.array(z.any()).optional(),
     /** Sets the reference to the associated eox-map element. */
@@ -886,6 +895,7 @@ export const EOxTour = {
     "tour-highlighted",
     "tour-deselected",
     "tour-destroy-started",
+    "eox:activity",
   ],
   schema: z.object({
     /** The driver.js configuration object. See the [driver.js docs](https://driverjs.com/docs/configuration) for available options. */
@@ -908,6 +918,8 @@ export const EOxA2uiElement = {
   targetTagName: "eox-a2ui-element",
   events: ["eventName"],
   schema: z.object({
+    /**  */
+    controller: z.any().optional(),
     /**  */
     map: z.any().optional(),
     /**  */
@@ -949,9 +961,9 @@ export const eoxComponents = [
   EOxLayercontrol,
   EOxLayout,
   EOxLayoutItem,
+  EOxMap,
   EOxStacinfo,
   EOxStorytelling,
-  EOxMap,
   EOxTimecontrol,
   EOxTour,
   EOxA2uiElement,
