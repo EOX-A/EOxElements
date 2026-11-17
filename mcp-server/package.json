@@ -20,6 +20,6 @@
     "@modelcontextprotocol/sdk": "^1.32.2",
     "cors": "^2.8.5",
     "express": "^5.3.0",
-    "zod": "^4.6.5"
+    "zod": "^4.6.7"
   }
 }
