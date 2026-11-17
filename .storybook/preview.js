@@ -24,6 +24,7 @@ import "@eox/stacinfo";
 import "@eox/storytelling";
 import "@eox/timecontrol";
 import "@eox/tour";
+import "color-legend-element";
 
 import { extractArgTypes } from "./utils.js";
 
