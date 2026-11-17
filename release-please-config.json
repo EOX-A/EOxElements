@@ -67,7 +67,8 @@
         }
       ]
     },
-    "a2ui": {}
+    "a2ui": {},
+    "mcp-app": {}
   },
   "plugins": [
     "sentence-case",

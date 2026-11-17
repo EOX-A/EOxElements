@@ -56,7 +56,7 @@ The following tools are available:
 
 - `list_elements`: List all available EOxElements custom elements.
 - `get_element_details`: Get the full details for a specific EOxElements custom element.
-- `get_element_stories`: Get the stories (examples/snippets) for a specific EOxElements custom element.
+- `get_element_stories`: Get the stories (examples/snippets) for a specific EOxElements custom element (includes `_meta.ui.resourceUri` pointing to `ui://eox-elements/preview` for MCP Apps hosts).
 - `get_element_attributes`: Get the attributes for a specific EOxElements custom element.
 - `get_element_properties`: Get the properties for a specific EOxElements custom element.
 - `get_element_events`: Get the events for a specific EOxElements custom element.
@@ -106,3 +106,48 @@ You can render this entire interactive workspace directly inside your webpage by
 ### Live Rendered Showcase
 
 You can view this interactive showcase as a full-screen, standalone demo in the **Demo** category **[here](./?path=/story/demo--a-2-ui-showcase)**.
+
+## MCP Apps Integration
+
+In addition to host-rendered A2UI, EOxElements supports the [**MCP Apps** (`io.modelcontextprotocol/ui`)](https://github.com/modelcontextprotocol/ext-apps) standard via `@eox/elements-mcp-app`. This allows MCP servers to bundle `<eox-map>`, `<eox-chart>`, `<eox-layercontrol>`, or `<eox-a2ui-wrapper>` inside sandboxed `ui://` iframe views that render across compatible AI hosts (Claude, ChatGPT, VS Code, Goose, etc.).
+
+### Using `<eox-mcp-app>` in a `ui://` View Bundle
+
+```html
+<script type="module">
+  import "@eox/elements-mcp-app";
+  import "@eox/map";
+  import "@eox/layercontrol";
+  import "@eox/chart";
+</script>
+
+<eox-mcp-app show-layercontrol forward-a2ui-actions></eox-mcp-app>
+```
+
+`<eox-mcp-app>` connects over the `@modelcontextprotocol/ext-apps` `postMessage` bridge, listens for `ui/notifications/tool-result` (`structuredContent`), reports container height via `ui/notifications/size-changed`, and automatically renders:
+
+- **A2UI payloads** (`stream`, `messages`, `components`, or A2UI arrays) via `<eox-a2ui-wrapper>`.
+- **Direct geospatial / chart payloads** (`layers`, `center`, `zoom`, `tile_url`, `bbox`, `geojson`, or `vega_lite_spec` / `spec`) via `<eox-map>` + `<eox-layercontrol>` or `<eox-chart>`.
+
+### Functional Bridge & CSP Helper
+
+For custom view layouts or server-side `_meta.ui.csp` configuration:
+
+```js
+import {
+  connectMcpApp,
+  onToolResult,
+  sendMessage,
+  callServerTool,
+  buildEoxCspMeta,
+} from "@eox/elements-mcp-app";
+
+onToolResult((structuredContent) => {
+  // Bind structuredContent to your custom EOxElements layout
+});
+
+// Server-side _meta.ui.csp helper (includes EOX basemaps, blob:, data:, plus your STAC/TiTiler origins)
+const meta = buildEoxCspMeta(["https://api.explorer.eopf.copernicus.eu"]);
+```
+
+The `@eox/elements-mcp-server` package also exposes a `ui://eox-elements/preview` MCP App resource for interactive component story previews.
