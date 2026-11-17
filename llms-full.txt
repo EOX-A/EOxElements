@@ -13402,6 +13402,43 @@ Basic JSON Form example. Renders a form based on a provided JSON schema.
 
 ```
 
+#### SetSpatialValue
+
+Programmatic Spatial Value example (`setValue` on spatial inputs).
+Demonstrates how calling `editor.setValue()` or passing dynamic `.value` coordinates
+(bounding boxes, polygons, points) updates the underlying `eox-drawtools` instance on external maps,
+enabling state synchronization, URL restoration, and dynamic resets without manual re-drawing.
+
+```html
+<eox-jsonform value='{"area":[12,41.5,13.5,42.5]}'></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      properties: {
+        area: {
+          type: "array",
+          title: "Target Area (Bounding Box)",
+          format: "bounding-box",
+          options: {
+            drawtools: {
+              for: "eox-map#spatial-map",
+            },
+          },
+        },
+      },
+    },
+  });
+</script>
+
+```
+
 #### ShowOptInProperties
 
 Opt-in properties example. Shows how to display and interact with opt-in properties in the form.
@@ -14379,7 +14416,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-11-17T14:07:25.079Z",
+              default: "2026-11-17T14:09:43.419Z",
               options: {
                 hidden: true,
               },
