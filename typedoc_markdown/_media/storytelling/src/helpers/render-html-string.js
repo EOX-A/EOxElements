@@ -1,5 +1,5 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
-import { scrollIntoView } from "./misc.js";
+import { scrollIntoView, isCustomElement } from "./misc.js";
 import GLightbox from "glightbox";
 
 // Set up empty Lightbox
@@ -473,20 +473,23 @@ function fadeLayer(element, layerId, start, end, duration) {
  */
 function processNode(node, initDispatchFunc, that) {
   if (node.nodeType === Node.ELEMENT_NODE) {
-    const childElements = node.querySelectorAll("*");
-    childElements.forEach((element) => {
+    const targetElements = [
+      ...(isCustomElement(node.tagName) ? [node] : []),
+      ...Array.from(node.querySelectorAll("*")),
+    ];
+    targetElements.forEach((element) => {
       if (
-        /^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase()) &&
+        isCustomElement(element.tagName) &&
         node.classList.contains("section-custom")
       ) {
-        Array.from(element.attributes).forEach(
-          // Update the attribute with its converted value
-          (attr) =>
-            (element[attr.name] = convertAttributeValueBasedOnItsType(
+        Array.from(element.attributes).forEach((attr) => {
+          if (attr.name !== "style" && attr.name !== "class") {
+            element[attr.name] = convertAttributeValueBasedOnItsType(
               /** @type {HTMLElement} */ (element),
               attr.name,
-            )),
-        );
+            );
+          }
+        });
       }
       const dispatchTimeout = setTimeout(() => initDispatchFunc(element), 100);
       sectionTimeouts.push(dispatchTimeout);

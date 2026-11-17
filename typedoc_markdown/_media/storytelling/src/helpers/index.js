@@ -4,6 +4,7 @@ export { morphDOM, reconcileChildren } from "./morph";
 export {
   scrollAnchorClickEvent,
   scrollIntoView,
+  isCustomElement,
   getCustomEleHandling,
   addLightBoxScript,
   versionToInteger,

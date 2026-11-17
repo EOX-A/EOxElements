@@ -1,19 +1,19 @@
-import{n as e}from"./rolldown-runtime-BCiCTKAo.js";import{d as t,t as n}from"./lit-Dt0tyVZI.js";var r;function i(){return(i=e((()=>{n(),r={args:{markdown:`## Hello World, Welcome to EOxStoryTelling.`,id:`markdown-str`},render:e=>t`
+import{n as e}from"./rolldown-runtime-BCiCTKAo.js";import{d as t,t as n}from"./lit-Dt0tyVZI.js";import{n as r}from"./iframe-BTJJ3oET.js";var i;function a(){return(a=e((()=>{n(),i={args:{markdown:`## Hello World, Welcome to EOxStoryTelling.`,id:`markdown-str`},render:e=>t`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id=${e.id}
       markdown=${e.markdown}
     ></eox-storytelling>
-  `}})))()}var a;function o(){return(o=e((()=>{n(),a={args:{markdownURL:`${window.location.href.split(`iframe.html`)[0]}/sample.md`,id:`markdown-url`},render:e=>t`
+  `}})))()}var o;function s(){return(s=e((()=>{n(),o={args:{markdownURL:`${window.location.href.split(`iframe.html`)[0]}/sample.md`,id:`markdown-url`},render:e=>t`
     <eox-storytelling
       id=${e.id}
       markdown-url=${e.markdownURL}
     ></eox-storytelling>
-  `}})))()}var s;function c(){return(c=e((()=>{n(),s={args:{id:`markdown-slot`,storySlotContent:`## Hello World, this is some Markdown Inside the slot.`},render:e=>t`
+  `}})))()}var c;function l(){return(l=e((()=>{n(),c={args:{id:`markdown-slot`,storySlotContent:`## Hello World, this is some Markdown Inside the slot.`},render:e=>t`
     <eox-storytelling id=${e.id}
       >## Hello World, this is some Markdown Inside the slot.</eox-storytelling
     >
-  `}})))()}var l;function u(){return(u=e((()=>{n(),l={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`# Hero Section <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+  `}})))()}var u;function d(){return(d=e((()=>{n(),u={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`# Hero Section <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 ## Introduction
@@ -29,7 +29,7 @@ To create a Hero section, you start with an H1 (\`#\`), followed by an HTML comm
       ?show-hero-scroll-indicator=${e.showHeroScrollIndicator}
       markdown=${e.markdown}
     ></eox-storytelling>
-  `}})))()}var d;function f(){return(f=e((()=>{n(),d={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map section <!--{as="eox-map" class="overlay-br" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+  `}})))()}var f;function p(){return(p=e((()=>{n(),f={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map section <!--{as="eox-map" class="overlay-br" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
 ### Some title for map <!--{ style="color: white; font-size: 1.25rem;" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->`,id:`markdown-map`,showNav:!0},render:e=>t`
     <eox-storytelling
@@ -37,7 +37,7 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem i
       ?show-nav=${e.showNav}
       markdown=${e.markdown}
     ></eox-storytelling>
-  `}})))()}var p;function m(){return(m=e((()=>{n(),p={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
+  `}})))()}var m;function h(){return(h=e((()=>{n(),m={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
 ### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
@@ -62,7 +62,7 @@ To change individual parameters like zoom or center, or to change the map layers
       ?show-nav=${e.showNav}
       markdown=${e.markdown}
     ></eox-storytelling>
-  `}})))()}var h;function g(){return(g=e((()=>{n(),h={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
+  `}})))()}var g;function _(){return(_=e((()=>{n(),g={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
 ### <!--{ projection="globe" layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
@@ -91,7 +91,7 @@ To change individual parameters like zoom or center, or to change the map layers
       ?show-nav=${e.showNav}
       markdown=${e.markdown}
     ></eox-storytelling>
-  `}})))()}var _;function v(){return(v=e((()=>{n(),_={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Image Tour section <!--{ as="img" mode="tour" }-->
+  `}})))()}var v;function y(){return(y=e((()=>{n(),v={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Image Tour section <!--{ as="img" mode="tour" }-->
 
 ### <!--{ src="https://picsum.photos/800/600" style="background: #fff0c4;" }-->
 #### This is an image tour.
@@ -117,7 +117,7 @@ Each tour step is described as an *h3* (*###*) heading.
       ?show-nav=${e.showNav}
       markdown=${e.markdown}
     ></eox-storytelling>
-  `}})))()}var y;function b(){return(b=e((()=>{n(),y={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+  `}})))()}var b;function x(){return(x=e((()=>{n(),r(),b={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 
@@ -235,6 +235,21 @@ Each tour step is described as an *h3* (*###*) heading.
 #### Third tour step.
 ![](https://placehold.co/200x100)
 
+## Custom Elements
+Custom elements (Web Components) can be embedded directly within markdown stories. Attributes and properties are preserved, making it easy to incorporate interactive widgets such as color legends or specialized components:
+
+\`\`\`markdown
+<color-legend
+  domain="[0, 100]"
+  scaletype="discrete"
+  range='["#eff3ff","#6baed6","#08519c", "#666666"]'
+  titletext="Snowfall (mm)"
+  style="--cle-background: transparent;"
+></color-legend>
+\`\`\`
+
+<color-legend domain="[0,100]" scaletype="discrete" range='["#eff3ff","#6baed6","#08519c", "#666666"]' titletext="Snowfall (mm)" style="--cle-background: transparent;"></color-legend>
+
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
@@ -246,7 +261,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       ?show-map-loading-indicator=${e.showMapLoadingIndicator}
       markdown=${e.markdown}
     ></eox-storytelling>
-  `}})))()}function x(e){if(e?.tagName===`EOX-MAP`){e.registerProjection(`ESRI:53009`,`+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs`);let t=e.getAttribute(`projection`);t&&e.setAttribute(`projection`,t)}}var S;function C(){return(C=e((()=>{n(),S={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map section <!--{as="eox-map" projection="ESRI:53009" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+  `}})))()}function S(e){if(e?.tagName===`EOX-MAP`){e.registerProjection(`ESRI:53009`,`+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs`);let t=e.getAttribute(`projection`);t&&e.setAttribute(`projection`,t)}}var C;function w(){return(w=e((()=>{n(),C={argTypes:{markdown:{table:{category:`properties`}}},args:{markdown:`## Map section <!--{as="eox-map" projection="ESRI:53009" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
 
 ## Map Tour section <!--{ projection="ESRI:53009" as="eox-map" zoom="9" center=[12.46,41.89] mode="tour" layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' }-->
 
@@ -258,7 +273,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
 
 ### <!--{ projection="EPSG:4326" animationOptions="{duration:500}" }-->
 #### EPSG:4326
-`,id:`markdown-init-event`,init:e=>x(e.detail),storyCodeBefore:`
+`,id:`markdown-init-event`,init:e=>S(e.detail),storyCodeBefore:`
     function initEventFunc(element) {
       if (element?.tagName === "EOX-MAP") {
         element.registerProjection(
@@ -275,16 +290,16 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       markdown=${e.markdown}
       @init=${e.init}
     ></eox-storytelling>
-  `}})))()}function w(){return(w=e((()=>{i(),o(),c(),u(),f(),m(),g(),v(),b(),C()})))()}var T,E,D,O,k,A,j,M,N,P,F,I;function L(){return(L=e((()=>{w(),n(),T={title:`Elements/eox-storytelling`,tags:[`autodocs`],component:`eox-storytelling`,decorators:[e=>t`${e()}
+  `}})))()}function T(){return(T=e((()=>{a(),s(),l(),d(),p(),h(),_(),y(),x(),w()})))()}var E,D,O,k,A,j,M,N,P,F,I,L;function R(){return(R=e((()=>{T(),n(),E={title:`Elements/eox-storytelling`,tags:[`autodocs`],component:`eox-storytelling`,decorators:[e=>t`${e()}
         <style>
           .sb-show-main.sb-main-padded {
             padding: 0;
           }
-        </style>`]},E=r,D=a,O=s,k=l,A=d,j=p,M=h,N=_,P=S,F=y,I=[`Primary`,`MarkdownAsURL`,`MarkdownInsideSlot`,`MarkdownHero`,`MarkdownMap`,`MarkdownMapTour`,`MarkdownGlobeTour`,`MarkdownImageTour`,`MarkdownInitEvent`,`MarkdownShowcase`],E.parameters={...E.parameters,docs:{...E.parameters?.docs,source:{originalSource:`PrimaryStory`,...E.parameters?.docs?.source},description:{story:"Basic usage of eox-storytelling. Renders a simple Markdown string as a story.\nUse standard markdown like `# Header`, `## Subheader`, `**bold**`, `*italic*`, `[link](url)`.",...E.parameters?.docs?.description}}},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`MarkdownAsURLStory`,...D.parameters?.docs?.source},description:{story:"Loads Markdown content from a remote URL and displays it in the storytelling component.\nUseful for dynamic or externally managed story content. Pass the URL to the \\`markdown-url\\` attribute.",...D.parameters?.docs?.description}}},O.parameters={...O.parameters,docs:{...O.parameters?.docs,source:{originalSource:`MarkdownSlotStory`,...O.parameters?.docs?.source},description:{story:`Renders Markdown content provided via the slot, demonstrating slot-based story input.
+        </style>`]},D=i,O=o,k=c,A=u,j=f,M=m,N=g,P=v,F=C,I=b,L=[`Primary`,`MarkdownAsURL`,`MarkdownInsideSlot`,`MarkdownHero`,`MarkdownMap`,`MarkdownMapTour`,`MarkdownGlobeTour`,`MarkdownImageTour`,`MarkdownInitEvent`,`MarkdownShowcase`],D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`PrimaryStory`,...D.parameters?.docs?.source},description:{story:"Basic usage of eox-storytelling. Renders a simple Markdown string as a story.\nUse standard markdown like `# Header`, `## Subheader`, `**bold**`, `*italic*`, `[link](url)`.",...D.parameters?.docs?.description}}},O.parameters={...O.parameters,docs:{...O.parameters?.docs,source:{originalSource:`MarkdownAsURLStory`,...O.parameters?.docs?.source},description:{story:"Loads Markdown content from a remote URL and displays it in the storytelling component.\nUseful for dynamic or externally managed story content. Pass the URL to the \\`markdown-url\\` attribute.",...O.parameters?.docs?.description}}},k.parameters={...k.parameters,docs:{...k.parameters?.docs,source:{originalSource:`MarkdownSlotStory`,...k.parameters?.docs?.source},description:{story:`Renders Markdown content provided via the slot, demonstrating slot-based story input.
 Just place your raw Markdown inside the \`<eox-storytelling>\` tags.
 
-**NOTE:** Beware of indentation! Leading spaces will be included in the markdown string and might affect rendering.`,...O.parameters?.docs?.description}}},k.parameters={...k.parameters,docs:{...k.parameters?.docs,source:{originalSource:`MarkdownHeroStory`,...k.parameters?.docs?.source},description:{story:'Hero Section story.\nDemonstrates how to create a full-screen hero section at the start of a story.\nUse an h1 (\\`#\\`) followed by an HTML comment to configure the hero media:\n`# Title <!--{ as="video" mode="hero" src="..." }-->` or\n`# Title <!--{ as="img" mode="hero" src="..." }-->`.',...k.parameters?.docs?.description}}},A.parameters={...A.parameters,docs:{...A.parameters?.docs,source:{originalSource:`MarkdownMapStory`,...A.parameters?.docs?.source},description:{story:`Map Section story.
+**NOTE:** Beware of indentation! Leading spaces will be included in the markdown string and might affect rendering.`,...k.parameters?.docs?.description}}},A.parameters={...A.parameters,docs:{...A.parameters?.docs,source:{originalSource:`MarkdownHeroStory`,...A.parameters?.docs?.source},description:{story:'Hero Section story.\nDemonstrates how to create a full-screen hero section at the start of a story.\nUse an h1 (\\`#\\`) followed by an HTML comment to configure the hero media:\n`# Title <!--{ as="video" mode="hero" src="..." }-->` or\n`# Title <!--{ as="img" mode="hero" src="..." }-->`.',...A.parameters?.docs?.description}}},j.parameters={...j.parameters,docs:{...j.parameters?.docs,source:{originalSource:`MarkdownMapStory`,...j.parameters?.docs?.source},description:{story:`Map Section story.
 Demonstrates how to embed a map in the story using EOxMap.
 Use an h2 (\`##\`) followed by an HTML comment to configure the map:
-\`## Map section <!--{ as="eox-map" style="width: 100%; height: 500px;" config='{ "layers": [...], "view": {"center": [15,48], "zoom": 1} }' }-->\`.`,...A.parameters?.docs?.description}}},j.parameters={...j.parameters,docs:{...j.parameters?.docs,source:{originalSource:`MarkdownMapTourStory`,...j.parameters?.docs?.source},description:{story:'Map Tour story.\nDemonstrates how to create a scroll-driven map tour (scrollytelling) where the map state changes as you scroll.\n1. Define the base map tour section with an h2: `## Map Tour <!--{ as="eox-map" mode="tour" }-->`\n2. Define each step in the tour with an h3 (`###`) and a configuration comment overriding the map\'s state for that step:\n`### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.',...j.parameters?.docs?.description}}},M.parameters={...M.parameters,docs:{...M.parameters?.docs,source:{originalSource:`MarkdownGlobeTourStory`,...M.parameters?.docs?.source},description:{story:'Globe Tour story.\nDemonstrates how to create a scroll-driven globe tour (scrollytelling) where the globe state changes as you scroll.\n1. Define the base globe tour section with an h2: `## Globe Tour <!--{ as="eox-map" mode="tour" }-->`\n2. Define each step in the tour with an h3 (`###`) and a configuration comment overriding the globe\'s state for that step:\n`### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.',...M.parameters?.docs?.description}}},N.parameters={...N.parameters,docs:{...N.parameters?.docs,source:{originalSource:`MarkdownImageTourStory`,...N.parameters?.docs?.source},description:{story:'Image Tour story.\nDemonstrates how to create a scroll-driven image tour where the image changes as you scroll.\n1. Define the base image tour section with an h2: `## Image Tour <!--{ as="img" mode="tour" }-->`\n2. Define each step in the tour with an h3 (`###`) and a configuration comment providing the new image source:\n`### <!--{ src="https://picsum.photos/800/600" }-->`.',...N.parameters?.docs?.description}}},P.parameters={...P.parameters,docs:{...P.parameters?.docs,source:{originalSource:`MarkdownInitEventStory`,...P.parameters?.docs?.source},description:{story:`* Demonstrates the @init event, allowing custom initialization logic (e.g., map projection setup) when the story or embedded elements are initialized.`,...P.parameters?.docs?.description}}},F.parameters={...F.parameters,docs:{...F.parameters?.docs,source:{originalSource:`MarkdownShowcaseStory`,...F.parameters?.docs?.source},description:{story:`* Storytelling Showcase.
-A comprehensive example combining a hero section, standard markdown with configuration, a map section, a map tour, and an image tour all in one story.`,...F.parameters?.docs?.description}}}})))()}L();export{D as MarkdownAsURL,M as MarkdownGlobeTour,k as MarkdownHero,N as MarkdownImageTour,P as MarkdownInitEvent,O as MarkdownInsideSlot,A as MarkdownMap,j as MarkdownMapTour,F as MarkdownShowcase,E as Primary,I as __namedExportsOrder,T as default};
+\`## Map section <!--{ as="eox-map" style="width: 100%; height: 500px;" config='{ "layers": [...], "view": {"center": [15,48], "zoom": 1} }' }-->\`.`,...j.parameters?.docs?.description}}},M.parameters={...M.parameters,docs:{...M.parameters?.docs,source:{originalSource:`MarkdownMapTourStory`,...M.parameters?.docs?.source},description:{story:'Map Tour story.\nDemonstrates how to create a scroll-driven map tour (scrollytelling) where the map state changes as you scroll.\n1. Define the base map tour section with an h2: `## Map Tour <!--{ as="eox-map" mode="tour" }-->`\n2. Define each step in the tour with an h3 (`###`) and a configuration comment overriding the map\'s state for that step:\n`### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.',...M.parameters?.docs?.description}}},N.parameters={...N.parameters,docs:{...N.parameters?.docs,source:{originalSource:`MarkdownGlobeTourStory`,...N.parameters?.docs?.source},description:{story:'Globe Tour story.\nDemonstrates how to create a scroll-driven globe tour (scrollytelling) where the globe state changes as you scroll.\n1. Define the base globe tour section with an h2: `## Globe Tour <!--{ as="eox-map" mode="tour" }-->`\n2. Define each step in the tour with an h3 (`###`) and a configuration comment overriding the globe\'s state for that step:\n`### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.',...N.parameters?.docs?.description}}},P.parameters={...P.parameters,docs:{...P.parameters?.docs,source:{originalSource:`MarkdownImageTourStory`,...P.parameters?.docs?.source},description:{story:'Image Tour story.\nDemonstrates how to create a scroll-driven image tour where the image changes as you scroll.\n1. Define the base image tour section with an h2: `## Image Tour <!--{ as="img" mode="tour" }-->`\n2. Define each step in the tour with an h3 (`###`) and a configuration comment providing the new image source:\n`### <!--{ src="https://picsum.photos/800/600" }-->`.',...P.parameters?.docs?.description}}},F.parameters={...F.parameters,docs:{...F.parameters?.docs,source:{originalSource:`MarkdownInitEventStory`,...F.parameters?.docs?.source},description:{story:`* Demonstrates the @init event, allowing custom initialization logic (e.g., map projection setup) when the story or embedded elements are initialized.`,...F.parameters?.docs?.description}}},I.parameters={...I.parameters,docs:{...I.parameters?.docs,source:{originalSource:`MarkdownShowcaseStory`,...I.parameters?.docs?.source},description:{story:`* Storytelling Showcase.
+A comprehensive example combining a hero section, standard markdown with configuration, a map section, a map tour, and an image tour all in one story.`,...I.parameters?.docs?.description}}}})))()}R();export{O as MarkdownAsURL,N as MarkdownGlobeTour,A as MarkdownHero,P as MarkdownImageTour,F as MarkdownInitEvent,k as MarkdownInsideSlot,j as MarkdownMap,M as MarkdownMapTour,I as MarkdownShowcase,D as Primary,L as __namedExportsOrder,E as default};
