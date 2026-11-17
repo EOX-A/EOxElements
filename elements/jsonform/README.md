@@ -18,8 +18,6 @@ import "@eox/jsonform/dist/eox-jsonform.js"
 <eox-jsonform></eox-jsonform>
 ```
 
-// TODO: add documentation
-
 ## Contribute
 
 ```
