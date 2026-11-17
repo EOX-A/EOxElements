@@ -1,0 +1,52 @@
+{
+  "name": "@eox/elements-mcp-app",
+  "version": "0.1.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "description": "MCP Apps (io.modelcontextprotocol/ui) adapter and <eox-mcp-app> web component for EOxElements",
+  "main": "./src/index.js",
+  "types": "./types/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "types"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "node --test test/*.test.js",
+    "types:generate": "tsc --project tsconfig.build.json || true"
+  },
+  "author": "EOX",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.7.0",
+    "lit": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@eox/chart": "*",
+    "@eox/elements-a2ui": "^1.4.0",
+    "@eox/layercontrol": "*",
+    "@eox/map": "*",
+    "lit": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@eox/chart": {
+      "optional": true
+    },
+    "@eox/elements-a2ui": {
+      "optional": true
+    },
+    "@eox/layercontrol": {
+      "optional": true
+    },
+    "@eox/map": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}

@@ -60,3 +60,7 @@ node mcp-server/index.js --manifest ./custom-elements.json --snippets ./story-sn
 ```
 
 The server will start on `http://localhost:3000` and can be consumed by pointing a coding agent to it (or `http://localhost:3000/` with a slash at the end if a path is required).
+
+## MCP Apps Preview Resource
+
+The server also exposes a `ui://eox-elements/preview` MCP App resource (`text/html;profile=mcp-app`) linked via `_meta.ui.resourceUri` on `get_element_stories`, allowing MCP Apps-compatible hosts (Claude, ChatGPT, VS Code) to render story snippets interactively while preserving standard text responses for all MCP clients. For building custom EOxElements MCP App views, see `@eox/elements-mcp-app`.

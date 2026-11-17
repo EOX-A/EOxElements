@@ -8,6 +8,10 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import fs from "fs";
+import {
+  EOX_PREVIEW_RESOURCE_URI,
+  registerEoxPreviewResource,
+} from "./preview.js";
 
 const pkg = JSON.parse(
   fs.readFileSync(new URL("./package.json", import.meta.url), "utf8"),
@@ -121,9 +125,12 @@ async function main() {
           tools: {
             call: {},
           },
+          resources: {},
         },
       },
     );
+
+    registerEoxPreviewResource(server);
 
     server.registerTool(
       "list_elements",
@@ -229,6 +236,10 @@ async function main() {
         inputSchema: z.object({
           tagName: z.string().describe("e.g. 'eox-map'"),
         }),
+        _meta: {
+          ui: { resourceUri: EOX_PREVIEW_RESOURCE_URI },
+          "ui/resourceUri": EOX_PREVIEW_RESOURCE_URI,
+        },
       },
       async ({ tagName }) => {
         const stories = snippetsData.filter((s) => s.element === tagName);
@@ -239,6 +250,10 @@ async function main() {
               text: JSON.stringify(stories, null, 2),
             },
           ],
+          structuredContent: {
+            tagName,
+            stories,
+          },
         };
       },
     );
