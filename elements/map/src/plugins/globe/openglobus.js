@@ -822,6 +822,9 @@ export const disableGlobe = (map) => {
           /** @type {HTMLElement} */ (mapElement).style.display = ""; // Show the map
         }
         map.globeEnabled = false;
+        // og is mid-frame here; destroy once that frame has finished.
+        queueMicrotask(() => globe.destroy());
+        if (globus === globe) globus = undefined;
       },
     });
   }
