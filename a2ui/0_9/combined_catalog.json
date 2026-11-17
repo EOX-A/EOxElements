@@ -1920,6 +1920,26 @@
             "component": {
               "const": "EOxA2uiElement"
             },
+            "componentType": {
+              "description": "",
+              "type": "string"
+            },
+            "componentId": {
+              "description": "",
+              "type": "string"
+            },
+            "componentModel": {
+              "description": "",
+              "type": "string"
+            },
+            "surfaceModel": {
+              "description": "",
+              "type": "string"
+            },
+            "surfaceComponents": {
+              "description": "",
+              "type": "string"
+            },
             "controller": {
               "description": "",
               "type": "string"
