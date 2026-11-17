@@ -8,7 +8,7 @@
 
 > **HTMLElementEvent**\<`T`\> = `Event` & `object`
 
-Defined in: [elements/map/src/types.ts:251](https://github.com/EOX-A/EOxElements/blob/1c538c92eb9615f10f5f63b7e29b9413b54d0c33/elements/map/src/types.ts#L251)
+Defined in: [elements/map/src/types.ts:251](https://github.com/EOX-A/EOxElements/blob/1f6ca7326c1dd6446965b745c8e1371bece0f082/elements/map/src/types.ts#L251)
 
 ## Type Parameters
 
