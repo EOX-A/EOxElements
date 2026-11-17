@@ -281,8 +281,9 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
         return r.json();
       })
       .then((data) => {
-        // The source or the layer was replaced while fetching.
+        // The source or the layer was replaced, or globe mode left, while fetching.
         if (
+          !globus ||
           olLayer.getSource() !== source ||
           !EOxMap.map.getAllLayers().includes(olLayer)
         )
