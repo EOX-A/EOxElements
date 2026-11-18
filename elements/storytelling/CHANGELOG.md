@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.15.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.14.0...storytelling-v1.15.0) (2026-11-17)
+
+
+### Features
+
+* Standardize user activity events across EOxElements ([#2648](https://github.com/EOX-A/EOxElements/issues/2648)) ([37643fc](https://github.com/EOX-A/EOxElements/commit/37643fcc119cb82fe564be6b7716acf4d7952eb6))
+
+
+### Bug Fixes
+
+* Support custom element attributes in stories  ([#2663](https://github.com/EOX-A/EOxElements/issues/2663)) ([c0eef07](https://github.com/EOX-A/EOxElements/commit/c0eef07702fef95c40d94aed8b7e8d6d6a3afa81))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @eox/elements-utils bumped from ^1.2.0 to ^1.3.0
+  * peerDependencies
+    * @eox/jsonform bumped from * to 1.15.0
+
 ## [1.14.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.13.1...storytelling-v1.14.0) (2026-11-09)
 
 
