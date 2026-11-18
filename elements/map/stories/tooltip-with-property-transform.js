@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * The rendering of feature properties inside the tooltip can be transformed
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const TooltipWithPropertyTransformStory = {
   args: {

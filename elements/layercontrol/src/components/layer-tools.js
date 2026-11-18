@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { emitActivity, findHost } from "@eox/elements-utils";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -23,7 +24,7 @@ import {
  * Manages rendering tools and actions such as remove, sort, information display, layer configuration, and opacity adjustment.
  *
  * @element eox-layercontrol-layer-tools
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerTools extends LitElement {
   // Define static properties for the component
@@ -39,6 +40,7 @@ export class EOxLayerControlLayerTools extends LitElement {
       type: Boolean,
     },
     embedded: { state: true },
+    colormapRegistry: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -63,42 +65,42 @@ export class EOxLayerControlLayerTools extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
 
     /**
      * If enabled, the tools section will be opened.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.open = false;
 
     /**
      * If enabled, toggling the layer visibility will also open/close the layer tools.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAutoExpand = false;
 
     /**
      * Determine if tools are embedded in layercontrol or stand-alone
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     setTimeout(() => {
       const parent =
@@ -126,6 +128,13 @@ export class EOxLayerControlLayerTools extends LitElement {
      * @type {Array}
      */
     this.customEditorInterfaces = [];
+
+    /**
+     * Optional colormap registry for dynamic legend updates
+     *
+     * @type {Record<string,string[]>}
+     */
+    this.colormapRegistry = null;
   }
 
   /**
@@ -133,6 +142,19 @@ export class EOxLayerControlLayerTools extends LitElement {
    */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
+  }
+
+  firstUpdated() {
+    this.layer?.on?.("propertychange", (e) => {
+      const propEvent = /** @type {import("ol/Object").ObjectEvent} */ (e);
+      if (
+        propEvent.key === "layerConfig" ||
+        propEvent.key === "layerDatetime" ||
+        propEvent.key === "timeControlValues"
+      ) {
+        this.requestUpdate();
+      }
+    });
   }
 
   updated(changedProperties) {
@@ -156,6 +178,7 @@ export class EOxLayerControlLayerTools extends LitElement {
         detail: {
           jsonformValue: evt.detail.jsonformValue,
           layer: evt.detail.layer,
+          isUser: evt.detail.isUser,
         },
       }),
     );
@@ -195,6 +218,20 @@ export class EOxLayerControlLayerTools extends LitElement {
               this.layer.setOpacity(parseFloat(evt.target.value));
               this.requestUpdate();
             }}
+            @change=${(
+              /** @type {Event & { target: { value: string; }; }} */ evt,
+            ) => {
+              const root = findHost(this, "eox-layercontrol") || this;
+              emitActivity(
+                root,
+                "change:opacity",
+                {
+                  layer: this.layer?.get("id") || this.layer?.get("name"),
+                  opacity: parseFloat(evt.target.value),
+                },
+                evt,
+              );
+            }}
           />
           <span class="small-text" style="width: 30px; text-align: right">${Math.round(this.layer?.getOpacity() * 100)}%</span>
         </div class="row">
@@ -209,6 +246,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .layer=${this.layer}
               .noShadow=${true}
               .layerConfig=${this.layer.get("layerConfig")}
+              .colormapRegistry=${this.colormapRegistry}
               .unstyled=${this.unstyled}
               .customEditorInterfaces=${this.customEditorInterfaces}
               @changed=${() => this.requestUpdate()}
@@ -255,6 +293,8 @@ export class EOxLayerControlLayerTools extends LitElement {
     `;
   };
 
+  #userClickedToolsSummary = false;
+
   render() {
     // Obtain actions and tools based on this.tools and this.layer
     const actions = _parseActions(this.tools, this.layer);
@@ -287,12 +327,29 @@ export class EOxLayerControlLayerTools extends LitElement {
                 class="tools"
                 .open=${live(this.open)}
                 @toggle=${(
-                  /** @type {{ target: { open: boolean; }; }} */ evt,
+                  /** @type {Event & { target: { open: boolean; }; }} */ evt,
                 ) => {
                   this.open = evt.target.open;
+                  if (this.#userClickedToolsSummary) {
+                    this.#userClickedToolsSummary = false;
+                    const root = findHost(this, "eox-layercontrol") || this;
+                    emitActivity(
+                      root,
+                      "toggle:tools",
+                      {
+                        layer: this.layer?.get("id") || this.layer?.get("name"),
+                        open: this.open,
+                      },
+                      evt,
+                    );
+                  }
                 }}
               >
-                <summary></summary>
+                <summary
+                  @click=${() => {
+                    this.#userClickedToolsSummary = true;
+                  }}
+                ></summary>
                 <eox-layercontrol-tools-items
                   class="${this.toolsAsList ? "tools-list" : "tools-tab"}"
                   .noShadow=${false}

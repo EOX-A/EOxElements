@@ -1,6 +1,12 @@
 // Importing necessary modules, test cases, and enums
 import "../src/main";
-import { loadChartTest, setDataValuesTest, clickChartTest } from "./cases";
+import {
+  loadChartTest,
+  setDataValuesTest,
+  clickChartTest,
+  autoResizeTest,
+  base64LargeSpecTest,
+} from "./cases";
 import { TEST_SELECTORS, TEST_VALUES } from "../src/enums";
 
 // Destructuring TEST_SELECTORS object
@@ -25,4 +31,9 @@ describe("Chart", () => {
   it("allows setting data values asynchronously", () => setDataValuesTest());
 
   it("triggers an click:item event", () => clickChartTest());
+
+  it("auto-resizes when container size changes", () => autoResizeTest());
+
+  it("encodes and decodes large chart specs without call stack overflow", () =>
+    base64LargeSpecTest());
 });

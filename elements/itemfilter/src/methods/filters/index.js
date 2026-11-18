@@ -1,4 +1,8 @@
-export { resetTextMethod, textInputHandlerMethod } from "./text";
+export {
+  resetTextMethod,
+  appendTextMethod,
+  textInputHandlerMethod,
+} from "./text";
 export {
   rangeLabelMethod,
   resetRangeMethod,

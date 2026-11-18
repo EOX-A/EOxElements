@@ -24,11 +24,17 @@ export function transform(coordinate, source, destination = undefined) {
  * @param {import('ol/extent').Extent} extent
  * @param {import('ol/proj').ProjectionLike} source
  * @param {import('ol/proj').ProjectionLike=} destination
+ * @param {number=} stops
  * @returns {import('ol/extent').Extent}
  */
-export function transformExtent(extent, source, destination = undefined) {
+export function transformExtent(
+  extent,
+  source,
+  destination = undefined,
+  stops = undefined,
+) {
   if (!destination) {
     destination = "EPSG:4326";
   }
-  return olTransformExtent(extent, source, destination);
+  return olTransformExtent(extent, source, destination, stops);
 }

@@ -1,3 +1,4 @@
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { parseSTAC } from "./index.js";
 
 /**
@@ -23,7 +24,7 @@ async function fetchSTAC(that) {
   that.stacInfo = parseSTAC(stac);
 
   // Dispatch a custom "loaded" event to signal that the STAC data has been loaded.
-  that.dispatchEvent(new CustomEvent("loaded"));
+  dispatchElementEvent(that, "loaded", { activity: false });
 }
 
 export default fetchSTAC;

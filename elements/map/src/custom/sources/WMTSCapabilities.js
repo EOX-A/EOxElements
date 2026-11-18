@@ -79,21 +79,62 @@ class WMTSCapabilities extends TileImage {
     // Set URLs for the tile source
     this.setUrls(capabilitiesOptions.urls);
 
-    if (this.urls && this.urls.length > 0) {
-      // Create the tile URL function from the provided URLs and the WMTS template
-      this.tileUrlFunction = createFromTileUrlFunctions(
-        this.urls.map(this.createFromWMTSTemplate.bind(this)),
-      );
-    }
+    this.updateTileUrlFunction_();
+
     if (this.getState() !== "ready") {
       this.setState("ready");
     }
   }
 
   /**
+   * Updates the tile URL function based on current URLs and dimensions.
+   */
+  updateTileUrlFunction_() {
+    if (this.urls && this.urls.length > 0) {
+      this.tileUrlFunction = createFromTileUrlFunctions(
+        this.urls.map(this.createFromWMTSTemplate.bind(this)),
+      );
+    }
+  }
+
+  /**
+   * Updates the source parameters (e.g. dimensions, style).
+   *
+   * @param {object} params - The parameters to update.
+   */
+  updateParams(params) {
+    if ("style" in params) {
+      this.style_ = params.style;
+    }
+    this.dimensions_ = {
+      ...this.dimensions_,
+      ...params,
+    };
+    // Clean dimensions of 'style' if it was passed in params
+    if (/** @type {any} */ (this.dimensions_).style) {
+      delete (/** @type {any} */ (this.dimensions_).style);
+    }
+
+    this.updateTileUrlFunction_();
+    this.setKey(new Date().toISOString());
+  }
+
+  /**
+   * Returns the current source parameters (dimensions and style).
+   *
+   * @returns {object}
+   */
+  getParams() {
+    return {
+      ...this.dimensions_,
+      style: this.style_,
+    };
+  }
+
+  /**
    * Creates a URL function for WMTS tiles based on a template.
    *
-   * @param {String} template - The WMTS URL template.
+   * @param {string} template - The WMTS URL template.
    */
   createFromWMTSTemplate(template) {
     const requestEncoding = this.requestEncoding_;
@@ -131,7 +172,7 @@ class WMTSCapabilities extends TileImage {
        * Returns the tile URL based on the tile coordinates.
        *
        * @param {Array<number>} tileCoord - The tile coordinate.
-       * @return {string|undefined} - The tile URL, or `undefined` if tileCoord is invalid.
+       * @returns {string|undefined} - The tile URL, or `undefined` if tileCoord is invalid.
        */
       function (tileCoord) {
         if (!tileCoord) {

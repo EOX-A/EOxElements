@@ -16,6 +16,7 @@ import { createGIF } from "gifshot";
  * @param {number} fps - Frames per second for the animation.
  * @param {Function} setLoading - Callback function to update loading state.
  * @param {EOxTimeControlTimelapse} that - The timelapse component instance.
+ * @param {(message: string) => void} [updateStatus] - Reports export stage and progress.
  * @returns {Promise<void>} Promise that resolves when the export is complete.
  */
 export default async function exportAnimation(
@@ -24,17 +25,24 @@ export default async function exportAnimation(
   fps,
   setLoading,
   that,
+  updateStatus = () => {},
 ) {
   const images = mapLayers.map((layer) => layer.img).filter((img) => img);
 
   if (images.length === 0) {
     console.error("No images available for export");
+    setLoading("No map frames available for export");
     return;
   }
 
   if (type === "mp4") {
     try {
-      const blob = await imagesToMp4(images, { fps, preset: "ultrafast" });
+      const blob = await imagesToMp4(
+        images,
+        { fps, preset: "ultrafast" },
+        updateStatus,
+      );
+      updateStatus("Preparing MP4 download…");
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -45,7 +53,7 @@ export default async function exportAnimation(
       URL.revokeObjectURL(url);
       setLoading();
     } catch (error) {
-      setLoading();
+      setLoading(error instanceof Error ? error.message : String(error));
       console.error("MP4 conversion error:", error);
       alert(
         "Failed to convert to MP4: " +
@@ -53,11 +61,11 @@ export default async function exportAnimation(
       );
     }
   } else {
-    imagesToGIF(images, that, fps, setLoading);
+    imagesToGIF(images, that, fps, setLoading, updateStatus);
   }
 }
 
-function imagesToGIF(dataUrls, that, fps, setLoading) {
+function imagesToGIF(dataUrls, that, fps, setLoading, updateStatus) {
   const map = that.timelapseComponent.querySelector(".map-view-item");
   const mapBounding = map.getBoundingClientRect();
   const mapWidth = mapBounding.width;
@@ -68,9 +76,10 @@ function imagesToGIF(dataUrls, that, fps, setLoading) {
       gifWidth: mapWidth,
       gifHeight: mapHeight,
       images: [...dataUrls],
-      interval: 1,
+      interval: 1 / fps,
       numFrames: dataUrls.length,
-      frameDuration: fps,
+      // gifshot repeats each image frameDuration times; speed belongs in interval.
+      frameDuration: 1,
       fontWeight: "normal",
       fontSize: "16px",
       fontFamily: "sans-serif",
@@ -79,9 +88,21 @@ function imagesToGIF(dataUrls, that, fps, setLoading) {
       textBaseline: "bottom",
       sampleInterval: 10,
       numWorkers: 2,
+      progressCallback: (progress) => {
+        const prepared = Math.min(
+          dataUrls.length,
+          Math.floor(progress * dataUrls.length),
+        );
+        updateStatus(
+          prepared === dataUrls.length
+            ? "Encoding GIF…"
+            : `Preparing GIF frames (${prepared}/${dataUrls.length})…`,
+        );
+      },
     },
     function (obj) {
       if (!obj.error) {
+        updateStatus("Preparing GIF download…");
         // Download the generated GIF image
         const link = document.createElement("a");
         link.href = obj.image;
@@ -92,7 +113,7 @@ function imagesToGIF(dataUrls, that, fps, setLoading) {
         setLoading();
       } else {
         console.error("GIF generation error:", obj.error);
-        setLoading();
+        setLoading(obj.errorMsg || String(obj.error));
       }
     },
   );
@@ -101,12 +122,19 @@ function imagesToGIF(dataUrls, that, fps, setLoading) {
 async function imagesToMp4(
   dataUrls,
   { fps = 1, crf = 1, preset = "veryfast" } = {},
+  updateStatus = (_message) => {},
 ) {
   if (!dataUrls || dataUrls.length === 0) throw new Error("No frames provided");
 
   // Use FFmpeg's new API for version 0.12+
   const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
   const ffmpeg = new FFmpeg();
+  updateStatus("Loading MP4 encoder…");
+  ffmpeg.on("progress", ({ progress }) => {
+    updateStatus(
+      `Encoding MP4 (${Math.min(100, Math.max(0, Math.round(progress * 100)))}%)…`,
+    );
+  });
 
   // Load with proper worker and wasm URLs
   await ffmpeg.load({
@@ -152,6 +180,7 @@ async function imagesToMp4(
       }
 
       await ffmpeg.writeFile(nameFor(i), buf);
+      updateStatus(`Preparing MP4 frames (${i + 1}/${dataUrls.length})…`);
     } catch (error) {
       throw new Error(
         `Failed to process image ${i}: ${error instanceof Error ? error.message : String(error)}`,
@@ -164,6 +193,7 @@ async function imagesToMp4(
   const outputFile = "output.mp4";
 
   try {
+    updateStatus("Encoding MP4…");
     await ffmpeg.exec([
       "-framerate",
       String(fps),

@@ -9,7 +9,7 @@ import {
   layerListChangeMethod,
 } from "./methods/layercontrol";
 import eoxStyle from "@eox/ui/style.css?inline";
-import { addCommonStylesheet } from "@eox/elements-utils";
+import { addCommonStylesheet, dispatchElementEvent } from "@eox/elements-utils";
 
 addCommonStylesheet();
 
@@ -36,7 +36,17 @@ addCommonStylesheet();
  *
  * For `eox-map` attributes/properties and emitted events, see below.
  *
+ * ## Additional Helper Methods
+ *
+ * - `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `["var", "<key>"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`.
+ *
+ * Usage: `import { updateVectorLayerStyle } from "@eox/layercontrol";`
+ *
  * @element eox-layercontrol
+ * @fires {CustomEvent} layerchange - Fired when layers in the map change
+ * @fires {CustomEvent} layerConfig:change - Fired when layer configuration changes
+ * @fires {CustomEvent} datetime:updated - Fired when datetime is updated for a layer
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxLayerControl extends LitElement {
   // Define static properties for the component
@@ -59,6 +69,7 @@ export class EOxLayerControl extends LitElement {
       attribute: "tools-auto-expand",
       type: Boolean,
     },
+    colormapRegistry: { attribute: false, type: Object },
     customEditorInterfaces: { type: Array },
   };
 
@@ -77,14 +88,14 @@ export class EOxLayerControl extends LitElement {
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
-     * @type {String|HTMLElement}
+     * @type {string | HTMLElement}
      */
     this.for = "eox-map";
 
     /**
      * Layer id property
      *
-     * @type {String}
+     * @type {string}
      */
     this.idProperty = "id";
 
@@ -99,63 +110,63 @@ export class EOxLayerControl extends LitElement {
     /**
      * Layer title property
      *
-     * @type {String}
+     * @type {string}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showLayerZoomState = false;
 
     /**
      * Layer tools
      *
-     * @type {Array<String>}
+     * @type {Array<string>}
      */
     this.tools = ["info", "opacity", "datetime", "config", "remove", "sort"];
 
     /**
      * Enable-disable external layer
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.addExternalLayers = false;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Overrides elements current CSS.
      *
-     * @type {String}
+     * @type {string}
      */
     this.styleOverride = "";
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
 
     /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.globallyExclusiveLayers = false;
 
     /**
      * If enabled, toggling the layer visibility will also open/close the layer tools.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAutoExpand = false;
 
@@ -167,6 +178,7 @@ export class EOxLayerControl extends LitElement {
      * @type {Array}
      */
     this.customEditorInterfaces = [];
+    this.colormapRegistry = null;
   }
 
   /**
@@ -200,11 +212,19 @@ export class EOxLayerControl extends LitElement {
    */
   #handleLayerControlLayerListChange(evt) {
     layerListChangeMethod(evt, this);
+    const isUser = Boolean(
+      evt.detail &&
+      !("activity" in evt.detail && evt.detail.activity === false),
+    );
     /**
      * A generic layer change event; could be a layer visibility, group length updates and others.
      * Passes the changed layer in the `detail`.
      */
-    this.dispatchEvent(new CustomEvent("layerchange", { detail: evt.detail }));
+    dispatchElementEvent(this, "layerchange", {
+      detail: evt.detail,
+      activity: isUser,
+      action: "layerchange",
+    });
   }
 
   /**
@@ -212,9 +232,11 @@ export class EOxLayerControl extends LitElement {
    * @param {CustomEvent} evt
    */
   #handleLayerConfigChange(evt) {
-    this.dispatchEvent(
-      new CustomEvent("layerConfig:change", { detail: evt.detail }),
-    );
+    dispatchElementEvent(this, "layerConfig:change", {
+      detail: evt.detail,
+      activity: evt.detail?.isUser !== false,
+      action: "layerConfig:change",
+    });
   }
 
   render() {
@@ -264,9 +286,12 @@ export class EOxLayerControl extends LitElement {
             .toolsAsList=${this.toolsAsList}
             .globallyExclusiveLayers=${this.globallyExclusiveLayers}
             .toolsAutoExpand=${this.toolsAutoExpand}
+            .colormapRegistry=${this.colormapRegistry}
             .customEditorInterfaces=${this.customEditorInterfaces}
             @changed=${this.#handleLayerControlLayerListChange}
-            @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this)}
+            @datetime:updated=${(
+              /** @type {CustomEvent & { isUser?: boolean }} */ evt,
+            ) => handleDatetimeUpdate(evt, this, evt.isUser === true)}
             @layerConfig:change=${this.#handleLayerConfigChange}
           ></eox-layercontrol-layer-list>
         `,
@@ -334,5 +359,7 @@ export class EOxLayerControl extends LitElement {
     }
   `;
 }
+
+export { updateVectorLayerStyle } from "./methods/layer-config/apply-updated-styles";
 
 customElements.define("eox-layercontrol", EOxLayerControl);

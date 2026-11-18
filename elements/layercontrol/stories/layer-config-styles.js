@@ -1,5 +1,6 @@
 import { html } from "lit";
 import "color-legend-element";
+import { registerProjection } from "@eox/map/src/helpers";
 import {
   STORIES_LAYER_CROPOMHUSC2,
   STORIES_LAYERCONTROL_STYLE,
@@ -9,14 +10,10 @@ import {
   STORIES_LAYER_POLARIS,
 } from "../src/enums";
 
-setTimeout(async () => {
-  if (document.querySelector("eox-map#config-styles")) {
-    //@ts-expect-error EOX Map API
-    await document
-      .querySelector("eox-map#config-styles")
-      .registerProjectionFromCode(3035);
-  }
-});
+registerProjection(
+  "EPSG:3035",
+  "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs",
+);
 
 export const LayerStylesConfigStory = {
   args: {

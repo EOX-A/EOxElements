@@ -8,7 +8,7 @@ import { getElement } from "@eox/elements-utils";
  * Initializes the draw layer, interacts with the map, and returns map instances.
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
- * @param {Boolean} multipleFeatures - Allow adding more than one feature at a time
+ * @param {boolean} multipleFeatures - Allow adding more than one feature at a time
  */
 const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = getElement(EoxDrawTool.for);
@@ -122,7 +122,10 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   }
 
   const onModifyEnd = () => EoxDrawTool.onModifyEnd();
-  const onAddFeatures = () => onDrawEndMethod(EoxDrawTool);
+  const onAddFeatures = (evt) => {
+    const isUser = Boolean(/** @type {any} */ (evt)?.isUser);
+    onDrawEndMethod(EoxDrawTool, isUser);
+  };
 
   EoxDrawTool.modify?.on("modifyend", onModifyEnd);
 

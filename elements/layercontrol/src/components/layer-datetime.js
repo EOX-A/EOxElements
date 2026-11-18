@@ -1,5 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
+import _debounce from "lodash.debounce";
+import { updateLayerSlice } from "../helpers/handle-datetime-update";
 
 /**
  * `EOxLayerControlLayerDatetime` is a component that handles date time options for layers using eox-timecontrol.
@@ -7,7 +9,7 @@ import { when } from "lit/directives/when.js";
  *
  *
  * @element eox-layercontrol-layer-datetime
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerDatetime extends LitElement {
   // Define static properties for the component
@@ -24,14 +26,14 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
@@ -67,13 +69,22 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  disconnectedCallback() {
+    // runs a pending slice update before removal
+    this.#updateSlice.flush();
+    super.disconnectedCallback();
+  }
+
+  #updateSlice = _debounce(updateLayerSlice, 300);
+
   /**
    * Handles timecontrol Stepchange &
    * triggers `datetime:updated` event on step change
    *
-   * @param {CustomEvent<{date:string[]}>} evt
+   * @param {CustomEvent<{date:string[]}> & { isUser?: boolean }} evt
    **/
   #handleStepChange(evt) {
+    evt.stopPropagation();
     const dateObj = new Date(evt.detail.date[0]);
 
     // Check if configuration implies datetime (ISO strings)
@@ -93,15 +104,24 @@ export class EOxLayerControlLayerDatetime extends LitElement {
       return;
     }
 
-    this.dispatchEvent(
+    const event = Object.assign(
       new CustomEvent("datetime:updated", {
         bubbles: true,
+        composed: true,
         detail: {
           datetime: currentStep,
           layer: this.layer,
         },
       }),
+      { isUser: evt.isUser === true },
     );
+    /**
+     * Fires datetime:updated with the selected datetime and layer.
+     * Forwards user attribution synchronously without emitting child activity.
+     */
+    this.dispatchEvent(event);
+
+    this.#updateSlice(this.layer, currentStep);
 
     this.layerDatetime.currentStep = currentStep;
     this.requestUpdate();
@@ -122,7 +142,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
         ${!this.unstyled && this.#styleEOX}
       </style>
       ${when(
-        this.layerDatetime,
+        this.layerDatetime?.controlValues,
         () => html`
           <eox-timecontrol
             .initDate=${this.layerDatetime.currentStep
@@ -138,6 +158,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
               },
             ]}
             @select=${this.#handleStepChange}
+            @eox:activity=${(/** @type {Event} */ e) => e.stopPropagation()}
             .showUTC=${this.layerDatetime.showUTC || false}
           >
             <eox-timecontrol-date

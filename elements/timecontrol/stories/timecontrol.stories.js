@@ -2,14 +2,18 @@
 import { html } from "lit";
 import {
   OnlyDateStory,
+  EditableDateStory,
   DateWithNavigationStory,
+  DateWithoutWrapStory,
   DatePickerPopupStory,
   DatePickerStandaloneStory,
   TimelineStory,
+  TimecontrolWithCompareMapsStory,
   ExternalMapRenderingStory,
   DateFilterStory,
   ExpertStory,
   SliderStory,
+  SliderWithMapStory,
   UpdateViewStory,
   DatePickerPopupItemsStory,
   NoMapStory,
@@ -17,6 +21,7 @@ import {
   DateInUTCStory,
   TimelineSelectionDurationStory,
   TimelineSelectionResizableStory,
+  TimelineWithClusteringStory,
 } from "./index";
 
 export default {
@@ -46,6 +51,15 @@ export default {
 export const OnlyDate = OnlyDateStory;
 
 /**
+ * Editable date field with map navigation and a popup picker
+ *
+ * Set `editable` to enter dates using the assigned `format`. Press Enter or leave the field
+ * to apply valid edits; invalid input restores the previous date without firing a change.
+ * The picker enables editing automatically, and time is shown only when included in `format`.
+ */
+export const EditableDate = EditableDateStory;
+
+/**
  * Date display component with init date
  *
  * This example shows the `<eox-timecontrol-date>` component with the `initDate` property added,
@@ -63,6 +77,15 @@ export const DateWithInitDate = DateWithInitDateStory;
 export const DateWithNavigation = DateWithNavigationStory;
 
 /**
+ * Date navigation that stops at the first and last available dates
+ *
+ * This example sets `dateWrap` to `false` on `<eox-timecontrol-date>` to disable
+ * previous/next buttons at the date boundaries. The `initDate` value `"first"`
+ * selects the first available date on initialization.
+ */
+export const DateWithoutWrap = DateWithoutWrapStory;
+
+/**
  * Calendar date picker displayed in popup mode, triggered by clicking the date input field
  *
  * This example demonstrates the `<eox-timecontrol-picker>` component with `popup` enabled.
@@ -72,11 +95,37 @@ export const DateWithNavigation = DateWithNavigationStory;
 export const DatePickerPopup = DatePickerPopupStory;
 
 /**
- * Calendar date picker displayed in popup mode and shows items in the popup
+ * Calendar date picker displayed in popup mode with configurable items popup card
  *
  * This example demonstrates the `<eox-timecontrol-picker>` component with `showItems` enabled.
  * The calendar appears as a popup overlay when clicking on the date input field (provided by
- * `<eox-timecontrol-date>`). The picker shows items in the popup.
+ * `<eox-timecontrol-date>`). Hovering over a date with available data displays a popup card.
+ *
+ * Card content is configurable using:
+ * - `itemTitleKey` / `item-title-key`: Selects which property on the timeline item to display on the primary line.
+ *   - Available item properties include:
+ *     - `layerName`: The layer title/name (from `layer.properties[titleKey]`).
+ *     - `group`: The layer ID (from `layer.properties[layerIdKey]`).
+ *     - `itemId`: The item identifier (from `timeControlValues[i].id` or generated UUID).
+ *     - `originalDate`: The raw date string from `timeControlValues[i].date`.
+ *     - Any custom properties defined on `timeControlValues` objects (e.g., `cloudCoverage`).
+ *   - Defaults to `undefined` (which falls back to the layer title `layerName`).
+ * - `showTime` / `show-time`: Controls whether time is shown in the card metadata (defaults to `true`; time is automatically omitted for date-only items).
+ * - `timeFormat` / `time-format`: Dayjs format string for displaying item time (defaults to `"HH:mm"`).
+ * - `propertyTransform`: Optional function to customize or transform item rendering (receives `{ title, subtitle, time, dotColor, layerName, group, itemId, originalDate, ...customItemProps }` and returns transformed object or custom HTML string).
+ *
+ * ```html
+ * <eox-timecontrol for="eox-map#my-map">
+ *   <eox-timecontrol-date navigation></eox-timecontrol-date>
+ *   <eox-timecontrol-picker
+ *     popup
+ *     show-dots
+ *     show-items
+ *     item-title-key="layerName"
+ *     show-time
+ *   ></eox-timecontrol-picker>
+ * </eox-timecontrol>
+ * ```
  */
 export const DatePickerPopupItems = DatePickerPopupItemsStory;
 
@@ -98,6 +147,16 @@ export const DateInUTC = DateInUTCStory;
 export const DatePickerStandalone = DatePickerStandaloneStory;
 
 /**
+ * Two independently resizable, map-free sliders covering 2018–2026 and 1900–2026.
+ * Use these examples for partial endpoint years and long time series in narrow
+ * dashboards. First and last years remain visible, with intermediate labels
+ * shown when they fit. Minor ticks stay at least 12 pixels apart.
+ * Every date remains selectable. Resize either
+ * parent panel to reveal more years.
+ */
+export const Slider = SliderStory;
+
+/**
  * Range slider for selecting date ranges with visual indicators for years and months
  *
  * This example demonstrates the `<eox-timecontrol-slider>` component, which provides a visual
@@ -107,7 +166,16 @@ export const DatePickerStandalone = DatePickerStandaloneStory;
  * select a date range by dragging the handles. The selected range is immediately applied to
  * the map layers.
  */
-export const Slider = SliderStory;
+export const SliderWithMap = SliderWithMapStory;
+
+/**
+ * Wind and NO₂ on separate comparison maps, controlled by date navigation and a calendar.
+ * Use `for="eox-map-compare#timecontrol-compare"` to collect both maps' layers.
+ * For separate maps linked with `sync`, set `.for` to an array of map selectors
+ * or element references. Layer identifiers may be reused across maps; each source
+ * is updated independently.
+ */
+export const TimecontrolWithCompareMaps = TimecontrolWithCompareMapsStory;
 
 /**
  * Timeline visualization using vis-timeline with date picker and calendar integration
@@ -127,6 +195,18 @@ export const Slider = SliderStory;
  * comprehensive time navigation interface.
  */
 export const Timeline = TimelineStory;
+
+/**
+ * Timeline visualization using vis-timeline with clustering configuration
+ *
+ * This example shows the `<eox-timecontrol-timeline>` component with `clustering` enabled,
+ * which groups timeline items into clusters for better visualization of large datasets.
+ *
+ * Features demonstrated:
+ * - Timeline visualization with clustering enabled
+ * - Items are automatically grouped into clusters when there are many items
+ */
+export const TimelineWithClustering = TimelineWithClusteringStory;
 
 /**
  * Timeline visualization with custom selection duration

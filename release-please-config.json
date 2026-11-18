@@ -2,7 +2,7 @@
   "bootstrap-sha": "8c7afca91c115c4a2db2054c3b604beb290f0015",
   "packages": {
     "elements/chart": {
-      "exclude-paths": ["elements/drawtools/stories", "elements/drawtools/test"]
+      "exclude-paths": ["elements/chart/stories", "elements/chart/test"]
     },
     "elements/drawtools": {
       "exclude-paths": ["elements/drawtools/stories", "elements/drawtools/test"]
@@ -53,9 +53,28 @@
       "exclude-paths": ["elements/tour/stories", "elements/tour/test"]
     },
     "utils": {},
-    "mcp-server": {}
+    "mcp-server": {
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "server.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "server.json",
+          "jsonpath": "$.packages[*].version"
+        }
+      ]
+    },
+    "a2ui": {}
   },
-  "plugins": ["sentence-case"],
+  "plugins": [
+    "sentence-case",
+    {
+      "type": "node-workspace"
+    }
+  ],
   "bump-minor-pre-major": true,
   "pull-request-header": "New release prepared:",
   "release-type": "node",

@@ -7,7 +7,8 @@
   "workspaces": [
     "elements/*",
     "utils",
-    "mcp-server"
+    "mcp-server",
+    "a2ui"
   ],
   "scripts": {
     "start": "npm run generate-typedoc && npm run generate-snippets && npm run generate-llms && concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
@@ -19,7 +20,7 @@
     "cypress:install": "cypress install",
     "test:all": "npm run styles && npm run test:component; npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
-    "test:e2e": "npm run generate-manifest && npm run generate-typedoc && npm run build:element-story-bundle --ws --if-present && npm run build:storybook && cypress run --e2e",
+    "test:e2e": "npm run generate-manifest && npm run build -w a2ui && npm run generate-typedoc && npm run build:element-story-bundle --ws --if-present && npm run build:storybook && cypress run --e2e",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint elements",
@@ -27,7 +28,7 @@
     "typecheck": "tsc",
     "types:generate:all": "npm run types:generate -w utils && npm run types:generate -w elements/map -w elements/layout -w elements/chart -w elements/geosearch -w elements/stacinfo -w elements/tour && npm run types:generate -w elements/drawtools && npm run types:generate -w elements/itemfilter && npm run types:generate -w elements/jsonform && npm run types:generate -w elements/storytelling -w elements/feedback && npm run types:generate -w elements/timecontrol && npm run types:generate -w elements/layercontrol",
     "storybook": "storybook dev -p 6006",
-    "build:docs": "npm run styles && npm run build:element-story-bundle --ws --if-present && npm run generate-manifest && npm run generate-typedoc && npm run generate-snippets && npm run generate-llms && npm run build:storybook && cp custom-elements.json docs/custom-elements.json && cp story-snippets.json docs/story-snippets.json && cp llms.txt docs/llms.txt && cp llms-full.txt docs/llms-full.txt",
+    "build:docs": "npm run styles && npm run build:element-story-bundle --ws --if-present && npm run generate-manifest && npm run build -w a2ui && npm run generate-typedoc && npm run generate-snippets && npm run generate-llms && npm run build:storybook && cp custom-elements.json docs/custom-elements.json && cp story-snippets.json docs/story-snippets.json && cp llms.txt docs/llms.txt && cp llms-full.txt docs/llms-full.txt",
     "build:storybook": "storybook build -o docs",
     "generate-snippets": "node --loader ./scripts/loader.mjs scripts/generate-snippets.mjs",
     "generate-llms": "node scripts/generate-llms-txt.mjs",
@@ -39,36 +40,41 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@cypress/code-coverage": "^4.0.0",
-    "@cypress/mount-utils": "^4.0.0",
-    "@eox/eslint-config": "^2.0.0",
-    "@storybook/addon-docs": "^10.0.8",
-    "@storybook/web-components-vite": "^10.0.8",
-    "concurrently": "^9.0.0",
+    "@cypress/mount-utils": "^5.0.0",
+    "@eox/eslint-config": "^2.2.0",
+    "@storybook/addon-docs": "^10.6.2",
+    "@storybook/web-components-vite": "^10.6.2",
+    "concurrently": "^10.0.1",
     "custom-elements-manifest": "^2.0.0",
+    "markdown-it": "^15.0.2",
     "cypress": "^15.0.0",
-    "cypress-fail-on-console-error": "^5.1.1",
+    "cypress-fail-on-console-error": "^6.0.3",
     "cypress-file-upload": "^5.0.8",
     "cypress-lit": "^0.0.8",
     "cypress-network-idle": "^2.0.1",
-    "eslint-plugin-storybook": "^10.0.8",
+    "eslint-plugin-storybook": "^10.6.2",
     "nodemon": "^3.0.3",
     "nyc": "^18.0.0",
-    "prettier-plugin-svelte": "^3.4.0",
+    "prettier-plugin-svelte": "^4.1.0",
     "rimraf": "^6.0.1",
     "serialize-javascript": "^7.0.0",
-    "storybook": "^10.0.8",
+    "storybook": "^10.6.2",
     "typedoc": "^0.28.14",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-plugin-merge-modules": "^7.0.0",
-    "typescript-json-schema": "^0.67.0",
-    "vite-plugin-istanbul": "^8.0.0"
+    "typescript-json-schema": "^0.68.0",
+    "vite-plugin-istanbul": "^9.0.0"
   },
   "engines": {
     "node": ">=24.0.0"
   },
   "dependencies": {
-    "@eox/elements-utils": "^1.1.0",
+    "@eox/elements-utils": "^1.2.0",
     "@eox/ui": "^1.0.0"
   },
-  "customElements": "custom-elements.json"
+  "customElements": "custom-elements.json",
+  "overrides": {
+    "dompurify": "^3.4.17",
+    "shell-quote": "^1.11.0"
+  }
 }

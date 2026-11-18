@@ -1,7 +1,7 @@
 /**
  * Renders a layer-composition using Mapbox Styles
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const MapboxStyleStory = {
   args: {

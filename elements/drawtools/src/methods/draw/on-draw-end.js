@@ -4,10 +4,10 @@
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
-const onDrawEndMethod = (EoxDrawTool) => {
+const onDrawEndMethod = (EoxDrawTool, isUser = false) => {
   // Function to handle actions when drawing ends
   const handleDrawEnd = () => {
-    EoxDrawTool.emitDrawnFeatures(); // Emit drawn features
+    EoxDrawTool.emitDrawnFeatures(isUser); // Emit drawn features
     if (!EoxDrawTool.multipleFeatures) {
       EoxDrawTool.draw?.setActive(false); // Deactivate drawing
       EoxDrawTool.selectionEvents.removeSelectionEvent();

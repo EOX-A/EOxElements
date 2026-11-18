@@ -1,7 +1,10 @@
 import "../src/main";
 import "../src/plugins/advancedLayersAndSources/index";
-import { flatGeoBufLayer } from "./cases/layer-type";
-import { flatGeoBufLayerCombined } from "./cases/layer-type";
+import {
+  flatGeoBufLayer,
+  flatGeoBufLayerCombined,
+  testFlatGeoBufPolarLogic,
+} from "./cases/layer-type";
 
 /**
  * Test suite for the EOX Map to load a layer with a  FlatGeoBuf source
@@ -11,6 +14,12 @@ describe("FlatGeoBuf Source", () => {
    * Test case to load flatgeobuf source
    */
   it("loads a FlatGeoBuf source", () => flatGeoBufLayer());
+
+  /**
+   * Test case to verify polar and antimeridian logic
+   */
+  it("correctly calculates bbox for polar and antimeridian crossings", () =>
+    testFlatGeoBufPolarLogic());
 });
 
 /**

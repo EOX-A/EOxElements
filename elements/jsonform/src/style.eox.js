@@ -295,6 +295,9 @@ export const styleEOX = `
     font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
   }
   .markdown-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
@@ -313,5 +316,12 @@ export const styleEOX = `
     margin: 0;
     padding: 0;
     border: none;
+  }
+  /* Checkbox multiselect in arrays */
+  div[data-schematype="array"] > div.control-group {
+    padding-left: 4px;
+  }
+  .form-control label.checkbox.small input.je-checkbox {
+    height: auto;
   }
 `;

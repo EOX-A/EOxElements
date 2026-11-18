@@ -5,11 +5,14 @@ import {
   CanvasTiles,
   XYZ,
   WMS,
+  GeoTIFFLayer,
   OpenStreetMap,
   Vector,
   Entity,
   GlobusRgbTerrain,
   EmptyTerrain,
+  Extent as OgExtent,
+  Quat,
 } from "@openglobus/og";
 import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
 import { distributeTileToIdealMap } from "./methods.js";
@@ -18,10 +21,19 @@ import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
+import GeoTIFF_ol from "ol/source/GeoTIFF.js";
 import { get as getProjection, equivalent } from "ol/proj";
 import FullScreen from "ol/control/FullScreen";
+import { unByKey } from "ol/Observable";
 import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
+import { translateOLColorExpression } from "./colorScale.js";
+import { disposeGlobeSynchronization } from "./lifecycle.js";
+import {
+  attachGlobeSelect,
+  mountGlobeTooltip,
+  unmountGlobeTooltip,
+} from "./select.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
@@ -256,7 +268,7 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
     target,
     layers: EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
       .filter((l) => l.get("type") !== "Group")
-      .map((l) => createGlobusLayer(l, mapPool))
+      .map((l) => createGlobusLayer(l, mapPool, EOxMap))
       .filter((l) => l !== undefined),
     sun: { active: false },
     atmosphereEnabled: false,
@@ -319,7 +331,45 @@ export const refreshGlobe = (globus) => {
   }
 };
 
-export const createGlobusLayer = (olLayer, mapPool, globus) => {
+/**
+ * Translates an OL GeoTIFF source definition into OpenGlobus GeoTIFFLayer source options.
+ * A single COG (one entry in `sources`, or a top-level `url`) is passed as `src`,
+ * multiple COGs are passed as `sources` and stacked as bands, as in OL.
+ *
+ * @param {any} sourceDef - The `source` part of the layer JSON definition.
+ * @returns {Pick<import("@openglobus/og").geotiff.IGeoTIFFLayerParams, "src" | "sources" | "nodata">}
+ */
+export const getGeoTIFFSourceOptions = (sourceDef) => {
+  const sources = (sourceDef?.sources || [])
+    .filter((s) => s.url || s.blob)
+    .map((s) =>
+      Object.fromEntries(
+        Object.entries({
+          src: s.url || s.blob,
+          min: s.min,
+          max: s.max,
+          bands: s.bands,
+          nodata: s.nodata,
+        }).filter(([, value]) => value !== undefined),
+      ),
+    );
+
+  if (sources.length > 1) {
+    return { sources };
+  }
+  const { src = sourceDef?.url, nodata } = sources[0] || {};
+  return nodata !== undefined ? { src, nodata } : { src };
+};
+
+/**
+ * Creates the OpenGlobus counterpart of an OL layer.
+ *
+ * @param {any} olLayer - The OL layer.
+ * @param {Array<any>} mapPool - The pool of offscreen maps used for CanvasTiles rendering.
+ * @param {import("../../main").EOxMap} [EOxMap] - Instance of EOxMap class, used to attach select interactions.
+ */
+export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
+  const jsonDef = olLayer.get("_jsonDefinition");
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
 
@@ -348,7 +398,7 @@ export const createGlobusLayer = (olLayer, mapPool, globus) => {
     const wmsUrl = baseUrl;
     const wmsLayerNames = wmsParams.LAYERS || wmsParams.layers || "default";
 
-    return new WMS(id, {
+    const wmsLayer = new WMS(id, {
       isBaseLayer: olLayer.get("base"),
       layers: wmsLayerNames,
       url: wmsUrl,
@@ -359,6 +409,8 @@ export const createGlobusLayer = (olLayer, mapPool, globus) => {
         ...wmsParams,
       },
     });
+    attachGlobeSelect(EOxMap, olLayer, wmsLayer);
+    return wmsLayer;
   }
   if (source instanceof Vector_ol && source.getUrl()) {
     let projection;
@@ -391,6 +443,9 @@ export const createGlobusLayer = (olLayer, mapPool, globus) => {
           });
 
           vectorLayer.addTo(globus.planet);
+          // the vector layer is added asynchronously, so re-apply the OL order
+          syncGlobeLayerOrder(EOxMap, globus);
+          attachGlobeSelect(EOxMap, olLayer, vectorLayer);
           const olStyle = olLayer.getStyle();
 
           var f = data.features;
@@ -402,6 +457,7 @@ export const createGlobusLayer = (olLayer, mapPool, globus) => {
             );
             vectorLayer.add(
               new Entity({
+                properties: fi.properties,
                 geometry: {
                   type: fi.geometry.type,
                   coordinates: fi.geometry.coordinates,
@@ -418,6 +474,30 @@ export const createGlobusLayer = (olLayer, mapPool, globus) => {
     if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
       return undefined;
     }
+  }
+
+  // Check if GeoTIFF layer can be natively rendered in OpenGlobus
+  const isGeoTIFF =
+    source instanceof GeoTIFF_ol &&
+    (jsonDef?.source?.sources?.some((s) => s.url || s.blob) ||
+      !!jsonDef?.source?.url);
+
+  if (isGeoTIFF) {
+    const style = jsonDef?.style || olLayer.style_ || {};
+
+    const renderOptions =
+      /** @type {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions} */ (
+        translateOLColorExpression(style, olLayer.styleVariables_)
+      );
+    const geoTIFFLayer = new GeoTIFFLayer(id, {
+      ...getGeoTIFFSourceOptions(jsonDef?.source),
+      opacity: olLayer.getOpacity(),
+      visibility: olLayer.getVisible(),
+      renderOptions,
+    });
+
+    attachGlobeSelect(EOxMap, olLayer, geoTIFFLayer);
+    return geoTIFFLayer;
   }
 
   // Fallback to CanvasTiles for other layer types
@@ -454,6 +534,7 @@ export const createGlobusLayer = (olLayer, mapPool, globus) => {
 };
 
 export const enableGlobe = (map) => {
+  if (map.globeEnabled) return;
   if (map.shadowRoot) {
     /** @type {HTMLElement} */
     let globeDiv = map.shadowRoot.querySelector("#globe");
@@ -478,6 +559,7 @@ export const enableGlobe = (map) => {
       EOxMap: map,
       target: globeDiv,
     });
+    mountGlobeTooltip(map, globeDiv);
 
     /** @type {HTMLElement} */
     (map.shadowRoot.querySelector("#map")).style.display = "none";
@@ -638,6 +720,7 @@ export const enableGlobe = (map) => {
 export const disableGlobe = (map) => {
   if (map.globe) {
     const globe = map.globe;
+    disposeGlobeSynchronization(globe);
     const planet = globe.planet;
 
     // 1. Determine the target point on the terrain at the center of the viewport
@@ -759,6 +842,7 @@ export const disableGlobe = (map) => {
         globe._detachViewListeners(map.map.getView());
         map.map.un("change:view", globe._viewChangeHandler);
         globeSyncBus.removeEventListener("move", onOtherGlobeMove);
+        unmountGlobeTooltip(map);
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation
@@ -780,34 +864,56 @@ export const disableGlobe = (map) => {
 /**
  * Creates a debounced function that delays invoking func until after wait milliseconds have elapsed
  * since the last time the debounced function was invoked.
- * @param {Function} func The function to debounce.
+ * @param {() => void} func The function to debounce.
  * @param {number} wait The number of milliseconds to delay.
- * @returns {Function} Returns the new debounced function.
+ * @returns {(() => void) & { cancel: () => void }} The cancellable debounced function.
  */
 function debounce(func, wait) {
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
+  const executedFunction = () => {
     clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
+    timeout = setTimeout(() => {
+      timeout = undefined;
+      func();
+    }, wait);
   };
+  executedFunction.cancel = () => {
+    clearTimeout(timeout);
+    timeout = undefined;
+  };
+  return executedFunction;
 }
 
 /**
  * @param {ExtendedOLLayer} olLayer
  * @param {import("@openglobus/og").Globe} globe
  * @param {Array<any>} mapPool
+ * @returns {() => void} Disposes layer listeners and cancels queued refreshes.
  */
 export const setupLayerListeners = (olLayer, globe, mapPool) => {
+  let disposed = false;
+  /** @type {Map<CanvasTiles, ReturnType<typeof setTimeout>>} */
+  const animationTimers = new Map();
   const debouncedRefresh = debounce(() => {
-    refreshGlobe(globe);
+    if (disposed) return;
+    globe.planet.layers.forEach((layer) => {
+      if (!(layer instanceof CanvasTiles)) return;
+      layer.abortLoading();
+      layer.animated = true;
+      clearTimeout(animationTimers.get(layer));
+      animationTimers.set(
+        layer,
+        setTimeout(() => {
+          animationTimers.delete(layer);
+          if (!disposed) layer.animated = false;
+        }, 200),
+      );
+    });
   }, 200);
 
-  olLayer.on("change", () => {
-    if (olLayer.styleVariables_) {
+  const changeKey = olLayer.on("change", () => {
+    if (!disposed && olLayer.styleVariables_) {
       const layerId = olLayer.get("id");
       const newStyleVariables = /** @type {Record<string, number>} */ (
         olLayer.styleVariables_
@@ -824,11 +930,22 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
           layerInTileMap.updateStyleVariables(newStyleVariables);
         }
       });
+
+      const globusLayer = /** @type {any} */ (
+        globe.planet.getLayerByName(layerId)
+      );
+      if (globusLayer && typeof globusLayer.setRenderOptions === "function") {
+        globusLayer.setRenderOptions(
+          translateOLColorExpression(olLayer, newStyleVariables),
+        );
+      }
+
       debouncedRefresh();
     }
   });
 
-  olLayer.on("propertychange", ({ key }) => {
+  const propertyKey = olLayer.on("propertychange", ({ key }) => {
+    if (disposed) return;
     const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
     if (!globusLayer) return;
     switch (key) {
@@ -840,28 +957,206 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
         break;
     }
   });
+
+  return () => {
+    if (disposed) return;
+    disposed = true;
+    unByKey([changeKey, propertyKey]);
+    debouncedRefresh.cancel();
+    animationTimers.forEach((timeout, layer) => {
+      clearTimeout(timeout);
+      layer.animated = false;
+    });
+    animationTimers.clear();
+  };
 };
 
 /**
- * @param {import("ol/Collection").default<import("ol/layer/Base").default>} layers
- * @param {import("@openglobus/og").Globe} globe
- * @param {Array<any>} mapPool
+ * Mirrors the OpenLayers rendering order onto the OpenGlobus layers by
+ * assigning each globe layer a z-index equal to its position in the OL render
+ * order (bottom = 0). The OL order is derived from the layer states array
+ * (which respects nested groups) stably sorted by `zIndex`, exactly as the OL
+ * map renderer does.
+ *
+ * Limitation: OpenGlobus always renders base layers (`isBaseLayer`) below all
+ * other tile layers and renders vector layers in a separate pass above tile
+ * layers, so the order is only reflected within those categories.
+ *
+ * @param {import("../../main").EOxMap} EOxMap - Instance of EOxMap class.
+ * @param {import("@openglobus/og").Globe} globe - The OpenGlobus globe instance.
  */
-export const processLayers = (layers, globe, mapPool) => {
-  layers.forEach((olLayer) => {
-    if (olLayer.get("id")) {
-      setupLayerListeners(
-        /** @type {ExtendedOLLayer} */ (olLayer),
-        globe,
-        mapPool,
-      );
-    }
-    if (/** @type {any} */ (olLayer).getLayers) {
-      processLayers(
-        /** @type {any} */ (olLayer).getLayers().getArray(),
-        globe,
-        mapPool,
-      );
+export const syncGlobeLayerOrder = (EOxMap, globe) => {
+  if (!globe?.planet || !EOxMap?.map) return;
+  const states = EOxMap.map
+    .getLayerGroup()
+    .getLayerStatesArray()
+    .map((state, index) => ({ state, index }))
+    .sort(
+      (a, b) =>
+        (a.state.zIndex ?? 0) - (b.state.zIndex ?? 0) || a.index - b.index,
+    );
+
+  states.forEach(({ state }, i) => {
+    const id = state.layer.get("id");
+    if (id === undefined) return;
+    const globusLayer = globe.planet.getLayerByName(id);
+    if (globusLayer && globusLayer.getZIndex() !== i) {
+      globusLayer.setZIndex(i);
     }
   });
+};
+
+/**
+ * Listens for changes of the OL layer tree (adding, removing or reordering
+ * layers in any nested collection, or `zIndex` changes) and re-syncs the
+ * globe layer order. Calls are batched per animation frame so that e.g. a
+ * `removeAt` + `insertAt` pair (as done by eox-layercontrol sorting) only
+ * triggers a single sync.
+ *
+ * @param {import("../../main").EOxMap} EOxMap - Instance of EOxMap class.
+ * @param {import("@openglobus/og").Globe} globe - The OpenGlobus globe instance.
+ * @param {AbortSignal} [signal] Aborts the subscription and any queued animation frame.
+ * @returns {import("ol/events").EventsKey} The listener key, to be removed via `unByKey`.
+ */
+export const watchGlobeLayerOrder = (EOxMap, globe, signal) => {
+  /** @type {number | null} */
+  let frame = null;
+  let disposed = false;
+  const key = EOxMap.map.getLayerGroup().on("change", () => {
+    if (disposed || !EOxMap.globeEnabled || frame !== null) return;
+    frame = requestAnimationFrame(() => {
+      frame = null;
+      if (!disposed) syncGlobeLayerOrder(EOxMap, globe);
+    });
+  });
+  const dispose = () => {
+    if (disposed) return;
+    disposed = true;
+    unByKey(key);
+    if (frame !== null) {
+      cancelAnimationFrame(frame);
+      frame = null;
+    }
+  };
+  if (signal?.aborted) dispose();
+  else signal?.addEventListener("abort", dispose, { once: true });
+  return key;
+};
+
+/**
+ * Computes the camera orientation (as `look` point and `up` vector) that a
+ * globe flight should end in, given a target `eye` position and optional `pitch` and `heading`.
+ *
+ * @param {import("@openglobus/og").Planet} planet - The OpenGlobus planet.
+ * @param {Vec3} eye - Target camera position (cartesian).
+ * @param {{pitch?: number, heading?: number}} options - Target pitch and heading in radians.
+ * @param {number} [distance] - Distance of the returned look point from the eye.
+ * @returns {{look: Vec3, up: Vec3}} Flight parameters for `camera.flyCartesian`.
+ */
+export const getGlobeTargetOrientation = (
+  planet,
+  eye,
+  options,
+  distance = 1,
+) => {
+  // default flight orientation: looking at the planet center, north up
+  const forward = eye.getNormal().negateTo();
+  const defaultUp = Vec3.proj_b_to_plane(Vec3.NORTH, forward).normalize();
+  const defaultRotation = Quat.getLookRotation(forward, defaultUp).conjugate();
+
+  // express it in the local planet frame (same as PlanetCamera.getPitch/getYaw)
+  const frame = planet.getFrameRotation(eye);
+  const local = frame.conjugate().inverse().mul(defaultRotation);
+
+  // same as PlanetCamera.setPitch/setYaw
+  const rotation = new Quat().setPitchYawRoll(
+    options?.pitch ?? local.getPitch(),
+    options?.heading ?? local.getYaw(),
+    local.getRoll(),
+    frame,
+  );
+  const up = rotation.mulVec3(new Vec3(0, 1, 0));
+  const backward = rotation.mulVec3(new Vec3(0, 0, 1));
+  return { look: eye.sub(backward.scaleTo(Math.max(1, distance))), up };
+};
+
+/**
+ * Initiates a 3D globe camera flight based on the OpenLayers animateOptions.
+ * Supports flying to center/zoom, or to an extent.
+ * Supports `pitch` and `heading` (radians) in the animateOptions, which are
+ * animated together with the flight.
+ *
+ * @param {import("../../main").EOxMap} EOxMap
+ * @param {object} animateToOptions
+ */
+export const flyGlobeToState = (EOxMap, animateToOptions) => {
+  if (!EOxMap.globe || !EOxMap.globeEnabled) return;
+
+  const planet = EOxMap.globe.planet;
+  const duration = animateToOptions?.duration || 800;
+  const hasOrientation =
+    animateToOptions?.pitch !== undefined ||
+    animateToOptions?.heading !== undefined;
+
+  /**
+   * Flies to the given eye position, animating pitch/heading if provided.
+   *
+   * @param {Vec3} eye
+   */
+  const flyWithOrientation = (eye) =>
+    planet.camera.flyCartesian(eye, {
+      duration,
+      ...getGlobeTargetOrientation(
+        planet,
+        eye,
+        animateToOptions,
+        planet.ellipsoid.cartesianToLonLat(eye).height,
+      ),
+    });
+
+  // Check if an extent was requested
+  // @ts-expect-error - _requestedZoomExtent is a custom property
+  if (EOxMap._requestedZoomExtent) {
+    // @ts-expect-error - _requestedZoomExtent is a custom property
+    const extent = EOxMap._requestedZoomExtent;
+    // Transform OL extent to EPSG:4326
+    const minLonLat = transform(
+      [extent[0], extent[1]],
+      EOxMap.map.getView().getProjection().getCode(),
+      "EPSG:4326",
+    );
+    const maxLonLat = transform(
+      [extent[2], extent[3]],
+      EOxMap.map.getView().getProjection().getCode(),
+      "EPSG:4326",
+    );
+    const ogExtent = new OgExtent(
+      new LonLat(minLonLat[0], minLonLat[1]),
+      new LonLat(maxLonLat[0], maxLonLat[1]),
+    );
+
+    if (hasOrientation) {
+      flyWithOrientation(planet.camera.getExtentPosition(ogExtent));
+    } else {
+      planet.camera.flyExtent(ogExtent, null, { duration });
+    }
+    return;
+  }
+
+  // Otherwise fly to center/zoom
+  const { center, zoom } = EOxMap;
+  if (!center || zoom === undefined) return;
+
+  let currZoom = zoom - 1;
+  if (!EOxMap.globeConfig?.useHighLOD) {
+    currZoom = currZoom - 1;
+  }
+  const height = 21050000 / Math.pow(2, currZoom);
+  const lonLat = new LonLat(center[0], center[1], Math.max(0, height));
+
+  if (hasOrientation) {
+    flyWithOrientation(planet.ellipsoid.lonLatToCartesian(lonLat));
+  } else {
+    planet.camera.flyLonLat(lonLat, { duration });
+  }
 };

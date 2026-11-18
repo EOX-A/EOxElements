@@ -28,7 +28,7 @@ const addToListMethod = (EOxLayerControlOptionalList) => {
   selectedLayer?.set("layerControlOptional", false);
   selectedLayer?.setVisible(true);
   EOxLayerControlOptionalList.dispatchEvent(
-    new CustomEvent("changed", { bubbles: true }),
+    new CustomEvent("changed", { bubbles: true, detail: selectedLayer }),
   );
 
   // Update related components

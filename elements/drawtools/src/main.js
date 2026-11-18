@@ -1,9 +1,11 @@
 import { LitElement, html, nothing } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import "./components/list";
 import "./components/controller";
 import { styleEOX } from "./style.eox";
 import {
   startDrawingMethod,
+  stopDrawingMethod,
   initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
@@ -41,6 +43,7 @@ import {
  * ## Methods
  *
  * - `startDrawing`: Triggers starting the drawing interaction on the map.
+ * - `stopDrawing`: Triggers stopping the drawing interaction on the map (same as pressing the Escape key).
  * - `discardDrawing`: Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
  * - `removeFeature`: Removes a feature from the drawn features.
  * - `removeFeatureByIndex`: Removes a feature from the drawn features by its index.
@@ -49,6 +52,7 @@ import {
  *
  * @element eox-drawtools
  * @fires {CustomEvent} drawupdate - Fires whenever features are added, modified or discarded
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxDrawTools extends LitElement {
   // Define properties with defaults and types
@@ -130,7 +134,7 @@ export class EOxDrawTools extends LitElement {
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
-     * @type {String|HTMLElement}
+     * @type {string | HTMLElement}
      */
     this.for = "eox-map";
 
@@ -242,7 +246,7 @@ export class EOxDrawTools extends LitElement {
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
   }
@@ -329,10 +333,18 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
+   * Triggers stopping the drawing interaction on the map (same as pressing the Escape key).
    */
-  discardDrawing() {
-    discardDrawingMethod(this);
+  stopDrawing() {
+    stopDrawingMethod(this);
+  }
+
+  /**
+   * Triggers discarding/stopping the drawing interaction and deleting the drawn shapes.
+   * @param {boolean} [isUser=false]
+   */
+  discardDrawing(isUser = false) {
+    discardDrawingMethod(this, isUser);
   }
 
   /**
@@ -353,17 +365,24 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * @param {string} text - The string representation of the features to be parsed.
-   * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
-   * @param {boolean} animate - A boolean flag indicating whether to animate the map on feature change.
+   * @param {boolean} [replaceFeatures=false] - A boolean flag indicating whether to replace the existing features.
+   * @param {boolean} [animate=true] - A boolean flag indicating whether to animate the map on feature change.
+   * @param {boolean} [isUser=false] - Whether the change was user-initiated.
    * @ignore
    */
-  handleFeatureChange(text, replaceFeatures = false, animate = true) {
+  handleFeatureChange(
+    text,
+    replaceFeatures = false,
+    animate = true,
+    isUser = false,
+  ) {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
       this.eoxMap,
       replaceFeatures,
       animate,
+      isUser,
     );
   }
 
@@ -380,7 +399,7 @@ export class EOxDrawTools extends LitElement {
    * @ignore
    */
   onModifyEnd() {
-    this.emitDrawnFeatures();
+    this.emitDrawnFeatures(true);
   }
 
   /**
@@ -397,9 +416,10 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * Triggers different events when the drawing of a shape is completed.
+   * @param {boolean} [isUser=false]
    * @ignore
    */
-  emitDrawnFeatures() {
+  emitDrawnFeatures(isUser = false) {
     /**
      * @param {import("./methods/draw/emit-drawn-features").EmitFormat} value
      */
@@ -409,7 +429,11 @@ export class EOxDrawTools extends LitElement {
        * is the `drawnFeatures` array
        * @type Array<import("ol").Feature>
        */
-      this.dispatchEvent(new CustomEvent("drawupdate", { detail: value }));
+      dispatchElementEvent(this, "drawupdate", {
+        detail: value,
+        activity: isUser,
+        action: "drawupdate",
+      });
     };
     emitDrawnFeaturesMethod(this, drawUpdateEvent);
   }
@@ -525,9 +549,9 @@ export class EOxDrawTools extends LitElement {
       <eox-drawtools-controller
         .drawFunc=${{
           start: () => this.startDrawing(),
-          discard: () => this.discardDrawing(),
+          discard: () => this.discardDrawing(true),
           editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
-            this.handleFeatureChange(evt.target.value, true),
+            this.handleFeatureChange(evt.target.value, true, true, true),
           import: (/** @type {DragEvent} */ evt) => this.handleFilesChange(evt),
         }}
         ?select=${!!this.layerId}

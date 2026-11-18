@@ -8,6 +8,8 @@ import {
   SinglePropertyTest,
   ItemProperties,
   FilterPropertiesTest,
+  ClickLinkTest,
+  UpdatedPropertyTest,
 } from "./cases/index.js";
 export const testBody =
   // @ts-expect-error TODO
@@ -58,4 +60,14 @@ describe("Stacinfo", () => {
    * Test case to check whether Filter objects in configuration arrays work correctly
    */
   it("applies filter objects in configuration", () => FilterPropertiesTest());
+
+  /**
+   * Test case to check whether click:link event is emitted on link clicks
+   */
+  it("emits click:link event on link clicks", () => ClickLinkTest());
+
+  /**
+   * Test case to check whether updated property is formatted as YYYY-MM-DD
+   */
+  it("formats updated property as YYYY-MM-DD", () => UpdatedPropertyTest());
 });

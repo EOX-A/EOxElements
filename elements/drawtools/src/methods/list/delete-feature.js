@@ -16,7 +16,7 @@ const deleteFeatureMethod = (evt, EoxDrawToolList, EoxDrawTool) => {
   // Remove the feature from the draw layer and update the drawnFeatures array
   EoxDrawToolList.drawLayer.getSource().removeFeature(feature);
   EoxDrawToolList.drawnFeatures.splice(index, 1);
-  EoxDrawTool.emitDrawnFeatures();
+  EoxDrawTool.emitDrawnFeatures(true);
 
   // Request an update to reflect the changes
   EoxDrawToolList.requestUpdate();

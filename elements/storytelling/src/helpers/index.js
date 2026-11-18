@@ -1,8 +1,10 @@
 export { default as loadMarkdownURL } from "./load-markdown-url.js";
 export { renderHtmlString, parseNavWithAddSection } from "./render-html-string";
+export { morphDOM, reconcileChildren } from "./morph";
 export {
   scrollAnchorClickEvent,
   scrollIntoView,
+  isCustomElement,
   getCustomEleHandling,
   addLightBoxScript,
   versionToInteger,

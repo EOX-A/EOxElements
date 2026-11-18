@@ -1,4 +1,5 @@
 # Logs
+/session-*.md
 logs
 *.log
 npm-debug.log*
@@ -47,3 +48,9 @@ elements/map/src/eoxlayer-schema.json
 
 .mcpregistry_github_token
 .mcpregistry_registry_token
+
+# A2UI generated catalogs and schemas
+a2ui/src/eox_catalog.json
+a2ui/src/combined_catalog.json
+a2ui/public/a2ui/*/eox_catalog.json
+a2ui/public/a2ui/*/combined_catalog.json

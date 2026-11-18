@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import { LitElement, html } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import Map from "ol/Map";
 import View from "ol/View";
 import olCss from "ol/ol.css?inline";
@@ -17,6 +18,8 @@ import {
   registerProjectionFromCode,
   getLayerById,
   getFlatLayersArray,
+  isGeoZarrLayer,
+  setupGeoZarrLayer,
 } from "./helpers";
 import {
   animateToStateMethod,
@@ -41,6 +44,10 @@ import {
 import eoxStyle from "@eox/ui/style.css?inline";
 import { addCommonStylesheet } from "@eox/elements-utils";
 import { enableGlobe, disableGlobe } from "./plugins/globe/openglobus";
+import {
+  connectGlobeSynchronization,
+  disconnectGlobeSynchronization,
+} from "./plugins/globe/lifecycle.js";
 
 addCommonStylesheet();
 
@@ -140,6 +147,7 @@ addCommonStylesheet();
  * @fires {CustomEvent} resize - Fired when the map container is resized
  * @fires {CustomEvent} select - A feature is selected
  * @fires {CustomEvent} layerschanged - The layers have been changed
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).
  *
  * @cssproperty --map-controls-bg - Background color for controls.
  * @cssproperty --map-controls-color - Text/icon color for controls.
@@ -457,9 +465,12 @@ export class EOxMap extends LitElement {
    */
   set layers(layers) {
     this.#layers = setLayersMethod(layers, this.#layers, this);
-    this.dispatchEvent(
-      new CustomEvent("layerschanged", { detail: { layers: this.#layers } }),
-    );
+    dispatchElementEvent(this, "layerschanged", {
+      detail: { layers: this.#layers },
+      activity: false,
+      bubbles: true,
+      composed: true,
+    });
   }
 
   /**
@@ -497,6 +508,7 @@ export class EOxMap extends LitElement {
    */
   set animationOptions(animationOptions) {
     this.#animationOptions = animationOptions;
+    animateToStateMethod(this);
   }
 
   /**
@@ -624,7 +636,7 @@ export class EOxMap extends LitElement {
    * Adds or updates a layer on the map.
    *
    * @param {EoxLayer} json - The layer configuration in JSON format.
-   * @returns {Object} The added or updated layer.
+   * @returns {object} The added or updated layer.
    */
   addOrUpdateLayer(json) {
     return addOrUpdateLayerMethod(json, this);
@@ -676,15 +688,14 @@ export class EOxMap extends LitElement {
     /**
      * @type {CustomEvent}
      */
-    this.dispatchEvent(
-      new CustomEvent("resize", {
-        detail: {
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
-          isSmall: entry.contentRect.width < 768,
-        },
-      }),
-    );
+    dispatchElementEvent(this, "resize", {
+      detail: {
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+        isSmall: entry.contentRect.width < 768,
+      },
+      activity: false,
+    });
   }
 
   /**
@@ -695,11 +706,24 @@ export class EOxMap extends LitElement {
     firstUpdatedMethod(this.#zoomExtent, this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    connectGlobeSynchronization(this.globe);
+    window.__eoxMapRegistry = window.__eoxMapRegistry || {};
+    if (this.id) {
+      window.__eoxMapRegistry[this.id] = this;
+    }
+  }
+
   /**
    * Lifecycle method called when the component is removed from the DOM.
    * Ensures that any associated event listeners or observers are properly disconnected.
    */
   disconnectedCallback() {
+    disconnectGlobeSynchronization(this.globe);
+    if (this.id && window.__eoxMapRegistry) {
+      delete window.__eoxMapRegistry[this.id];
+    }
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
     }
@@ -726,7 +750,7 @@ export class EOxMap extends LitElement {
    * Converts an array of OpenLayers features into a GeoJSON object.
    *
    * @param {Array<import("ol/Feature").default>} features - An array of OpenLayers features to be converted.
-   * @returns {Object} - A GeoJSON object representing the provided features.
+   * @returns {object} - A GeoJSON object representing the provided features.
    */
   parseFeature(features) {
     return parseFeature(features);
@@ -739,12 +763,27 @@ export class EOxMap extends LitElement {
    * @param {string} text - The string containing the geographic data to be parsed.
    * @param {import("ol/layer").Vector} vectorLayer - The vector layer to which the parsed features will be added.
    * @param {EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
-   * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
-   * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
-   * @return {void}
+   * @param {boolean} [replaceFeatures=false] - Optional boolean flag indicating whether to replace the existing features with the new ones.
+   * @param {boolean} [animate=true] - Optional boolean flag indicating whether to animate the map on feature change.
+   * @param {boolean} [isUser=false] - Optional boolean flag indicating whether the parse was user-initiated.
+   * @returns {void}
    */
-  parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate) {
-    parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate);
+  parseTextToFeature(
+    text,
+    vectorLayer,
+    EOxMap,
+    replaceFeatures,
+    animate,
+    isUser = false,
+  ) {
+    parseTextToFeature(
+      text,
+      vectorLayer,
+      EOxMap,
+      replaceFeatures,
+      animate,
+      isUser,
+    );
   }
 
   /**
@@ -840,6 +879,12 @@ export class EOxMap extends LitElement {
 }
 
 // Export Additional Helper Methods
-export { buffer, transform, transformExtent };
+export {
+  buffer,
+  transform,
+  transformExtent,
+  isGeoZarrLayer,
+  setupGeoZarrLayer,
+};
 
 customElements.define("eox-map", EOxMap);

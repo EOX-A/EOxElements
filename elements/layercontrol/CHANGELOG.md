@@ -1,5 +1,69 @@
 # Changelog
 
+## [1.10.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.10.0...layercontrol-v1.10.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* AnyOf config form fields when no start values exist ([#2594](https://github.com/EOX-A/EOxElements/issues/2594)) ([2da5f37](https://github.com/EOX-A/EOxElements/commit/2da5f37c57cbca061919cf1b2dc9cbfb3bab5745))
+* Debounce time slice updates in the layer datetime tool ([#2590](https://github.com/EOX-A/EOxElements/issues/2590)) ([3677b05](https://github.com/EOX-A/EOxElements/commit/3677b0503c81d79686c9064763fa0a5d4e4b6a98))
+* Hide the datetime tool when layerDatetime has no`controlValues` ([#2606](https://github.com/EOX-A/EOxElements/issues/2606)) ([40884c0](https://github.com/EOX-A/EOxElements/commit/40884c0495144dca6386f8b9e903477cbe8622df))
+
+## [1.10.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.9.0...layercontrol-v1.10.0) (2026-10-15)
+
+
+### Features
+
+* Support multidimensional geozarr layer configuration and band switching ([#2570](https://github.com/EOX-A/EOxElements/issues/2570)) ([2f5b441](https://github.com/EOX-A/EOxElements/commit/2f5b4413fbe4b3e7640430ab5314578b5be4365b))
+
+
+### Bug Fixes
+
+* Alternative update without setting up or checking the zarr layer ([#2555](https://github.com/EOX-A/EOxElements/issues/2555)) ([7f24b7b](https://github.com/EOX-A/EOxElements/commit/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6))
+
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.3...layercontrol-v1.9.0) (2026-09-28)
+
+
+### Features
+
+* GeoZarr support ([#2497](https://github.com/EOX-A/EOxElements/issues/2497)) ([193e619](https://github.com/EOX-A/EOxElements/commit/193e619a4c3af9b9c390d309958ccb9367e4ff63))
+
+## [1.8.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.2...layercontrol-v1.8.3) (2026-08-24)
+
+
+### Bug Fixes
+
+* Jsonform round based on step for minmaxslider ([#2472](https://github.com/EOX-A/EOxElements/issues/2472)) ([8f766be](https://github.com/EOX-A/EOxElements/commit/8f766be8e337025fdc67c0190418cd4e41a64bd7))
+
+## [1.8.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.1...layercontrol-v1.8.2) (2026-07-27)
+
+
+### Bug Fixes
+
+* LayerConfig removeProperties behaviour ([#2445](https://github.com/EOX-A/EOxElements/issues/2445)) ([5207e84](https://github.com/EOX-A/EOxElements/commit/5207e84b3882f4df8a8ddd1dd6ae92b80b786825))
+
+## [1.8.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.8.0...layercontrol-v1.8.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* Seed `layerConfig` start values for anyOf/oneOf/allOf schemas ([#2447](https://github.com/EOX-A/EOxElements/issues/2447)) ([2e85928](https://github.com/EOX-A/EOxElements/commit/2e859287312853baafbe2b7e0ae99a6e36b89380))
+
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.7.0...layercontrol-v1.8.0) (2026-06-18)
+
+
+### Features
+
+* Layercontrol dynamic legend colormap with a registry ([#2391](https://github.com/EOX-A/EOxElements/issues/2391)) ([a0e88e0](https://github.com/EOX-A/EOxElements/commit/a0e88e0dfd7afcf16487065c1de24e3e29e1dd12))
+* Update wms and wmts params by layercontrol config change ([#2381](https://github.com/EOX-A/EOxElements/issues/2381)) ([b24111c](https://github.com/EOX-A/EOxElements/commit/b24111cd227933c7bb8d712355d4a1ce79493307))
+
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.6.0...layercontrol-v1.7.0) (2026-05-19)
+
+
+### Features
+
+* Export updateVectorLayerStyle function ([#2327](https://github.com/EOX-A/EOxElements/issues/2327)) ([e1b91d0](https://github.com/EOX-A/EOxElements/commit/e1b91d0042a776dcac7ebce3d791aaf6fc8ad882))
+
 ## [1.6.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.5.0...layercontrol-v1.6.0) (2026-05-05)
 
 

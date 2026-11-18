@@ -1,7 +1,7 @@
 /**
  * Renders a static image layer
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const StaticImageLayerStory = {
   args: {

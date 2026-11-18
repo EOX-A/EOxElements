@@ -2,7 +2,7 @@
  * Get value based on nested key or individual key
  *
  * @param {string|Function} key - Key to identify the value
- * @param {Object} items - Items contain list of key & it's value
+ * @param {object} items - Items contain list of key & it's value
  * @returns {any}
  */
 export default function getValue(key, items) {

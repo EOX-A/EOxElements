@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * Basic timecontrol rendered using only the date display component
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const DateWithInitDateStory = {
   args: {

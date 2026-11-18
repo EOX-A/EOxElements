@@ -12,3 +12,5 @@ export { default as flatGeoBufLayerCombined } from "./load-flatgeobuf-layer-comb
 export { default as loadVectorLayer } from "./load-vector-layer";
 export { default as loadClusterLayer } from "./load-cluster-layer";
 export { default as applyGeojsonFormat } from "./apply-geojson-format";
+export { default as loadInlineGeojson } from "./load-inline-geojson";
+export { default as testFlatGeoBufPolarLogic } from "./test-flatgeobuf-polar-logic";

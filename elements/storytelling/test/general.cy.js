@@ -15,6 +15,7 @@ import {
   loadHeroSectionTest,
   loadMarkdownLightBoxTest,
   loadMarkdownErrorStory,
+  loadInlineCustomElementTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -44,6 +45,10 @@ describe("Storytelling", () => {
 
   // Test case to load custom element
   it("Load custom element", () => LoadCustomElementTest());
+
+  // Test case to load inline custom element with attributes
+  it("Load inline custom element with attributes", () =>
+    loadInlineCustomElementTest());
 
   // Test case to load eox-map as a section
   it("Load eox-map section", () => loadMapSectionTest());

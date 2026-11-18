@@ -9,7 +9,7 @@ import { firstUpdatedMethod } from "../methods/layer-list";
  * EOxLayerControlLayerList: Manages a list of layers within the EOx Layer Control.
  *
  * @element eox-layercontrol-layer-list
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlLayerList extends LitElement {
   // Define static properties for the component
@@ -28,6 +28,7 @@ export class EOxLayerControlLayerList extends LitElement {
       attribute: "tools-auto-expand",
       type: Boolean,
     },
+    colormapRegistry: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
   };
 
@@ -37,7 +38,7 @@ export class EOxLayerControlLayerList extends LitElement {
     /**
      * The layer id property
      *
-     * @type {String}
+     * @type {string}
      */
     this.idProperty = "id";
 
@@ -67,49 +68,49 @@ export class EOxLayerControlLayerList extends LitElement {
     /**
      * The layer title property
      *
-     * @type {String}
+     * @type {string}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showLayerZoomState = false;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
 
     /**
      * If enabled, toggling the layer visibility will also open/close the layer tools.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAutoExpand = false;
 
     /**
      * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.globallyExclusiveLayers = false;
 
@@ -121,6 +122,7 @@ export class EOxLayerControlLayerList extends LitElement {
      * @type {Array}
      */
     this.customEditorInterfaces = [];
+    this.colormapRegistry = null;
   }
 
   /**
@@ -182,6 +184,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .globallyExclusiveLayers=${this
                               .globallyExclusiveLayers}
                             .toolsAutoExpand=${this.toolsAutoExpand}
+                            .colormapRegistry=${this.colormapRegistry}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
                             @changed=${() => this.requestUpdate()}
@@ -202,6 +205,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .globallyExclusiveLayers=${this
                               .globallyExclusiveLayers}
                             .toolsAutoExpand=${this.toolsAutoExpand}
+                            .colormapRegistry=${this.colormapRegistry}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
                             @changed=${() => this.requestUpdate()}

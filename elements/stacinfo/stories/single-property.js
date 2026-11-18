@@ -1,7 +1,7 @@
 /**
  * If only one body property is whitelisted, then it renders the content full-width and without the key.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const SinglePropertyStory = {
   args: {

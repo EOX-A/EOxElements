@@ -1,4 +1,5 @@
 import Overlay from "ol/Overlay.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import "../components/tooltip";
 import { createLayer } from "./generate";
 import Feature from "ol/Feature";
@@ -12,6 +13,7 @@ import TileWMS from "ol/source/TileWMS.js";
 import { register } from "ol/proj/proj4.js";
 import { get as getProjection, transform } from "ol/proj.js";
 import proj4 from "proj4";
+import { unByKey } from "ol/Observable.js";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
@@ -35,6 +37,8 @@ export class EOxSelectInteraction {
    * @param {SelectOptions} options - Options for the selection interaction.
    */
   constructor(eoxMap, anyLayer, options) {
+    /** @type {import("ol/events").EventsKey[]} */
+    this.subscriptionKeys = [];
     this.eoxMap = eoxMap;
     this.selectLayer = anyLayer;
     this.options = options;
@@ -77,20 +81,30 @@ export class EOxSelectInteraction {
       }
     }
     // Set up event listeners to handle pointer leave events
-    const pointerLeaveListener = () => {
-      if (overlay && options.condition === "pointermove") {
-        overlay.setPosition(undefined);
+    this.pointerLeaveListener = () => {
+      if (options.condition !== "pointermove") return;
+      overlay?.setPosition(undefined);
+      // Clear the hover highlight, otherwise it stays stuck
+      if (this.selectedFids?.length) {
+        this.selectedFids = [];
+        this.selectStyleLayer?.changed();
       }
     };
-    eoxMap.map.on("change:target", (e) => {
-      e.oldValue?.removeEventListener("pointerleave", pointerLeaveListener);
-      e.target
-        .getTargetElement()
-        ?.addEventListener("pointerleave", pointerLeaveListener);
-    });
-    eoxMap.map
-      .getTargetElement()
-      ?.addEventListener("pointerleave", pointerLeaveListener);
+    const updatePointerLeaveTarget = () => {
+      this.pointerLeaveTarget?.removeEventListener(
+        "pointerleave",
+        this.pointerLeaveListener,
+      );
+      this.pointerLeaveTarget = eoxMap.map.getTargetElement();
+      this.pointerLeaveTarget?.addEventListener(
+        "pointerleave",
+        this.pointerLeaveListener,
+      );
+    };
+    this.subscriptionKeys.push(
+      eoxMap.map.on("change:target", updatePointerLeaveTarget),
+    );
+    updatePointerLeaveTarget();
 
     const pickedCoordinate = (
       /** @type {import("ol/MapBrowserEvent").default} */ event,
@@ -161,9 +175,28 @@ export class EOxSelectInteraction {
         /** @type {VectorLayer<import("ol/source").Vector>|VectorTile<import("ol/source").VectorTile>} */ (
           createLayer(eoxMap, layerDefinition)
         );
+      const selectLayerSource = this.selectLayer.getSource();
       //@ts-expect-error - TODO
-      this.selectStyleLayer.setSource(this.selectLayer.getSource());
-      this.selectStyleLayer.setMap(this.eoxMap.map);
+      this.selectStyleLayer.setSource(selectLayerSource);
+      const attachToMap = () => this.selectStyleLayer.setMap(this.eoxMap.map);
+
+      // Defer attach for in-flight Vector sources to avoid a duplicate requests.
+      if (this.selectLayer instanceof VectorLayer) {
+        const vectorSource = /** @type {import("ol/source/Vector").default} */ (
+          selectLayerSource
+        );
+        const hasFeatures = !!vectorSource.getFeatures().length;
+        if (hasFeatures) {
+          attachToMap();
+        } else {
+          this.subscriptionKeys.push(
+            vectorSource.once("featuresloadend", attachToMap),
+            vectorSource.once("featuresloaderror", attachToMap),
+          );
+        }
+      } else {
+        attachToMap();
+      }
 
       // Set up the initial style for the selection layer
       const initialStyle = this.selectStyleLayer.getStyleFunction();
@@ -232,29 +265,36 @@ export class EOxSelectInteraction {
             }
           }
         }
-        const selectdEvt = new CustomEvent("select", {
+        const isHover = options.condition === "pointermove";
+        const isInternalSelect = options.id === "SelectLayerClickInteraction";
+        dispatchElementEvent(this.eoxMap, "select", {
           detail: {
             id: options.id,
             originalEvent: event,
             feature: feature,
           },
+          bubbles: false,
+          composed: false,
+          activity: !isHover && !isInternalSelect,
+          action: "select",
+          originalEvent: event,
         });
-        this.eoxMap.dispatchEvent(selectdEvt);
       };
 
       // Set up the map event listener for the specified condition (e.g., click, pointermove)
       this.eoxMap.map.on(options.condition || "click", this.listener);
 
       // Set up the map event listener for the specified condition (e.g., click, pointermove)
-      this.selectLayer.on("change:opacity", () => {
-        this.selectStyleLayer.setOpacity(this.selectLayer.getOpacity());
-      });
-
-      this.selectLayer.on("change:visible", () => {
-        const visible = this.selectLayer.getVisible();
-        this.selectStyleLayer.setVisible(visible);
-        this.setActive(visible);
-      });
+      this.subscriptionKeys.push(
+        this.selectLayer.on("change:opacity", () => {
+          this.selectStyleLayer.setOpacity(this.selectLayer.getOpacity());
+        }),
+        this.selectLayer.on("change:visible", () => {
+          const visible = this.selectLayer.getVisible();
+          this.selectStyleLayer.setVisible(visible);
+          this.setActive(visible);
+        }),
+      );
 
       // Set up the map event listener for the specified condition (e.g., click, pointermove)
       this.changeSourceListener = () => {
@@ -265,7 +305,7 @@ export class EOxSelectInteraction {
       this.selectLayer.on("change:source", this.changeSourceListener);
 
       // Set up the map event listener for the specified condition (e.g., click, pointermove)
-      const changeLayerListener = () => {
+      this.changeLayerListener = () => {
         if (eoxMap.getLayerById(anyLayer.get("id"))) {
           // If a select layer exists, keep it in current activation state
           // (active/inactive) and assign it (and the overlay) to the map
@@ -278,7 +318,9 @@ export class EOxSelectInteraction {
           overlay?.setMap(null);
         }
       };
-      eoxMap.map.getLayerGroup().on("change", changeLayerListener);
+      this.subscriptionKeys.push(
+        eoxMap.map.getLayerGroup().on("change", this.changeLayerListener),
+      );
 
       /**
        * Adds a listener on pointermove
@@ -451,7 +493,7 @@ export class EOxSelectInteraction {
   /**
    * Pans the map to the specified feature or extent.
    * @param {Feature | RenderFeature | import("ol/extent").Extent} featureOrExtent - The feature or extent to pan to.
-   * @param {Object} [options] - Additional options for the panning animation.
+   * @param {object} [options] - Additional options for the panning animation.
    */
   panIntoFeature = (featureOrExtent, options) => {
     const extent =
@@ -465,7 +507,7 @@ export class EOxSelectInteraction {
   /**
    * Highlights features by their IDs and optionally pans into their extent.
    * @param {Array<string | number>} ids - Array of feature IDs to highlight.
-   * @param {Object} [fitOptions] - Options for panning into the highlighted features.
+   * @param {object} [fitOptions] - Options for panning into the highlighted features.
    */
   highlightById(ids, fitOptions) {
     this.selectedFids = ids;
@@ -504,6 +546,13 @@ export class EOxSelectInteraction {
    * Removes the selection interaction and associated layers from the map.
    */
   remove() {
+    unByKey(this.subscriptionKeys);
+    this.subscriptionKeys = [];
+    this.pointerLeaveTarget?.removeEventListener(
+      "pointerleave",
+      this.pointerLeaveListener,
+    );
+    this.pointerLeaveTarget = undefined;
     this.eoxMap.map.un(this.options.condition || "click", this.listener);
     if (
       this.selectLayer instanceof VectorLayer ||

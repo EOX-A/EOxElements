@@ -6,7 +6,9 @@ import {
   ExternalStory,
   MarkdownStory,
   CodeMarkdownToolbarStory,
+  CodeMarkdownToolbarUploadStory,
   PrimaryStory,
+  ActivityStory,
   ButtonsEditorStory,
   BinaryCheckboxEditorStory,
   MinMaxEditorStory,
@@ -22,12 +24,15 @@ import {
   ShowOptInPropertiesStory,
   ValidationStory,
   CodeStory,
+  CodeMarkdownDisableUndoRedoStory,
   OptionalPropertiesStory,
   FlexLayoutStory,
   DefaultsStory,
   GridStory,
   GridStrictStory,
   StepsEditorStory,
+  BranchingStory,
+  SetSpatialValueStory,
 } from "./index.js";
 
 export default {
@@ -58,6 +63,17 @@ export default {
 export const Primary = PrimaryStory;
 
 /**
+ * User activity attribution with a runnable parent event log in vanilla JS, React,
+ * Vue, and Svelte examples. Edit the title to emit a functional change with
+ * isUser=true and an eox:activity envelope containing element, action, and payload.
+ * Use Set value programmatically to assign form.value from the host: its change
+ * remains functional (isUser=false) without activity, even when a human clicks
+ * that host button. Initialization also emits functional events without activity.
+ * Parent listeners cross the form's shadow DOM. The log omits originalEvent.
+ */
+export const Activity = ActivityStory;
+
+/**
  * Validation example. Includes a submit button that is only enabled when validation passes.
  * Shows how to handle form validation and submit events.
  */
@@ -68,6 +84,12 @@ export const Validation = ValidationStory;
  * Demonstrates integration of external editors via schema configuration.
  */
 export const Code = CodeStory;
+
+/**
+ * Ace editor with disabled undo/redo example.
+ * Demonstrates how to disable keyboard shortcuts for undo/redo in the markdown Ace editor.
+ */
+export const CodeMarkdownDisableUndoRedo = CodeMarkdownDisableUndoRedoStory;
 
 /**
  * Opt-in properties example. Shows how to display and interact with opt-in properties in the form.
@@ -133,6 +155,85 @@ export const Markdown = MarkdownStory;
 export const CodeMarkdownToolbar = CodeMarkdownToolbarStory;
 
 /**
+ * Code Markdown editor with file attachment support.
+ * Shows how to enable the paperclip ("Attach file") button in the markdown toolbar.
+ * When uploading an image, it smartly inserts an image tag `![alt](url)`, for videos it inserts
+ * `<video src="url" controls></video>`, and for other files it inserts a link `[name](url)`.
+ * If upload is not configured, the attach file button is not displayed.
+ *
+ * ### Configuration Options
+ *
+ * **1. HTTP Endpoint**:
+ * ```json
+ * {
+ *   "type": "string",
+ *   "format": "markdown",
+ *   "options": {
+ *     "resolver": "ace",
+ *     "markdownToolbar": {
+ *       "upload": {
+ *         "endpoint": "https://api.example.com/upload",
+ *         "fieldName": "file"
+ *       }
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * **2. Custom Async Upload Function** (e.g. GitHub API, S3 presigned URL):
+ * ```javascript
+ * const schema = {
+ *   type: "object",
+ *   properties: {
+ *     markdown: {
+ *       type: "string",
+ *       format: "markdown",
+ *       options: {
+ *         resolver: "ace",
+ *         markdownToolbar: {
+ *           upload: async (file, editorInstance) => {
+ *             // Custom upload logic (e.g. GitHub contents API or cloud storage)
+ *             const uploadedUrl = await myCustomUploader(file);
+ *             return uploadedUrl; // or { fileUrl: uploadedUrl }
+ *           }
+ *         }
+ *       }
+ *     }
+ *   }
+ * };
+ * ```
+ *
+ * **3. Using `defaults.callbacks.upload`** (for pure JSON schemas referencing handlers by name):
+ * ```json
+ * // In schema:
+ * "options": {
+ *   "resolver": "ace",
+ *   "markdownToolbar": {
+ *     "upload": { "upload_handler": "myUploadHandler" }
+ *   }
+ * }
+ * ```
+ * ```javascript
+ * // In element .defaults:
+ * const defaults = {
+ *   callbacks: {
+ *     upload: {
+ *       myUploadHandler: async (jseditor, path, file, cbs) => {
+ *         try {
+ *           const url = await uploadToStorage(file);
+ *           cbs.success(url);
+ *         } catch (err) {
+ *           cbs.failure(err.message);
+ *         }
+ *       }
+ *     }
+ *   }
+ * };
+ * ```
+ */
+export const CodeMarkdownToolbarUpload = CodeMarkdownToolbarUploadStory;
+
+/**
  * Buttons Editor example. Renders a custom button group input based on enum values.
  * Demonstrates custom input integration and enum handling.
  */
@@ -189,6 +290,14 @@ export const FeatureSelection = FeatureSelectionStory;
 export const WKT = WKTStory;
 
 /**
+ * Programmatic Spatial Value example (`setValue` on spatial inputs).
+ * Demonstrates how calling `editor.setValue()` or passing dynamic `.value` coordinates
+ * (bounding boxes, polygons, points) updates the underlying `eox-drawtools` instance on external maps,
+ * enabling state synchronization, URL restoration, and dynamic resets without manual re-drawing.
+ */
+export const SetSpatialValue = SetSpatialValueStory;
+
+/**
  * GeoJSON example. Returns drawn features as GeoJSON.
  * Demonstrates output format customization for spatial inputs.
  */
@@ -241,6 +350,13 @@ export const Defaults = DefaultsStory;
  * ```
  */
 export const StepsEditor = StepsEditorStory;
+
+/**
+ * Branching example with `anyOf` / `oneOf`. Demonstrates multi-variant schemas with `"keep_oneof_values": false`
+ * in options to ensure clean default resets across branch switches (avoiding stale value/slider bleeding),
+ * minmax sliders, dynamic watchers, and string template interpolation.
+ */
+export const Branching = BranchingStory;
 
 /**
  * Unstyled example. Renders the form without default styles.

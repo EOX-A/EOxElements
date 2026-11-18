@@ -4,9 +4,11 @@ import {
   AutoSpreadStory,
   CardDisplayStory,
   CSSVariablesStory,
+  DateRangeFilterStory,
   ExternalStory,
   ExternalFetchFnStory,
   InlineModeStory,
+  InlineSearchStory,
   NestedPropertyStory,
   PreSetFilterStory,
   PrimaryStory,
@@ -26,9 +28,38 @@ export default {
 export const Primary = PrimaryStory();
 
 /**
+ * Demonstrates the date range filter, which uses `eox-timecontrol` to provide a calendar-based interface for filtering items by date.
+ * To use this, set the filter `type` to `"range"` and `format` to `"date"`.
+ *
+ * **Note: You also need to import `@eox/timecontrol` in your application to use this feature.**
+ *
+ * ```html
+ * <eox-itemfilter
+ *   .items=${[ ... ]}
+ *   .filterProperties=${[
+ *     {
+ *       key: "timestamp",
+ *       type: "range",
+ *       format: "date",
+ *     }
+ *   ]}
+ * ></eox-itemfilter>
+ * ```
+ */
+export const DateRangeFilter = DateRangeFilterStory();
+
+/**
  * Using `inlineMode`, the itemfilter is rendered in a single input field, ideal for compact UIs or toolbars. Results are hidden until a filter is applied.
+ * Typing into the input field filters the list of filters by their names; it does not search the items.
+ * To search the items from the input field, see the `InlineSearch` story.
  */
 export const InlineMode = InlineModeStory();
+
+/**
+ * Setting `inlineSearch: true` on a `type: "text"` filter in `inlineMode` lets the input field search the items:
+ * typing matches filter names and offers a "Search for" action; choosing it or pressing Enter adds the text to that filter as a chip.
+ */
+export const InlineSearch = InlineSearchStory();
 
 /**
  * By using `state` inside the `filterProperties', it is possible to start the itemfilter.

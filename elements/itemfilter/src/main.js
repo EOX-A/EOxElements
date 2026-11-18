@@ -1,4 +1,5 @@
 import { LitElement, html, nothing } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { style } from "./style";
@@ -53,6 +54,7 @@ import {
  * @fires mouseenter:result - When a result is hovered
  * @fires mouseleave:result - When a result is un-hovered
  * @fires click:result-action - When a result action button is clicked
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
@@ -134,13 +136,18 @@ export class EOxItemFilter extends LitElement {
      */
     this.selectedResult = null;
 
+    this._debouncedSearch = _debounce(this.searchHandler, 100, {
+      leading: true,
+    });
+
     /**
      * @type Function
      * @private
      */
-    this.search = _debounce(this.searchHandler, 100, {
-      leading: true,
-    });
+    this.search = (isUser = false) => {
+      if (isUser) this._isUserFilter = true;
+      this._debouncedSearch();
+    };
 
     /**
      * Aggregate results by a property key
@@ -178,7 +185,7 @@ export class EOxItemFilter extends LitElement {
 
     /**
      * The filter properties. Can be passed as a property or stringified JSON attribute.
-     * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>
+     * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object, inlineSearch?: Boolean}>
      */
     this.filterProperties = [];
 
@@ -298,7 +305,7 @@ export class EOxItemFilter extends LitElement {
 
     /** Overrides elements current CSS.
      *
-     * @type {String}
+     * @type {string}
      */
     this.styleOverride = "";
 
@@ -329,20 +336,20 @@ export class EOxItemFilter extends LitElement {
    * Requests an update after the search completes.
    */
   async searchHandler() {
+    const isUser = Boolean(this._isUserFilter);
+    this._isUserFilter = false;
     await searchMethod(this.#config, this.#items, this);
     /**
      * Fires when the filters are changed; event detail includes `filters` and `results`
      */
-    this.dispatchEvent(
-      new CustomEvent("filter", {
-        detail: {
-          results: this.results,
-          filters: this.filters,
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "filter", {
+      detail: {
+        results: this.results,
+        filters: this.filters,
+      },
+      activity: isUser,
+      action: "filter",
+    });
     if (this.inlineMode)
       /** @type {import("./components/itemfilter-container").EOxItemFilterContainer} **/ (
         this.renderRoot.querySelector("eox-itemfilter-container")
@@ -354,7 +361,7 @@ export class EOxItemFilter extends LitElement {
    * Sorts the given items based on the current configuration.
    *
    * @param {Array<object>} items - The items to be sorted.
-   * @param {Object} [options] - Optional sorting parameters.
+   * @param {object} [options] - Optional sorting parameters.
    * @param {boolean} [options.isExternalResult] - Flag for results from external filter.
    * @returns {Array<object>} - The sorted items.
    */
@@ -365,7 +372,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Creates a filter element based on the given filter object and tab index.
    *
-   * @param {Object} filterObject - The filter object.
+   * @param {object} filterObject - The filter object.
    * @param {number} tabIndex - The tab index for the filter element.
    * @returns {import("lit").HTMLTemplateResult} - The template result for the filter element.
    */
@@ -376,7 +383,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Creates a reset element for the given filter object and tab index.
    *
-   * @param {Object} filterObject - The filter object.
+   * @param {object} filterObject - The filter object.
    * @param {number} tabIndex - The tab index for the reset element.
    * @returns {import("lit").HTMLTemplateResult} - The template result for the filter element.
    */
@@ -386,9 +393,10 @@ export class EOxItemFilter extends LitElement {
 
   /**
    * Resets all applied filters.
+   * @param {boolean} [isUser=false]
    */
-  resetFilters() {
-    resetFilterMethod(this);
+  resetFilters(isUser = false) {
+    resetFilterMethod(this, isUser);
   }
 
   /**
@@ -420,39 +428,65 @@ export class EOxItemFilter extends LitElement {
    * @param {Map} changedProperties - The properties that have changed.
    */
   updated(changedProperties) {
-    ELEMENT_PROPERTIES.map((property) => {
+    let shouldReapply = false;
+    let shouldSearch = false;
+
+    ELEMENT_PROPERTIES.forEach((property) => {
       if (changedProperties.has(property)) {
-        this.firstUpdated(undefined);
-        return true;
+        this.#config[property] = this[property];
+        if (
+          [
+            "items",
+            "filterProperties",
+            "idProperty",
+            "aggregateResults",
+            "fuseConfig",
+            "matchAllWhenEmpty",
+            "externalFilter",
+          ].includes(property)
+        ) {
+          shouldReapply = true;
+        } else if (property === "resultSorting") {
+          shouldSearch = true;
+        }
       }
-      return false;
     });
+
+    if (shouldReapply) {
+      this.#items =
+        this.items?.map((i, index) =>
+          Object.assign({ id: i[this.idProperty] || `item-${index}` }, i),
+        ) || [];
+      this.apply();
+    } else if (shouldSearch) {
+      this.search();
+    }
   }
 
   /**
    * Updates selected result when result component triggers the "result" event.
    *
-   * @param {{detail: Object}} evt - "result" event triggered by result component
+   * @param {{detail: object}} evt - "result" event triggered by result component
    */
   updateResult(evt) {
     this.selectedResult = evt.detail;
     /**
      * Fires when a result is selected; event detail is `selectedResult`
      */
-    this.dispatchEvent(
-      new CustomEvent("select", {
-        detail: this.selectedResult,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "select", {
+      detail: this.selectedResult,
+      activity: true,
+      action: "select",
+      bubbles: true,
+      composed: true,
+    });
     this.requestUpdate();
   }
 
   /**
    * Dispatches an event when result component triggers the "mouseenter:result" event.
    *
-   * @param {{detail: Object}} evt - "mouseenter:result" event triggered by result component
+   * @param {{detail: object}} evt - "mouseenter:result" event triggered by result component
    */
   mouseEnterResult(evt) {
     /**
@@ -470,7 +504,7 @@ export class EOxItemFilter extends LitElement {
   /**
    * Dispatches an event when result component triggers the "mouseleave:result" event.
    *
-   * @param {{detail: Object}} evt - "mouseleave:result" event triggered by result component
+   * @param {{detail: object}} evt - "mouseleave:result" event triggered by result component
    */
   mouseLeaveResult(evt) {
     /**
@@ -488,19 +522,19 @@ export class EOxItemFilter extends LitElement {
   /**
    * Emits "click:result-action" event.
    *
-   * @param {{detail: Object}} evt - "click:result-action" event triggered by result component
+   * @param {{detail: object}} evt - "click:result-action" event triggered by result component
    */
   emitResultAction(evt) {
     /**
      * Fires when a result-action is clicked; event detail is `result`
      */
-    this.dispatchEvent(
-      new CustomEvent("click:result-action", {
-        detail: evt.detail,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "click:result-action", {
+      detail: evt.detail,
+      activity: true,
+      action: "click:result-action",
+      bubbles: true,
+      composed: true,
+    });
   }
 
   /**
@@ -533,8 +567,8 @@ export class EOxItemFilter extends LitElement {
                 .filters=${this.filters}
                 .filterProperties=${this.filterProperties}
                 .inlineMode=${this.inlineMode || false}
-                @reset=${() => this.resetFilters()}
-                @filter=${() => this.search()}
+                @reset=${() => resetFilterMethod(this, true)}
+                @filter=${() => this.search(true)}
               >
                 <section
                   slot="section"
@@ -561,7 +595,7 @@ export class EOxItemFilter extends LitElement {
                               id="filter-reset"
                               class="reset-icon border small"
                               data-cy="filter-reset"
-                              @click=${() => this.resetFilters()}
+                              @click=${() => this.resetFilters(true)}
                             >
                               ${this.unstyled
                                 ? nothing
@@ -590,7 +624,14 @@ export class EOxItemFilter extends LitElement {
                       ${map(
                         Object.values(this.filters),
                         (filterObject, index) =>
-                          html` <li class="no-padding">
+                          html` <li
+                            class="no-padding"
+                            style=${this.inlineMode &&
+                            filterObject.inlineSearch &&
+                            filterObject.type === "text"
+                              ? "display: none"
+                              : nothing}
+                          >
                             <eox-itemfilter-expandcontainer
                               .filterObject=${filterObject}
                               @details-toggled=${(e) =>

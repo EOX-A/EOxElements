@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * Sync the views of two maps using the `sync` attribute (e.g. `sync="eox-map#a"`).
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const MapSyncStory = {
   args: {

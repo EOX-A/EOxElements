@@ -19,7 +19,7 @@ import {
  * to validate and process the input for adding layers dynamically to the map.
  *
  * @element eox-layercontrol-add-layers
- * @extends LitElement
+ * @augments LitElement
  */
 export class EOxLayerControlAddLayers extends LitElement {
   // Define static properties for the component
@@ -32,14 +32,14 @@ export class EOxLayerControlAddLayers extends LitElement {
   /**
    * State for URL Input for WMS/XYZ URLs
    *
-   * @type {String}
+   * @type {string}
    */
   urlInput = null;
 
   /**
    * State for JSON Textarea - For EOxMap JSON
    *
-   * @type {String}
+   * @type {string}
    */
   jsonInput = null;
 
@@ -53,7 +53,7 @@ export class EOxLayerControlAddLayers extends LitElement {
   /**
    * Loader state when search is triggered
    *
-   * @type {Boolean}
+   * @type {boolean}
    */
   searchLoad = false;
 
@@ -77,14 +77,14 @@ export class EOxLayerControlAddLayers extends LitElement {
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
   }

@@ -2,13 +2,14 @@ import dayjs from "dayjs";
 import { getValue, indexItems } from "../../helpers";
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
+import { DATE_TIME_FORMAT } from "../../enums/index.js";
 
 /**
  * Applies filters to the provided items based on the given configuration and updates the EOxItemFilter instance.
  *
- * @param {Object} config - The configuration object for the filters.
- * @param {Array<Object>} items - The items to be filtered.
- * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @param {object} config - The configuration object for the filters.
+ * @param {Array<object>} items - The items to be filtered.
+ * @param {object} EOxItemFilter - The EOxItemFilter component instance.
  * @returns {Array<string>} The aggregated results if config.aggregateResults is specified, otherwise an empty array.
  */
 function filterApplyMethod(config, items, EOxItemFilter) {
@@ -22,7 +23,7 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       // Function to parse values based on their format
       const parseValue = (value) => {
         return filterProperty.format === "date"
-          ? dayjs(value).unix()
+          ? dayjs(value).valueOf()
           : parseFloat(value);
       };
 
@@ -53,6 +54,8 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           }
           return;
         }
+        // Text filters use `keys`, so no state keys come from item values
+        if (filterProperty.type === "text") return;
         if (Array.isArray(item[filterProperty.key])) {
           item[filterProperty.key].forEach((prop) => {
             filterKeys[prop] = undefined;
@@ -77,12 +80,40 @@ function filterApplyMethod(config, items, EOxItemFilter) {
 
       // Combine filter properties into the filter object
       const filterKey = filterProperty.key || filterProperty.keys.join("|");
+      const existingFilter = EOxItemFilter.filters[filterKey];
+      let isDirty = undefined;
+      if (filterProperty.state) {
+        if (filterProperty.type === "range") {
+          const parseVal = (val) => {
+            return filterProperty.format === "date"
+              ? dayjs(val).valueOf()
+              : parseFloat(val);
+          };
+          const stateMin = parseVal(filterProperty.state.min);
+          const stateMax = parseVal(filterProperty.state.max);
+          const filterMin = parseVal(filterProperty.min ?? filterKeys.min);
+          const filterMax = parseVal(filterProperty.max ?? filterKeys.max);
+
+          if (filterProperty.format === "date") {
+            isDirty =
+              !dayjs(stateMin).isSame(dayjs(filterMin), "day") ||
+              !dayjs(stateMax).isSame(dayjs(filterMax), "day") ||
+              undefined;
+          } else {
+            isDirty =
+              stateMin !== filterMin || stateMax !== filterMax || undefined;
+          }
+        } else {
+          isDirty =
+            Object.values(filterProperty.state).some((value) => value) ||
+            undefined;
+        }
+      }
+
       EOxItemFilter.filters[filterKey] = Object.assign(
         {
           type: filterProperty.type || "multiselect",
-          dirty: filterProperty.state
-            ? Object.values(filterProperty.state).some((value) => value)
-            : undefined,
+          dirty: isDirty || existingFilter?.dirty,
           key: filterKey,
         },
         filterProperty.type === "range"
@@ -94,11 +125,59 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           : {},
         filterProperty,
       );
+      if (
+        filterProperty.type === "range" &&
+        EOxItemFilter.filters[filterKey].dirty
+      ) {
+        const parseVal = (val) => {
+          return filterProperty.format === "date"
+            ? dayjs(val).valueOf()
+            : parseFloat(val);
+        };
+        const min = parseVal(
+          filterProperty.state?.min !== undefined
+            ? filterProperty.state.min
+            : existingFilter?.state?.min,
+        );
+        const max = parseVal(
+          filterProperty.state?.max !== undefined
+            ? filterProperty.state.max
+            : existingFilter?.state?.max,
+        );
+        EOxItemFilter.filters[filterKey].stringifiedState =
+          filterProperty.format === "date"
+            ? `${dayjs(min).format(DATE_TIME_FORMAT)} - ${dayjs(max).format(DATE_TIME_FORMAT)}`
+            : `${min} - ${max}`;
+      }
       EOxItemFilter.filters[filterKey].state = Object.assign(
         {},
         filterKeys,
+        existingFilter?.state || {},
         filterProperty.state,
       );
+      if (filterProperty.type === "text") {
+        EOxItemFilter.filters[filterKey].stringifiedState = Object.values(
+          EOxItemFilter.filters[filterKey].state,
+        ).find(Boolean);
+      }
+
+      if (filterProperty.type === "range" && filterProperty.state) {
+        const parseVal = (val) => {
+          return filterProperty.format === "date"
+            ? dayjs(val).valueOf()
+            : parseFloat(val);
+        };
+        if (filterProperty.state.min !== undefined) {
+          EOxItemFilter.filters[filterKey].state.min = parseVal(
+            filterProperty.state.min,
+          );
+        }
+        if (filterProperty.state.max !== undefined) {
+          EOxItemFilter.filters[filterKey].state.max = parseVal(
+            filterProperty.state.max,
+          );
+        }
+      }
     });
   }
 

@@ -14,6 +14,7 @@ on:
 jobs:
   create-previews:
     runs-on: ${{ matrix.os }}
+    if: github.actor != 'dependabot[bot]'
 
     strategy:
       matrix:
@@ -22,26 +23,46 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         # necessary for git diff of changed files in the PR
         with:
           fetch-depth: 2
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
 
       - name: Cache node_modules 📦
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Determine changed packages 🔍
+        id: changed
+        run: |
+          PATHS=$(git diff --name-only -r HEAD^1 HEAD | node -e '
+            const { packages } = require("./release-please-config.json");
+            const files = require("fs").readFileSync(0, "utf8").split("\n");
+            const changed = Object.keys(packages).filter((p) => files.some((f) => f.startsWith(p + "/")));
+            process.stdout.write(changed.join(" "));
+          ')
+          echo "paths=$PATHS" >> "$GITHUB_OUTPUT"
+
       - name: Install dependencies 👨🏻‍💻
+        if: steps.changed.outputs.paths != ''
         run: npm ci --prefer-offline --no-audit
-      - name: Release preview 🚀
-        run: npx pkg-pr-new publish './elements/*' './utils/' --comment=off
+
+      - name: Release previews 🚀
+        if: steps.changed.outputs.paths != ''
+        continue-on-error: true
+        run: |
+          ROOT_DIR=$(pwd)
+          for p in ${{ steps.changed.outputs.paths }}; do
+            (cd "$ROOT_DIR/$p" && npm run types:generate --if-present)
+          done
+          npx pkg-pr-new publish ${{ steps.changed.outputs.paths }} --comment=off

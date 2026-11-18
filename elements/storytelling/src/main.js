@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import markdownitFootnote from "markdown-it-footnote";
@@ -13,6 +14,7 @@ import {
   addLightBoxScript,
   addCustomSection,
   initSavedMarkdown,
+  reconcileChildren,
 } from "./helpers";
 import DOMPurify from "isomorphic-dompurify";
 import {
@@ -56,6 +58,10 @@ md.use(markdownitFootnote);
  * Read the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.
  *
  * @element eox-storytelling
+ * @fires {CustomEvent} init - Fires when eox-storytelling has initialized
+ * @fires {CustomEvent} changed - Fires when markdown content has changed
+ * @fires {CustomEvent} upload:file - Fires when a file is uploaded via the built-in editor
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
@@ -68,6 +74,10 @@ export class EOxStoryTelling extends LitElement {
       showEditor: { attribute: "show-editor", type: String },
       showHeroScrollIndicator: {
         attribute: "show-hero-scroll-indicator",
+        type: Boolean,
+      },
+      showMapLoadingIndicator: {
+        attribute: "show-map-loading-indicator",
         type: Boolean,
       },
       noShadow: { attribute: "no-shadow", type: Boolean },
@@ -86,42 +96,47 @@ export class EOxStoryTelling extends LitElement {
   /**
    * Basic config
    *
-   * @type {Object}
+   * @type {object}
    */
   #config = {};
 
   /**
    * Debounce update markdown
    *
-   * @type {Object}
+   * @type {object}
    */
   #debounceUpdateMarkdown = null;
+  /**
+   * @type {boolean}
+   */
+  #isEditorChange = false;
+
   constructor() {
     super();
 
     this.#html = undefined;
 
     /**
-     * @type {String} - Markdown Content
+     * @type {string} - Markdown Content
      */
     this.markdown = "";
 
     /**
-     * @type {String} - Markdown Content URL
+     * @type {string} - Markdown Content URL
      */
     this.markdownURL = null;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
@@ -129,7 +144,7 @@ export class EOxStoryTelling extends LitElement {
      * Disable auto save
      *
      * @deprecated Will be removed in the next major version
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.disableAutosave = false;
 
@@ -137,42 +152,49 @@ export class EOxStoryTelling extends LitElement {
      * Enable or disable editor
      *
      * @deprecated Will be removed in the next major version
-     * @type {String | "closed" | undefined}
+     * @type {string | "closed" | undefined}
      */
     this.showEditor = undefined;
 
     /**
      * Enable or disable navigation
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showNav = false;
 
     /**
      * Enable or disable hero scroll indicator
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showHeroScrollIndicator = false;
 
     /**
+     * Enable or disable map loading indicator by default
+     *
+     * @type {boolean}
+     */
+    this.showMapLoadingIndicator = false;
+
+    /**
      * List of items in navigation
      *
-     * @type {Array<Object>}
+     * @type {Array<object>}
      */
     this.nav = [];
 
     /**
      * custom section index
      *
-     * @type {Number}
+     * @type {number}
      */
     this.addCustomSectionIndex = -1;
 
     /**
      * Selected custom element object
      *
-     * @type {Object | null}
+     * @type {object | null}
      */
     this.selectedCustomElement = null;
   }
@@ -185,11 +207,10 @@ export class EOxStoryTelling extends LitElement {
      * Fires when `eox-storytelling` has initialized; allowing to add custom logic
      * regarding the integrated `eox-maps` etc. The event detail contains the initialized element.
      */
-    this.dispatchEvent(
-      new CustomEvent("init", {
-        detail: element,
-      }),
-    );
+    dispatchElementEvent(this, "init", {
+      detail: element,
+      activity: false,
+    });
   }
 
   /**
@@ -204,13 +225,13 @@ export class EOxStoryTelling extends LitElement {
      * as a callback function that can be used to update the file url end handle errors.
      * @deprecated Will be removed in the next major version
      */
-    this.dispatchEvent(
-      new CustomEvent("upload:file", {
-        detail: "dummy",
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "upload:file", {
+      detail: "dummy",
+      bubbles: true,
+      composed: true,
+      activity: true,
+      action: "upload:file",
+    });
   }
 
   /**
@@ -224,19 +245,26 @@ export class EOxStoryTelling extends LitElement {
       this.requestUpdate();
     }
 
-    // Check if 'markdown' property itself has changed and generate sanitized html
-    if (changedProperties.has("markdown")) {
+    // Check if 'markdown' or 'showMapLoadingIndicator' property itself has changed and generate sanitized html
+    if (
+      changedProperties.has("markdown") ||
+      changedProperties.has("showMapLoadingIndicator")
+    ) {
+      const isUser = Boolean(this.#isEditorChange);
+      this.#isEditorChange = false;
       if (this.markdown) {
-        this.dispatchEvent(
-          /**
-           * Fires when the markdown content has changed. The event detail contains the updated markdown string.
-           */
-          new CustomEvent("changed", {
-            detail: this.markdown,
-          }),
-        );
+        /**
+         * Fires changed with the updated markdown content.
+         * Only edits from the built-in editor also emit eox:activity.
+         */
+        dispatchElementEvent(this, "changed", {
+          detail: this.markdown,
+          activity: isUser,
+          action: "changed",
+        });
       }
 
+      md.showMapLoadingIndicator = this.showMapLoadingIndicator;
       const unsafeHTML = md.render(this.markdown);
 
       validateMarkdownAttrs(md.attrs.sections, this);
@@ -265,6 +293,13 @@ export class EOxStoryTelling extends LitElement {
         this.showEditor,
         this,
       );
+
+      const storyContent = /** @type {HTMLElement} */ (
+        (this.shadowRoot || this).querySelector("#story-content")
+      );
+      if (storyContent) {
+        reconcileChildren(storyContent, this.#html);
+      }
 
       if (this.showEditor !== undefined) {
         const parent = this.shadowRoot || this;
@@ -302,12 +337,15 @@ export class EOxStoryTelling extends LitElement {
       const slottedContent = slot.assignedNodes({ flatten: true });
 
       // Map each node to its text content, filtering out any non-text nodes, and join into a single string
-      this.markdown = slottedContent
+      const slottedText = slottedContent
         .map((node) => (node.textContent ? node.textContent : ""))
         .join("");
 
-      // Request an update to re-render the component with the new content
-      this.requestUpdate();
+      if (slottedText.trim()) {
+        this.markdown = slottedText;
+        // Request an update to re-render the component with the new content
+        this.requestUpdate();
+      }
     }
   }
 
@@ -319,7 +357,8 @@ export class EOxStoryTelling extends LitElement {
     }
 
     this.#debounceUpdateMarkdown = _debounce((e) => {
-      if (e.detail) {
+      if (e.detail && this.markdown !== e.detail.Story) {
+        this.#isEditorChange = true;
         this.markdown = e.detail.Story;
         this.requestUpdate();
       }
@@ -364,7 +403,7 @@ export class EOxStoryTelling extends LitElement {
       </style>
 
       <div class="story-telling ${editorClass} ${navClass}">
-        <div>${when(this.#html, () => html`${this.#html}`)}</div>
+        <div id="story-content"></div>
         ${when(
           this.showEditor !== undefined,
           () => html`
@@ -373,6 +412,7 @@ export class EOxStoryTelling extends LitElement {
               .storyId=${this.id}
               show-editor=${this.showEditor}
               @change=${this.#debounceUpdateMarkdown}
+              @eox:activity=${(/** @type {Event} */ e) => e.stopPropagation()}
               .markdown=${this.markdown}
               .disableAutosave=${this.disableAutosave}
             ></eox-storytelling-editor>

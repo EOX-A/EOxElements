@@ -4,7 +4,7 @@ import { STORY_ARGS } from "../src/enums";
 /**
  * No map story
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const NoMapStory = {
   args: {

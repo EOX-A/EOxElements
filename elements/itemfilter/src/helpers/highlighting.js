@@ -3,10 +3,10 @@ import { capitalize, mergeHighlightIndices } from "./";
 /**
  * Highlights matched text in the Fuse.js search results.
  *
- * @param {Array<Object>} fuseSearchResult - The search results from Fuse.js.
+ * @param {Array<object>} fuseSearchResult - The search results from Fuse.js.
  * @param {string} [highlightClassName="highlight"] - The CSS class name to be used for highlighting.
  * @param {string} [matchKey="title"] - The key of the object where matches should be highlighted.
- * @returns {Array<Object>} The search results with highlighted matches.
+ * @returns {Array<object>} The search results with highlighted matches.
  */
 function highlight(
   fuseSearchResult,

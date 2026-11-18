@@ -103,6 +103,10 @@ export type TimeControlDateOptions = {
    */
   navigation?: boolean;
   /**
+   * Enables date text editing. Defaults to false; a timecontrol picker enables it on initialization.
+   */
+  editable?: boolean;
+  /**
    * Whether to disable default styling.
    */
   unstyled?: boolean;
@@ -128,6 +132,87 @@ export type TimeControlPickerOptions = {
    * Whether to show dots indicating available data on calendar dates.
    */
   showDots?: boolean;
+  /**
+   * Whether to show items in the calendar popup.
+   */
+  showItems?: boolean;
+  /**
+   * Property key on the timeline item used to select the primary line in the popup items card
+   * (e.g., `layerName`, `group`, `itemId`, `originalDate`, or custom properties on `timeControlValues`).
+   */
+  itemTitleKey?: string;
+  /**
+   * Whether to show time in the popup items card.
+   */
+  showTime?: boolean;
+  /**
+   * Format string for time display in the popup items card.
+   */
+  timeFormat?: string;
+  /**
+   * Custom transformation function for popup items.
+   */
+  propertyTransform?: (
+    item: TimeControlPopupItem,
+  ) => TimeControlPopupItem | string | null | false;
+};
+
+/**
+ * Timeline item data object passed to the popup card renderer or `propertyTransform` function.
+ */
+export type TimeControlPopupItem = {
+  /**
+   * Primary title line displayed in bold.
+   */
+  title: string;
+  /**
+   * Subtitle text displayed in the metadata line.
+   */
+  subtitle: string;
+  /**
+   * Formatted time string (if `showTime` is true and item has time).
+   */
+  time: string;
+  /**
+   * CSS color variable or color string for the indicator dot.
+   */
+  dotColor: string;
+  /**
+   * Layer display name (from `layer.properties[titleKey]`).
+   */
+  layerName?: string;
+  /**
+   * Layer identifier (from `layer.properties[layerIdKey]`).
+   */
+  group?: string;
+  /**
+   * Unique item identifier (from `timeControlValues[i].id` or generated uuid).
+   */
+  itemId?: string;
+  /**
+   * Generated unique UUID for timeline tracking.
+   */
+  id?: string;
+  /**
+   * Original date string from layer configuration.
+   */
+  originalDate?: string;
+  /**
+   * Formatted date string (YYYY-MM-DD).
+   */
+  date?: string;
+  /**
+   * ISO UTC date string.
+   */
+  utc?: string;
+  /**
+   * ISO local timezone string.
+   */
+  local?: string;
+  /**
+   * Additional custom metadata properties defined on `timeControlValues` entries.
+   */
+  [key: string]: any;
 };
 
 /**
@@ -281,9 +366,9 @@ export type FilterConfig = {
  */
 export type TimeControlConfig = {
   /**
-   * Reference to the eox-map element (can be a selector string or element instance).
+   * Map or comparison selector/reference, or an array of map selectors/references.
    */
-  for?: string | EOxMap;
+  for?: string | HTMLElement | Array<string | HTMLElement>;
   /**
    * Property key used to identify layers (default: "id").
    */
@@ -456,9 +541,10 @@ declare global {
      */
     controlValues: Array<any>;
     /**
-     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     * The initial date range as [startDate, endDate] in ISO/UTC format,
+     * or a date/keyword string, or array.
      */
-    initDate: DateRange | null;
+    initDate: DateRange | string | Array<string> | null;
     /**
      * Handler for date changes.
      */
@@ -481,6 +567,10 @@ declare global {
      * Whether navigation buttons are shown.
      */
     navigation: boolean;
+    /**
+     * Whether date navigation wraps at the first and last dates (default: true).
+     */
+    dateWrap: boolean;
     /**
      * Whether default styling is disabled.
      */
@@ -515,6 +605,31 @@ declare global {
      * Whether to show dots on calendar.
      */
     showDots: boolean;
+    /**
+     * Whether to show items in the calendar popup.
+     */
+    showItems: boolean;
+    /**
+     * Property key on the timeline item used to select the primary line in the popup items card
+     * (e.g., `layerName`, `group`, `itemId`, `originalDate`, or custom properties on `timeControlValues`).
+     */
+    itemTitleKey: string;
+    /**
+     * Whether to show time in the popup items card.
+     */
+    showTime: boolean;
+    /**
+     * Format string for time display in the popup items card.
+     */
+    timeFormat: string;
+    /**
+     * Custom transformation function for popup items.
+     */
+    propertyTransform:
+      | ((
+          item: TimeControlPopupItem,
+        ) => TimeControlPopupItem | string | null | false)
+      | null;
     /**
      * Position of the calendar picker.
      */
@@ -575,6 +690,10 @@ declare global {
      * Loading state indicator.
      */
     loading: boolean;
+    /**
+     * Whether to enable or disable clustering the items.
+     */
+    clustering: boolean;
     /**
      * Gets the container element.
      */

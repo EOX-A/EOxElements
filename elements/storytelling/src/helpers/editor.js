@@ -19,8 +19,8 @@ function enableTextSelection() {
 /**
  * Function to handle mouse down on the editor container
  *
- * @param {{target: Object, clientX: Number, clientY: Number}} e - Event for handle mouse move.
- * @param {Object} editorContainer - editor container dom
+ * @param {{target: object, clientX: number, clientY: number}} e - Event for handle mouse move.
+ * @param {object} editorContainer - editor container dom
  * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleEditorContainerMouseDown(
@@ -39,8 +39,8 @@ function handleEditorContainerMouseDown(
 /**
  * Function to handle mouse move for dragging and resizing
  *
- * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
- * @param {Object} editorContainer - editor container dom
+ * @param {{clientX: number, clientY: number}} e - Event for handle mouse move.
+ * @param {object} editorContainer - editor container dom
  * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleMouseMove(e, editorContainer, StoryTellingEditor) {
@@ -87,7 +87,7 @@ function handleMouseUp(StoryTellingEditor) {
 /**
  * Function to handle resize handle mouse down
  *
- * @param {Event & {clientX: Number, clientY: Number}} e - Event for handle mouse move.
+ * @param {Event & {clientX: number, clientY: number}} e - Event for handle mouse move.
  * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleResizeHandleMouseDown(e, StoryTellingEditor) {
@@ -101,8 +101,8 @@ function handleResizeHandleMouseDown(e, StoryTellingEditor) {
 /**
  * Function to initialise monaco editor
  *
- * @param {Object} editorContainer - editor container dom
- * @param {Object} resizeHandle - Dom element
+ * @param {object} editorContainer - editor container dom
+ * @param {object} resizeHandle - Dom element
  * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 export default async function initEditorEvents(
@@ -154,7 +154,7 @@ export function positionEditor(StoryTellingEditor) {
 /**
  * Function import md file into editor
  *
- * @param {Object} editor - The SimpleMDE instance
+ * @param {object} editor - The SimpleMDE instance
  */
 export function importMdFile(editor) {
   const fileInput = document.createElement("input");
@@ -177,7 +177,7 @@ export function importMdFile(editor) {
 /**
  * Function upload md file from editor
  *
- * @param {Object} editor - The SimpleMDE instance
+ * @param {object} editor - The SimpleMDE instance
  */
 export function exportMdFile(editor) {
   const content = editor.value();
@@ -197,7 +197,7 @@ export function exportMdFile(editor) {
  * Get indexes of sections with help of markdown array
  *
  * @param {Array} markdownArr - Current markdown array
- * @return {Array}
+ * @returns {Array}
  */
 export function getSectionIndexes(markdownArr) {
   const sectionIndexes = [];
@@ -215,11 +215,11 @@ export function getSectionIndexes(markdownArr) {
 /**
  * Add custom section markdown based on insert position and updated field value
  *
- * @param {String} markdown - Current markdown
- * @param {Number} customSectionIndex - Section index where new section markdown will go
- * @param {String} newMarkdown - Custom section markdown which is to be inserted
- * @param {Object} fields - json-form fields which is used to insert custom value to markdown
- * @param {Boolean} updatedFieldValues - State whether there is updated field values or not
+ * @param {string} markdown - Current markdown
+ * @param {number} customSectionIndex - Section index where new section markdown will go
+ * @param {string} newMarkdown - Custom section markdown which is to be inserted
+ * @param {object} fields - json-form fields which is used to insert custom value to markdown
+ * @param {boolean} updatedFieldValues - State whether there is updated field values or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  */
 export function addCustomSection(
@@ -295,7 +295,7 @@ export function addCustomSection(
  * Generate auto save functionality when markdown changes
  *
  * @param {Element} StoryTellingEditor - Dom element
- * @param {String | null} storyId - ID of story
+ * @param {string | null} storyId - ID of story
  * @param {{codemirror, value}} easyMDEInstance - Simple MDE instance
  */
 export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {

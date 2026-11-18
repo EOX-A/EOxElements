@@ -1,8 +1,8 @@
 /**
  * Resets the given filter object to its default state.
  *
- * @param {Object} filterObject - The filter object to reset.
- * @returns {Object|null} The reset filter object or null if the filter was not dirty.
+ * @param {object} filterObject - The filter object to reset.
+ * @returns {object | null} The reset filter object or null if the filter was not dirty.
  */
 export default function resetFilter(filterObject) {
   // Return null if the filter is not dirty

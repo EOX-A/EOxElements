@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.5.0...drawtools-v1.6.0) (2026-05-19)
+
+
+### Features
+
+* Add stopDrawing method ([#2333](https://github.com/EOX-A/EOxElements/issues/2333)) ([00d065e](https://github.com/EOX-A/EOxElements/commit/00d065e747d3e1622e7d34c88cdf5b2a4293005d))
+
 ## [1.5.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.4.0...drawtools-v1.5.0) (2026-05-05)
 
 

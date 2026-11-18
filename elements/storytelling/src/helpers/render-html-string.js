@@ -1,5 +1,5 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
-import { scrollIntoView } from "./misc.js";
+import { scrollIntoView, isCustomElement } from "./misc.js";
 import GLightbox from "glightbox";
 
 // Set up empty Lightbox
@@ -10,12 +10,13 @@ let sectionObservers = [];
 let sectionNavObservers = [];
 let stepSectionObservers = [];
 let sectionOverlayObservers = [];
+let sectionTimeouts = [];
 
 /**
  * Converts an HTML string into DOM nodes and processes each node.
  *
  * @param {string} htmlString - The HTML string to be rendered.
- * @param {Object} sections - List of sections meta
+ * @param {object} sections - List of sections meta
  * @param {Function} initDispatchFunc - Init dispatch event
  * @param {import("../main.js").EOxStoryTelling} that - The EOxStoryTelling instance.
  * @returns {HTMLElement[]} An array of processed DOM nodes.
@@ -27,6 +28,10 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   const parent = /** @type {HTMLElement} */ (that.shadowRoot || that);
 
   const isNavigation = !!(that.showNav && that.nav.length);
+
+  // Clear all pending timeouts
+  sectionTimeouts.forEach((t) => clearTimeout(t));
+  sectionTimeouts = [];
 
   // Open all links inside story in a new tab
   const anchorTagsArr = doc.querySelectorAll("a");
@@ -70,13 +75,14 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
         { rootMargin: "-50% 0px" },
       );
 
-      setTimeout(() => {
+      const navTimeout = setTimeout(() => {
         const sectionDom = parent.querySelector(`#${section.id}`);
         if (sectionDom) {
           sectionNavObserver.observe(sectionDom);
           sectionNavObservers.push(sectionNavObserver);
         }
       }, 200);
+      sectionTimeouts.push(navTimeout);
     });
   }
 
@@ -94,7 +100,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       const idCounters = new Map(); // Key: OriginalID, Value: Counter
 
       section.steps.forEach((step) => {
-        if (step.layers) {
+        if (Array.isArray(step.layers)) {
           step.layers.forEach((layer) => {
             if (layer.properties && layer.properties.id) {
               const originalId = layer.properties.id;
@@ -130,7 +136,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       // Collect all unique layers from all steps to enable preloading
       const layerMap = new Map();
       section.steps.forEach((step) => {
-        if (step.layers) {
+        if (Array.isArray(step.layers)) {
           step.layers.forEach((layer) => {
             if (layer.properties && layer.properties.id) {
               layerMap.set(layer.properties.id, layer);
@@ -191,7 +197,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       });
 
       // Create scroll Step Section Observer with a small delay
-      setTimeout(() => {
+      const stepObserverTimeout = setTimeout(() => {
         const contentParent = parent.querySelector(`#${sectionId}`);
         if (!contentParent) return;
 
@@ -216,7 +222,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
         // Deferred load of remaining hidden layers
         // This ensures the initial view loads fast, then we inject the rest for caching/preloading
-        setTimeout(() => {
+        const deferredTimeout = setTimeout(() => {
           if (!layersLoaded) {
             layersLoaded = true;
             assignNewAttrValue(
@@ -228,21 +234,23 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
             );
           }
         }, 2500);
+        sectionTimeouts.push(deferredTimeout);
 
         sectionObserver.observe(contentParent);
         sectionObservers.push(sectionObserver);
       }, 500);
+      sectionTimeouts.push(stepObserverTimeout);
 
       // Explicit Preloader: Forces loading of tiles for future steps (different zoom/center)
       // This complements the "Hidden Layer" strategy which only handles the current view.
-      setTimeout(() => {
+      const preloadTimeout = setTimeout(() => {
         const eoxMap = /** @type {any} */ (
           parent.querySelector(elementSelector)
         );
         if (eoxMap && eoxMap.preloadTiles) {
           section.steps.forEach((step, stepIndex) => {
             // Stagger requests to prevent freezing the main thread & network congestion
-            setTimeout(() => {
+            const staggerTimeout = setTimeout(() => {
               const stepLayers = step.layers || [];
               // Collect IDs - these are already deduplicated in the previous block
               const layerIds = stepLayers
@@ -257,9 +265,11 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
                 eoxMap.preloadTiles(layerIds, zoom, center, 0.5);
               }
             }, stepIndex * 1000); // 1-second delay between preloading each step
+            sectionTimeouts.push(staggerTimeout);
           });
         }
       }, 3000); // Start preloading 3s after init
+      sectionTimeouts.push(preloadTimeout);
     }
   });
 
@@ -317,9 +327,9 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 /**
  * Assign new value for attribute of element
  *
- * @param {Object} section - section meta
- * @param {Number} index - current section index
- * @param {String} elementSelector - sector string for element
+ * @param {object} section - section meta
+ * @param {number} index - current section index
+ * @param {string} elementSelector - sector string for element
  * @param {HTMLElement} parent - The EOxStoryTelling instance.
  * @param {Array} allLayers - List of all layers in the section
  */
@@ -331,9 +341,23 @@ function assignNewAttrValue(
   allLayers = [],
 ) {
   const element = /** @type {any} */ (parent.querySelector(elementSelector));
+  if (!element) return;
   const attrs = section.steps[index];
 
+  // Collect all property keys used across every step of this section.
+  // Any key that existed in a previous step but is absent from the current
+  // step must be explicitly reset so stale values (e.g. animationOptions
+  // with a pitch from a later step) don't bleed through when navigating back.
+  const allStepKeys = new Set(
+    section.steps.flatMap((step) => Object.keys(step)),
+  );
+  allStepKeys.forEach((key) => {
+    if (key === "id" || key === "layers" || key in attrs) return;
+    element[key] = undefined;
+  });
+
   Object.keys(attrs).forEach((attr) => {
+    if (attr === "id") return;
     if (attr === "layers" && allLayers.length && Array.isArray(attrs[attr])) {
       const stepLayers = attrs[attr];
       const mergedLayers = allLayers.map((layer) => {
@@ -449,22 +473,26 @@ function fadeLayer(element, layerId, start, end, duration) {
  */
 function processNode(node, initDispatchFunc, that) {
   if (node.nodeType === Node.ELEMENT_NODE) {
-    const childElements = node.querySelectorAll("*");
-    childElements.forEach((element) => {
+    const targetElements = [
+      ...(isCustomElement(node.tagName) ? [node] : []),
+      ...Array.from(node.querySelectorAll("*")),
+    ];
+    targetElements.forEach((element) => {
       if (
-        /^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase()) &&
+        isCustomElement(element.tagName) &&
         node.classList.contains("section-custom")
       ) {
-        Array.from(element.attributes).forEach(
-          // Update the attribute with its converted value
-          (attr) =>
-            (element[attr.name] = convertAttributeValueBasedOnItsType(
+        Array.from(element.attributes).forEach((attr) => {
+          if (attr.name !== "style" && attr.name !== "class") {
+            element[attr.name] = convertAttributeValueBasedOnItsType(
               /** @type {HTMLElement} */ (element),
               attr.name,
-            )),
-        );
+            );
+          }
+        });
       }
-      setTimeout(() => initDispatchFunc(element), 100);
+      const dispatchTimeout = setTimeout(() => initDispatchFunc(element), 100);
+      sectionTimeouts.push(dispatchTimeout);
     });
   }
 
@@ -531,7 +559,7 @@ function processNode(node, initDispatchFunc, that) {
  *
  * @param {HTMLElement} element - The DOM element containing the attribute or element with actual value.
  * @param {string} attributeName - The name of the attribute to convert.
- * @returns {string|number|boolean|array|object} The attribute value converted to its detected type.
+ * @returns {string | number | boolean | Array | object} The attribute value converted to its detected type.
  */
 export function convertAttributeValueBasedOnItsType(
   element,
@@ -563,9 +591,9 @@ export function convertValueToType(value) {
  * Click event for add section button in ::after and ::before
  *
  * @param {MouseEvent} event - Click event
- * @param {Boolean} isStartSection - Whether the clicked section is start section or not
- * @param {Boolean} isEndSection - Whether the clicked section is end section or not
- * @param {Boolean} isDirectClick - Whether the click is direct or not
+ * @param {boolean} isStartSection - Whether the clicked section is start section or not
+ * @param {boolean} isEndSection - Whether the clicked section is end section or not
+ * @param {boolean} isDirectClick - Whether the click is direct or not
  * @param {HTMLElement} that - DOM Element
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  */
@@ -634,8 +662,8 @@ function generateAddSectionClickEvt(
  *
  * @param {Array<HTMLElement>} html - List of html elements
  * @param {Array} nav - List of nav elements
- * @param {Boolean} showNav - Whether to show nav or not
- * @param {String | "closed" | undefined} showEditor - Whether to show editor or not
+ * @param {boolean} showNav - Whether to show nav or not
+ * @param {string | "closed" | undefined} showEditor - Whether to show editor or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {HTMLElement[]} An array of processed DOM nodes after adding navigation.
  */

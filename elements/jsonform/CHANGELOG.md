@@ -1,5 +1,59 @@
 # Changelog
 
+## [1.14.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.14.1...jsonform-v1.14.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* Style for array item multiselect ([#2586](https://github.com/EOX-A/EOxElements/issues/2586)) ([c299abe](https://github.com/EOX-A/EOxElements/commit/c299abe62c5f2cb22ccec831944bff9f5681276f))
+
+## [1.14.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.14.0...jsonform-v1.14.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* Sticky ace toolbar ([#2556](https://github.com/EOX-A/EOxElements/issues/2556)) ([d738872](https://github.com/EOX-A/EOxElements/commit/d7388720cbfa7147ac926fa82884ad79aa1deb70))
+
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.13.0...jsonform-v1.14.0) (2026-09-04)
+
+
+### Features
+
+* Add file attachment and custom button to markdown toolbar ([#2511](https://github.com/EOX-A/EOxElements/issues/2511)) ([ffa416d](https://github.com/EOX-A/EOxElements/commit/ffa416ddbc6e2b9202f2c1686718aa2422f08f4f))
+
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.3...jsonform-v1.13.0) (2026-09-03)
+
+
+### Features
+
+* Disable undo and redo in ace editor ([#2508](https://github.com/EOX-A/EOxElements/issues/2508)) ([a4dd2e3](https://github.com/EOX-A/EOxElements/commit/a4dd2e3cee8a5e83afc4d6a41bc482ef31074a2c))
+
+
+### Bug Fixes
+
+* Minmax slider precision rounding and branch defaults ([#2492](https://github.com/EOX-A/EOxElements/issues/2492)) ([1cc1ef8](https://github.com/EOX-A/EOxElements/commit/1cc1ef87e70c57799fb383ad83acfca445839e9f))
+
+## [1.12.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.2...jsonform-v1.12.3) (2026-08-24)
+
+
+### Bug Fixes
+
+* Make agents more aware about jsonform and some of relevant options ([#2493](https://github.com/EOX-A/EOxElements/issues/2493)) ([319a043](https://github.com/EOX-A/EOxElements/commit/319a04388a1e81658efd196e9ece7a526a92ceca))
+
+## [1.12.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.1...jsonform-v1.12.2) (2026-08-07)
+
+
+### Bug Fixes
+
+* Jsonform round based on step for minmaxslider ([#2472](https://github.com/EOX-A/EOxElements/issues/2472)) ([8f766be](https://github.com/EOX-A/EOxElements/commit/8f766be8e337025fdc67c0190418cd4e41a64bd7))
+
+## [1.12.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.12.0...jsonform-v1.12.1) (2026-06-01)
+
+
+### Bug Fixes
+
+* Bypass DOMPurify for code/markdown fields ([#2370](https://github.com/EOX-A/EOxElements/issues/2370)) ([13fc98b](https://github.com/EOX-A/EOxElements/commit/13fc98b66d6b69b51641837f8770d4282f11147b))
+
 ## [1.12.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.11.0...jsonform-v1.12.0) (2026-05-05)
 
 

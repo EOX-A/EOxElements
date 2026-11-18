@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * Generates a story configuration for external search.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 function ExternalStory() {
   return {
@@ -54,7 +54,7 @@ export default ExternalStory;
 /**
  * Generates a story configuration for external search using a custom fetch function.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 export function ExternalFetchFnStory() {
   return {

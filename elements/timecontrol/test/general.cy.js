@@ -8,13 +8,19 @@ import {
   loadOnlyDates,
   loadDateWithInitDate,
   loadDateWithFormat,
+  editDate,
+  loadDateRangeWithTime,
   loadDateWithNavigation,
+  loadDateWrap,
   loadDatePickerPopup,
   loadDatePickerPopupItems,
   loadDatePickerStandalone,
   loadDatePickerSelectEvent,
   loadSlider,
+  loadCompareMaps,
   loadTimeline,
+  loadTimelineWithClustering,
+  loadTimelineOnLayersChange,
   loadDateFormatInitDate,
   loadDateFormatNavigation,
   loadDateWithSlider,
@@ -24,6 +30,8 @@ import {
   loadExpertModeExport,
   loadDateInUTC,
   loadTimelineWithRangeConfiguration,
+  loadDatePickerSelectionModes,
+  loadDateNavigationWithoutFormat,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -40,8 +48,23 @@ describe("TimeControl", () => {
   // Test to verify that timecontrol-date correctly formats dates using custom format strings
   it("loads date with custom format", () => loadDateWithFormat());
 
+  // Test to verify that timecontrol-date correctly formats dates using custom format strings
+  it("edits dates, resets wrong formats, and commits on Enter", () =>
+    editDate());
+
+  // Test to verify that timecontrol-date correctly formats dates using custom format strings
+  it("shows date range hours according to the format", () =>
+    loadDateRangeWithTime());
+
   // Test to verify that navigation buttons work correctly and update dates
   it("loads date with navigation", () => loadDateWithNavigation());
+
+  // Test to verify that navigation works without a format and keeps the time of each step
+  it("navigates dates without a format", () =>
+    loadDateNavigationWithoutFormat());
+
+  it("disables date navigation at the first and last dates", () =>
+    loadDateWrap());
 
   // Test to verify that date picker popup opens and date selection works
   it("loads date picker popup", () => loadDatePickerPopup());
@@ -55,8 +78,14 @@ describe("TimeControl", () => {
   // Test to verify that slider component loads with year ticks and custom marks
   it("loads slider", () => loadSlider());
 
+  it("updates both comparison maps when the date changes", () =>
+    loadCompareMaps());
+
   // Test to verify that timeline component loads with vis-timeline visualization
   it("loads timeline", () => loadTimeline());
+
+  // Test to verify that timeline component loads with clustering enabled
+  it("loads timeline with clustering", () => loadTimelineWithClustering());
 
   // Test to verify that timeline component loads with range configuration
   it("loads timeline with range configuration", () =>
@@ -85,6 +114,13 @@ describe("TimeControl", () => {
   // Test to verify that timecontrol works without map and all components synchronize date values
   it("loads no map synchronization", () => loadNoMapSynchronization());
 
+  // Test to verify that the timeline reacts to group layers updates
+  it("updates timeline when layers change", () => loadTimelineOnLayersChange());
+
   // Test to verify that expert mode with timelapse export functionality works correctly
   it("loads expert mode export", () => loadExpertModeExport());
+
+  // Test to verify that date picker selection styles are applied in all modes (single, first-and-last, ranges)
+  it("loads date picker selection styles across modes", () =>
+    loadDatePickerSelectionModes());
 });

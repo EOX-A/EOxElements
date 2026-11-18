@@ -7,12 +7,12 @@ import { when } from "lit/directives/when.js";
  * This parser displays STAC properties in the body.
  * This element filters, formats, and displays properties in a structured layout.
  *
- * @typedef {Object} Property
+ * @typedef {object} Property
  * @property {string} label
  * @property {string} formatted
  *
  * @param {Array<Array<(Property)>>} body - Array of body properties to display.
- * @return {import("lit-html").TemplateResult}
+ * @returns {import("lit-html").TemplateResult}
  */
 export default function parseBody(body = []) {
   return html`

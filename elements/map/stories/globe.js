@@ -1,7 +1,9 @@
+import { html } from "lit";
+
 /**
  * Basic Globe rendered using `projection: "globe"`
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const GlobeStory = {
   args: {
@@ -16,11 +18,13 @@ const GlobeStory = {
         type: "Tile",
         properties: {
           id: "cloudless",
-          title: "Sentinel-2 Cloudless 2024",
+          title: "Sentinel-2 Cloudless 2025",
         },
         source: {
           type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
           crossOrigin: "anonymous",
         },
       },
@@ -146,10 +150,32 @@ const GlobeStory = {
             },
           ],
         },
+        interactions: [
+          {
+            type: "select",
+            options: {
+              id: "globeTooltipInteraction",
+              condition: "pointermove",
+              coordinates: true,
+            },
+          },
+        ],
       },
     ],
     zoom: 4,
   },
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
+    <eox-map
+      .center=${args.center}
+      .controls=${args.controls}
+      .layers=${args.layers}
+      .projection=${args.projection}
+      .zoom=${args.zoom}
+      .globeConfig=${args.globeConfig}
+    >
+      <eox-map-tooltip></eox-map-tooltip>
+    </eox-map>
+  `,
 };
 
 export default GlobeStory;

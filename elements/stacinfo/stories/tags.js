@@ -1,7 +1,7 @@
 /**
  * Individual STAC properties can be rendered as tags by using the `tags` property.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const TagsStory = {
   args: {

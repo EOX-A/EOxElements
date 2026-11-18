@@ -20,6 +20,9 @@ class MockLayer {
   getLayers() {
     return this.layers || new MockCollection([]);
   }
+  getSource() {
+    return this.source;
+  }
   getOpacity() {
     return this.opacity;
   }

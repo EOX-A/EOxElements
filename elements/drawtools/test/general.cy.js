@@ -13,6 +13,7 @@ import {
   layerIdWithMeasure,
   drawUpdateEventTest,
   abortDrawingWithEscapeTest,
+  stopDrawingMethodTest,
   removeFeatureTest,
 } from "./cases";
 
@@ -66,6 +67,9 @@ describe("Drawtools", () => {
 
   // Test case to ensure drawing is aborted on Escape key
   it("aborts drawing on Escape key", () => abortDrawingWithEscapeTest());
+
+  // Test case to ensure drawing is stopped programmatically
+  it("stops drawing programmatically", () => stopDrawingMethodTest());
 
   // Test case to ensure features can be removed programmatically
   it("removes features programmatically", () => removeFeatureTest());

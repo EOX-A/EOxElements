@@ -2,15 +2,22 @@ import {
   DEFAULT_VIS_TIMELINE_OPTIONS,
   VIS_TIMELINE_DATE_FORMATS,
 } from "../../enums.js";
+import { dispatchElementEvent } from "@eox/elements-utils";
 import * as vis from "vis-timeline/standalone";
 import {
   updateVisibility,
   getWrongLocalFormatToUTCFormat,
+  getInitDate,
+  getDateRange,
 } from "../../helpers/index.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import duration from "dayjs/plugin/duration";
+import groupBy from "lodash.groupby";
+import filter from "lodash.filter";
+import updateGridClipMethod from "./update-grid-clip.js";
+import destroyTimelineMethod from "./destroy-timeline.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -19,10 +26,10 @@ dayjs.extend(duration);
 /**
  * @typedef {import("../../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline
  * @typedef {import("../../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("../../types").DateRange} DateRange
  */
 
 let drag = false;
-let drawInterval = null;
 
 const labelDateFormat = "DD MMM YYYY HH:mm:ss";
 
@@ -112,28 +119,10 @@ export function updateRangeElements(EOxTimeControlTimeline) {
  *
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
- * @param {Object} options - The timeline options.
  */
-function handleTimelineChanged(
-  EOxTimeControlTimeline,
-  EOxTimeControl,
-  options,
-) {
-  const container = EOxTimeControlTimeline.getContainer();
+function handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl) {
   const EOxItemFilter = EOxTimeControl.querySelector("eox-itemfilter");
 
-  const textElement = /** @type {HTMLElement} */ (
-    container.querySelector(".vis-text.vis-minor.vis-even")
-  );
-  const width = Number(textElement.style.width.replace("px", ""));
-  const cellWidth = width / options.timeAxis.step + 0.1;
-
-  const milestoneElements = /** @type {NodeListOf<HTMLElement>} */ (
-    container.querySelectorAll(".vis-item.milestone")
-  );
-  milestoneElements.forEach((milestone) => {
-    milestone.style.width = `${cellWidth}px`;
-  });
   for (let i = 0; i < EOxTimeControl.sliderValues.length; i++) {
     updateVisibility(
       EOxTimeControlTimeline,
@@ -148,14 +137,14 @@ function handleTimelineChanged(
  * Handles the time changed event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  */
 function handleTimeChanged(props, EOxTimeControl) {
   if (props.id == "multi-select-start" || props.id == "multi-select-end") {
     const isStart = props.id.includes("start");
     const newDate = EOxTimeControl.showUTC
-      ? getWrongLocalFormatToUTCFormat(props.time)
+      ? getWrongLocalFormatToUTCFormat(props.time, EOxTimeControl.showUTC)
       : dayjs.utc(props.time).format();
     const newDateRange = isStart
       ? [newDate, EOxTimeControl.selectedDateRange[1]]
@@ -164,7 +153,10 @@ function handleTimeChanged(props, EOxTimeControl) {
     const sortedDateRange = [...newDateRange].sort((a, b) =>
       dayjs(a).isAfter(dayjs(b)) ? 1 : -1,
     );
-    EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl);
+    EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl, {
+      activity: true,
+      action: "select:timeline",
+    });
   }
 }
 
@@ -172,7 +164,7 @@ function handleTimeChanged(props, EOxTimeControl) {
  * Handles the click event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
@@ -186,33 +178,45 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !props.event.shiftKey
   ) {
     const isBackgroundClick = Boolean(props.what == "background");
+    const duration = isBackgroundClick
+      ? dayjs.duration(
+          /** @type {any} */ (EOxTimeControlTimeline.selectionDuration),
+        )
+      : dayjs.duration({ seconds: 1 });
 
-    const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
+    const selectedItem =
+      !isBackgroundClick && props.item
+        ? groupBy(EOxTimeControl.items.get(), "id")[props.item]
+        : null;
+
+    let startDate;
+    let endDate;
     if (isBackgroundClick) {
-      const selection = /** @type {any} */ (
-        EOxTimeControlTimeline.selectionDuration
+      const utcFormattedDate = getWrongLocalFormatToUTCFormat(
+        props.time,
+        EOxTimeControl.showUTC,
       );
-      const duration = dayjs.duration(selection);
-
-      const startDate = EOxTimeControl.showUTC
+      startDate = EOxTimeControl.showUTC
         ? dayjs(utcFormattedDate).utc().format()
         : dayjs(props.time).utc().format();
-      const endDate = EOxTimeControl.showUTC
+      endDate = EOxTimeControl.showUTC
         ? dayjs(utcFormattedDate).utc().add(duration).format()
         : dayjs(props.time).add(duration).utc().format();
-      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
     } else {
-      // TODO: This needs to be made dynamic based on bin selection size
-      const rangeType = "day";
-
-      const startDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().startOf(rangeType).format()
-        : dayjs(props.time).startOf(rangeType).utc().format();
-      const endDate = EOxTimeControl.showUTC
-        ? dayjs(utcFormattedDate).utc().endOf(rangeType).format()
-        : dayjs(props.time).endOf(rangeType).utc().format();
-      EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+      const selectedDateTime = selectedItem ? selectedItem[0].utc : props.time;
+      startDate = EOxTimeControl.showUTC
+        ? dayjs(selectedDateTime).utc().format()
+        : dayjs(selectedDateTime).utc().format();
+      endDate = EOxTimeControl.showUTC
+        ? dayjs(selectedDateTime).utc().add(duration).format()
+        : dayjs(selectedDateTime).add(duration).utc().format();
     }
+
+    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl, {
+      activity: true,
+      action: "select:timeline",
+      originalEvent: props.event,
+    });
   }
 }
 
@@ -220,10 +224,12 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
  * Handles the range changed event.
  * Updates the date range on the timecontrol component.
  *
- * @param {Object} props - The event properties.
+ * @param {object} props - The event properties.
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 function handleRangeChanged(props, EOxTimeControlTimeline) {
+  if (!EOxTimeControlTimeline.isConnected) return;
+
   if (props.byUser) {
     drag = true;
     setTimeout(() => (drag = false));
@@ -231,15 +237,15 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
       updateRangeElements(EOxTimeControlTimeline);
   }
   const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
-  EOxTimeControlTimeline.dispatchEvent(
-    new CustomEvent("update:view", {
-      detail: {
-        start: viewRange.start,
-        end: viewRange.end,
-      },
-      composed: true,
-    }),
-  );
+  const event = dispatchElementEvent(EOxTimeControlTimeline, "update:view", {
+    detail: {
+      start: viewRange.start,
+      end: viewRange.end,
+    },
+    bubbles: false,
+    activity: false,
+  });
+  event.isUser = Boolean(props.byUser);
 }
 
 /**
@@ -250,25 +256,92 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 export default function initTimelineMethod(EOxTimeControlTimeline) {
+  if (!EOxTimeControlTimeline.isConnected) return;
   const EOxTimeControl = EOxTimeControlTimeline.getEOxTimeControl();
 
   if (EOxTimeControl) {
     const items = /** @type {Array<any>} */ (EOxTimeControl.items.get());
     const groups = EOxTimeControl.groups.get();
     const dates = items.map((item) => dayjs(item.start));
-    const min = dayjs.min(dates).subtract(50, "day").format("YYYY-MM-DD");
-    const max = dayjs.max(dates).add(50, "day").format("YYYY-MM-DD");
+    const minDate = dayjs.min(dates).subtract(50, "day");
+    const maxDate = dayjs.max(dates).add(50, "day");
+    const min = minDate.toDate();
+    const max = maxDate.format("YYYY-MM-DD");
+
+    destroyTimelineMethod(EOxTimeControlTimeline);
+    const previousWindow = EOxTimeControlTimeline._timelineWindow;
 
     const container = EOxTimeControlTimeline.getContainer();
     container.innerHTML = "";
 
+    const initDateRange = getInitDate(
+      EOxTimeControl.initDate,
+      items,
+      EOxTimeControl.showUTC,
+    );
+    const { start, end } = getDateRange(EOxTimeControl, items, initDateRange);
+
     const options = {
       ...DEFAULT_VIS_TIMELINE_OPTIONS,
-      start: min,
-      end: max,
+      start: start,
+      end: end,
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
+      ...(EOxTimeControlTimeline.clustering
+        ? {
+            cluster: {
+              maxItems: 2,
+              showStipes: true,
+              fitOnDoubleClick: true,
+            },
+          }
+        : {}),
+      template: (_y, _x, data) => {
+        if (data.isCluster) return `<div>${data.items.length}</div>`;
+        else return `<div>${data.content}</div>`;
+      },
+      tooltip: {
+        delay: 300,
+        template: (originalItemData) => {
+          const isCluster = originalItemData.isCluster;
+          const filteredItems = isCluster
+            ? originalItemData.items
+            : filter(items, {
+                originalDate: originalItemData.originalDate,
+                group: originalItemData.group,
+              });
+
+          let listHTML = "";
+          const topItems = isCluster ? [] : filteredItems.slice(0, 1);
+          const remainingCount = filteredItems.length - (isCluster ? 0 : 1);
+
+          topItems.forEach((item) => {
+            const id = item.id || "";
+            const truncatedId =
+              id.length > 30 ? id.substring(0, 30) + "..." : id;
+
+            listHTML += `
+                    <div class="vis-tooltip-item">
+                        <div class="vis-tooltip-item-dot"></div>
+                        ID: ${truncatedId}
+                    </div>
+                  `;
+          });
+
+          if (remainingCount > 0) {
+            listHTML += `
+                <div class="vis-tooltip-item-more" style="opacity: 0.5;">
+                  ${isCluster ? "" : "+ "}${remainingCount}${isCluster ? "" : " more"} items
+                </div>
+              `;
+          }
+
+          const el = document.createElement("div");
+          el.innerHTML = listHTML;
+          return el;
+        },
+      },
       moment: function (date) {
         if (EOxTimeControl.showUTC) {
           // @ts-expect-error type not returned
@@ -286,46 +359,62 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
           container,
           items,
           groups,
-          /** @type {import("vis-timeline/standalone").TimelineOptions} */ (
-            options
-          ),
+          /** @ts-expect-error type not returned */
+          options,
         )
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
+    const prevStart = previousWindow?.start
+      ? new Date(previousWindow.start).getTime()
+      : NaN;
+    const prevEnd = previousWindow?.end
+      ? new Date(previousWindow.end).getTime()
+      : NaN;
+    const isWindowValid =
+      !isNaN(prevStart) &&
+      !isNaN(prevEnd) &&
+      prevEnd >= minDate.valueOf() &&
+      prevStart <= maxDate.valueOf();
+
+    if (isWindowValid) {
+      visTimeline.setWindow(previousWindow.start, previousWindow.end, {
+        animation: false,
+      });
+    } else {
+      visTimeline.fit();
+    }
+    updateGridClipMethod(EOxTimeControlTimeline);
     EOxTimeControlTimeline.requestUpdate();
 
-    if (drawInterval) {
-      clearInterval(drawInterval);
-      drawInterval = null;
-    }
-
-    if (drawInterval === null)
-      drawInterval = setInterval(() => {
-        const vt =
-          /** @type {import("vis-timeline/standalone").Timeline | any} */ (
-            EOxTimeControlTimeline.visTimeline
-          );
-        if (
-          vt &&
-          vt.initialRangeChangeDone &&
-          vt.initialFitDone &&
-          !vt.initialDrawDone
-        ) {
-          vt.redraw();
-          clearInterval(drawInterval);
-        } else if (
-          vt &&
-          vt.initialRangeChangeDone &&
-          vt.initialFitDone &&
-          vt.initialDrawDone
-        ) {
-          clearInterval(drawInterval);
-        }
-      }, 50);
+    EOxTimeControlTimeline._timelineDrawInterval = setInterval(() => {
+      const vt =
+        /** @type {import("vis-timeline/standalone").Timeline | any} */ (
+          EOxTimeControlTimeline.visTimeline
+        );
+      if (
+        vt &&
+        vt.initialRangeChangeDone &&
+        vt.initialFitDone &&
+        !vt.initialDrawDone
+      ) {
+        vt.redraw();
+        clearInterval(EOxTimeControlTimeline._timelineDrawInterval);
+        EOxTimeControlTimeline._timelineDrawInterval = null;
+      } else if (
+        vt &&
+        vt.initialRangeChangeDone &&
+        vt.initialFitDone &&
+        vt.initialDrawDone
+      ) {
+        clearInterval(EOxTimeControlTimeline._timelineDrawInterval);
+        EOxTimeControlTimeline._timelineDrawInterval = null;
+      }
+    }, 50);
 
     visTimeline.on("changed", () => {
+      updateGridClipMethod(EOxTimeControlTimeline);
       updateRangeElements(EOxTimeControlTimeline);
-      handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl, options);
+      handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl);
     });
     visTimeline.on("timechange", () => {
       if (EOxTimeControlTimeline.selectionResizable)

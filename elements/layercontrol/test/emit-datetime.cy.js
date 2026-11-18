@@ -102,6 +102,62 @@ describe("LayerControl Datetime Emit", () => {
     cy.get("@onDatetimeUpdated").should("have.been.called");
   });
 
+  it("updates the slice once, for the last step, when stepping quickly", () => {
+    const controlValues = [
+      "2024-01-01T00:00:00.000Z",
+      "2024-01-02T00:00:00.000Z",
+      "2024-01-03T00:00:00.000Z",
+    ];
+    const updateDimensions = cy.stub().as("updateDimensions");
+    const mockLayer = {
+      properties: {
+        id: "datetime-slice-test",
+        title: "Datetime Slice Test",
+        layerDatetime: {
+          slider: true,
+          controlValues,
+          currentStep: controlValues[0],
+          sliceMap: Object.fromEntries(controlValues.map((v, i) => [v, i])),
+        },
+      },
+      source: { updateDimensions },
+    };
+
+    cy.get("mock-map").then(($el) => {
+      $el[0].setLayers([mockLayer]);
+    });
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .find("eox-layercontrol-layer-tools")
+      .shadow()
+      .find("eox-timecontrol-slider")
+      .shadow()
+      .find("tc-range-slider")
+      .as("slider");
+
+    // freeze timers only once the layer is rendered, the mock map relies on them
+    cy.clock();
+    cy.get("@slider").then(($el) => {
+      controlValues.slice(1).forEach((value) => {
+        $el[0].value1 = value;
+        $el[0].dispatchEvent(
+          new CustomEvent("change", {
+            detail: { value1: value, value2: undefined },
+          }),
+        );
+      });
+    });
+
+    cy.get("@updateDimensions").should("not.have.been.called");
+    cy.tick(300);
+    cy.get("@updateDimensions").should("have.been.calledOnceWith", {
+      time: 2,
+    });
+    cy.tick(1000);
+    cy.get("@updateDimensions").should("have.been.calledOnce");
+  });
+
   it("emits a valid datetime string", () => {
     const onDatetimeUpdated = cy.spy().as("onDatetimeUpdated");
     cy.get("eox-layercontrol").then(($el) => {

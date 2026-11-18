@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useChannel, useGlobals, useStorybookApi } from "storybook/manager-api";
-import { AddonPanel, Tabs } from "storybook/internal/components";
-import { Source } from "@storybook/addon-docs/blocks";
+import {
+  AddonPanel,
+  Tabs,
+  SyntaxHighlighter,
+} from "storybook/internal/components";
 
 export const CodePanel = (props) => {
   const api = useStorybookApi();
@@ -39,10 +42,13 @@ export const CodePanel = (props) => {
         <div id="vue" title="Vue"></div>
         <div id="svelte" title="Svelte"></div>
       </Tabs>
-      <Source
-        code={codeSnippet}
+      <SyntaxHighlighter
         language={selectedCodeLanguage === "react" ? "jsx" : "html"}
-      />
+        copyable
+        bordered
+      >
+        {codeSnippet}
+      </SyntaxHighlighter>
     </AddonPanel>
   );
 };

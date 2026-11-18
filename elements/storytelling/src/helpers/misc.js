@@ -5,7 +5,7 @@ import packageInfo from "../../package.json";
  * Create anchor click event and scroll into view when navigation anchor clicked
  *
  * @param {import("lit").LitElement} that - The LitElement instance.
- * @param {String} selector - element selector string
+ * @param {string} selector - element selector string
  */
 export function scrollAnchorClickEvent(that, selector) {
   (that.shadowRoot || that).querySelectorAll(selector).forEach((doc) => {
@@ -45,16 +45,26 @@ export function scrollIntoView(that) {
 }
 
 /**
+ * Checks whether a tag name represents a valid custom element.
+ *
+ * @param {string} tagName - HTML tag name to test.
+ * @returns {boolean} True if tag name is a valid custom element.
+ */
+export function isCustomElement(tagName) {
+  return /^[a-z]+(-[a-z0-9]+)+$/i.test(tagName);
+}
+
+/**
  * Generate custom element handling config.
  *
- * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
- * @return {{tagNameCheck: RegExp | ((tagName: string) => boolean), attributeNameCheck: RegExp | ((attributeName: string) => boolean), allowCustomizedBuiltInElements: Boolean}}
+ * @param {import("../types").CustomMarkdownIt} [_md] - Markdown-It instances
+ * @returns {{tagNameCheck: RegExp | ((tagName: string) => boolean), attributeNameCheck: RegExp | ((attributeName: string) => boolean), allowCustomizedBuiltInElements: boolean}}
  */
-export function getCustomEleHandling(md) {
-  const tagNameCheck = (tagName) =>
-    tagName.match(new RegExp(/^[a-z]+(-[a-z0-9]+)*$/));
+export function getCustomEleHandling(_md) {
+  const tagNameCheck = (tagName) => isCustomElement(tagName);
   const attributeNameCheck = (attr) =>
-    attr.match(new RegExp(md.attrs.keys.join("|")));
+    !attr.toLowerCase().startsWith("on") &&
+    !attr.toLowerCase().startsWith("javascript:");
 
   return {
     tagNameCheck,
@@ -77,8 +87,8 @@ export function addLightBoxScript() {
 /**
  * Convert string based version to integer
  *
- * @param {String} version - package version string
- * @return {Number} - Number based converted version
+ * @param {string} version - package version string
+ * @returns {number} - Number based converted version
  */
 export function versionToInteger(version) {
   const versionParts = version.split("-")[0].split(".").map(Number);
@@ -96,7 +106,7 @@ export function versionToInteger(version) {
 /**
  * check markdown version is compatible with @eox/storytelling package
  *
- * @param {Number | null} version - markdown version
+ * @param {number | null} version - markdown version
  */
 export function checkMarkdownVersion(version) {
   const latestMarkdownVersion = Number(

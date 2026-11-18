@@ -4,8 +4,8 @@ import booleanWithin from "@turf/boolean-within";
 /**
  * Checks if the item geometry intersects with the filter geometry.
  *
- * @param {Object} itemGeometry - The geometry of the item to check.
- * @param {Object} filterGeometry - The geometry of the filter to check against.
+ * @param {object} itemGeometry - The geometry of the item to check.
+ * @param {object} filterGeometry - The geometry of the filter to check against.
  * @returns {boolean} True if the item geometry intersects with the filter geometry, otherwise false.
  */
 export const intersects = (itemGeometry, filterGeometry) => {
@@ -20,8 +20,8 @@ export const intersects = (itemGeometry, filterGeometry) => {
 /**
  * Checks if the item geometry is within the filter geometry.
  *
- * @param {Object} itemGeometry - The geometry of the item to check.
- * @param {Object} filterGeometry - The geometry of the filter to check against.
+ * @param {object} itemGeometry - The geometry of the item to check.
+ * @param {object} filterGeometry - The geometry of the filter to check against.
  * @returns {boolean} True if the item geometry is within the filter geometry, otherwise false.
  */
 export const within = (itemGeometry, filterGeometry) => {

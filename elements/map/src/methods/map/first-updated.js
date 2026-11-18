@@ -1,4 +1,5 @@
 import { animateToStateMethod } from "./";
+import { dispatchElementEvent } from "@eox/elements-utils";
 
 /**
  * Sets up the initial state of the map and handles its first update, including setting the center,
@@ -24,7 +25,10 @@ export default function firstUpdatedMethod(zoomExtent, EOxMap) {
 
   // Listen for the "loadend" event and dispatch a custom "loadend" event when the map has finished loading
   EOxMap.map.on("loadend", () => {
-    EOxMap.dispatchEvent(new CustomEvent("loadend", { detail: EOxMap.map }));
+    dispatchElementEvent(EOxMap, "loadend", {
+      detail: EOxMap.map,
+      activity: false,
+    });
   });
 
   // Set up a ResizeObserver to expose the map container's width/height via a 'resize' event
@@ -37,5 +41,8 @@ export default function firstUpdatedMethod(zoomExtent, EOxMap) {
   resizeObserver.observe(EOxMap);
 
   // Dispatch a custom "mapmounted" event to indicate that the map has been successfully mounted
-  EOxMap.dispatchEvent(new CustomEvent("mapmounted", { detail: EOxMap.map }));
+  dispatchElementEvent(EOxMap, "mapmounted", {
+    detail: EOxMap.map,
+    activity: false,
+  });
 }

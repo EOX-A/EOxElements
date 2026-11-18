@@ -4,6 +4,8 @@ import {
   STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
   STORIES_LAYER_TERRAIN_LIGHT,
+  STORIES_LAYER_JAXA_WMS,
+  STORIES_LAYER_COPERNICUS_WMTS,
 } from "../src/enums";
 
 export const LayerConfigStory = {
@@ -15,7 +17,12 @@ export const LayerConfigStory = {
         center: [-7000000, -500000],
         zoom: 4,
         style: STORIES_MAP_STYLE,
-        layers: [STORIES_LAYER_TERRAIN_LIGHT, STORIES_LAYER_DEFORESTED_BIOMASS],
+        layers: [
+          STORIES_LAYER_TERRAIN_LIGHT,
+          STORIES_LAYER_COPERNICUS_WMTS,
+          STORIES_LAYER_JAXA_WMS,
+          STORIES_LAYER_DEFORESTED_BIOMASS,
+        ],
         id: "config",
       },
     },

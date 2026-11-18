@@ -3,13 +3,64 @@ import { getFlatLayersArray } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
-export const createMapPool = (maxMaps, EOxMap, target) => {
-  // Get the serializable definitions of all layers on the main map.
-  const allMainLayers = getFlatLayersArray(EOxMap.map.getLayers().getArray());
-  const layerDefs = allMainLayers
+// Offscreen maps are an implementation detail, not additional public map sources.
+const INTERNAL_MAP_EVENTS = [
+  "layerschanged",
+  "mapmounted",
+  "loadend",
+  "resize",
+  "select",
+  "clusterSelect",
+  "drawend",
+  "addfeatures",
+  "eox:activity",
+];
+
+/**
+ * Returns the serializable definitions of all (non-group) layers of the main map.
+ *
+ * Sources default to `crossOrigin: "anonymous"`: the rendered pool canvases are
+ * uploaded to WebGL by OpenGlobus, which rejects canvases tainted by non-CORS images.
+ *
+ * @param {import("../../main").EOxMap} EOxMap - Instance of EOxMap class.
+ * @returns {Array<import("../../layers").EoxLayer>} The layer definitions.
+ */
+const getPoolLayerDefs = (EOxMap) =>
+  getFlatLayersArray(EOxMap.map.getLayers().getArray())
     .filter((l) => l.get("type") !== "Group")
     .map((l) => l.get("_jsonDefinition"))
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((def) =>
+      def.source
+        ? {
+            ...def,
+            source: {
+              ...def.source,
+              crossOrigin: def.source.crossOrigin ?? "anonymous",
+            },
+          }
+        : def,
+    );
+
+/**
+ * Syncs the layers of the offscreen tile maps in the pool with the layers of
+ * the main map, so that layers added later (e.g. in a new storytelling tour
+ * step) can be rendered as globe tiles.
+ *
+ * @param {Array<any>} mapPool - The pool of offscreen maps used for CanvasTiles rendering.
+ * @param {import("../../main").EOxMap} EOxMap - Instance of EOxMap class.
+ */
+export const syncMapPoolLayers = (mapPool, EOxMap) => {
+  const layerDefs = getPoolLayerDefs(EOxMap);
+  mapPool.forEach((poolItem) => {
+    poolItem.tileQueue.length = 0;
+    poolItem.tileMap.layers = layerDefs;
+  });
+};
+
+export const createMapPool = (maxMaps, EOxMap, target) => {
+  // Get the serializable definitions of all layers on the main map.
+  const layerDefs = getPoolLayerDefs(EOxMap);
 
   return Array.from({ length: maxMaps }, () => {
     const tileMap = /** @type {import("../../main").EOxMap} **/ (
@@ -21,6 +72,10 @@ export const createMapPool = (maxMaps, EOxMap, target) => {
       position: "absolute",
       top: `-9999px`,
       left: `-9999px`,
+    });
+
+    INTERNAL_MAP_EVENTS.forEach((type) => {
+      tileMap.addEventListener(type, (event) => event.stopPropagation());
     });
 
     // Initialize the tileMap with its own instances of all layers

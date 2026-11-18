@@ -11,4 +11,5 @@ export { default as measureTest } from "./measure";
 export { default as layerIdWithMeasure } from "./layer-id-with-measure";
 export { default as drawUpdateEventTest } from "./drawupdate-event";
 export { default as abortDrawingWithEscapeTest } from "./abort-drawing-with-escape";
+export { default as stopDrawingMethodTest } from "./stop-drawing-method";
 export { default as removeFeatureTest } from "./remove-feature";

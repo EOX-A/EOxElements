@@ -14,7 +14,15 @@ import VectorTileSource from "ol/source/VectorTile.js";
 import WMTS from "ol/source/WMTS.js";
 import XYZ from "ol/source/XYZ.js";
 import Collection from "ol/Collection.js";
-import { addDraw, addSelect, addClusterExplode, generateTileGrid } from "./";
+import {
+  addDraw,
+  addSelect,
+  addClusterExplode,
+  generateTileGrid,
+  isGeoZarrLayer,
+  setupGeoZarrDimensions,
+  setupGeoZarrLayer,
+} from "./";
 import { get as getProjection } from "ol/proj";
 import serialize from "serialize-javascript";
 
@@ -91,8 +99,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   const olLayer = new newLayer({
     ...layer,
     ...(layer.type !== "MapboxStyle" &&
+      "source" in layer &&
       layer.source && {
-        source: createOlSourceFromDefinition(layer.source),
+        source: createOlSourceFromDefinition(layer.source, EOxMap, layer),
       }),
     ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
     ...layer.properties,
@@ -102,18 +111,18 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   olLayer.set("_jsonDefinition", layer, true);
   // Handle group layers by recursively creating their sublayers
   if (layer.type === "Group") {
-    const groupLayers = layer.layers.map((l) => createLayer(EOxMap, l));
+    const groupLayers = layer.layers.map((l) =>
+      createLayer(EOxMap, l, createInteractions),
+    );
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
     /** @type {import("ol/layer/Group").default} **/ (olLayer).setLayers(
       new Collection(groupLayers),
     );
   }
 
-  if ("style" in layer) {
+  if ("style" in layer && layer.style) {
     /** @type {VectorOrVectorTileLayer} **/ (olLayer).setStyle(
-      /** @type {import("../layers").EOxLayerType<"Vector","Vector">} **/ (
-        layer
-      ).style,
+      /** @type {import("ol/style/Style").StyleLike} */ (layer.style),
     );
   }
 
@@ -131,14 +140,31 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
 
   // Add interactions (e.g., draw, select) to the layer if requested
   setSyncListeners(olLayer, layer);
+
+  if (isGeoZarrLayer(olLayer)) {
+    const layerAny = /** @type {any} */ (layer);
+    const initialBand =
+      layerAny.source?.bands?.[0] ||
+      (layer.properties &&
+        (layer.properties.band || layer.properties.variable)) ||
+      layerAny.properties?.layerConfig?.schema?.properties?.variable?.default ||
+      layerAny.properties?.layerConfig?.schema?.properties?.band?.default;
+    if (initialBand) {
+      olLayer.set("_lastVariable", initialBand);
+    }
+    setupGeoZarrLayer(olLayer);
+  }
+
   return olLayer;
 }
 
 /**
  *
  * @param {import("../layers").EoxSource<any>} eoxSource
+ * @param {import("../main").EOxMap} [EOxMap]
+ * @param {EoxLayer} [layer]
  */
-function createOlSourceFromDefinition(eoxSource) {
+function createOlSourceFromDefinition(eoxSource, EOxMap, layer) {
   const availableSources = {
     ...window.eoxMapAdvancedOlSources,
     ...basicOlSources,
@@ -159,8 +185,76 @@ function createOlSourceFromDefinition(eoxSource) {
 
   const tileGrid = generateTileGrid(eoxSource);
 
+  const eoxSourceAny = /** @type {any} */ (eoxSource);
+  let bands =
+    eoxSource && "bands" in eoxSource ? eoxSourceAny.bands : undefined;
+  if (
+    !bands &&
+    eoxSource &&
+    "band" in eoxSource &&
+    eoxSourceAny.band !== undefined
+  ) {
+    bands = [eoxSourceAny.band];
+  }
+  if (!bands && eoxSource && "config" in eoxSource && eoxSourceAny.config) {
+    const config = /** @type {any} */ (eoxSourceAny.config);
+    bands =
+      config.bands || (config.band !== undefined ? [config.band] : undefined);
+  }
+  if (!bands && layer) {
+    const layerAny = /** @type {any} */ (layer);
+    const config =
+      layerAny.config ||
+      layer.properties?.config ||
+      layer.properties?.layerConfig;
+    if (config) {
+      bands =
+        config.bands || (config.band !== undefined ? [config.band] : undefined);
+    }
+    if (!bands && layer.properties?.bands) {
+      bands = layer.properties.bands;
+    }
+    if (!bands && layer.properties?.band !== undefined) {
+      bands = [layer.properties.band];
+    }
+  }
+  if (bands && !Array.isArray(bands)) {
+    bands = [bands];
+  }
+  if (!bands && eoxSource?.type === "GeoZarr") {
+    bands = [];
+  }
+  if (bands && eoxSource) {
+    eoxSourceAny.bands = bands;
+  }
+
+  let features;
+  if (eoxSource && eoxSource.features) {
+    if (
+      Array.isArray(eoxSource.features) &&
+      eoxSource.features.length > 0 &&
+      typeof eoxSource.features[0].getGeometry === "function"
+    ) {
+      features = eoxSource.features;
+    } else {
+      let geoJson = eoxSource.features;
+      if (Array.isArray(geoJson)) {
+        geoJson = {
+          type: "FeatureCollection",
+          features: geoJson,
+        };
+      }
+      const format = new GeoJSON();
+      features = format.readFeatures(geoJson, {
+        featureProjection: EOxMap ? EOxMap.OLprojection : "EPSG:3857",
+      });
+    }
+  }
+
   return new NewSource({
     ...eoxSource,
+    ...(bands !== undefined && { bands }),
+    ...(features && { features }),
     ...("format" in eoxSource &&
       eoxSource.type !== "WMTS" && {
         // Set the format (e.g., GeoJSON, MVT) for the source
@@ -178,6 +272,8 @@ function createOlSourceFromDefinition(eoxSource) {
     ...("source" in eoxSource && {
       source: createOlSourceFromDefinition(
         /** @type {import("../layers").EoxSource<any>} */ (eoxSource.source),
+        EOxMap,
+        layer,
       ),
     }),
     // Set the format (e.g., GeoJSON, MVT) for the source
@@ -240,26 +336,29 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   if (
     newLayerDefinition.type !== existingJsonDefinition.type ||
     (newLayerDefinition.type !== "MapboxStyle" &&
+      "source" in newLayerDefinition &&
+      "source" in existingJsonDefinition &&
       newLayerDefinition.source?.type !== existingJsonDefinition.source?.type)
   ) {
     throw new Error(`Layers are not compatible to be updated`);
   }
 
-  // Create a new layer to update properties, source, and interactions if needed
-  const newLayer = createLayer(EOxMap, newLayerDefinition, false);
-
   // Update source if different
-  if (
+  const sourceChanged =
     newLayerDefinition.type !== "MapboxStyle" &&
+    "source" in newLayerDefinition &&
+    "source" in existingJsonDefinition &&
     serialize(newLayerDefinition.source) !==
-      serialize(existingJsonDefinition.source)
-  ) {
+      serialize(existingJsonDefinition.source);
+  if (sourceChanged) {
     /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
       /** @type {any} **/ existingLayer
     ).setSource(
-      /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
-        /** @type {any} **/ newLayer
-      ).getSource(),
+      createOlSourceFromDefinition(
+        newLayerDefinition.source,
+        EOxMap,
+        newLayerDefinition,
+      ),
     );
   }
 
@@ -283,21 +382,26 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update style if different
   if (
-    ["Vector", "VectorTile", "WebGLTile"].includes(newLayerDefinition.type) &&
-    serialize(
-      /** @type {import("../layers.ts").EOxLayerType<"Vector"|"VectorTile"|"WebGLTile",any>} */ (
-        newLayerDefinition
-      ).style,
-    ) !== serialize(existingJsonDefinition.style)
+    "style" in newLayerDefinition &&
+    "style" in existingJsonDefinition &&
+    serialize(newLayerDefinition.style) !==
+      serialize(existingJsonDefinition.style)
   ) {
     // @ts-expect-error TODO
     existingLayer.setStyle(
-      newLayerDefinition.type === "WebGLTile"
-        ? newLayerDefinition.style
-        : // @ts-expect-error TODO
-          newLayer.getStyle(),
+      /** @type {import("ol/style/Style").StyleLike} */ (
+        newLayerDefinition.style
+      ),
     );
   }
+
+  // compared before `setProperties`, which syncs the new values into the existing definition
+  const timePropertiesChanged = ["layerDatetime", "timeControlValues"].some(
+    (key) =>
+      key in (newLayerDefinition.properties ?? {}) &&
+      serialize(newLayerDefinition.properties[key]) !==
+        serialize(existingJsonDefinition.properties?.[key]),
+  );
 
   // Update properties if different
   if (
@@ -449,6 +553,21 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Synchronize properties
   setSyncListeners(existingLayer, newLayerDefinition);
   existingLayer.set("_jsonDefinition", newLayerDefinition, true);
+
+  // a new source starts at the first slice; a new layerDatetime or timeControlValues replaces the time setup
+  if (
+    isGeoZarrLayer(existingLayer) &&
+    (sourceChanged || timePropertiesChanged)
+  ) {
+    setupGeoZarrDimensions(
+      existingLayer,
+      /** @type {import("ol/layer/Layer").default} */ (
+        existingLayer
+      ).getSource(),
+      undefined,
+      sourceChanged ? existingJsonDefinition.source : undefined,
+    );
+  }
 
   return existingLayer;
 }

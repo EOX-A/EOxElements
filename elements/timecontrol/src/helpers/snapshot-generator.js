@@ -5,6 +5,7 @@ import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 import minMax from "dayjs/plugin/minMax";
 import { TIME_CONTROL_DATE_FORMAT } from "../enums";
+import { updateExportStatusMethod } from "../methods/timelapse/index.js";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -23,6 +24,9 @@ dayjs.extend(minMax);
  * @param {EOxTimeControlTimelapse} EOxTimeControlTimelapse - The timelapse component instance.
  */
 export default function snapshotGenerator(EOxTimeControlTimelapse) {
+  const config = EOxTimeControlTimelapse.exportConfig;
+  const dialog = EOxTimeControlTimelapse.timelapseComponent;
+  if (!config || !dialog) return;
   const EOxTimeControlDate = /** @type {EOxTimeControlDate} */ (
     EOxTimeControlTimelapse.getEOxTimeControl().querySelector(
       ".eox-timecontrol-date",
@@ -38,7 +42,13 @@ export default function snapshotGenerator(EOxTimeControlTimelapse) {
   EoxMaps.forEach((EoxMap) => {
     const map = EoxMap.map;
     const index = EoxMap.getAttribute("data-index");
+    if (config.mapLayers[Number(index)]?.img) return;
     const renderComplete = () => {
+      if (
+        EOxTimeControlTimelapse.exportConfig !== config ||
+        EOxTimeControlTimelapse.timelapseComponent !== dialog
+      )
+        return;
       const mapCanvas = document.createElement("canvas");
       const size = map.getSize();
       mapCanvas.width = size[0];
@@ -126,6 +136,7 @@ export default function snapshotGenerator(EOxTimeControlTimelapse) {
             imgComponent,
           );
           EOxTimeControlTimelapse.requestUpdate();
+          updateExportStatusMethod(EOxTimeControlTimelapse);
         }
       }
     };

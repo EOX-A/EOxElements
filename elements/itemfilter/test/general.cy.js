@@ -19,6 +19,12 @@ import {
   resultsActionTest,
   resultSortingTest,
   resultAggregationTest,
+  inlineModeToggleTest,
+  resultsTitleTest,
+  inlineSearchTest,
+  inlineSearchTitleOnlyTest,
+  inlineResetSearchTest,
+  inlineSearchModeToggleTest,
 } from "./cases/general/";
 
 /**
@@ -155,4 +161,40 @@ describe("Item Filter Config", () => {
    * Test case to verify result sorting.
    */
   it("should sort results based on configuration", () => resultSortingTest());
+
+  /**
+   * Test case to verify preservation of active filters when toggling inlineMode back and forth.
+   */
+  it("should preserve active filters when toggling inlineMode back and forth", () =>
+    inlineModeToggleTest());
+
+  /**
+   * Test case to verify result title attribute and capitalized formatting.
+   */
+  it("should display capitalized title attribute for result items", () =>
+    resultsTitleTest());
+
+  /**
+   * Test case to verify the inline search box filters items through the inlineSearch text filter.
+   */
+  it("should filter results from the inline search box on Enter when inlineSearch is set", () =>
+    inlineSearchTest());
+
+  /**
+   * Test case to verify the inline search box only matches filter titles without inlineSearch.
+   */
+  it("should not filter results from the inline search box without inlineSearch", () =>
+    inlineSearchTitleOnlyTest());
+
+  /**
+   * Test case to verify a click outside shows all filter sections again.
+   */
+  it("should show all filter sections after a click outside", () =>
+    inlineResetSearchTest());
+
+  /**
+   * Test case to verify an inlineSearch text filter outside of inline mode and when toggling it.
+   */
+  it("should show the inlineSearch filter outside of inline mode", () =>
+    inlineSearchModeToggleTest());
 });

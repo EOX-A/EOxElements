@@ -1,5 +1,81 @@
 # Changelog
 
+## [2.10.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.10.0...timecontrol-v2.10.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* Correct timelapse export and show frame loading progress ([#2613](https://github.com/EOX-A/EOxElements/issues/2613)) ([21f412d](https://github.com/EOX-A/EOxElements/commit/21f412d7232c70b5b694ffdaad1728a7f4e3a01a))
+* Timeline re-creation flashing and date selection reset bugs when map layers update dynamically ([#2614](https://github.com/EOX-A/EOxElements/issues/2614)) ([562124c](https://github.com/EOX-A/EOxElements/commit/562124c72942f1a2ea64c672a8827cea0494f22a))
+
+## [2.10.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.9.0...timecontrol-v2.10.0) (2026-10-20)
+
+
+### Features
+
+* Add date-wrap prop in timecontrol ([#2584](https://github.com/EOX-A/EOxElements/issues/2584)) ([3ef8bc8](https://github.com/EOX-A/EOxElements/commit/3ef8bc8c686480801c50a7bfc8f25b7e63c114f1))
+
+## [2.9.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.8.0...timecontrol-v2.9.0) (2026-10-15)
+
+
+### Features
+
+* Enable editing `datetime` input field ([#2562](https://github.com/EOX-A/EOxElements/issues/2562)) ([f6820f8](https://github.com/EOX-A/EOxElements/commit/f6820f8d404e41d22747d575cea83de2b706e30f))
+* Extend timecontrol to work with `eox-map-compare` ([#2566](https://github.com/EOX-A/EOxElements/issues/2566)) ([109c7a7](https://github.com/EOX-A/EOxElements/commit/109c7a77ff1dca4c3bb2fb53a7c3e2a6ae96d911))
+
+
+### Bug Fixes
+
+* Dark mode style issue ([#2578](https://github.com/EOX-A/EOxElements/issues/2578)) ([045ec34](https://github.com/EOX-A/EOxElements/commit/045ec34e60472c33b75f6b952e9ca102774dc2d1))
+* Datepicker don't recenter timeline view  ([#2574](https://github.com/EOX-A/EOxElements/issues/2574)) ([8dcac8e](https://github.com/EOX-A/EOxElements/commit/8dcac8ed58d8eb2cbc3105418c229be5d179e574))
+* Slider ticks and label overlap ([#2568](https://github.com/EOX-A/EOxElements/issues/2568)) ([ef079f1](https://github.com/EOX-A/EOxElements/commit/ef079f115f3fb28fca4010ef8fddeb8c2afff08d))
+* Support multidimensional date range initialization and slider sync ([#2569](https://github.com/EOX-A/EOxElements/issues/2569)) ([796ae2c](https://github.com/EOX-A/EOxElements/commit/796ae2c2d6850f6812c255f0090a36573ceb4b6e))
+
+## [2.8.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.7.0...timecontrol-v2.8.0) (2026-09-28)
+
+
+### Features
+
+* GeoZarr support ([#2497](https://github.com/EOX-A/EOxElements/issues/2497)) ([193e619](https://github.com/EOX-A/EOxElements/commit/193e619a4c3af9b9c390d309958ccb9367e4ff63))
+
+## [2.7.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.6.0...timecontrol-v2.7.0) (2026-08-24)
+
+
+### Features
+
+* Customizable show-items tooltip ([#2495](https://github.com/EOX-A/EOxElements/issues/2495)) ([85f6f31](https://github.com/EOX-A/EOxElements/commit/85f6f3187aeb1d34eb26207fc737816e4aedb79d))
+
+
+### Bug Fixes
+
+* **style:** Fill selected date with primary color across all selection modes ([#2494](https://github.com/EOX-A/EOxElements/issues/2494)) ([9dd6f80](https://github.com/EOX-A/EOxElements/commit/9dd6f803da559336d8535fa083fc910ea961eb22))
+
+## [2.6.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.5.1...timecontrol-v2.6.0) (2026-06-29)
+
+
+### Features
+
+* Timeline clustering ([#2243](https://github.com/EOX-A/EOxElements/issues/2243)) ([2cb4ed0](https://github.com/EOX-A/EOxElements/commit/2cb4ed0e484f78ec5ec55cdfff67b0a4ca62a617))
+
+## [2.5.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.5.0...timecontrol-v2.5.1) (2026-06-18)
+
+
+### Bug Fixes
+
+* Timeline not updating on group layer changes ([#2409](https://github.com/EOX-A/EOxElements/issues/2409)) ([eb8c839](https://github.com/EOX-A/EOxElements/commit/eb8c8394af9506f55b2d32a247acaa830f98f41b))
+
+## [2.5.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.4.0...timecontrol-v2.5.0) (2026-05-20)
+
+
+### Features
+
+* Picker UI for date range filter ([#2338](https://github.com/EOX-A/EOxElements/issues/2338)) ([dfd9921](https://github.com/EOX-A/EOxElements/commit/dfd99216525e8760e6f887ed3f3e97231c84ed9f))
+
+
+### Bug Fixes
+
+* Populate all intermediate dates for range highlighting ([#2337](https://github.com/EOX-A/EOxElements/issues/2337)) ([ee36651](https://github.com/EOX-A/EOxElements/commit/ee366519e80242a25b2afc829549b8082ea617d2))
+
 ## [2.4.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.3.0...timecontrol-v2.4.0) (2026-05-05)
 
 

@@ -4,7 +4,7 @@ import { html } from "lit";
 /**
  * Generates a story configuration for showcasing the CSS variables
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 function CSSVariablesStory() {
   return {

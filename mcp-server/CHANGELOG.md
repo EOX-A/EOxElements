@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.2.1...elements-mcp-server-v1.3.0) (2026-09-08)
+
+
+### Features
+
+* Mcp server/consolidate tools ([#2522](https://github.com/EOX-A/EOxElements/issues/2522)) ([0dcd839](https://github.com/EOX-A/EOxElements/commit/0dcd839d79196a63a76cfbd900878fadf5442042))
+
+## [1.2.1](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.2.0...elements-mcp-server-v1.2.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* Proper landing page for server endpoint ([8a301a7](https://github.com/EOX-A/EOxElements/commit/8a301a7552a768cc8a7eb3c7cb6eff2199ee784f))
+* Server factory preventing double connection attempts ([b73034c](https://github.com/EOX-A/EOxElements/commit/b73034cb5c7b26c2826dfe3aaecd638fb51c3886))
+* Use same version number everywhere ([d80440e](https://github.com/EOX-A/EOxElements/commit/d80440ebe653b488a54bdf79c38ca7d3c2212bb6))
+
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.1.0...elements-mcp-server-v1.2.0) (2026-05-21)
+
+
+### Features
+
+* **mcp-server:** Enable CORS support for frontend integration ([#2348](https://github.com/EOX-A/EOxElements/issues/2348)) ([891459d](https://github.com/EOX-A/EOxElements/commit/891459da6e7360672b5a575b3576b2f3e24c6098))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.0.1...elements-mcp-server-v1.1.0) (2026-01-21)
 
 

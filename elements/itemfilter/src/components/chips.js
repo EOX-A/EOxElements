@@ -11,9 +11,9 @@ import {
  * close events, and keyboard events.
  *
  * @module EOxItemFilterChips
- * @extends LitElement
- * @property {Object} items - The items to be displayed as chips.
- * @property {Object} controller - The controller object to manage chip actions.
+ * @augments LitElement
+ * @property {object} items - The items to be displayed as chips.
+ * @property {object} controller - The controller object to manage chip actions.
  */
 export class EOxItemFilterChipsV2 extends LitElement {
   // Define properties with defaults and types

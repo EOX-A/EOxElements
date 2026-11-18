@@ -14,7 +14,10 @@ import {
   layerZoomStateStory,
   toolsAsListStory,
   layerLegendStory,
+  layerLegendDynamicStory,
   layerColorStory,
+  geozarrStory,
+  geozarrMultibandStory,
 } from ".";
 
 export default {
@@ -28,7 +31,15 @@ export default {
   argTypes: {
     tools: {
       control: { type: "multi-select" },
-      options: ["info", "opacity", "datetime", "config", "remove", "sort"],
+      options: [
+        "info",
+        "opacity",
+        "config",
+        "datetime",
+        "legend",
+        "sort",
+        "remove",
+      ],
     },
   },
 };
@@ -55,13 +66,14 @@ export const OptionalLayers = OptionalLayersStory;
 export const ExpandedLayers = ExpandedLayersStory;
 
 /**
- * Demonstrates the use of layer tools. The layer control accepts a `tools` array, enabling extra functionalities such as info, opacity, datetime, config, remove, and sort. This example shows how to configure and display these tools for each layer.
+ * Demonstrates the use of layer tools. The layer control accepts a `tools` array, enabling extra functionalities such as info, opacity, config, datetime (time), legend, sort, and remove. This example shows how to configure and display these tools for each layer.
  * In the Controls panel, try toggling different combinations of tools to see how the layer control adapts.
  */
 export const Tools = ToolsStory;
 
 /**
  * Shows the config tool in action. The "config" tool reads settings from the `layerConfig` property and renders a form based on a provided JSON schema, allowing users to update source URL parameters and other settings. Requires the `@eox/jsonform` package for form rendering.
+ * This example demonstrates `layerConfig.type: "tileUrl"` , with a top level special option `removeProperties` in the schema that describes a list of parameter keys whose initial tile URL values are dropped, so they are not carried over as start values into the form updates.
  */
 export const LayerConfig = LayerConfigStory;
 
@@ -79,6 +91,11 @@ export const LayerDateTime = layerDatetimeStory;
  * Demonstrates dynamic color legends for layers. The "legend" tool reads configuration from the `layerLegend` property and creates a color legend based on value ranges and domains. Supports partial configuration of the color-legend-element. Useful for visualizing data ranges and categories.
  */
 export const LayerLegend = layerLegendStory;
+
+/**
+ * Demonstrates dynamic color legends that update when the layer configuration changes. Using `rangeProperty` and `domainProperties`, the legend reacts to slider changes and colormap selection. Also defines the property `colormapRegistry` on the LayerControl with externally supplied ranges for given colormap.
+ */
+export const LayerLegendDynamic = layerLegendDynamicStory;
 
 /**
  * Shows how to hide layers from the control. By setting the `layerControlHide` property, layers are excluded from the layer control UI but may still be rendered on the map. Useful for background or technical layers that should not be user-managed.
@@ -114,3 +131,41 @@ export const ColoredLayers = layerColorStory;
  * Demonstrates the unstyled version of the element. By setting the `unstyled` property, the layer control is rendered without default styles, allowing for custom styling and integration into different design systems.
  */
 export const Unstyled = unstyledStory;
+
+/**
+ * Demonstrates multi-dimensional GeoZarr layer support in eox-layercontrol. Connects to zarr.json and GeoZarr dimensions to dynamically populate time controls, band/variable selection, and value ranges.
+ *
+ * When the store has a time axis, `eox-map` sets up the layer's `layerDatetime` (for the "datetime" tool) and `timeControlValues` (for `eox-timecontrol`) from it. Both properties follow the same rules:
+ * - Not set: filled from the store's time axis.
+ * - `false`: not set up.
+ * - Set by the client: kept. A `timeControlValues` list stays as given. A `layerDatetime` object keeps its options, gets `controlValues` and `sliceMap` from the store, and opens the slice whose date matches `currentStep` exactly, otherwise the earliest slice.
+ *
+ * Updating a layer with the same `id` runs the time setup again only when the update changes the source, `layerDatetime` or `timeControlValues`. The current `currentStep` stays unless the update sets another one.
+ *
+ * The "datetime" tool shows once `layerDatetime` has `controlValues`.
+ */
+export const GeoZarr = geozarrStory;
+
+/**
+ * Demonstrates dynamic multi-band, multi-dimensional GeoZarr datacube controls with eox-layercontrol and eox-timecontrol.
+ *
+ * Visualizes the Sea Ice GeoZarr datacube in a polar stereographic projection (EPSG:6932).
+ * Shows how selecting a band (e.g. Sea Surface Salinity, Floes Density, Sea Ice Thickness) dynamically switches
+ * the active band, updates the layerConfig min and max ranges from the variable's valid_range (falling back to defaults when omitted),
+ * and seamlessly updates the timeline in both eox-layercontrol and eox-timecontrol.
+ *
+ * ```html
+ * <div style="display: flex; gap: 16px;">
+ *   <eox-layercontrol for="eox-map#geozarr-multiband" tools='["datetime","config","opacity"]'></eox-layercontrol>
+ *   <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+ *     <eox-map id="geozarr-multiband" projection="EPSG:6932"></eox-map>
+ *     <eox-timecontrol for="eox-map#geozarr-multiband">
+ *       <eox-timecontrol-date navigation="true"></eox-timecontrol-date>
+ *       <eox-timecontrol-picker showDots="true" popup="true"></eox-timecontrol-picker>
+ *       <eox-timecontrol-slider></eox-timecontrol-slider>
+ *     </eox-timecontrol>
+ *   </div>
+ * </div>
+ * ```
+ */
+export const GeoZarrMultiband = geozarrMultibandStory;

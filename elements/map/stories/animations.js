@@ -3,7 +3,7 @@ import { html } from "lit";
 /**
  * Changing the properties `zoom`, `center` or `zoomExtent` will trigger animations
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const AnimationsStory = {
   args: {

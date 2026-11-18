@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { dispatchElementEvent, safeCloneValue } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import {
   createEditor,
@@ -14,10 +15,28 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
 /**
  * `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.
  * It is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.
- * Also check out the [JSON Editor documentation](https://github.com/json-editor/json-editor?tab=readme-ov-file#options) for more details on the available options and configurations.
+ * Also check out the [JSON Editor Documentation](https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md) for full details on schema syntax, options, and built-in editors.
+ *
+ * Core JSON-Editor Features & Options Reference:
+ * - **Branching (`anyOf` / `oneOf`)**:
+ *   - Use `"keep_oneof_values": false` in `options` when variants define different defaults, types (e.g., string vs array), or numeric ranges/steps. By default, JSON-Editor carries over values (`keep_oneof_values: true`), corrupting branch defaults and slider ranges.
+ *   - Example: `"options": { "no_additional_properties": true, "keep_oneof_values": false }`
+ * - **Dynamic Field Dependencies & Templates**:
+ *   - `watch`: Watch other form fields (e.g. `"watch": { "vminmax": "vminmax" }`).
+ *   - `template`: Interpolate watched values into string templates (e.g. `"template": "{{vminmax.vmin}},{{vminmax.vmax}}"`).
+ * - **Custom & Advanced Inputs**:
+ *   - `format: "minmax"`: Dual-handle range slider (via `tc-range-slider`) for selecting min/max bounds with automatic precision detection based on `step`.
+ *   - `format: "range"`: Single range slider with `minimum`, `maximum`, and `step`.
+ *   - `format: "markdown"` / `format: "ace"`: Markdown and Ace code editor integration. Supports `options.markdownToolbar` with optional file upload (`options.markdownToolbar.upload` / `options.uploadEndpoint`) and custom buttons.
+ *   - `format: "spatial"`: Bounding box, polygon, point, and line drawing integrated with `eox-map` / `eox-drawtools`.
+ * - **URL Parameter Filtering (`removeProperties`)**:
+ *   - Use `options.removeProperties: ["vminmax"]` to drop intermediate form/slider properties from consumers and tile URL updates.
+ * - **Configuration Options**:
+ *   - `no_additional_properties: true`: Restrict output strictly to defined schema properties.
+ *   - `disable_collapse`, `disable_edit_json`, `disable_properties`: Standard JSON-Editor UI toggles.
  *
  * Features:
- * - Renders forms from JSON schema, supporting complex nested structures and custom validation.
+ * - Renders forms from JSON schema, supporting complex nested structures, branching (`anyOf`/`oneOf`), and custom validation.
  * - All properties and event handlers are passed via args, enabling dynamic configuration and integration. Properties can also be passed as stringified JSON attributes (e.g. `schema`, `value`, `options`).
  * - Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).
  * - Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).
@@ -26,10 +45,19 @@ import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in 
  * - Integrates with `eox-map` for spatial feature selection when required.
  * - Supports unstyled rendering for custom design integration.
  *
- * See the stories for usage examples covering validation, custom editors, spatial inputs, opt-in/optional properties, external loading, and more.
- *
+ * See the stories for usage examples covering validation, custom editors, branching variants, spatial inputs, opt-in/optional properties, external loading, and more.
+ */
+
+/**
  * @typedef {JSON & {properties: object}} JsonSchema
+ */
+
+/**
  * @element eox-jsonform
+ * @fires {CustomEvent} ready - Editor has loaded schema and API is ready to be used
+ * @fires {CustomEvent} change - The value of the form has changed
+ * @fires {CustomEvent} submit - Form has been submitted
+ * @fires {CustomEvent<import("@eox/elements-utils").EOxActivityDetail>} eox:activity - Fires on genuine user interactions, wrapping the original event for analytics tracking.
  */
 export class EOxJSONForm extends LitElement {
   static properties = {
@@ -49,11 +77,14 @@ export class EOxJSONForm extends LitElement {
    * @type {{[key: string]: any}}
    */
   #editor = null;
+
+  /** @type {unknown} Last editor value snapshot for activity comparison. */
+  #previousEditorValue;
   constructor() {
     super();
 
     /**
-     * Schema for the form editor
+     * Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: "minmax"`).
      *
      * @type {JsonSchema}
      */
@@ -74,7 +105,8 @@ export class EOxJSONForm extends LitElement {
     this.defaults = {};
 
     /**
-     * Options for the form editor
+     * Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).
+     * See JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md
      *
      * @type {object}
      */
@@ -83,7 +115,7 @@ export class EOxJSONForm extends LitElement {
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
@@ -91,14 +123,14 @@ export class EOxJSONForm extends LitElement {
      * Shows a toggle for showing/hiding object properties editing buttons
      * To be used in combination with `options.disable_properties = false`
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.propertiesToggle = false;
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
@@ -122,7 +154,7 @@ export class EOxJSONForm extends LitElement {
   /**
    * Getter for the JSON schema used to render the form
    *
-   * @return {JsonSchema | String}
+   * @returns {JsonSchema | string}
    */
   get schema() {
     return this._schema;
@@ -153,6 +185,7 @@ export class EOxJSONForm extends LitElement {
    * @param {JsonSchema} newVal
    */
   set value(newVal) {
+    this._isUserDirty = false;
     if (this.#editor && this.#editor.ready && !isEqual(this._value, newVal))
       this.#editor.setValue(newVal);
 
@@ -163,41 +196,48 @@ export class EOxJSONForm extends LitElement {
     /**
      * Editor has loaded schema and API is ready to be used
      */
-    this.dispatchEvent(new Event("ready"));
+    dispatchElementEvent(this, "ready", { activity: false });
   }
 
   /**
    * Value object has been changed
+   * @param {boolean} [isUser=false]
    */
-  #emitValue() {
+  #emitValue(isUser = false) {
     if (this.options?.show_opt_in) setTimeout(() => initShowOptInElement(this));
 
     /**
      * The value of the form has changed. Event detail includes the new value
      */
-    this.dispatchEvent(
-      new CustomEvent(`change`, {
-        detail: this.value,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "change", {
+      detail: this.value,
+      activity: isUser,
+      action: "change",
+      bubbles: true,
+      composed: true,
+    });
   }
 
   /**
    * Dispatch same function for multiple event type
    */
   #dispatchEvent() {
-    const events = ["ready", "change"];
+    this.#editor.on("ready", () => {
+      this.#emitReady();
+      this._value = this.#editor.getValue();
+      this.#previousEditorValue = safeCloneValue(this._value);
+      this.#emitValue(false);
+    });
 
-    events.map((evt) => {
-      this.#editor.on(evt, () => {
-        if (evt === "ready") {
-          this.#emitReady();
-        }
-        this._value = this.#editor.getValue();
-        this.#emitValue();
-      });
+    this.#editor.on("change", () => {
+      const value = this.#editor.getValue();
+      const isUser =
+        Boolean(this._isUserDirty) &&
+        !isEqual(this.#previousEditorValue, value);
+      this._isUserDirty = false;
+      this.#previousEditorValue = safeCloneValue(value);
+      this._value = value;
+      this.#emitValue(isUser);
     });
   }
 
@@ -211,13 +251,13 @@ export class EOxJSONForm extends LitElement {
     /**
      * Form has been submitted (if a submit button is present). Event detail includes the current value
      */
-    this.dispatchEvent(
-      new CustomEvent("submit", {
-        detail: "dummy",
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    dispatchElementEvent(this, "submit", {
+      detail: "dummy",
+      activity: true,
+      action: "submit",
+      bubbles: true,
+      composed: true,
+    });
   }
 
   /**

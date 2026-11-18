@@ -3,7 +3,7 @@
  * `WMTS` data can also be accessed directly without the need of fetching the capabilities.
  * A TileGrid can be defined via the `tileGrid`-property of the Source
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const WMTSTileGridStory = {
   args: {
@@ -17,7 +17,9 @@ const WMTSTileGridStory = {
         source: {
           type: "WMTS",
           url: "https://tiles.maps.eox.at/wmts",
-          layer: "s2cloudless-2017_3857",
+          layer: "s2cloudless-2025_3857",
+          attribution:
+            'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)',
           style: "default",
           matrixSet: "GoogleMapsCompatible",
           tileGrid: {

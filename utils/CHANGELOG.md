@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.1.2...elements-utils-v1.2.0) (2026-06-10)
+
+
+### Features
+
+* Get elements from nested shadow roots ([#2393](https://github.com/EOX-A/EOxElements/issues/2393)) ([135f063](https://github.com/EOX-A/EOxElements/commit/135f06343f933fb3d6a56002d8e0ac0b40afaea8))
+
 ## [1.1.2](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.1.1...elements-utils-v1.1.2) (2026-04-14)
 
 

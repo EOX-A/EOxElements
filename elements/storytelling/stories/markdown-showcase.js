@@ -2,6 +2,7 @@
  * Renders storytelling showcasing a combination of markdown, maps, and tours.
  */
 import { html } from "lit";
+import "color-legend-element";
 
 export const MarkdownShowcase = {
   argTypes: {
@@ -100,11 +101,11 @@ You achieve this by starting a new step with an *h3* (*###*) heading and passing
 ### <!--{ layers='[...]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
 \`\`\`
 
-### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]' center=[12.46,41.89] zoom="10" }-->
+### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2025"}}]' center=[12.46,41.89] zoom="10" }-->
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]' center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
+### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2025"}}]' center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
 #### Third tour step.
 To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map
 
@@ -130,6 +131,21 @@ Each tour step is described as an *h3* (*###*) heading.
 #### Third tour step.
 ![](https://placehold.co/200x100)
 
+## Custom Elements
+Custom elements (Web Components) can be embedded directly within markdown stories. Attributes and properties are preserved, making it easy to incorporate interactive widgets such as color legends or specialized components:
+
+\`\`\`markdown
+<color-legend
+  domain="[0, 100]"
+  scaletype="discrete"
+  range='["#eff3ff","#6baed6","#08519c", "#666666"]'
+  titletext="Snowfall (mm)"
+  style="--cle-background: transparent;"
+></color-legend>
+\`\`\`
+
+<color-legend domain="[0,100]" scaletype="discrete" range='["#eff3ff","#6baed6","#08519c", "#666666"]' titletext="Snowfall (mm)" style="--cle-background: transparent;"></color-legend>
+
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
@@ -137,12 +153,14 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
     id: "markdown-tour",
     showNav: true,
     showHeroScrollIndicator: true,
+    showMapLoadingIndicator: true,
   },
   render: (args) => html`
     <eox-storytelling
       id=${args.id}
       ?show-nav=${args.showNav}
       ?show-hero-scroll-indicator=${args.showHeroScrollIndicator}
+      ?show-map-loading-indicator=${args.showMapLoadingIndicator}
       markdown=${args.markdown}
     ></eox-storytelling>
   `,

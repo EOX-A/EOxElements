@@ -1,5 +1,7 @@
 // Importing test cases and necessary modules
 import "../src/main"; // Importing main module
+import "@eox/jsonform";
+import { updateVectorLayerStyle } from "../src/main";
 import "./_mockMap";
 import {
   checkLayerSize,
@@ -12,8 +14,10 @@ import {
   renderOptionalLayer,
   showCorrectLayerTitle,
   checkLayerLegend,
+  checkLayerLegendDynamic,
   colorSwatch,
   toolsAutoExpand,
+  hideDatetimeWithoutControlValues,
   // checkLayerDatetime,
 } from "./cases/general";
 
@@ -63,12 +67,25 @@ describe("LayerControl", () => {
     checkLayerLegend();
   });
 
+  it("updates dynamic legend colorscale and domain", () => {
+    checkLayerLegendDynamic();
+  });
+
   it("replaces icon with color swatch if color property is present on the layer", () => {
     colorSwatch();
   });
 
   // Test to verify the toolsAutoExpand property
   it("supports toolsAutoExpand", () => toolsAutoExpand());
+
+  // Test to verify that the datetime tool waits for layerDatetime.controlValues
+  it("hides the datetime tool while layerDatetime has no controlValues", () =>
+    hideDatetimeWithoutControlValues());
+
+  // Test to verify that updateVectorLayerStyle helper is exported
+  it("exports updateVectorLayerStyle as a function", () => {
+    expect(updateVectorLayerStyle).to.be.a("function");
+  });
   // TODO: Fix this test
   // it("emit 'datetime:updated' correctly when moving the slider", () => {
   //   checkLayerDatetime();

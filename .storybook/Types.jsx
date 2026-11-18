@@ -3,10 +3,22 @@ import { useOf } from "@storybook/addon-docs/blocks";
 import typedocJson from "../types.json";
 
 export const Types = ({ of }) => {
-  const { component } = useOf("component");
+  let component;
+  try {
+    const resolved = useOf("component", ["component"]);
+    component = resolved?.component;
+  } catch (e) {
+    // ignore
+  }
+
+  if (!component) {
+    return null;
+  }
+
   const hasTypes = Object.values(typedocJson.files.entries).find(
     (e) => e.includes(component.replace("eox-", "")) && e.includes(".ts"),
   );
+
   if (hasTypes) {
     return [
       <h3 id="types" key="title">
@@ -24,4 +36,6 @@ export const Types = ({ of }) => {
       ></iframe>,
     ];
   }
+
+  return null;
 };

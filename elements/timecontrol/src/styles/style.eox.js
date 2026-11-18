@@ -24,19 +24,20 @@ ${eoxStyle}
   box-sizing: border-box;
   text-align: center;
   font-size: small;
-  background: white;
+  background: transparent;
+  color: var(--on-surface);
   outline: none;    
   margin: 0px 2px;
 }
 
 #date-container input.input-field {
-  border: 1.5px solid #0e0e0e30;
+  border: 1.5px solid var(--outline);
   padding: 2px;
   border-radius: 4px;
 }
 
 #date-container input.input-field:focus-visible {
-  border: 2px solid #005fcc;
+  border: 2px solid var(--primary);
 }
 
 button.icon.previous,

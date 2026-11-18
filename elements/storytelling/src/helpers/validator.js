@@ -125,7 +125,7 @@ const modeBasedSchema = {
 /**
  * Validate markdown attributes based on mode and as
  *
- * @param {Object} attrs - List of attributes
+ * @param {object} attrs - List of attributes
  * @param {import("lit").LitElement} that - The LitElement instance.
  */
 export function validateMarkdownAttrs(attrs, that) {

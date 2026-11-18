@@ -4,7 +4,7 @@ import { html } from "lit";
 /**
  * Generates a story configuration for the Auto Spread result.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 function AutoSpreadStory() {
   return {

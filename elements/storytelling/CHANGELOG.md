@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.13.1...storytelling-v1.14.0) (2026-11-09)
+
+
+### Features
+
+* Support 3D globe tour ([#2643](https://github.com/EOX-A/EOxElements/issues/2643)) ([1c365c2](https://github.com/EOX-A/EOxElements/commit/1c365c246eb9ea201850e02b363d038673028718))
+
+## [1.13.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.13.0...storytelling-v1.13.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* Typing chore incorrectly labelled as fix ([#2614](https://github.com/EOX-A/EOxElements/issues/2614)) ([562124c](https://github.com/EOX-A/EOxElements/commit/562124c72942f1a2ea64c672a8827cea0494f22a))
+
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.12.0...storytelling-v1.13.0) (2026-06-29)
+
+
+### Features
+
+* Map loading indicator ([#2420](https://github.com/EOX-A/EOxElements/issues/2420)) ([67d4eca](https://github.com/EOX-A/EOxElements/commit/67d4ecae707b6494e24ff1900a6f7b041efdbca2))
+
+## [1.12.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.11.0...storytelling-v1.12.0) (2026-06-18)
+
+
+### Features
+
+* Introduce DOM morphing & improve resource management ([#2410](https://github.com/EOX-A/EOxElements/issues/2410)) ([91117b8](https://github.com/EOX-A/EOxElements/commit/91117b85fba64257291767d96eae406c48253fe0))
+
+
+### Bug Fixes
+
+* Type checks for step layers and ignore empty slot change ([#2408](https://github.com/EOX-A/EOxElements/issues/2408)) ([d652fd5](https://github.com/EOX-A/EOxElements/commit/d652fd560ac2b3fbc47db237fef0682a3d82b72d))
+
 ## [1.11.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.10.1...storytelling-v1.11.0) (2026-04-16)
 
 

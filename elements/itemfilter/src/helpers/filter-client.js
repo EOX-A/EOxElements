@@ -7,8 +7,8 @@ let _fuse;
 /**
  * Indexes the given items using Fuse.js with the provided configuration.
  *
- * @param {Array<Object>} items - The items to be indexed.
- * @param {Object} fuseConfig - Configuration object for Fuse.js.
+ * @param {Array<object>} items - The items to be indexed.
+ * @param {object} fuseConfig - Configuration object for Fuse.js.
  */
 export const indexItems = (items, fuseConfig) => {
   _fuse = new Fuse(items, {
@@ -24,10 +24,10 @@ export const indexItems = (items, fuseConfig) => {
 /**
  * Filters the given items based on the provided filters and configuration.
  *
- * @param {Array<Object>} items - The items to be filtered.
- * @param {Object} filters - The filters to be applied.
- * @param {Object} config - Configuration for filtering behavior.
- * @returns {Promise<Array<Object>>} The filtered items.
+ * @param {Array<object>} items - The items to be filtered.
+ * @param {object} filters - The filters to be applied.
+ * @param {object} config - Configuration for filtering behavior.
+ * @returns {Promise<Array<object>>} The filtered items.
  */
 export const filter = async (items, filters, config) => {
   // Parse text, select, and multiselect filters
@@ -85,9 +85,14 @@ export const filter = async (items, filters, config) => {
   const rangeFilters = Object.entries(filters)
     .filter(([, value]) => value.type === "range")
     .reduce((acc, [key, value]) => {
+      const parseValue = (input) => {
+        return value.format === "date"
+          ? dayjs(input).valueOf()
+          : parseFloat(input);
+      };
       acc[key] = {
-        min: value.state.min,
-        max: value.state.max,
+        min: parseValue(value.state.min),
+        max: parseValue(value.state.max),
         format: value.format,
       };
       return acc; // Return the accumulated range filters
@@ -100,7 +105,9 @@ export const filter = async (items, filters, config) => {
       for (const [key, value] of Object.entries(rangeFilters)) {
         // Function to parse value based on format
         const parseValue = (input) => {
-          return value.format === "date" ? dayjs(input).unix() : input;
+          return value.format === "date"
+            ? dayjs(input).valueOf()
+            : parseFloat(input);
         };
         const rangeValue = getValue(key, results[i]);
         if (rangeValue) {

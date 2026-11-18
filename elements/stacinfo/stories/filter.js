@@ -4,7 +4,7 @@
  * You can pass a `Filter` object ({ key, filter }) to any section array.
  * The `filter` function receives the list item and must return a boolean to include/exclude it.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ItemStory = {
   args: {

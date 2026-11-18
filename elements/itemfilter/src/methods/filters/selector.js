@@ -4,10 +4,10 @@ import Fuse from "fuse.js";
 /**
  * Resets the selector filter to its default state and updates the component.
  *
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 export function resetSelectorMethod(EOxItemFilterSelector) {
-  removeItemSelectorMethod(-1, EOxItemFilterSelector);
+  removeItemSelectorMethod(-1, EOxItemFilterSelector, false);
 
   resetFilter(EOxItemFilterSelector.filterObject);
   EOxItemFilterSelector.requestUpdate();
@@ -17,23 +17,28 @@ export function resetSelectorMethod(EOxItemFilterSelector) {
  * Removes an item from the selected items list and updates suggestions and filter list.
  *
  * @param {number} index - The index of the item to remove, or -1 to remove all items.
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {boolean} [emitEvent=true] - Whether to emit the filter event.
  */
-export function removeItemSelectorMethod(index, EOxItemFilterSelector) {
+export function removeItemSelectorMethod(
+  index,
+  EOxItemFilterSelector,
+  emitEvent = true,
+) {
   EOxItemFilterSelector.selectedItems =
     index === -1
       ? []
       : EOxItemFilterSelector.selectedItems.filter((_, i) => i !== index);
 
   updateSuggestions(EOxItemFilterSelector);
-  updateFilterList(EOxItemFilterSelector);
+  updateFilterList(EOxItemFilterSelector, emitEvent);
 }
 
 /**
  * Toggles the selection of an item and updates the component.
  *
- * @param {Object} item - The item to toggle.
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} item - The item to toggle.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 export function toggleItemSelectorMethod(item, EOxItemFilterSelector) {
   const itemIndex = EOxItemFilterSelector.selectedItems.indexOf(item);
@@ -64,7 +69,7 @@ export function toggleItemSelectorMethod(item, EOxItemFilterSelector) {
  * Handles input changes for the selector and updates the query and suggestions.
  *
  * @param {Event} event - The input event.
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 export function handleInputSelectorMethod(event, EOxItemFilterSelector) {
   if (!(event.target instanceof HTMLInputElement)) {
@@ -78,7 +83,7 @@ export function handleInputSelectorMethod(event, EOxItemFilterSelector) {
  * Handles keydown events for the selector and navigates or selects items based on the key pressed.
  *
  * @param {KeyboardEvent} event - The keydown event.
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
   switch (event.key) {
@@ -119,8 +124,8 @@ export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
 /**
  * Updates the Fuse.js instance and suggestions when properties change.
  *
- * @param {Object} changedProperties - The properties that changed.
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} changedProperties - The properties that changed.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 export function updatedSelectorMethod(
   changedProperties,
@@ -134,9 +139,9 @@ export function updatedSelectorMethod(
 /**
  * Sorts and returns the suggestions based on the filter's sort method or default string comparison.
  *
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
- * @param {Array<Object>} suggestion - The suggestions to sort.
- * @returns {Array<Object>} The sorted suggestions.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {Array<object>} suggestion - The suggestions to sort.
+ * @returns {Array<object>} The sorted suggestions.
  */
 function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
   const sortCallback =
@@ -150,7 +155,7 @@ function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
 /**
  * Updates the filtered suggestions based on the current query.
  *
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 function updateSuggestions(EOxItemFilterSelector) {
   const items = (
@@ -162,6 +167,7 @@ function updateSuggestions(EOxItemFilterSelector) {
   if (EOxItemFilterSelector.query) {
     const fuse = new Fuse(items, {
       threshold: 0.4,
+      ignoreLocation: true,
     });
     filteredSuggestion = fuse
       .search(EOxItemFilterSelector.query)
@@ -189,9 +195,10 @@ function updateSuggestions(EOxItemFilterSelector) {
 /**
  * Updates the filter list based on the selected items.
  *
- * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {boolean} [emitEvent=true] - Whether to dispatch the filter custom event.
  */
-function updateFilterList(EOxItemFilterSelector) {
+function updateFilterList(EOxItemFilterSelector, emitEvent = true) {
   // Update the state of the filter object based on the selected items
   Object.keys(EOxItemFilterSelector.filterObject.state).forEach((k) => {
     EOxItemFilterSelector.filterObject.state[k] =
@@ -210,6 +217,8 @@ function updateFilterList(EOxItemFilterSelector) {
   );
 
   // Dispatch a custom event named "filter" and request an update
-  EOxItemFilterSelector.dispatchEvent(new CustomEvent("filter"));
+  if (emitEvent) {
+    EOxItemFilterSelector.dispatchEvent(new CustomEvent("filter"));
+  }
   EOxItemFilterSelector.requestUpdate();
 }

@@ -5,7 +5,7 @@ import { PrimaryStory } from "./";
  * Custom rendering of properties can be achieved using `slots`.
  * Automatically generated slots are provided for body properties, featured properties, featured summaries, header and footer.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const CustomSlotContentStory = {
   args: {

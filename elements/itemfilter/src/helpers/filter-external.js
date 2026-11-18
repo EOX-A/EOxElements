@@ -2,10 +2,10 @@ import { getValue } from "./";
 /**
  * Fetches and filters items based on the provided filters and configuration using an external API.
  *
- * @param {Array<Object>} items - The items to be filtered.
- * @param {Object} filters - The filters to be applied.
- * @param {Object} config - Configuration for filtering behavior.
- * @returns {Promise<Array<Object>>} The filtered items from the external API.
+ * @param {Array<object>} items - The items to be filtered.
+ * @param {object} filters - The filters to be applied.
+ * @param {object} config - Configuration for filtering behavior.
+ * @returns {Promise<Array<object>>} The filtered items from the external API.
  */
 async function filterExternal(items, filters, config) {
   const functionResult = config.externalFilter(items, filters);

@@ -2,7 +2,7 @@
  * Handles the click event on a chip, highlighting the clicked chip and updating the component.
  *
  * @param {Event} evt - The click event.
- * @param {Object} EOxItemFilterChips - The EOxItemFilterChips component instance.
+ * @param {object} EOxItemFilterChips - The EOxItemFilterChips component instance.
  */
 export function handleChipClickMethod(evt, EOxItemFilterChips) {
   // Remove the 'highlighted' class from all chips
@@ -21,7 +21,7 @@ export function handleChipClickMethod(evt, EOxItemFilterChips) {
  *
  * @param {Event} event - The close event.
  * @param {number} index - The index of the chip to be removed.
- * @param {Object} EOxItemFilterChips - The EOxItemFilterChips component instance.
+ * @param {object} EOxItemFilterChips - The EOxItemFilterChips component instance.
  */
 export function handleCloseMethod(event, index, EOxItemFilterChips) {
   // Remove the chip from the controller
@@ -32,7 +32,7 @@ export function handleCloseMethod(event, index, EOxItemFilterChips) {
  * Handles keyboard events for the EOxItemFilterChips component.
  *
  * @param {KeyboardEvent} event - The keyboard event.
- * @param {Object} EOxItemFilterChips - The EOxItemFilterChips component instance.
+ * @param {object} EOxItemFilterChips - The EOxItemFilterChips component instance.
  */
 export function keyboardEventListenerMethod(event, EOxItemFilterChips) {
   const { code, target } = event;
@@ -51,9 +51,6 @@ export function keyboardEventListenerMethod(event, EOxItemFilterChips) {
   )
     return;
 
-  // Prevent default action for the Space key
-  if (code === "Space") event.preventDefault();
-
   // Stop propagation for keys other than Escape, Space, and Enter
   if (!["Escape", "Space", "Enter"].includes(code)) event.stopPropagation();
 
@@ -71,7 +68,7 @@ export function keyboardEventListenerMethod(event, EOxItemFilterChips) {
  *
  * @param {string} key - The key pressed.
  * @param {string} textValue - The current value of the input field.
- * @param {Object} that - The EOxItemFilterChips component instance.
+ * @param {object} that - The EOxItemFilterChips component instance.
  */
 function handleKeyboard(key, textValue, that) {
   const highlightedChip = that.renderRoot.querySelector(".chip.highlighted");

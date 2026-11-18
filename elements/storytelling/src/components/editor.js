@@ -22,41 +22,41 @@ export class StoryTellingEditor extends LitElement {
     super();
 
     /**
-     * @type {String} - Markdown Content
+     * @type {string} - Markdown Content
      */
     this.markdown = "";
 
     /**
-     * @type {String | null} - id of eox-storytelling
+     * @type {string | null} - id of eox-storytelling
      */
     this.storyId = null;
 
     /**
-     * @type {Boolean} - is navigation enabled or not
+     * @type {boolean} - is navigation enabled or not
      */
     this.isNavigation = false;
 
     /**
-     * @type {Boolean} - Dragging enabled or not
+     * @type {boolean} - Dragging enabled or not
      */
     this.dragging = false;
 
     /**
-     * @type {Boolean} - Resizing enabled on not
+     * @type {boolean} - Resizing enabled on not
      */
     this.resizing = false;
 
     /**
      * Enable or disable editor
      *
-     * @type {String}
+     * @type {string}
      */
     this.showEditor = undefined;
 
     /**
      * Disable auto save
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.disableAutosave = false;
 

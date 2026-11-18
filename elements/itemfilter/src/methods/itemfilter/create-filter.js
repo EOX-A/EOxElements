@@ -5,9 +5,9 @@ import flatMap from "lodash.flatmap";
 /**
  * Creates a filter element based on the filter object type.
  *
- * @param {Object} filterObject - The filter object containing filter details.
+ * @param {object} filterObject - The filter object containing filter details.
  * @param {number} tabIndex - The tab index for the filter element.
- * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @param {object} EOxItemFilter - The EOxItemFilter component instance.
  * @returns {import("lit").HTMLTemplateResult} The HTML template for the filter element.
  */
 function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
@@ -28,7 +28,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         .results=${EOxItemFilter.results}
         .unstyled=${EOxItemFilter.unstyled}
         @result=${EOxItemFilter.updateResult}
-        @filter=${() => EOxItemFilter.search()}
+        @filter=${() => EOxItemFilter.search(true)}
       ></eox-itemfilter-text>`;
 
     case "multiselect":
@@ -47,20 +47,24 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           ).filter((i) => i)}"
           type="${filterObject.type}"
           .unstyled=${EOxItemFilter.unstyled}
-          @filter=${() => EOxItemFilter.search()}
+          @filter=${() => EOxItemFilter.search(true)}
         ></eox-itemfilter-select>
       `;
     case "range":
       // Return a range filter element
       return html`
         <eox-itemfilter-range
+          .inlineMode=${EOxItemFilter.inlineMode || false}
           id="${filterId}"
           data-type="filter"
           .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
+          .suggestions="${uniq(
+            flatMap(EOxItemFilter.items, filterObject.key),
+          ).filter((i) => i)}"
           .unstyled=${EOxItemFilter.unstyled}
-          @filter=${() => EOxItemFilter.search()}
+          @filter=${() => EOxItemFilter.search(true)}
         ></eox-itemfilter-range>
       `;
     case "spatial":
@@ -72,7 +76,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
-          @filter=${() => EOxItemFilter.search()}
+          @filter=${() => EOxItemFilter.search(true)}
         ></eox-itemfilter-spatial>
       `;
 

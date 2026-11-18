@@ -1,5 +1,95 @@
 # Changelog
 
+## [2.10.0](https://github.com/EOX-A/EOxElements/compare/map-v2.9.0...map-v2.10.0) (2026-11-09)
+
+
+### Features
+
+* Support for 3D globe storytelling tours ([#2444](https://github.com/EOX-A/EOxElements/issues/2444)) ([c9f5cea](https://github.com/EOX-A/EOxElements/commit/c9f5cea6ec3efb8b74c864f1634ff6e9f1fbd99e))
+
+## [2.9.0](https://github.com/EOX-A/EOxElements/compare/map-v2.8.3...map-v2.9.0) (2026-11-04)
+
+
+### Features
+
+* Native GeoTIFF rendering and select interactions in globe mode ([#2630](https://github.com/EOX-A/EOxElements/issues/2630)) ([5d7a5c0](https://github.com/EOX-A/EOxElements/commit/5d7a5c0d80275d76b2896f891cb36ca5b6cbc554))
+
+## [2.8.3](https://github.com/EOX-A/EOxElements/compare/map-v2.8.2...map-v2.8.3) (2026-10-26)
+
+
+### Bug Fixes
+
+* Eval warning fix ([#2617](https://github.com/EOX-A/EOxElements/issues/2617)) ([617a557](https://github.com/EOX-A/EOxElements/commit/617a5574022948ef6007728ffcff53436aee68cc))
+
+## [2.8.2](https://github.com/EOX-A/EOxElements/compare/map-v2.8.1...map-v2.8.2) (2026-10-20)
+
+
+### Bug Fixes
+
+* Allow GeoZarr time settings ([#2605](https://github.com/EOX-A/EOxElements/issues/2605)) ([bcf9388](https://github.com/EOX-A/EOxElements/commit/bcf9388eff74f28acb0f83b1435c5d63fbceac31))
+
+## [2.8.1](https://github.com/EOX-A/EOxElements/compare/map-v2.8.0...map-v2.8.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* Alternative update without setting up or checking the zarr layer ([#2555](https://github.com/EOX-A/EOxElements/issues/2555)) ([7f24b7b](https://github.com/EOX-A/EOxElements/commit/7f24b7b04690e3b22707ccb7f967c1d3c8a33ef6))
+
+## [2.8.0](https://github.com/EOX-A/EOxElements/compare/map-v2.7.2...map-v2.8.0) (2026-09-28)
+
+
+### Features
+
+* GeoZarr source initialization and layer setup ([#2498](https://github.com/EOX-A/EOxElements/issues/2498)) ([4961397](https://github.com/EOX-A/EOxElements/commit/4961397d066d95aed2fd039f1ec24cb13de2bbe4))
+
+
+### Bug Fixes
+
+* Support map syncing across shadow DOM boundaries via global registry ([#2543](https://github.com/EOX-A/EOxElements/issues/2543)) ([b25222b](https://github.com/EOX-A/EOxElements/commit/b25222b4105d302a6baf77c8686e930431a3cd03))
+
+## [2.7.2](https://github.com/EOX-A/EOxElements/compare/map-v2.7.1...map-v2.7.2) (2026-08-07)
+
+
+### Bug Fixes
+
+* Robust FlatGeoBuf bbox calculation for poles and antimeridian crossings ([#2474](https://github.com/EOX-A/EOxElements/issues/2474)) ([382d8c7](https://github.com/EOX-A/EOxElements/commit/382d8c7c93fcd6cc48637ddddcaf6825c6401da6))
+
+## [2.7.1](https://github.com/EOX-A/EOxElements/compare/map-v2.7.0...map-v2.7.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* EoxLayer type declaration ([#2430](https://github.com/EOX-A/EOxElements/issues/2430)) ([deb724d](https://github.com/EOX-A/EOxElements/commit/deb724d3784f91ed0eaf3e9e08fd08aa0ad985e0))
+
+## [2.7.0](https://github.com/EOX-A/EOxElements/compare/map-v2.6.1...map-v2.7.0) (2026-06-18)
+
+
+### Features
+
+* Update wms and wmts params by layercontrol config change ([#2381](https://github.com/EOX-A/EOxElements/issues/2381)) ([b24111c](https://github.com/EOX-A/EOxElements/commit/b24111cd227933c7bb8d712355d4a1ce79493307))
+
+## [2.6.1](https://github.com/EOX-A/EOxElements/compare/map-v2.6.0...map-v2.6.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* Clear duplicate select (click & hover) highlights ([#2397](https://github.com/EOX-A/EOxElements/issues/2397)) ([1ce97ee](https://github.com/EOX-A/EOxElements/commit/1ce97eea10792d2f8531b8c57b6a6f7b2b721b12))
+* Hide attribution control when empty ([#2396](https://github.com/EOX-A/EOxElements/issues/2396)) ([2a52afa](https://github.com/EOX-A/EOxElements/commit/2a52afa1bd60b2547a148abd03c6b60da7af0dfd))
+
+## [2.6.0](https://github.com/EOX-A/EOxElements/compare/map-v2.5.1...map-v2.6.0) (2026-05-21)
+
+
+### Features
+
+* Support inline GeoJSON features in Vector sources ([#2350](https://github.com/EOX-A/EOxElements/issues/2350)) ([b08e701](https://github.com/EOX-A/EOxElements/commit/b08e7013640d2194003f44a918a70382978a265a))
+
+## [2.5.1](https://github.com/EOX-A/EOxElements/compare/map-v2.5.0...map-v2.5.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* Avoid duplicate vector source loads from `EOxSelectInteraction` ([#2328](https://github.com/EOX-A/EOxElements/issues/2328)) ([64daece](https://github.com/EOX-A/EOxElements/commit/64daececf93af200571065e64cf26d683478cfda))
+
 ## [2.5.0](https://github.com/EOX-A/EOxElements/compare/map-v2.4.0...map-v2.5.0) (2026-05-05)
 
 

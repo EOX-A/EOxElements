@@ -275,7 +275,7 @@ function computeStepOverrides(rules, values) {
  * represents a step, with options for dependencies, auto-complete,
  * grid sizing, and disabled labels.
  *
- * @extends AbstractEditor
+ * @augments AbstractEditor
  */
 export class StepsEditor extends AbstractEditor {
   register() {

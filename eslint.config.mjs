@@ -8,5 +8,22 @@ export default [
   {
     ignores: ["**/dist", "**/types", "**/*.ts", "**/*.d.ts"],
   },
+  {
+    rules: {
+      "jsdoc/check-tag-names": [
+        "warn",
+        {
+          definedTags: [
+            "element",
+            "attribute",
+            "attr",
+            "cssproperty",
+            "api",
+            "ts-expect-error",
+          ],
+        },
+      ],
+    },
+  },
   ...storybook.configs["flat/recommended"],
 ];

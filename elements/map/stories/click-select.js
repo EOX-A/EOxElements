@@ -1,7 +1,7 @@
 /**
  * Renders `eox-map` with `Click` interaction
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const ClickSelectStory = {
   args: {

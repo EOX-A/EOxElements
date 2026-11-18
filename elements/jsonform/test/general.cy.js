@@ -9,6 +9,13 @@ import {
   loadReRenderFormOnChangeTest,
   loadMarkdownTest,
   loadCodeMarkdownToolbarTest,
+  loadCodeMarkdownToolbarStickyTest,
+  loadCodeMarkdownToolbarUnstyledTest,
+  loadCodeMarkdownToolbarUploadTest,
+  loadCodeMarkdownToolbarPdfUploadTest,
+  loadCodeMarkdownToolbarVideoUploadTest,
+  loadCodeMarkdownToolbarCustomHandlerTest,
+  loadAceMarkdownDisableUndoRedoTest,
   triggerChangeEventTest,
   loadValuesTest,
   loadMisMatchingValuesTest,
@@ -16,6 +23,7 @@ import {
   loadCustomEditorInterfaceTest,
   loadSubmitButtonTest,
   loadCodeTest,
+  loadCodeHTMLTest,
   loadShowOptInPropertiesTest,
   loadButtonsEditorTest,
   loadSpatialValuesTest,
@@ -28,6 +36,9 @@ import {
   loadStepsEditorInteractionTest,
   loadStepsEditorCascadingResetTest,
   loadStepsEditorConditionalTest,
+  loadMinMaxEditorTest,
+  loadMinMaxBranchSwitchTest,
+  setSpatialValueTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -41,8 +52,23 @@ describe("Jsonform", () => {
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
   it("loads the binary checkbox", () => loadBinaryCheckboxTest());
   it("loads the code markdown toolbar", () => loadCodeMarkdownToolbarTest());
+  it("keeps markdown toolbar sticky when scrolled", () =>
+    loadCodeMarkdownToolbarStickyTest());
+  it("hides unstyled markdown toolbar when scrolled", () =>
+    loadCodeMarkdownToolbarUnstyledTest());
+  it("handles image upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarUploadTest());
+  it("handles non-image file upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarPdfUploadTest());
+  it("handles video file upload in markdown toolbar", () =>
+    loadCodeMarkdownToolbarVideoUploadTest());
+  it("handles custom upload handler in markdown toolbar", () =>
+    loadCodeMarkdownToolbarCustomHandlerTest());
+  it("disables undo and redo in the markdown editor", () =>
+    loadAceMarkdownDisableUndoRedoTest());
   it("loads the markdown editor", () => loadMarkdownTest());
   it("loads the code editor", () => loadCodeTest());
+  it("preserves HTML markup inside code editor", () => loadCodeHTMLTest());
   it("triggers a change event when typing", () => triggerChangeEventTest());
   it("loads values", () => loadValuesTest());
   it("loads mismatching values", () => loadMisMatchingValuesTest());
@@ -64,4 +90,10 @@ describe("Jsonform", () => {
     loadStepsEditorCascadingResetTest());
   it("handles steps editor conditional if/then", () =>
     loadStepsEditorConditionalTest());
+  it("loads the minmax editor with correct precision", () =>
+    loadMinMaxEditorTest());
+  it("applies branch defaults when switching anyOf branches with minmax slider", () =>
+    loadMinMaxBranchSwitchTest());
+  it("updates drawtools features when setValue is called on external map", () =>
+    setSpatialValueTest());
 });

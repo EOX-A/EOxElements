@@ -276,6 +276,10 @@
   display: flex !important;
   align-items: center;
 }
+/* Hide the empty box when there are no attributions. */
+.ol-attribution:not(:has(li)) {
+  display: none !important;
+}
 .ol-attribution button {
   margin: 0;
 }

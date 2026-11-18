@@ -1,4 +1,5 @@
 import { html } from "lit";
+import "color-legend-element";
 import {
   STORIES_LAYER_DEFORESTED_BIOMASS,
   STORIES_LAYER_VESSEL_DENSITY_CARGO,
@@ -12,6 +13,9 @@ export const ToolsStory = {
   args: {
     for: "eox-map#tools",
     tools: ["info"],
+    "datetime:updated": (evt) => {
+      evt.detail.layer.getSource().updateParams({ TIME: evt.detail.datetime });
+    },
     storyAdditionalComponents: {
       "eox-map": {
         style: STORIES_MAP_STYLE,
@@ -27,12 +31,17 @@ export const ToolsStory = {
     style: STORIES_LAYERCONTROL_STYLE,
   },
   render: (args) => html`
-    <p>Default tools: info, opacity, config, remove, sort</p>
+    <p>Default tools: info, opacity, datetime, config, remove, sort</p>
+    <p>
+      Available tools: info, opacity, config, datetime (time), legend, sort,
+      remove
+    </p>
     <p>Toggle tools using the Controls panel.</p>
     <eox-layercontrol
       .for=${args.for}
       .tools=${args.tools}
       .style=${args.style}
+      @datetime:updated=${args["datetime:updated"]}
     ></eox-layercontrol>
     <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}

@@ -1,7 +1,7 @@
 /**
  * A simple, unobtrusive loading indicator in the bottom left that appears any time when the map is loading.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const StandardLoadingIndicatorStory = {
   args: {

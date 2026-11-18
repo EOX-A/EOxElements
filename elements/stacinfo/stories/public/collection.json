@@ -2,6 +2,7 @@
   "type": "Collection",
   "id": "ports_cars_aq",
   "stac_version": "1.0.0",
+  "updated": "2024-03-15T12:00:00Z",
   "description": "## Ports and cars - impact on air quality \n\nThis indicator aims at assessing ports pollution levels over the time interval 2019-2020 by correlating:\n- normalized NO2 data from the TROPOMI sensor onboard Sentinel-5P satellite (daily observations)\n- Automatic Identification Systems (AIS) data from all the boats coming to the ports\n- GNSS data (TomTom) quantifying the mean daily number of cars accessing the main street to the ports\n- Anonymised cellular data (Vodafone) providing the total number of people present in the port area (2020 observations)   \n\nThis integrated analysis shows:\n- **high correlation** between NO2 levels and boat traffic\n- **low correlation** between NO2 levels and car traffic\n\nOn the indicator chart, for each day, the light/dark red-colored background indicates whether there were \nCOVID-19 restrictions or lockdown measure in place in the country where the city is located.\n",
   "links": [
     {

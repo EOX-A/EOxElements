@@ -3,11 +3,15 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { when } from "lit/directives/when.js";
+import { live } from "lit/directives/live.js";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
-import findIndex from "lodash.findindex";
-import groupBy from "lodash.groupby";
+import {
+  commitInputMethod,
+  getStepDateMethod,
+  updateStepMethod,
+} from "../methods/date/index.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -27,22 +31,17 @@ export class EOxTimeControlDate extends LitElement {
   /**
    * Defines the component's reactive properties.
    *
-   * @returns {Object} Property definitions.
+   * @returns {object} Property definitions.
    */
   static get properties() {
     return {
       format: { type: String, attribute: "format" },
       navigation: { type: Boolean, attribute: "navigation" },
+      dateWrap: { type: Boolean, attribute: "date-wrap" },
+      editable: { type: Boolean, attribute: "editable" },
       unstyled: { type: Boolean, attribute: "unstyled" },
     };
   }
-
-  /**
-   * Whether the component is rendered as an input field (when used with popup picker).
-   *
-   * @type {boolean}
-   */
-  #isInput = false;
 
   /**
    * The currently selected date range.
@@ -72,6 +71,20 @@ export class EOxTimeControlDate extends LitElement {
     this.navigation = false;
 
     /**
+     * Whether date navigation wraps from the last date to the first and vice versa.
+     * Set the property to false to disable navigation at either boundary (default: true).
+     *
+     * @type {boolean}
+     */
+    this.dateWrap = true;
+
+    /**
+     * Whether the date text can be edited. Defaults to false (disabled input)
+     * @type {boolean}
+     */
+    this.editable = false;
+
+    /**
      * Whether default styling is disabled.
      *
      * @type {boolean}
@@ -89,81 +102,13 @@ export class EOxTimeControlDate extends LitElement {
   }
 
   /**
-   * Gets the current index and item values for the given key.
-   *
-   * @param {string} key - The key to get the current index and item values from.
-   * @returns {Object} An object containing the current index and item values.
-   */
-  #getCurrIndexAndValues(key) {
-    const EOxTimeControl = this.getEOxTimeControl();
-    const itemValues = Object.keys(
-      groupBy(EOxTimeControl.items.get(), key),
-    ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-    const curStartDate = EOxTimeControl.selectedDateRange[0];
-    const index = findIndex(itemValues, (date) => {
-      if (key === "utc") {
-        if (EOxTimeControl.showUTC && curStartDate.includes("T00:00:00Z")) {
-          return dayjs(date).isSame(curStartDate, "day");
-        } else return dayjs(date).isSame(curStartDate);
-      } else {
-        return date === dayjs(curStartDate).format(TIME_CONTROL_DATE_FORMAT);
-      }
-    });
-    return { index, itemValues };
-  }
-
-  /**
-   * Gets the new index for the given item values, step, and index.
-   *
-   * @param {Array<string>} itemValues - The item values to get the new index from.
-   * @param {number} step - The step to move the index by.
-   * @param {number} index - The current index.
-   * @returns {number} The new index.
-   */
-  #getNewIndex(itemValues, step, index) {
-    let newIndex = index + step;
-    if (newIndex > itemValues.length - 1) newIndex = 0;
-    if (newIndex < 0) newIndex = itemValues.length - 1;
-    return newIndex;
-  }
-
-  /**
    * Updates the selected date by stepping forward or backward through available dates.
    *
    * @param {number} [step=1] - Number of steps to move (positive for forward, negative for backward).
+   * @returns {void}
    */
   updateStep(step = 1) {
-    const EOxTimeControl = this.getEOxTimeControl();
-    let newIndex, index, itemValues;
-    const currIndex = this.#getCurrIndexAndValues("utc");
-    index = currIndex.index;
-    itemValues = currIndex.itemValues;
-
-    // When exact value is matched based on date and time, use the index from the utc key
-    if (index >= 0) {
-      newIndex = this.#getNewIndex(itemValues, step, index);
-    } else {
-      // When exact value is not matched based on date and time, use the index from the date key
-      const currIndex = this.#getCurrIndexAndValues("date");
-      index = currIndex.index;
-      itemValues = currIndex.itemValues;
-      newIndex = this.#getNewIndex(itemValues, step, index);
-    }
-
-    const nextDate = itemValues[newIndex];
-    const isSameDay = dayjs(nextDate).isSame(
-      EOxTimeControl.selectedDateRange[0],
-      "day",
-    );
-    const startDate = isSameDay
-      ? dayjs(nextDate).utc().format()
-      : EOxTimeControl.showUTC
-        ? dayjs(nextDate).utc().startOf("day").format()
-        : dayjs(nextDate).startOf("day").utc().format();
-    const endDate = EOxTimeControl.showUTC
-      ? dayjs(nextDate).utc().endOf("day").format()
-      : dayjs(nextDate).endOf("day").utc().format();
-    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+    updateStepMethod(step, this);
   }
 
   /**
@@ -178,17 +123,20 @@ export class EOxTimeControlDate extends LitElement {
 
   /**
    * Lifecycle method called after the component's first update.
-   * Checks if a popup picker is present and sets the input mode accordingly.
+   * Enables editing when a timecontrol picker is present.
    */
   firstUpdated() {
     const EOxTimeControl = this.getEOxTimeControl();
     const EOxTimeControlPicker =
       /** @type {import("./timecontrol-picker.js").EOxTimeControlPicker} */ (
-        EOxTimeControl.querySelector("eox-timecontrol-picker")
+        EOxTimeControl?.querySelector("eox-timecontrol-picker")
       );
-    if (EOxTimeControlPicker && EOxTimeControlPicker.popup) {
-      this.#isInput = true;
+    if (EOxTimeControlPicker) {
+      this.editable = true;
       this.requestUpdate();
+    }
+    if (!this.#selectedDateRange && EOxTimeControl?.selectedDateRange) {
+      this.setDateRange(EOxTimeControl.selectedDateRange);
     }
   }
 
@@ -218,6 +166,31 @@ export class EOxTimeControlDate extends LitElement {
       : start.format(format) + " - " + end.format(format);
   }
 
+  /**
+   * Validates edited text when focus leaves the input or Enter is pressed
+   * @param {Event} event - Input event requesting a commit
+   * @returns {void}
+   */
+  #commitInput(event) {
+    commitInputMethod(
+      /** @type {HTMLInputElement} */ (event.currentTarget),
+      this.#selectedDateRange,
+      this.#getFormattedDate(this.#selectedDateRange, this.format),
+      this,
+    );
+  }
+
+  /**
+   * Commits on Enter while retaining focus and avoiding implicit form submission
+   * @param {KeyboardEvent} event - Input keydown event
+   * @returns {void}
+   */
+  #handleKeyDown(event) {
+    if (event.key !== "Enter" || event.isComposing) return;
+    event.preventDefault();
+    this.#commitInput(event);
+  }
+
   render() {
     return html`
       <style>
@@ -229,6 +202,7 @@ export class EOxTimeControlDate extends LitElement {
           <button
             part="previous"
             class="icon previous small circle transparent no-margin"
+            ?disabled=${getStepDateMethod(-1, this) === undefined}
             @click=${() => this.updateStep(-1)}
           >
             ${!this.unstyled
@@ -250,12 +224,15 @@ export class EOxTimeControlDate extends LitElement {
         ${when(this.#selectedDateRange, () => {
           return html`
             <input
-              readonly
-              class=${this.#isInput ? "input-field" : ""}
-              value=${this.#getFormattedDate(
-                this.#selectedDateRange,
-                this.format,
+              class=${this.editable ? "input-field" : ""}
+              ?disabled=${!this.editable}
+              .value=${live(
+                this.#getFormattedDate(this.#selectedDateRange, this.format),
               )}
+              aria-label="Selected date"
+              @blur=${this.#commitInput}
+              @keydown=${this.#handleKeyDown}
+              @change=${(event) => event.stopPropagation()}
               type="text"
               style="width: ${this.#getFormattedDate(
                 this.#selectedDateRange,
@@ -270,6 +247,7 @@ export class EOxTimeControlDate extends LitElement {
           <button
             part="next"
             class="icon next small circle transparent no-margin"
+            ?disabled=${getStepDateMethod(1, this) === undefined}
             @click=${() => this.updateStep(1)}
           >
             ${!this.unstyled

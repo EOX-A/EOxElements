@@ -1,15 +1,20 @@
 import { LitElement, html, render } from "lit";
+import { dispatchElementEvent, emitActivity } from "@eox/elements-utils";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import { styleTimelapse } from "../styles/style.timelapse.js";
-import { exportAnimation, snapshotGenerator } from "../helpers/index.js";
+import { snapshotGenerator } from "../helpers/index.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import dayjs from "dayjs";
 import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 import minMax from "dayjs/plugin/minMax";
-import { exportHandlerMethod } from "../methods/timelapse/";
+import {
+  exportHandlerMethod,
+  exportAnimationMethod,
+  updateExportStatusMethod,
+} from "../methods/timelapse/";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -32,7 +37,7 @@ export class EOxTimeControlTimelapse extends LitElement {
   /**
    * Defines the component's reactive properties.
    *
-   * @returns {Object} Property definitions.
+   * @returns {object} Property definitions.
    */
   static get properties() {
     return {
@@ -173,30 +178,14 @@ export class EOxTimeControlTimelapse extends LitElement {
    * Calls the exportAnimation helper function to generate the GIF or MP4 file.
    */
   export() {
+    if (this.#loading) return;
     this.#loading = true;
-    this.timelapseComponent
-      .querySelector(".export-btn i")
-      .classList.remove("export-icon");
-    this.timelapseComponent
-      .querySelector(".export-btn i")
-      .classList.add("export-icon-loading");
-    const setLoading = () => {
+    const started = exportAnimationMethod(this, () => {
       this.#loading = false;
-      this.timelapseComponent
-        .querySelector(".export-btn i")
-        .classList.add("export-icon");
-      this.timelapseComponent
-        .querySelector(".export-btn i")
-        .classList.remove("export-icon-loading");
       this.requestUpdate();
-    };
-    exportAnimation(
-      this.exportConfig.mapLayers,
-      this.format,
-      this.speed,
-      setLoading,
-      this,
-    );
+    });
+    if (!started) this.#loading = false;
+    this.requestUpdate();
   }
 
   /**
@@ -374,6 +363,12 @@ export class EOxTimeControlTimelapse extends LitElement {
                   <i class="icon export-icon"></i><span>Export</span>
                 </button>
               </div>
+              <div
+                class="timecontrol-export-status"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              ></div>
             </div>
           </div>
         `,
@@ -381,9 +376,11 @@ export class EOxTimeControlTimelapse extends LitElement {
       );
 
       document.body.appendChild(this.#timelapseComponent);
+      updateExportStatusMethod(this);
 
+      const dialog = this.#timelapseComponent;
       setTimeout(() => {
-        snapshotGenerator(this);
+        if (this.#timelapseComponent === dialog) snapshotGenerator(this);
       });
     }
     this.#loading = false;
@@ -421,6 +418,8 @@ export class EOxTimeControlTimelapse extends LitElement {
       element.classList.remove("pause-icon");
       this.exportConfig.play = false;
     }
+    const root = this.getEOxTimeControl() || this;
+    emitActivity(root, "toggle:play", { play: this.exportConfig.play });
     this.requestUpdate();
   }
 
@@ -432,16 +431,22 @@ export class EOxTimeControlTimelapse extends LitElement {
   handleExport() {
     const detail = exportHandlerMethod(this);
     if (detail) {
+      this.#loading = true;
+      this.requestUpdate();
+      const root = this.getEOxTimeControl() || this;
       if (this.getEOxTimeControl().externalMapRendering) {
-        this.dispatchEvent(
-          new CustomEvent("export", {
-            detail: {
-              ...detail,
-              generate: async (config) => await this.generateExport(config),
-            },
-          }),
-        );
+        dispatchElementEvent(this, "export", {
+          detail: {
+            ...detail,
+            generate: async (config) => await this.generateExport(config),
+          },
+          activity: false,
+        });
+        emitActivity(root, "export", detail);
       } else {
+        emitActivity(root, "export", {
+          selectedRangeItems: detail.selectedRangeItems,
+        });
         const mapLayers = [];
         for (const dateKey in detail.selectedRangeItems) {
           const date = detail.selectedRangeItems[dateKey];
@@ -464,8 +469,6 @@ export class EOxTimeControlTimelapse extends LitElement {
           mapLayers,
         });
       }
-      this.#loading = true;
-      this.requestUpdate();
     }
   }
 

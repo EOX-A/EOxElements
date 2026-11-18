@@ -4,7 +4,7 @@
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
-const discardDrawingMethod = (EoxDrawTool) => {
+const discardDrawingMethod = (EoxDrawTool, isUser = false) => {
   // Function to discard drawing interactions and features
   const discardDrawingActions = () => {
     // Reset drawnFeatures, deactivate drawing, and clear drawLayer's source
@@ -19,7 +19,7 @@ const discardDrawingMethod = (EoxDrawTool) => {
 
   // Function to trigger updates after discarding drawing
   const triggerUpdates = () => {
-    EoxDrawTool.emitDrawnFeatures();
+    EoxDrawTool.emitDrawnFeatures(isUser);
     EoxDrawTool.currentlyDrawing = false;
     EoxDrawTool.requestUpdate();
   };

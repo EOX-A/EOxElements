@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { emitActivity, findHost } from "@eox/elements-utils";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import eoxStyle from "@eox/ui/style.css?inline";
@@ -20,7 +21,7 @@ export class EOxLayerControlTabs extends LitElement {
     /**
      * List of action ids
      *
-     * @type {Array<String>}
+     * @type {Array<string>}
      */
     this.actions = [];
 
@@ -29,28 +30,28 @@ export class EOxLayerControlTabs extends LitElement {
     /**
      * List of tab ids
      *
-     * @type {Array<String>}
+     * @type {Array<string>}
      */
     this.tabs = [];
 
     /**
      * Render the element without additional styles
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.noShadow = false;
 
     /**
      * If enabled, the tools section will be rendered as list.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.toolsAsList = false;
   }
@@ -96,7 +97,12 @@ export class EOxLayerControlTabs extends LitElement {
                       (tab, index) => html`
                         <label
                           class=${this.#labelHighlightClass(index)}
-                          @click=${() => (this.selectedTab = index)}
+                          @click=${(/** @type {MouseEvent} */ e) => {
+                            this.selectedTab = index;
+                            const root =
+                              findHost(this, "eox-layercontrol") || this;
+                            emitActivity(root, "select:tool", { tool: tab }, e);
+                          }}
                         >
                           <!-- Customizable icon for each tab -->
                           <slot name=${`${tab}-icon`}>${tab}</slot>

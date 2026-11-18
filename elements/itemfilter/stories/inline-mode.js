@@ -4,7 +4,7 @@ import { html } from "lit";
 /**
  * Generates a story configuration for the InlineMode item filter.
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 function InlineModeStory() {
   return {

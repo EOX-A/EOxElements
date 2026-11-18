@@ -1,14 +1,13 @@
-import type MarkdownIt from "markdown-it";
+import type { MarkdownIt, StateCore } from "markdown-it";
 
 export interface CustomMarkdownIt extends MarkdownIt {
   attrs: { keys: Array<number>; sections: object };
   config: { version?: number; versionCheck: boolean };
   nav: Array<string>;
   sections: object;
+  showMapLoadingIndicator?: boolean;
 }
-export type CustomMarkdownItState = InstanceType<
-  MarkdownIt["core"]["State"]
-> & {
+export type CustomMarkdownItState = StateCore & {
   md: CustomMarkdownIt;
 };
 

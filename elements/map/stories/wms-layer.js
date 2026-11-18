@@ -1,7 +1,7 @@
 /**
  * Renders WMS layer using geo-server
  *
- * @returns {Object} The story configuration with arguments for the component.
+ * @returns {object} The story configuration with arguments for the component.
  */
 const WMSLayerStory = {
   args: {

@@ -1,4 +1,3 @@
-import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json";
 import POLARIS_STYLE from "./assets/polaris-style.json";
 
 const SENTINEL_HUB_URL =
@@ -13,10 +12,11 @@ const LAYER_EOX_CLOUDLESS = (year) => ({
   source: {
     type: "XYZ",
     url: S2MAP_URL(`s2cloudless-${year}_3857`),
+    attribution: `EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data ${year})`,
   },
 });
 
-export const STORIES_LAYERCONTROL_STYLE = "width: 240px;";
+export const STORIES_LAYERCONTROL_STYLE = "width: 350px;";
 
 export const STORIES_MAP_STYLE =
   "width: 400px; height: 300px; margin-left: 7px;";
@@ -62,7 +62,7 @@ export const STORIES_LAYER_S2 = {
   properties: {
     id: "s2",
     layerControlExclusive: true,
-    title: "s2",
+    title: "EOxCloudless 2024 Exploitation Ready",
   },
   style: {
     variables: {
@@ -85,9 +85,11 @@ export const STORIES_LAYER_S2 = {
   source: {
     type: "GeoTIFF",
     normalize: false,
+    attributions:
+      'EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noreferrer">https://cloudless.eox.at</a> by <a href="https://eox.at" target="_blank">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2024)',
     sources: [
       {
-        url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif",
+        url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/exploitation-ready-epsg-4326/exploitation-ready_eoxcloudless-sentinel-2-2024_zoom-1_4bands_16bit.tif",
       },
     ],
   },
@@ -292,10 +294,11 @@ export const STORIES_LAYER_CROPOMHUSC2 = {
   type: "Vector",
   source: {
     type: "Vector",
-    url:
-      "data:," +
-      encodeURIComponent(JSON.stringify(FEATURE_COLLECTION_LAYER_CROPOMHUSC)),
-    format: "GeoJSON",
+    url: "/cropomhusc.json",
+    format: {
+      type: "GeoJSON",
+      dataProjection: "EPSG:3035",
+    },
   },
   properties: {
     id: "id",
@@ -340,6 +343,7 @@ const LAYERCONFIG_LAYER_SEE = {
             maximum: 5,
             format: "range",
             default: 2,
+            step: 0.001,
           },
           vmax: {
             type: "number",
@@ -571,6 +575,122 @@ export const STORIES_LAYER_POLARIS = {
   },
 };
 
+export const STORIES_LAYER_JAXA_WMS = {
+  type: "Tile",
+  properties: {
+    id: "jaxa-wms-smc",
+    title: "JAXA WMS",
+    layerControlToolsExpand: true,
+    layerConfig: {
+      legend: {
+        domain: [0, 300, 600, 750, 900, 1200, 1500],
+        range: [
+          "#9f409f",
+          "#2187f9",
+          "#76f6ff",
+          "#99e599",
+          "#f6fc81",
+          "#ff8a7f",
+          "#8b0b0b",
+        ],
+        scaleType: "continuous",
+        tickFormat: ".0f",
+        title: "mgC/m²/day",
+      },
+      schema: {
+        type: "object",
+        properties: {
+          TIME: {
+            type: "string",
+            title: "Time",
+            enum: [
+              "2022-01-01T00:00:00.000Z",
+              "2022-02-01T00:00:00.000Z",
+              "2022-03-01T00:00:00.000Z",
+              "2022-04-01T00:00:00.000Z",
+              "2022-05-01T00:00:00.000Z",
+              "2022-06-01T00:00:00.000Z",
+            ],
+            default: "2022-01-01T00:00:00.000Z",
+          },
+        },
+      },
+    },
+  },
+  source: {
+    type: "TileWMS",
+    url: "https://gpwmap.jaxa.jp/wms",
+    params: {
+      LAYERS: "EODASH:SMC-GCOMW-World-Monthly",
+      TIME: "2022-01-01T00:00:00.000Z",
+    },
+  },
+};
+
+export const STORIES_LAYER_COPERNICUS_WMTS = {
+  type: "Tile",
+  properties: {
+    id: "copernicus-wmts",
+    title: "Copernicus Marine WMTS",
+    layerControlToolsExpand: true,
+    layerConfig: {
+      schema: {
+        type: "object",
+        properties: {
+          cmap: {
+            type: "string",
+            title: "Colormap",
+            enum: ["speed", "thermal", "ice"],
+            default: "speed",
+          },
+          vminmax: {
+            type: "object",
+            title: "Range",
+            properties: {
+              vmin: {
+                type: "number",
+                title: "Min",
+                default: 0,
+                format: "range",
+              },
+              vmax: {
+                type: "number",
+                title: "Max",
+                default: 24,
+                format: "range",
+              },
+            },
+            format: "minmax",
+          },
+          style: {
+            type: "string",
+            template:
+              "cmap:{{cmap}},vectorStyle:solidAndVector,range:{{vminmax.vmin}}/{{vminmax.vmax}}",
+            watch: {
+              cmap: "cmap",
+              vminmax: "vminmax",
+            },
+            options: { hidden: true },
+          },
+        },
+        options: {
+          removeProperties: ["cmap", "vminmax"],
+        },
+      },
+    },
+  },
+  source: {
+    type: "WMTSCapabilities",
+    url: "https://wmts.marine.copernicus.eu/teroWmts/WIND_GLO_PHY_CLIMATE_L4_MY_012_003/cmems_obs-wind_glo_phy_my_l4_P1M_202411?request=GetCapabilities&service=WMTS",
+    layer:
+      "WIND_GLO_PHY_CLIMATE_L4_MY_012_003/cmems_obs-wind_glo_phy_my_l4_P1M_202411/wind",
+    dimensions: {
+      elevation: 0,
+      style: "cmap:speed,vectorStyle:solidAndVector,range:0/24",
+    },
+  },
+};
+
 export const STORIES_LAYER_SEE = {
   type: "WebGLTile",
   style: STYLES_LAYER_SEE,
@@ -695,5 +815,62 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
       TILED: true,
       TIME: "2021-03-01T00:00:00Z",
     },
+  },
+};
+
+export const STORIES_LAYER_ESDL_DYNAMIC = {
+  type: "Tile",
+  properties: {
+    id: "esdl-dynamic",
+    title: "Dynamic Legends Layer",
+    layerControlExpand: true,
+    layerControlToolsExpand: true,
+    layerConfig: {
+      type: "tileUrl",
+      legend: {
+        title: "Dynamic Legend",
+        rangeProperty: "cbar",
+        domainProperties: ["vmin", "vmax"],
+        tickFormat: ".2f",
+      },
+      schema: {
+        type: "object",
+        properties: {
+          vminmax: {
+            title: "Range",
+            type: "object",
+            properties: {
+              vmin: {
+                type: "number",
+                minimum: 0,
+                maximum: 1,
+                step: 0.01,
+                format: "range",
+                default: 0,
+              },
+              vmax: {
+                type: "number",
+                minimum: 0,
+                maximum: 1,
+                step: 0.01,
+                format: "range",
+                default: 1,
+              },
+            },
+            format: "minmax",
+          },
+          cbar: {
+            title: "Colormap",
+            type: "string",
+            enum: ["magma", "viridis", "plasma", "plasma_r"],
+            default: "plasma_r",
+          },
+        },
+      },
+    },
+  },
+  source: {
+    type: "XYZ",
+    url: "https://api.earthsystemdatalab.net/api/tiles/hydrology/SM/{z}/{y}/{x}?crs=EPSG:3857&time=2022-06-15T00:00:00Z&vmin=0&vmax=1&cbar=plasma_r",
   },
 };

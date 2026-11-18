@@ -52,7 +52,7 @@ export class SpatialEditor extends AbstractEditor {
       );
 
     const drawtoolsEl =
-      /** @type {import("@eox/drawtools").EOxDrawTools & {disabled: Boolean}} */ (
+      /** @type {import("@eox/drawtools").EOxDrawTools & {disabled: boolean}} */ (
         document.createElement("eox-drawtools")
       );
 
@@ -278,6 +278,26 @@ export class SpatialEditor extends AbstractEditor {
       ),
     );
     this.container.appendChild(this.control);
+  }
+
+  setValue(value, initial) {
+    super.setValue(value, initial);
+    if (value && this.input && !isSelection(this.schema)) {
+      try {
+        const featureCollection = valueToFeatureCollection(value, this.schema);
+        if (featureCollection?.features?.length > 0) {
+          this.input.updateComplete.then(() => {
+            this.input.handleFeatureChange(
+              JSON.stringify(featureCollection),
+              true,
+              false,
+            );
+          });
+        }
+      } catch (err) {
+        console.warn("[eox-jsonform] failed to parse spatial value:", err);
+      }
+    }
   }
 
   refreshValue() {
