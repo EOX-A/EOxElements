@@ -10,3 +10,8 @@ export {
 } from "./wms-and-geozarr-pool.js";
 export { testGlobeLonLatExtent } from "./lonlat-extent.js";
 export { testGlobeLifecycle } from "./lifecycle.js";
+export {
+  testTranslateVectorStyle,
+  testGlobePointHighlight,
+  testGlobeVectorLayer,
+} from "./vector-style.js";
