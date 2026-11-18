@@ -9,10 +9,10 @@ const MapSyncStory = {
   args: {
     id: "a",
     controls: {
-          GlobeSwitcher: {},
-          Zoom: {},
-          Rotate: {},
-        },
+      GlobeSwitcher: {},
+      Zoom: {},
+      Rotate: {},
+    },
     layers: [
       {
         type: "Tile",
@@ -56,7 +56,11 @@ const MapSyncStory = {
       }
     </style>
     <div class="container">
-      <eox-map id=${args.id} .layers=${args.layers} .controls=${args.storyAdditionalComponents["eox-map"].controls}></eox-map>
+      <eox-map
+        id=${args.id}
+        .layers=${args.layers}
+        .controls=${args.storyAdditionalComponents["eox-map"].controls}
+      ></eox-map>
       <eox-map
         .controls=${args.storyAdditionalComponents["eox-map"].controls}
         id=${args.storyAdditionalComponents["eox-map"].id}
