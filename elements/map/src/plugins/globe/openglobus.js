@@ -14,7 +14,16 @@ import {
   Extent as OgExtent,
   Quat,
 } from "@openglobus/og";
-import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
+import { asArray } from "ol/color.js";
+import { getFontParameters } from "ol/css.js";
+import Icon from "ol/style/Icon.js";
+import GeoJSON from "ol/format/GeoJSON.js";
+import {
+  OG_FONTS_SRC,
+  LABEL_ALIGN,
+  TRANSPARENT,
+  OG_GEOMETRY_TYPES,
+} from "../../enums/index.js";
 import { distributeTileToIdealMap } from "./methods.js";
 import { transform } from "../../helpers/index.js";
 import OSM from "ol/source/OSM.js";
@@ -26,7 +35,6 @@ import BaseTileLayer from "ol/layer/BaseTile.js";
 import { get as getProjection, equivalent } from "ol/proj";
 import FullScreen from "ol/control/FullScreen";
 import { unByKey } from "ol/Observable";
-import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
 import { translateOLColorExpression } from "./colorScale.js";
 import { disposeGlobeSynchronization } from "./lifecycle.js";
@@ -40,48 +48,208 @@ import {
 
 let globus;
 
+/** The OL feature behind each globe entity, to highlight and select it. */
+export const entityFeatures = new WeakMap();
+
+/** All features of a globe vector layer, also those a style hides, to rebuild on style changes. */
+const layerFeatures = new WeakMap();
+
+/** @type {WeakMap<import("ol/DataTile").ImageLike, string>} */
+const imageDataURLs = new WeakMap();
+
 /**
- * Translates an OpenLayers style object, which may contain expressions,
- * into a simple style object for OpenGlobus based on feature properties.
+ * Creates the og entities of an OL feature in EPSG:4326; og draws points only as billboards.
  *
- * @param {import("ol/style/flat.js").FlatStyle & Record<string, any>} olStyle The OpenLayers style object.
- * @param {Record<string, any>} properties The properties of the feature.
- * @returns {Record<string, any>} The resolved OpenGlobus style.
+ * @param {import("ol/Feature").default} feature - OL feature in EPSG:4326.
+ * @param {import("ol/style/Style").StyleFunction} styleFunction - The layer's style function.
+ * @returns {Entity[]} One entity per point, or one per line/polygon; none when nothing is styled.
  */
-export function translateOLStyleExpressions(olStyle, properties) {
-  const ogStyle = {};
-  const parsingContext = newParsingContext();
-  const evaluationContext = newEvaluationContext();
-  evaluationContext.properties = properties || {};
+export function createGlobeEntities(feature, styleFunction) {
+  const { geometry, billboard, label } = translateOLStyleExpressions(
+    styleFunction,
+    feature,
+  );
+  const olGeometry = /** @type {import("ol/geom/SimpleGeometry").default} */ (
+    feature.getGeometry()
+  );
+  const type = olGeometry.getType();
+  const properties = { ...feature.getProperties() };
+  delete properties[feature.getGeometryName()];
 
-  const styleKeys = {
-    fillColor: "fill-color",
-    lineColor: "stroke-color",
-    strokeColor: "stroke-color",
-    lineWidth: "stroke-width",
-    strokeWidth: "stroke-width",
-  };
-
-  for (const [ogKey, olKey] of Object.entries(styleKeys)) {
-    const styleValue = olStyle[olKey];
-    if (styleValue !== undefined) {
-      if (Array.isArray(styleValue)) {
-        // It's an expression
-        try {
-          // The expected type for color is string, number for width.
-          // We can use a broad expected type and let the expression parser figure it out.
-          const expression = buildExpression(styleValue, 7, parsingContext); // 7 is AnyType
-          ogStyle[ogKey] = expression(evaluationContext);
-        } catch (e) {
-          console.error(`Error evaluating style expression for ${olKey}:`, e);
-        }
-      } else {
-        // It's a literal value.
-        ogStyle[ogKey] = styleValue;
-      }
+  /** @type {Entity[]} */
+  let entities = [];
+  if (type === "Point" || type === "MultiPoint") {
+    const points =
+      type === "Point"
+        ? [olGeometry.getCoordinates()]
+        : olGeometry.getCoordinates();
+    if (billboard || label) {
+      entities = points.map(
+        (lonlat) => new Entity({ lonlat, billboard, label, properties }),
+      );
     }
+  } else if (OG_GEOMETRY_TYPES[type] && (geometry || label)) {
+    entities = [
+      new Entity({
+        properties,
+        geometry: {
+          type: OG_GEOMETRY_TYPES[type],
+          coordinates: olGeometry.getCoordinates(),
+          style: {
+            fillColor: geometry?.fillColor ?? TRANSPARENT,
+            lineColor: geometry?.lineColor ?? TRANSPARENT,
+            lineWidth: geometry?.lineWidth,
+          },
+        },
+        ...(label && { lonlat: labelPoint(olGeometry), label }),
+      }),
+    ];
+  }
+  entities.forEach((entity) => entityFeatures.set(entity, feature));
+  return entities;
+}
+
+/**
+ * Translates the style OL resolves for a feature, as in 2D, into OpenGlobus entity options.
+ *
+ * @param {import("ol/style/Style").StyleFunction} styleFunction - The layer's or select interaction's style function.
+ * @param {import("ol/Feature").default} feature - The feature to style.
+ * @returns {import("./types").GlobeEntityStyle} The geometry, billboard and label options.
+ */
+export function translateOLStyleExpressions(styleFunction, feature) {
+  /** @type {import("./types").GlobeEntityStyle} */
+  const ogStyle = {};
+  // Later styles are drawn on top in 2D, so their defined values win.
+  for (const style of [].concat(styleFunction?.(feature, 1) ?? [])) {
+    const geometry = geometryOptions(style);
+    const billboard = billboardOptions(style.getImage());
+    const label = labelOptions(style.getText());
+    if (geometry) ogStyle.geometry = { ...ogStyle.geometry, ...geometry };
+    if (billboard) ogStyle.billboard = billboard;
+    if (label) ogStyle.label = label;
   }
   return ogStyle;
+}
+
+/**
+ * Reads the og geometry style from the fill and stroke of an OL style.
+ *
+ * @param {import("ol/style/Style").default} style - Resolved OL style.
+ * @returns {import("./types").GlobeEntityStyle["geometry"]} The geometry style, if the style has a fill or stroke.
+ */
+function geometryOptions(style) {
+  const fill = style.getFill();
+  const stroke = style.getStroke();
+  if (!fill && !stroke) return undefined;
+  const width = stroke?.getWidth() ?? 1;
+  // Only set keys, so merged styles keep earlier fills or strokes.
+  return {
+    ...(fill && { fillColor: normalizeColor(fill.getColor()) }),
+    ...(stroke && {
+      // og draws width 0 as 3, so hide the line by its colour.
+      lineColor: normalizeColor(width ? stroke.getColor() : undefined),
+      lineWidth: width,
+    }),
+  };
+}
+
+/**
+ * Reads og billboard options from an OL image style (icon, circle or shape).
+ *
+ * @param {import("ol/style/Image").default | null} image - Resolved OL image style.
+ * @returns {import("./types").GlobeEntityStyle["billboard"]} The billboard options, if the style has an image.
+ */
+function billboardOptions(image) {
+  if (!image) return undefined;
+  const tint = image instanceof Icon && image.getColor();
+  const [r, g, b, a] = tint ? normalizeColor(tint) : [1, 1, 1, 1];
+  return {
+    // og only loads images by src, so circles and shapes become data URLs.
+    src:
+      image instanceof Icon ? image.getSrc() : imageDataURL(image.getImage(1)),
+    // og keeps the first image size, so give it when the image changes.
+    size: /** @type {[number, number]} */ (image.getSize() ?? undefined),
+    scale: image.getScaleArray()[0],
+    offset: /** @type {[number, number]} */ (image.getDisplacement()),
+    rotation: image.getRotation(),
+    color: [r, g, b, a * image.getOpacity()],
+  };
+}
+
+/**
+ * Reads og label options from an OL text style.
+ *
+ * @param {import("ol/style/Text").default | null} text - Resolved OL text style.
+ * @returns {import("./types").GlobeEntityStyle["label"]} The label options, if the style has a text.
+ */
+function labelOptions(text) {
+  if (!text?.getText()) return undefined;
+  const font = getFontParameters(text.getFont() ?? "10px sans-serif");
+  const value = text.getText();
+  return {
+    // Rich text alternates text and font.
+    text: Array.isArray(value)
+      ? value.filter((_, i) => i % 2 === 0).join("")
+      : value,
+    size: (parseFloat(font?.size) || 10) * text.getScaleArray()[0],
+    color: normalizeColor(text.getFill()?.getColor()),
+    outline: text.getStroke()?.getWidth(),
+    outlineColor:
+      text.getStroke() && normalizeColor(text.getStroke().getColor()),
+    align: LABEL_ALIGN[text.getTextAlign()] ?? "center",
+    // og offsets point up, OL offsets point down.
+    offset: [text.getOffsetX(), -text.getOffsetY()],
+    rotation: text.getRotation(),
+  };
+}
+
+/**
+ * Copies an OL symbol image to a data URL; OL may hold it as an ImageBitmap, which has no `toDataURL`.
+ *
+ * @param {import("ol/DataTile").ImageLike} image - OL symbol image.
+ * @returns {string} The PNG data URL.
+ */
+function imageDataURL(image) {
+  // OL reuses one image per symbol style, so encode it once.
+  if (!imageDataURLs.has(image)) {
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    canvas.getContext("2d").drawImage(image, 0, 0);
+    imageDataURLs.set(image, canvas.toDataURL());
+  }
+  return imageDataURLs.get(image);
+}
+
+/**
+ * Where OL places a label on a line or polygon.
+ *
+ * @param {any} geometry - OL line or polygon geometry.
+ * @returns {[number, number]} The label lon/lat.
+ */
+function labelPoint(geometry) {
+  switch (geometry.getType()) {
+    case "Polygon":
+      return geometry.getInteriorPoint().getCoordinates().slice(0, 2);
+    case "MultiPolygon":
+      return geometry.getInteriorPoints().getCoordinates()[0].slice(0, 2);
+    case "LineString":
+      return geometry.getCoordinateAt(0.5);
+    default:
+      return geometry.getLineString(0).getCoordinateAt(0.5);
+  }
+}
+
+/**
+ * Normalizes an OL colour to RGBA in 0..1; og parses neither 8-digit hex nor 0-255 arrays.
+ *
+ * @param {any} color - OL colour, colour-like or pattern.
+ * @returns {import("./types").RGBA} The RGBA colour, transparent for missing colours and patterns.
+ */
+function normalizeColor(color) {
+  if (typeof color !== "string" && !Array.isArray(color)) return [0, 0, 0, 0];
+  const [r, g, b, a = 1] = asArray(color);
+  return [r / 255, g / 255, b / 255, a];
 }
 
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
@@ -98,8 +266,7 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
       ? new GlobusRgbTerrain()
       : new EmptyTerrain(), // Use EOxMap's globeConfig.terrain property
     resourcesSrc: "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res",
-    fontsSrc:
-      "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res/fonts",
+    fontsSrc: OG_FONTS_SRC,
   });
   let currZoom = EOxMap.map.getView().getZoom() - 1;
   if (!EOxMap.globeConfig?.useHighLOD) {
@@ -300,6 +467,20 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
           (projection && equivalent(projection, getProjection("EPSG:4326"))) ||
           !crs
         ) {
+          const format = new GeoJSON();
+          const features = data.features
+            .filter((feature) => feature.geometry)
+            .map(
+              (feature) =>
+                /** @type {import("ol/Feature").default} */ (
+                  format.readFeature(feature)
+                ),
+            );
+          // Built before the swap, so a style error keeps the CanvasTiles fallback.
+          const entities = features.flatMap((feature) =>
+            createGlobeEntities(feature, olLayer.getStyleFunction()),
+          );
+
           // remove existing layer with same id if any
           const existingLayer = globus.planet.getLayerByName(id);
           if (existingLayer) {
@@ -311,31 +492,13 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
             opacity: olLayer.getOpacity(),
             isBaseLayer: olLayer.get("base"),
           });
+          layerFeatures.set(vectorLayer, features);
 
           vectorLayer.addTo(globus.planet);
           // the vector layer is added asynchronously, so re-apply the OL order
           syncGlobeLayerOrder(EOxMap, globus);
           attachGlobeSelect(EOxMap, olLayer, vectorLayer);
-          const olStyle = olLayer.getStyle();
-
-          var f = data.features;
-          for (let i = 0; i < f.length; i++) {
-            var fi = f[i];
-            const vectorStyle = translateOLStyleExpressions(
-              olStyle,
-              fi.properties,
-            );
-            vectorLayer.add(
-              new Entity({
-                properties: fi.properties,
-                geometry: {
-                  type: fi.geometry.type,
-                  coordinates: fi.geometry.coordinates,
-                  style: vectorStyle,
-                },
-              }),
-            );
-          }
+          vectorLayer.addEntities(entities);
           return vectorLayer;
         } else {
           return undefined;
@@ -800,6 +963,25 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
     }
   });
 
+  const vectorLayer = /** @type {import("ol/layer/Vector").default} */ (
+    /** @type {unknown} */ (olLayer)
+  );
+  let builtStyle = vectorLayer.getStyle?.();
+  // `change` also fires on source edits, so rebuild only for a new style.
+  const styleKey = olLayer.on("change", () => {
+    const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
+    const style = vectorLayer.getStyle?.();
+    if (disposed || style === builtStyle || !(globusLayer instanceof Vector)) {
+      return;
+    }
+    builtStyle = style;
+    globusLayer.setEntities(
+      (layerFeatures.get(globusLayer) ?? []).flatMap((feature) =>
+        createGlobeEntities(feature, vectorLayer.getStyleFunction()),
+      ),
+    );
+  });
+
   const propertyKey = olLayer.on("propertychange", ({ key }) => {
     if (disposed) return;
     const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
@@ -826,7 +1008,7 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
   return () => {
     if (disposed) return;
     disposed = true;
-    unByKey([changeKey, propertyKey]);
+    unByKey([changeKey, styleKey, propertyKey]);
     debouncedRefresh.cancel();
     animationTimers.forEach((timeout, layer) => {
       clearTimeout(timeout);

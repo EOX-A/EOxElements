@@ -11,6 +11,9 @@ import {
   testGlobeFlyPitch,
   testGlobeLonLatExtent,
   testGlobeLifecycle,
+  testTranslateVectorStyle,
+  testGlobePointHighlight,
+  testGlobeVectorLayer,
 } from "./cases/globe";
 
 /**
@@ -99,4 +102,13 @@ describe("globe", () => {
     ));
 
   it("destroys the globe when leaving globe mode", () => testGlobeLifecycle());
+
+  it("translates OL vector styles to globe entities", () =>
+    testTranslateVectorStyle());
+
+  it("swaps the billboard of a highlighted point", () =>
+    testGlobePointHighlight());
+
+  it("renders, restyles and selects GeoJSON vectors on the globe", () =>
+    testGlobeVectorLayer());
 });
