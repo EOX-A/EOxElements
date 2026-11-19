@@ -11,6 +11,7 @@ import {
   testGlobeFlyPitch,
   testGlobeZoomExtent,
   testGlobeViewSwap,
+  testGlobeViewTilt,
 } from "./cases/globe";
 
 /**
@@ -62,4 +63,7 @@ describe("globe", () => {
 
   it("keeps globe maps synced after their map views are shared", () =>
     testGlobeViewSwap());
+
+  it("keeps the globe tilt and heading on map view changes", () =>
+    testGlobeViewTilt());
 });

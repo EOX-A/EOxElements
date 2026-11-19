@@ -109,6 +109,8 @@ export const setupGlobeSync = (EOxMap, globus) => {
     EOxMap._isSyncing = true;
     map.getView().setCenter(center);
     map.getView().setZoom(zoom);
+    // OL has no tilt; synced globes read it from the shared view.
+    map.getView().set("pitch", cam.getPitch());
     if (!Number.isNaN(rotation) && rotation !== map.getView().getRotation()) {
       map.getView().setRotation(rotation);
     }
@@ -150,6 +152,30 @@ export const setupGlobeSync = (EOxMap, globus) => {
       new LonLat(lonLatCenter[0], lonLatCenter[1], 0),
       Vec3.NORTH,
     );
+
+    const pitch = view.get("pitch");
+    const rotation = view.getRotation();
+    if (pitch !== undefined || rotation) {
+      // Keep the shared tilt and heading, looking at the view center.
+      const { camera, ellipsoid } = globus.planet;
+      const target = ellipsoid.lonLatToCartesian(
+        new LonLat(lonLatCenter[0], lonLatCenter[1], 0),
+      );
+      const tilt = pitch ?? -Math.PI / 2;
+      const orientation = new Quat().setPitchYawRoll(
+        tilt,
+        -rotation,
+        0,
+        globus.planet.getFrameRotation(target),
+      );
+      // onGlobeMove reads the zoom from the eye altitude, so keep that altitude.
+      const distance = groundHeight / Math.max(Math.sin(-tilt), 0.1);
+      const eye = target.add(
+        orientation.mulVec3(new Vec3(0, 0, 1)).scaleTo(distance),
+      );
+      camera.set(eye, target, orientation.mulVec3(new Vec3(0, 1, 0)));
+      camera.update();
+    }
 
     EOxMap._isSyncing = false;
   };
@@ -205,6 +231,7 @@ export const setupGlobeSync = (EOxMap, globus) => {
     "change:center",
     "change:resolution",
     "change:rotation",
+    "change:pitch",
   ];
   let currentView = map.getView();
   const attachViewListeners = (view) => {
