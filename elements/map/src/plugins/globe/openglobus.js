@@ -281,8 +281,9 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
         return r.json();
       })
       .then((data) => {
-        // The source or the layer was replaced while fetching.
+        // The source or the layer was replaced, or globe mode left, while fetching.
         if (
+          !globus ||
           olLayer.getSource() !== source ||
           !EOxMap.map.getAllLayers().includes(olLayer)
         )
@@ -708,6 +709,9 @@ export const disableGlobe = (map) => {
           /** @type {HTMLElement} */ (mapElement).style.display = ""; // Show the map
         }
         map.globeEnabled = false;
+        // og is mid-frame here; destroy once that frame has finished.
+        queueMicrotask(() => globe.destroy());
+        if (globus === globe) globus = undefined;
       },
     });
   }
