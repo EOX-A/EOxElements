@@ -2,7 +2,7 @@ import BingMaps from "ol/source/BingMaps";
 import CartoDB from "ol/source/CartoDB";
 import DataTile from "ol/source/DataTile";
 import GeoTIFF from "ol/source/GeoTIFF";
-import GeoZarr from "ol/source/GeoZarr";
+import GeoZarr from "../../custom/sources/GeoZarr.js";
 import Google from "ol/source/Google";
 import IIIF from "ol/source/IIIF";
 import Image from "ol/source/Image";
