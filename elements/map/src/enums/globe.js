@@ -20,6 +20,53 @@ export const LABEL_ALIGN = Object.freeze({
 /** @type {import("../plugins/globe/types").RGBA} */
 export const TRANSPARENT = [0, 0, 0, 0];
 
+// Stroke colour of OL's default style
+export const DEFAULT_STROKE_COLOR = "#3399CC";
+
+// og paints non-finite expression results, so hidden pixels get a finite value below the display range.
+export const HIDDEN_PIXEL_VALUE = -1e30;
+export const VISIBLE_PIXEL_RANGE = Object.freeze([-1e29, Infinity]);
+
+// OL GeoTIFF alpha band value for valid pixels; og has no alpha band.
+export const OL_ALPHA_VALID = 255;
+
+/** OL operators and their JS equivalent in og's per-pixel expression. */
+export const OL_INFIX_OPERATORS = Object.freeze({
+  "+": "+",
+  "-": "-",
+  "*": "*",
+  "/": "/",
+  "%": "%",
+  "^": "**",
+  "==": "===",
+  "!=": "!==",
+  ">": ">",
+  ">=": ">=",
+  "<": "<",
+  "<=": "<=",
+  all: "&&",
+  any: "||",
+});
+export const OL_MATH_FUNCTIONS = Object.freeze([
+  "abs",
+  "floor",
+  "ceil",
+  "round",
+  "sqrt",
+  "sin",
+  "cos",
+  "atan",
+]);
+
+// WebGLTile style keys og GeoTIFF render options can't express.
+export const OL_RASTER_ADJUSTMENTS = Object.freeze([
+  "gamma",
+  "contrast",
+  "saturation",
+  "exposure",
+  "brightness",
+]);
+
 /** OL geometry types og draws as geometries; points become billboards. */
 export const OG_GEOMETRY_TYPES = Object.freeze({
   Polygon: "POLYGON",
