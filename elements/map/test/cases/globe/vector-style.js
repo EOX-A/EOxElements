@@ -4,6 +4,7 @@ import Feature from "ol/Feature.js";
 import VectorLayer from "ol/layer/Vector.js";
 import Point from "ol/geom/Point.js";
 import Polygon from "ol/geom/Polygon.js";
+import { fromLonLat } from "ol/proj.js";
 import { translateOLStyleExpressions } from "../../../src/plugins/globe/openglobus.js";
 import {
   highlightGlobeEntity,
@@ -287,4 +288,51 @@ export const testGlobeVectorLayer = () => {
     $el[0].map.getAllLayers()[0].setStyle(symbolRules);
   });
   cy.get("eox-map").should(($el) => expect(entities($el[0])).to.have.length(3));
+};
+
+/**
+ * Tests that GeoJSON in another projection, declared by its `crs` member, is
+ * reprojected and rendered on the globe.
+ */
+export const testGlobeVectorProjection = () => {
+  cy.intercept("**/globe-vector-3857.json", {
+    body: {
+      type: "FeatureCollection",
+      crs: { type: "name", properties: { name: "urn:ogc:def:crs:EPSG::3857" } },
+      features: [
+        {
+          type: "Feature",
+          properties: {},
+          geometry: { type: "Point", coordinates: fromLonLat([16, 48]) },
+        },
+      ],
+    },
+  });
+  cy.mount(
+    html`<eox-map
+      .layers=${[
+        {
+          type: "Vector",
+          properties: { id: "projected" },
+          source: {
+            type: "Vector",
+            url: "/globe-vector-3857.json",
+            format: "GeoJSON",
+          },
+          style: { "circle-radius": 6, "circle-fill-color": "red" },
+        },
+      ]}
+      .projection=${"globe"}
+    ></eox-map>`,
+  );
+
+  cy.get("eox-map").should(($el) => {
+    const layer = /** @type {any} */ ($el[0]).globe?.planet.getLayerByName(
+      "projected",
+    );
+    const [entity] = layer?.getEntities?.() || [];
+    expect(entity, "point entity").to.exist;
+    expect(entity.getLonLat().lon).to.be.closeTo(16, 1e-6);
+    expect(entity.getLonLat().lat).to.be.closeTo(48, 1e-6);
+  });
 };

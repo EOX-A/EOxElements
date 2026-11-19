@@ -15,6 +15,7 @@ import {
   testTranslateVectorStyle,
   testGlobePointHighlight,
   testGlobeVectorLayer,
+  testGlobeVectorProjection,
 } from "./cases/globe";
 
 /**
@@ -118,4 +119,7 @@ describe("globe", () => {
 
   it("renders, restyles and selects GeoJSON vectors on the globe", () =>
     testGlobeVectorLayer());
+
+  it("reprojects GeoJSON vectors with a crs onto the globe", () =>
+    testGlobeVectorProjection());
 });
