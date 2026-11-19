@@ -112,13 +112,13 @@ export const testGeoTIFFRenderOptions = () => {
     [10, 200, 30],
   );
 
-  // og reads class values unblended where OL does.
-  expect(
-    getGeoTIFFRenderOptions(layerWith({ style: alphaMasked(255) })),
-  ).to.have.property("resampleMethod", "nearest");
+  // og samples like OL: blended where OL interpolates, og's nearest default otherwise.
   expect(
     getGeoTIFFRenderOptions(
       layerWith({ interpolate: true, style: alphaMasked(255) }),
     ),
+  ).to.have.property("resampleMethod", "bilinear");
+  expect(
+    getGeoTIFFRenderOptions(layerWith({ style: alphaMasked(255) })),
   ).not.to.have.property("resampleMethod");
 };

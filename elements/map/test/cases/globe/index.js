@@ -13,7 +13,7 @@ export { testGlobeLonLatExtent } from "./lonlat-extent.js";
 export { testGlobeLifecycle } from "./lifecycle.js";
 export {
   testTranslateVectorStyle,
-  testGlobePointHighlight,
+  testGlobeVectorRestyle,
   testGlobeVectorLayer,
   testGlobeVectorProjection,
 } from "./vector-style.js";

@@ -14,7 +14,7 @@ import {
   testGlobeLonLatExtent,
   testGlobeLifecycle,
   testTranslateVectorStyle,
-  testGlobePointHighlight,
+  testGlobeVectorRestyle,
   testGlobeVectorLayer,
   testGlobeVectorProjection,
 } from "./cases/globe";
@@ -118,8 +118,8 @@ describe("globe", () => {
   it("translates OL vector styles to globe entities", () =>
     testTranslateVectorStyle());
 
-  it("swaps the billboard of a highlighted point", () =>
-    testGlobePointHighlight());
+  it("restyles globe vectors in place, including highlighted ones", () =>
+    testGlobeVectorRestyle());
 
   it("renders, restyles and selects GeoJSON vectors on the globe", () =>
     testGlobeVectorLayer());

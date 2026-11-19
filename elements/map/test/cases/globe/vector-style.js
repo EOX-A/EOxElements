@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { Entity } from "@openglobus/og";
+import { Vector } from "@openglobus/og";
 import Feature from "ol/Feature.js";
 import VectorLayer from "ol/layer/Vector.js";
 import Point from "ol/geom/Point.js";
@@ -114,27 +114,146 @@ export const testTranslateVectorStyle = () => {
 };
 
 /**
- * Tests that a highlighted point swaps its billboard image and gets it back on reset.
+ * Tests that `setStyle` on a globe vector layer updates what the globe draws:
+ * polygons, icons and labels follow every style change, a new icon gets its own
+ * size, a new icon scale shows, and a highlighted feature stays highlighted.
  */
-export const testGlobePointHighlight = () => {
-  const { billboard } = translate(
-    { "circle-radius": 6, "circle-fill-color": "red" },
-    {},
-    point,
-  );
-  const entity = /** @type {any} */ (
-    new Entity({ lonlat: [0, 0], billboard, properties: {} })
-  );
-
-  highlightGlobeEntity(entity, {
-    "circle-radius": 10,
-    "circle-fill-color": "blue",
+export const testGlobeVectorRestyle = () => {
+  /** @param {number} size */
+  const icon = (size) =>
+    `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}'/>`;
+  /**
+   * One style for both features; the icon also reaches the polygon's style.
+   *
+   * @param {{ fill: string, rotation?: number, outline?: number, align?: string, size?: number, scale?: number }} options
+   */
+  const style = ({
+    fill,
+    rotation = 0,
+    outline = 1,
+    align = "left",
+    size = 8,
+    scale = 1,
+  }) => ({
+    "fill-color": fill,
+    "icon-src": icon(size),
+    "icon-rotation": rotation,
+    "icon-displacement": [rotation * 10, 0],
+    "icon-scale": scale,
+    "text-value": "P",
+    "text-stroke-color": "white",
+    "text-stroke-width": outline,
+    "text-align": align,
+    "text-offset-x": outline,
   });
-  expect(entity.billboard.getSrc()).to.match(/^data:image\/png/);
-  expect(entity.billboard.getSrc()).not.to.equal(billboard.src);
+  cy.intercept("**/globe-restyle.json", {
+    body: {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: {},
+          geometry: { type: "Point", coordinates: [16, 48] },
+        },
+        {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "Polygon",
+            coordinates: [
+              [
+                [10, 46],
+                [17, 46],
+                [17, 49],
+                [10, 46],
+              ],
+            ],
+          },
+        },
+      ],
+    },
+  });
+  cy.mount(
+    html`<eox-map
+      .layers=${[
+        {
+          type: "Vector",
+          properties: { id: "restyle" },
+          source: {
+            type: "Vector",
+            url: "/globe-restyle.json",
+            format: "GeoJSON",
+          },
+          style: style({ fill: "red" }),
+        },
+      ]}
+      .projection=${"globe"}
+    ></eox-map>`,
+  );
 
-  resetGlobeEntity(entity);
-  expect(entity.billboard.getSrc()).to.equal(billboard.src);
+  /** @param {any} eoxMap */
+  const entities = (eoxMap) =>
+    eoxMap.globe?.planet.getLayerByName("restyle")?.getEntities?.() || [];
+  /** @param {any} eoxMap */
+  const area = (eoxMap) => entities(eoxMap).find((e) => e.geometry);
+  /** @param {any} eoxMap */
+  const place = (eoxMap) => entities(eoxMap).find((e) => !e.geometry);
+  /** @param {any} entity - og exposes no fill colour getter. */
+  const fillOf = (entity) => entity.geometry._style.fillColor.toArray();
+  /** @param {any} style - OL flat style. */
+  const setStyle = (style) =>
+    cy.get("eox-map").then(($el) => $el[0].map.getAllLayers()[0].setStyle(style));
+
+  cy.get("eox-map").should(($el) => expect(entities($el[0])).to.have.length(2));
+
+  // Polygon, icon and label follow the new style; the polygon isn't rebuilt
+  // although the style also has an icon.
+  /** @type {any} */
+  let redArea;
+  cy.get("eox-map").then(($el) => (redArea = area($el[0])));
+  setStyle(style({ fill: "blue", rotation: 1, outline: 3, align: "right" }));
+  cy.get("eox-map").should(($el) => {
+    expect(area($el[0]), "same polygon").to.equal(redArea);
+    expectColor(fillOf(area($el[0])), [0, 0, 1, 1]);
+    const { billboard, label } = place($el[0]);
+    expect(billboard.getRotation()).to.be.closeTo(1, 1e-6);
+    expect(billboard.getOffset().x).to.equal(10);
+    expect(label.getOutline()).to.equal(3);
+    expect(label.getAlign()).to.equal("right");
+    expect(label.getOffset().x).to.equal(3);
+  });
+
+  // A different icon is drawn at its own size, not the previous icon's.
+  setStyle(style({ fill: "blue", size: 16 }));
+  cy.get("eox-map").should(($el) =>
+    expect(place($el[0]).billboard.getWidth()).to.equal(16),
+  );
+
+  // A new icon scale shows.
+  setStyle(style({ fill: "blue", size: 16, scale: 2 }));
+  cy.get("eox-map").should(($el) =>
+    expect(place($el[0]).billboard.getScale()).to.equal(2),
+  );
+
+  // Highlighted features stay highlighted and go back to the new style.
+  const highlight = { "fill-color": "yellow", "circle-radius": 10 };
+  cy.get("eox-map").then(($el) => {
+    highlightGlobeEntity(area($el[0]), highlight);
+    highlightGlobeEntity(place($el[0]), highlight);
+  });
+  setStyle(style({ fill: "green" }));
+  cy.get("eox-map").should(($el) => {
+    expectColor(fillOf(area($el[0])), [1, 1, 0, 1]);
+    expect(place($el[0]).billboard.getSrc()).to.match(/^data:image\/png/);
+  });
+  cy.get("eox-map").then(($el) => {
+    resetGlobeEntity(area($el[0]));
+    resetGlobeEntity(place($el[0]));
+  });
+  cy.get("eox-map").should(($el) => {
+    expectColor(fillOf(area($el[0])), [0, 0.5, 0, 1]);
+    expect(place($el[0]).billboard.getSrc()).to.equal(icon(8));
+  });
 };
 
 /**
@@ -222,6 +341,10 @@ export const testGlobeVectorLayer = () => {
   /** @type {any} */
   let originalStyle;
   cy.get("eox-map").then(($el) => {
+    // Precondition: the GeoJSON is still loading.
+    expect(
+      /** @type {any} */ ($el[0]).globe?.planet.getLayerByName("vectors"),
+    ).not.to.be.instanceOf(Vector);
     const layer = $el[0].map.getAllLayers()[0];
     originalStyle = layer.getStyleFunction();
     layer.setStyle({ "fill-color": "red" });
@@ -272,19 +395,17 @@ export const testGlobeVectorLayer = () => {
     );
   });
 
-  // The same style object, changed and set again, restyles the same entity in place.
-  /** @type {any} */
-  let redPolygon;
+  // The same style object, changed and set again, also updates the globe.
   cy.get("eox-map").then(($el) => {
-    redPolygon = polygonEntity(entities($el[0]));
     fillStyle["fill-color"] = "blue";
     $el[0].map.getAllLayers()[0].setStyle(fillStyle);
   });
-  cy.get("eox-map").should(($el) => {
-    const polygon = polygonEntity(entities($el[0]));
-    expect(polygon, "same entity, not rebuilt").to.equal(redPolygon);
-    expectColor(polygon.geometry._style.fillColor.toArray(), [0, 0, 1, 1]);
-  });
+  cy.get("eox-map").should(($el) =>
+    expectColor(
+      polygonEntity(entities($el[0])).geometry._style.fillColor.toArray(),
+      [0, 0, 1, 1],
+    ),
+  );
 
   cy.get("eox-map").then(($el) => {
     $el[0].map.getAllLayers()[0].setStyle(symbolRules);
