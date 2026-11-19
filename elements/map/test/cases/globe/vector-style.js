@@ -141,6 +141,7 @@ export const testGlobeVectorRestyle = () => {
     "icon-displacement": [rotation * 10, 0],
     "icon-scale": scale,
     "text-value": "P",
+    "text-rotation": rotation,
     "text-stroke-color": "white",
     "text-stroke-width": outline,
     "text-align": align,
@@ -218,6 +219,7 @@ export const testGlobeVectorRestyle = () => {
     const { billboard, label } = place($el[0]);
     expect(billboard.getRotation()).to.be.closeTo(1, 1e-6);
     expect(billboard.getOffset().x).to.equal(10);
+    expect(label.getRotation()).to.be.closeTo(1, 1e-6);
     expect(label.getOutline()).to.equal(3);
     expect(label.getAlign()).to.equal("right");
     expect(label.getOffset().x).to.equal(3);
@@ -235,16 +237,24 @@ export const testGlobeVectorRestyle = () => {
     expect(place($el[0]).billboard.getScale()).to.equal(2),
   );
 
-  // Highlighted features stay highlighted and go back to the new style.
-  const highlight = { "fill-color": "yellow", "circle-radius": 10 };
+  // Highlighted features stay highlighted and go back to the new style; icons
+  // are drawn at their own size throughout.
+  const highlight = { "fill-color": "yellow", "icon-src": icon(12) };
+  /** @type {any} */
+  let blueArea;
   cy.get("eox-map").then(($el) => {
+    blueArea = area($el[0]);
     highlightGlobeEntity(area($el[0]), highlight);
     highlightGlobeEntity(place($el[0]), highlight);
   });
-  setStyle(style({ fill: "green" }));
+  cy.get("eox-map").should(($el) =>
+    expect(place($el[0]).billboard.getWidth()).to.equal(12),
+  );
+  setStyle(style({ fill: "green", size: 24, scale: 2 }));
   cy.get("eox-map").should(($el) => {
+    expect(area($el[0]), "same polygon").to.equal(blueArea);
     expectColor(fillOf(area($el[0])), [1, 1, 0, 1]);
-    expect(place($el[0]).billboard.getSrc()).to.match(/^data:image\/png/);
+    expect(place($el[0]).billboard.getSrc()).to.equal(icon(12));
   });
   cy.get("eox-map").then(($el) => {
     resetGlobeEntity(area($el[0]));
@@ -252,7 +262,9 @@ export const testGlobeVectorRestyle = () => {
   });
   cy.get("eox-map").should(($el) => {
     expectColor(fillOf(area($el[0])), [0, 0.5, 0, 1]);
-    expect(place($el[0]).billboard.getSrc()).to.equal(icon(8));
+    const { billboard } = place($el[0]);
+    expect(billboard.getSrc()).to.equal(icon(24));
+    expect(billboard.getWidth()).to.equal(24);
   });
 };
 

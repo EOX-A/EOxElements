@@ -186,6 +186,7 @@ export function restyleGlobeEntities(entities, features, styleFunction) {
       if (label.outlineColor) entity.label.setOutlineColor(...label.outlineColor);
       entity.label.setAlign(label.align);
       entity.label.setOffset(...label.offset);
+      entity.label.setRotation(label.rotation);
     }
     reapplyGlobeHighlight(entity);
   });
