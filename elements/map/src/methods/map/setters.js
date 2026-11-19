@@ -76,7 +76,7 @@ export function setZoomExtentMethod(extent, EOxMap) {
     cancelAnimation(view);
 
     if (EOxMap.globeEnabled) {
-      flyGlobeToState(EOxMap, EOxMap.animationOptions);
+      flyGlobeToState(EOxMap, EOxMap.animationOptions, extent);
     }
 
     view.fit(extent, EOxMap.animationOptions);
