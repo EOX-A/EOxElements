@@ -71,6 +71,11 @@ export const testTranslateVectorStyle = () => {
   expectColor(merged.fillColor, [0, 0, 1, 1]);
   expectColor(merged.lineColor, [1, 0, 0, 1]);
   expect(merged.lineWidth).to.equal(2);
+  // A stroke without colour gets the default stroke colour.
+  expectColor(
+    translate({ "stroke-width": 2 }, {}).geometry.lineColor,
+    [0.2, 0.6, 0.8, 1],
+  );
   expect(translate({ "fill-color": "none" }, {}).geometry).to.equal(undefined);
   expect(
     translateOLStyleExpressions(undefined, new Feature(polygon)),
@@ -148,6 +153,8 @@ export const testGlobeVectorLayer = () => {
     },
   ];
   cy.intercept("**/globe-vector.json", {
+    // Lets the test change the style before the globe layer exists.
+    delay: 300,
     body: {
       type: "FeatureCollection",
       features: [
@@ -210,6 +217,19 @@ export const testGlobeVectorLayer = () => {
   /** @param {any[]} all */
   const polygonEntity = (all) => all.find((e) => e.geometry);
 
+  // Another style while the GeoJSON loads, then the original style function again.
+  /** @type {any} */
+  let originalStyle;
+  cy.get("eox-map").then(($el) => {
+    const layer = $el[0].map.getAllLayers()[0];
+    originalStyle = layer.getStyleFunction();
+    layer.setStyle({ "fill-color": "red" });
+  });
+  cy.get("eox-map").should(($el) => expect(entities($el[0])).to.have.length(1));
+  cy.get("eox-map").then(($el) =>
+    $el[0].map.getAllLayers()[0].setStyle(originalStyle),
+  );
+
   cy.get("eox-map").should(($el) => {
     const all = entities($el[0]);
     // One entity per point of the MultiPoint, plus the polygon.
@@ -237,8 +257,9 @@ export const testGlobeVectorLayer = () => {
     expect(selected.firstCall.args[0].detail.feature.getId()).to.equal("p1");
   });
 
+  const fillStyle = { "fill-color": "red" };
   cy.get("eox-map").then(($el) => {
-    $el[0].map.getAllLayers()[0].setStyle({ "fill-color": "red" });
+    $el[0].map.getAllLayers()[0].setStyle(fillStyle);
   });
   cy.get("eox-map").should(($el) => {
     const all = entities($el[0]);
@@ -249,6 +270,18 @@ export const testGlobeVectorLayer = () => {
       [1, 0, 0, 1],
     );
   });
+
+  // The same style object, changed and set again, also updates the globe.
+  cy.get("eox-map").then(($el) => {
+    fillStyle["fill-color"] = "blue";
+    $el[0].map.getAllLayers()[0].setStyle(fillStyle);
+  });
+  cy.get("eox-map").should(($el) =>
+    expectColor(
+      polygonEntity(entities($el[0])).geometry._style.fillColor.toArray(),
+      [0, 0, 1, 1],
+    ),
+  );
 
   cy.get("eox-map").then(($el) => {
     $el[0].map.getAllLayers()[0].setStyle(symbolRules);

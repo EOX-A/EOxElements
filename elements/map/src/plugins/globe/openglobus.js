@@ -22,6 +22,7 @@ import {
   OG_FONTS_SRC,
   LABEL_ALIGN,
   TRANSPARENT,
+  DEFAULT_STROKE_COLOR,
   OG_GEOMETRY_TYPES,
 } from "../../enums/index.js";
 import {
@@ -54,10 +55,16 @@ import {
 
 let globus;
 
-/** The OL feature behind each globe entity, to highlight and select it. */
+/**
+ * The OL feature behind each globe entity, to highlight and select it.
+ * @type {WeakMap<Entity, import("ol/Feature").default>}
+ */
 export const entityFeatures = new WeakMap();
 
-/** All features of a globe vector layer, also those a style hides, to rebuild on style changes. */
+/**
+ * All features of a globe vector layer, also those a style hides, to rebuild on style changes.
+ * @type {WeakMap<Vector, import("ol/Feature").default[]>}
+ */
 const layerFeatures = new WeakMap();
 
 /** @type {WeakMap<import("ol/DataTile").ImageLike, string>} */
@@ -153,7 +160,9 @@ function geometryOptions(style) {
     ...(fill && { fillColor: normalizeColor(fill.getColor()) }),
     ...(stroke && {
       // og draws width 0 as 3, so hide the line by its colour.
-      lineColor: normalizeColor(width ? stroke.getColor() : undefined),
+      lineColor: normalizeColor(
+        width ? (stroke.getColor() ?? DEFAULT_STROKE_COLOR) : undefined,
+      ),
       lineWidth: width,
     }),
   };
@@ -189,9 +198,9 @@ function billboardOptions(image) {
  * @returns {import("./types").GlobeEntityStyle["label"]} The label options, if the style has a text.
  */
 function labelOptions(text) {
-  if (!text?.getText()) return undefined;
+  const value = text?.getText();
+  if (!value) return undefined;
   const font = getFontParameters(text.getFont() ?? "10px sans-serif");
-  const value = text.getText();
   return {
     // Rich text alternates text and font.
     text: Array.isArray(value)
@@ -200,8 +209,7 @@ function labelOptions(text) {
     size: (parseFloat(font?.size) || 10) * text.getScaleArray()[0],
     color: normalizeColor(text.getFill()?.getColor()),
     outline: text.getStroke()?.getWidth(),
-    outlineColor:
-      text.getStroke() && normalizeColor(text.getStroke().getColor()),
+    outlineColor: normalizeColor(text.getStroke()?.getColor()),
     align: LABEL_ALIGN[text.getTextAlign()] ?? "center",
     // og offsets point up, OL offsets point down.
     offset: [text.getOffsetX(), -text.getOffsetY()],
@@ -1189,18 +1197,18 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
   const vectorLayer = /** @type {import("ol/layer/Vector").default} */ (
     /** @type {unknown} */ (olLayer)
   );
-  let builtStyle = vectorLayer.getStyle?.();
-  // `change` also fires on source edits, so rebuild only for a new style.
+  let builtStyleFunction = vectorLayer.getStyleFunction?.();
+  // Rebuild only for a new style function; `change` also fires on source edits.
   const styleKey = olLayer.on("change", () => {
+    const styleFunction = vectorLayer.getStyleFunction?.();
+    if (disposed || styleFunction === builtStyleFunction) return;
+    // Also while loading, as the loaded GeoJSON is built with the current style.
+    builtStyleFunction = styleFunction;
     const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
-    const style = vectorLayer.getStyle?.();
-    if (disposed || style === builtStyle || !(globusLayer instanceof Vector)) {
-      return;
-    }
-    builtStyle = style;
+    if (!(globusLayer instanceof Vector)) return;
     globusLayer.setEntities(
       (layerFeatures.get(globusLayer) ?? []).flatMap((feature) =>
-        createGlobeEntities(feature, vectorLayer.getStyleFunction()),
+        createGlobeEntities(feature, styleFunction),
       ),
     );
   });
