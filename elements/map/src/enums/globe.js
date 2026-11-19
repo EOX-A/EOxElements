@@ -27,7 +27,7 @@ export const DEFAULT_STROKE_COLOR = "#3399CC";
 export const HIDDEN_PIXEL_VALUE = -1e30;
 export const VISIBLE_PIXEL_RANGE = Object.freeze([-1e29, Infinity]);
 
-// OL GeoTIFF alpha band value for valid pixels; og has no alpha band.
+// OL GeoTIFF alpha band value for valid pixels with raw values (`normalize: false`); og has no alpha band.
 export const OL_ALPHA_VALID = 255;
 
 /** OL operators and their JS equivalent in og's per-pixel expression. */

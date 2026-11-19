@@ -8,6 +8,7 @@ import {
   testGlobeSelect,
   testGlobeSelectStyle,
   testGeoTIFFSourceOptions,
+  testGeoTIFFRenderOptions,
   testGlobeLayerOrder,
   testGlobeFlyPitch,
   testGlobeWMSOptions,
@@ -59,6 +60,9 @@ describe("globe", () => {
    */
   it("accepts single url and multi source COGs for native globe rendering", () =>
     testGeoTIFFSourceOptions());
+
+  it("follows the OL GeoTIFF source's alpha band and sampling", () =>
+    testGeoTIFFRenderOptions());
 
   /**
    * Test case to mirror the OL layer order (groups, zIndex, reordering) onto the globe layers

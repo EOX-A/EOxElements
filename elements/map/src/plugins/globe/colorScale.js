@@ -394,12 +394,14 @@ function extractDisplayRangeForBand(conditions, targetBand, vars = {}) {
  * @param {any} colorOrStyle OpenLayers style object, color expression array, or color string
  * @param {Record<string, any>} [extraVariables={}] Additional style variables
  * @param {number} [nodataBandIndex] Index of the alpha band OL adds for nodata
+ * @param {number} [alphaValid] Alpha band value of valid pixels, 255 for raw and 1 for normalized values
  * @returns {TranslatedColorScaleResult} The translated OpenGlobus color scale and render options
  */
 export function translateOLColorExpression(
   colorOrStyle,
   extraVariables = {},
   nodataBandIndex,
+  alphaValid = OL_ALPHA_VALID,
 ) {
   let variables = { ...extraVariables };
   let colorExpr = colorOrStyle;
@@ -508,7 +510,7 @@ export function translateOLColorExpression(
   let nodata;
   const resolvedExpr =
     translateOrWarn(() =>
-      resolveBands(colorExpr, variables, nodataBandIndex),
+      resolveBands(colorExpr, variables, nodataBandIndex, alphaValid),
     ) ?? colorExpr;
   let activeExpr = resolvedExpr;
   let ignoresMask = false;
@@ -659,19 +661,20 @@ export const translateOLColorScale = translateOLColorExpression;
  * @param {any} expr OL expression
  * @param {Record<string, any>} vars Style variables
  * @param {number} [nodataBandIndex] Index of the OL alpha band
+ * @param {number} [alphaValid] Alpha band value of valid pixels
  * @returns {any} Expression with literal band indices
  */
-function resolveBands(expr, vars, nodataBandIndex) {
+function resolveBands(expr, vars, nodataBandIndex, alphaValid) {
   if (!Array.isArray(expr)) return expr;
   if (expr[0] === "band") {
     // Other non-numbers stay, so the expression translation rejects them.
     const band = Array.isArray(expr[1]) ? evaluateExpr(expr[1], vars) : expr[1];
     const isAlphaBand =
       nodataBandIndex !== undefined && band === nodataBandIndex;
-    return isAlphaBand ? OL_ALPHA_VALID : ["band", band];
+    return isAlphaBand ? alphaValid : ["band", band];
   }
   const resolved = expr.map((item) =>
-    resolveBands(item, vars, nodataBandIndex),
+    resolveBands(item, vars, nodataBandIndex, alphaValid),
   );
   const selectors =
     expr[0] === "match"
