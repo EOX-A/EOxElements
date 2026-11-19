@@ -203,7 +203,9 @@ export const testGlobeVectorRestyle = () => {
   const fillOf = (entity) => entity.geometry._style.fillColor.toArray();
   /** @param {any} style - OL flat style. */
   const setStyle = (style) =>
-    cy.get("eox-map").then(($el) => $el[0].map.getAllLayers()[0].setStyle(style));
+    cy
+      .get("eox-map")
+      .then(($el) => $el[0].map.getAllLayers()[0].setStyle(style));
 
   cy.get("eox-map").should(($el) => expect(entities($el[0])).to.have.length(2));
 

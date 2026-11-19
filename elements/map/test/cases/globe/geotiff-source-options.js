@@ -108,9 +108,9 @@ export const testGeoTIFFRenderOptions = () => {
   });
 
   // Without a style an RGB file keeps its colours.
-  expect(renderPixel(layerWith({}), [10, 200, 30]).slice(0, 3)).to.deep.equal(
-    [10, 200, 30],
-  );
+  expect(renderPixel(layerWith({}), [10, 200, 30]).slice(0, 3)).to.deep.equal([
+    10, 200, 30,
+  ]);
 
   // og samples like OL: blended where OL interpolates, og's nearest default otherwise.
   expect(

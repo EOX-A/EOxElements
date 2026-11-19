@@ -189,7 +189,8 @@ export function restyleGlobeEntities(entities, features, styleFunction) {
       entity.label.setSize(label.size);
       entity.label.setColor(...label.color);
       entity.label.setOutline(label.outline ?? 0);
-      if (label.outlineColor) entity.label.setOutlineColor(...label.outlineColor);
+      if (label.outlineColor)
+        entity.label.setOutlineColor(...label.outlineColor);
       entity.label.setAlign(label.align);
       entity.label.setOffset(...label.offset);
       entity.label.setRotation(label.rotation);
