@@ -8,6 +8,7 @@ import proj4 from "proj4";
 import { transform } from "../../helpers/index.js";
 import { flatStyleLikeToStyleFunction } from "ol/render/canvas/style.js";
 import { translateOLStyleExpressions, entityFeatures } from "./openglobus.js";
+import { GEOMETRY_STYLE_SETTERS } from "../../enums/index.js";
 
 /**
  * @typedef {import("../../main").EOxMap} EOxMap
@@ -33,17 +34,6 @@ const highlightedEntities = new WeakMap();
  * @type {WeakMap<EOxMap, Set<any>>}
  */
 const clickHighlights = new WeakMap();
-
-/**
- * Maps the OpenGlobus geometry style keys to their setters.
- */
-const GEOMETRY_STYLE_SETTERS = Object.freeze({
-  fillColor: "setFillColor4v",
-  lineColor: "setLineColor4v",
-  strokeColor: "setStrokeColor4v",
-  lineWidth: "setLineWidth",
-  strokeWidth: "setStrokeWidth",
-});
 
 /**
  * Applies the `style` of a select interaction to a globe vector entity,

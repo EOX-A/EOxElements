@@ -13,6 +13,7 @@ import {
   EmptyTerrain,
   Extent as OgExtent,
   Quat,
+  utils,
 } from "@openglobus/og";
 import { asArray } from "ol/color.js";
 import { getFontParameters } from "ol/css.js";
@@ -24,6 +25,7 @@ import {
   TRANSPARENT,
   DEFAULT_STROKE_COLOR,
   OG_GEOMETRY_TYPES,
+  GEOMETRY_STYLE_SETTERS,
 } from "../../enums/index.js";
 import {
   distributeTileToIdealMap,
@@ -77,10 +79,8 @@ const imageDataURLs = new WeakMap();
  * @returns {Entity[]} One entity per point, or one per line/polygon; none when nothing is styled.
  */
 export function createGlobeEntities(feature, styleFunction) {
-  const { geometry, billboard, label } = translateOLStyleExpressions(
-    styleFunction,
-    feature,
-  );
+  const style = translateOLStyleExpressions(styleFunction, feature);
+  const { geometry, billboard, label } = style;
   const olGeometry = /** @type {import("ol/geom/SimpleGeometry").default} */ (
     feature.getGeometry()
   );
@@ -90,17 +90,16 @@ export function createGlobeEntities(feature, styleFunction) {
 
   /** @type {Entity[]} */
   let entities = [];
+  if (!hasEntityParts(type, style)) return entities;
   if (type === "Point" || type === "MultiPoint") {
     const points =
       type === "Point"
         ? [olGeometry.getCoordinates()]
         : olGeometry.getCoordinates();
-    if (billboard || label) {
-      entities = points.map(
-        (lonlat) => new Entity({ lonlat, billboard, label, properties }),
-      );
-    }
-  } else if (OG_GEOMETRY_TYPES[type] && (geometry || label)) {
+    entities = points.map(
+      (lonlat) => new Entity({ lonlat, billboard, label, properties }),
+    );
+  } else {
     entities = [
       new Entity({
         properties,
@@ -119,6 +118,80 @@ export function createGlobeEntities(feature, styleFunction) {
   }
   entities.forEach((entity) => entityFeatures.set(entity, feature));
   return entities;
+}
+
+/**
+ * Restyles the entities of a globe vector layer in place
+ *
+ * @param {Entity[]} entities - Current entities of the layer.
+ * @param {import("ol/Feature").default[]} features - All features of the layer.
+ * @param {import("ol/style/Style").StyleFunction | undefined} styleFunction
+ * @returns {boolean} False when the style shows, hides or reshapes entities, which needs a rebuild.
+ */
+export function restyleGlobeEntities(entities, features, styleFunction) {
+  const styles = new Map(
+    features.map((feature) => [
+      feature,
+      translateOLStyleExpressions(styleFunction, feature),
+    ]),
+  );
+  const shown = new Set(entities.map((entity) => entityFeatures.get(entity)));
+  const sameEntities =
+    features.every(
+      (feature) =>
+        shown.has(feature) ===
+        hasEntityParts(feature.getGeometry().getType(), styles.get(feature)),
+    ) &&
+    entities.every((entity) => {
+      const { billboard, label } = styles.get(entityFeatures.get(entity));
+      return !!entity.billboard === !!billboard && !!entity.label === !!label;
+    });
+  if (!sameEntities) return false;
+
+  entities.forEach((entity) => {
+    const { geometry, billboard, label } = styles.get(
+      entityFeatures.get(entity),
+    );
+    if (entity.geometry) {
+      const geometryStyle = {
+        fillColor: TRANSPARENT,
+        lineColor: TRANSPARENT,
+        ...geometry,
+      };
+      Object.entries(geometryStyle).forEach(([key, value]) => {
+        if (value === undefined) return;
+        entity.geometry[GEOMETRY_STYLE_SETTERS[key]](
+          typeof value === "number" ? value : utils.createColorRGBA(value),
+        );
+      });
+    }
+    if (billboard) {
+      // Same images reuse the og atlas entry instead of reloading.
+      if (entity.billboard.getSrc() !== billboard.src) {
+        entity.billboard.setSrc(billboard.src);
+      }
+      if (billboard.size) entity.billboard.setSize(...billboard.size);
+      entity.billboard.setColor(...billboard.color);
+    }
+    if (label) {
+      entity.label.setText(label.text);
+      entity.label.setSize(label.size);
+      entity.label.setColor(...label.color);
+    }
+  });
+  return true;
+}
+
+/**
+ * Whether a feature of this geometry type gets globe entities with this style.
+ *
+ * @param {string} type - OL geometry type.
+ * @param {import("./types").GlobeEntityStyle} style - Translated style.
+ * @returns {boolean}
+ */
+function hasEntityParts(type, { geometry, billboard, label }) {
+  if (type === "Point" || type === "MultiPoint") return !!(billboard || label);
+  return !!(OG_GEOMETRY_TYPES[type] && (geometry || label));
 }
 
 /**
@@ -1186,11 +1259,16 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
     builtStyleFunction = styleFunction;
     const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
     if (!(globusLayer instanceof Vector)) return;
-    globusLayer.setEntities(
-      (layerFeatures.get(globusLayer) ?? []).flatMap((feature) =>
-        createGlobeEntities(feature, styleFunction),
-      ),
-    );
+    const features = layerFeatures.get(globusLayer) ?? [];
+    if (
+      !restyleGlobeEntities(globusLayer.getEntities(), features, styleFunction)
+    ) {
+      globusLayer.setEntities(
+        features.flatMap((feature) =>
+          createGlobeEntities(feature, styleFunction),
+        ),
+      );
+    }
   });
 
   const propertyKey = olLayer.on("propertychange", ({ key }) => {

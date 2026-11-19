@@ -67,6 +67,17 @@ export const OL_RASTER_ADJUSTMENTS = Object.freeze([
   "brightness",
 ]);
 
+/**
+ * Maps the OpenGlobus geometry style keys to their setters.
+ */
+export const GEOMETRY_STYLE_SETTERS = Object.freeze({
+  fillColor: "setFillColor4v",
+  lineColor: "setLineColor4v",
+  strokeColor: "setStrokeColor4v",
+  lineWidth: "setLineWidth",
+  strokeWidth: "setStrokeWidth",
+});
+
 /** OL geometry types og draws as geometries; points become billboards. */
 export const OG_GEOMETRY_TYPES = Object.freeze({
   Polygon: "POLYGON",

@@ -272,17 +272,19 @@ export const testGlobeVectorLayer = () => {
     );
   });
 
-  // The same style object, changed and set again, also updates the globe.
+  // The same style object, changed and set again, restyles the same entity in place.
+  /** @type {any} */
+  let redPolygon;
   cy.get("eox-map").then(($el) => {
+    redPolygon = polygonEntity(entities($el[0]));
     fillStyle["fill-color"] = "blue";
     $el[0].map.getAllLayers()[0].setStyle(fillStyle);
   });
-  cy.get("eox-map").should(($el) =>
-    expectColor(
-      polygonEntity(entities($el[0])).geometry._style.fillColor.toArray(),
-      [0, 0, 1, 1],
-    ),
-  );
+  cy.get("eox-map").should(($el) => {
+    const polygon = polygonEntity(entities($el[0]));
+    expect(polygon, "same entity, not rebuilt").to.equal(redPolygon);
+    expectColor(polygon.geometry._style.fillColor.toArray(), [0, 0, 1, 1]);
+  });
 
   cy.get("eox-map").then(($el) => {
     $el[0].map.getAllLayers()[0].setStyle(symbolRules);
