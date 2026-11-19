@@ -9,6 +9,7 @@ import {
   testGeoTIFFSourceOptions,
   testGlobeLayerOrder,
   testGlobeFlyPitch,
+  testGlobeZoomExtent,
 } from "./cases/globe";
 
 /**
@@ -54,4 +55,7 @@ describe("globe", () => {
    * Test case to animate pitch changes as part of the globe flight
    */
   it("animates pitch changes during globe flights", () => testGlobeFlyPitch());
+
+  it("flies to a new center after zoomExtent instead of the old extent", () =>
+    testGlobeZoomExtent());
 });

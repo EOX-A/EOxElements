@@ -131,7 +131,8 @@ export const setupGlobeSync = (EOxMap, globus) => {
   };
 
   const updateGlobeCamera = () => {
-    if (EOxMap._isSyncing) {
+    // A programmatic flight owns the camera; setLonLat would stop it.
+    if (EOxMap._isSyncing || globus.planet.camera.isFlying()) {
       return;
     }
     const view = map.getView();
@@ -1088,8 +1089,9 @@ export const getGlobeTargetOrientation = (
  *
  * @param {import("../../main").EOxMap} EOxMap
  * @param {object} animateToOptions
+ * @param {import("ol/extent").Extent} [extent] - Extent to fly to, in the view projection; otherwise center/zoom.
  */
-export const flyGlobeToState = (EOxMap, animateToOptions) => {
+export const flyGlobeToState = (EOxMap, animateToOptions, extent) => {
   if (!EOxMap.globe || !EOxMap.globeEnabled) return;
 
   const planet = EOxMap.globe.planet;
@@ -1114,11 +1116,7 @@ export const flyGlobeToState = (EOxMap, animateToOptions) => {
       ),
     });
 
-  // Check if an extent was requested
-  // @ts-expect-error - _requestedZoomExtent is a custom property
-  if (EOxMap._requestedZoomExtent) {
-    // @ts-expect-error - _requestedZoomExtent is a custom property
-    const extent = EOxMap._requestedZoomExtent;
+  if (extent) {
     // Transform OL extent to EPSG:4326
     const minLonLat = transform(
       [extent[0], extent[1]],
