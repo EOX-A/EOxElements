@@ -10,6 +10,7 @@ import {
   testGlobeLayerOrder,
   testGlobeFlyPitch,
   testGlobeZoomExtent,
+  testGlobeViewSwap,
 } from "./cases/globe";
 
 /**
@@ -58,4 +59,7 @@ describe("globe", () => {
 
   it("flies to a new center after zoomExtent instead of the old extent", () =>
     testGlobeZoomExtent());
+
+  it("keeps globe maps synced after their map views are shared", () =>
+    testGlobeViewSwap());
 });

@@ -37,11 +37,6 @@ import {
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
-/**
- * Event bus for synchronizing multiple globes.
- * @type {EventTarget & {_isSyncing?: boolean}}
- */
-const globeSyncBus = new EventTarget();
 let globus;
 
 /**
@@ -119,15 +114,6 @@ export const setupGlobeSync = (EOxMap, globus) => {
     }
 
     EOxMap._isSyncing = false;
-
-    // sync other globes
-    if (!globeSyncBus._isSyncing) {
-      globeSyncBus._isSyncing = true;
-      globeSyncBus.dispatchEvent(
-        new CustomEvent("move", { detail: { source: globus, EOxMap } }),
-      );
-      globeSyncBus._isSyncing = false;
-    }
   };
 
   const updateGlobeCamera = () => {
@@ -153,7 +139,6 @@ export const setupGlobeSync = (EOxMap, globus) => {
 
     let currZoom = EOxMap.map.getView().getZoom() - 1;
     if (!EOxMap.globeConfig?.useHighLOD) {
-      globus.planet.quadTreeStrategy.setLodSize(512);
       currZoom = currZoom - 1;
     }
 
@@ -198,10 +183,6 @@ export const setupGlobeSync = (EOxMap, globus) => {
     // When the mouse is released, we don't stop the sync immediately.
     // Instead, we wait for the camera to completely stop moving (including inertia).
     planet.camera.events.on("moveend", endMove);
-    if (!EOxMap._isSyncing) {
-      console.log("Mouse up detected, waiting for camera to stop moving...");
-      debounce(endMove, 0);
-    }
     onMouseWheel();
   };
 
@@ -238,31 +219,21 @@ export const setupGlobeSync = (EOxMap, globus) => {
     detachViewListeners(currentView);
     currentView = map.getView();
     attachViewListeners(currentView);
+    // A shared view (`sync`) may already be elsewhere.
+    updateGlobeCamera();
   };
-  //map.on("change:view", viewChangeHandler);
+  map.on("change:view", viewChangeHandler);
 
   // Store for cleanup
-  globus.onMouseUp = onMouseUp;
+  globus._startMove = startMove;
+  globus._endMove = endMove;
+  globus._onMouseUp = onMouseUp;
   globus._onGlobeMove = onGlobeMove;
   globus._updateGlobeCamera = updateGlobeCamera;
   globus._viewChangeHandler = viewChangeHandler;
   globus._detachViewListeners = detachViewListeners;
   globus._onMouseWheel = onMouseWheel; // Store for cleanup
 };
-
-const onOtherGlobeMove = (evt) => {
-  if (globeSyncBus._isSyncing) {
-    return;
-  }
-  const { source, EOxMap: sourceEOxMap } = evt.detail;
-  if (sourceEOxMap.globe) {
-    globeSyncBus._isSyncing = true;
-    sourceEOxMap.globe.planet.camera.set(source.planet.camera);
-    globeSyncBus._isSyncing = false;
-  }
-};
-
-globeSyncBus.addEventListener("move", onOtherGlobeMove);
 
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
@@ -828,21 +799,19 @@ export const disableGlobe = (map) => {
         }
         // Sync cleanup
         planet.renderer.events.off("draw", globe._onGlobeMove);
-        planet.renderer.events.off("ldown");
-        planet.renderer.events.off("rdown");
-        planet.renderer.events.off("mdown");
-        planet.renderer.events.off("touchstart");
-        planet.renderer.events.off("lup", globus._onMouseUp);
-        planet.renderer.events.off("rup", globus._onMouseUp);
-        planet.renderer.events.off("rup", globus._onMouseUp);
-        planet.renderer.events.off("mup", globus._onMouseUp);
-        planet.renderer.events.off("touchend", globus._onMouseUp);
+        planet.renderer.events.off("ldown", globe._startMove);
+        planet.renderer.events.off("rdown", globe._startMove);
+        planet.renderer.events.off("mdown", globe._startMove);
+        planet.renderer.events.off("touchstart", globe._startMove);
+        planet.renderer.events.off("lup", globe._onMouseUp);
+        planet.renderer.events.off("rup", globe._onMouseUp);
+        planet.renderer.events.off("mup", globe._onMouseUp);
+        planet.renderer.events.off("touchend", globe._onMouseUp);
         planet.renderer.events.off("mousewheel", globe._onMouseWheel);
         // Also ensure the moveend listener is cleaned up
-        planet.camera.events.off("moveend");
+        planet.camera.events.off("moveend", globe._endMove);
         globe._detachViewListeners(map.map.getView());
         map.map.un("change:view", globe._viewChangeHandler);
-        globeSyncBus.removeEventListener("move", onOtherGlobeMove);
         unmountGlobeTooltip(map);
         map.globe = null;
 
