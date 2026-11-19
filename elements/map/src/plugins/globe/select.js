@@ -68,8 +68,9 @@ export function highlightGlobeEntity(entity, style) {
       src: entity.billboard.getSrc(),
       size: [entity.billboard.getWidth(), entity.billboard.getHeight()],
     };
+    // Size 0 lets og take the image's own size.
+    entity.billboard.setSize(...(billboard.size ?? [0, 0]));
     entity.billboard.setSrc(billboard.src);
-    if (billboard.size) entity.billboard.setSize(...billboard.size);
   }
   original.style = style;
   highlightedEntities.set(entity, original);
@@ -88,8 +89,9 @@ export function resetGlobeEntity(entity) {
     entity.geometry[GEOMETRY_STYLE_SETTERS[key]](value),
   );
   if (billboard) {
-    entity.billboard.setSrc(billboard.src);
+    // og applies a cached image's size inside setSrc, so set the size first.
     entity.billboard.setSize(...billboard.size);
+    entity.billboard.setSrc(billboard.src);
   }
   highlightedEntities.delete(entity);
 }
