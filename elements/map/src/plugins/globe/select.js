@@ -71,6 +71,7 @@ export function highlightGlobeEntity(entity, style) {
     entity.billboard.setSrc(billboard.src);
     if (billboard.size) entity.billboard.setSize(...billboard.size);
   }
+  original.style = style;
   highlightedEntities.set(entity, original);
 }
 
@@ -82,7 +83,7 @@ export function highlightGlobeEntity(entity, style) {
 export function resetGlobeEntity(entity) {
   const original = highlightedEntities.get(entity);
   if (!original) return;
-  const { billboard, ...geometry } = original;
+  const { billboard, style: _style, ...geometry } = original;
   Object.entries(geometry).forEach(([key, value]) =>
     entity.geometry[GEOMETRY_STYLE_SETTERS[key]](value),
   );
@@ -91,6 +92,19 @@ export function resetGlobeEntity(entity) {
     entity.billboard.setSize(...billboard.size);
   }
   highlightedEntities.delete(entity);
+}
+
+/**
+ * Highlights an entity again after its base style changed, so the highlight
+ * stays on top and a later reset restores the new style.
+ *
+ * @param {any} entity - The OpenGlobus entity.
+ */
+export function reapplyGlobeHighlight(entity) {
+  const original = highlightedEntities.get(entity);
+  if (!original) return;
+  highlightedEntities.delete(entity);
+  highlightGlobeEntity(entity, original.style);
 }
 
 /**

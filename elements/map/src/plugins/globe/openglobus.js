@@ -51,6 +51,7 @@ import {
   attachGlobeSelect,
   mountGlobeTooltip,
   unmountGlobeTooltip,
+  reapplyGlobeHighlight,
 } from "./select.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
@@ -126,7 +127,7 @@ export function createGlobeEntities(feature, styleFunction) {
  *
  * @param {Entity[]} entities - Current entities of the layer.
  * @param {import("ol/Feature").default[]} features - All features of the layer.
- * @param {import("ol/style/Style").StyleFunction | undefined} styleFunction
+ * @param {import("ol/style/Style").StyleFunction | undefined} styleFunction - The layer's style function.
  * @returns {boolean} False when the style shows, hides or reshapes entities, which needs a rebuild.
  */
 export function restyleGlobeEntities(entities, features, styleFunction) {
@@ -145,7 +146,12 @@ export function restyleGlobeEntities(entities, features, styleFunction) {
     ) &&
     entities.every((entity) => {
       const { billboard, label } = styles.get(entityFeatures.get(entity));
-      return !!entity.billboard === !!billboard && !!entity.label === !!label;
+      const pointImage = !entity.geometry && billboard;
+      return (
+        !!entity.billboard === !!pointImage &&
+        (!pointImage || entity.billboard.getScale() === pointImage.scale) &&
+        !!entity.label === !!label
+      );
     });
   if (!sameEntities) return false;
 
@@ -166,19 +172,28 @@ export function restyleGlobeEntities(entities, features, styleFunction) {
         );
       });
     }
-    if (billboard) {
+    if (entity.billboard) {
       // Same images reuse the og atlas entry instead of reloading.
       if (entity.billboard.getSrc() !== billboard.src) {
+        entity.billboard.setSize(...(billboard.size ?? [0, 0]));
         entity.billboard.setSrc(billboard.src);
+      } else if (billboard.size) {
+        entity.billboard.setSize(...billboard.size);
       }
-      if (billboard.size) entity.billboard.setSize(...billboard.size);
       entity.billboard.setColor(...billboard.color);
+      entity.billboard.setOffset(...billboard.offset);
+      entity.billboard.setRotation(billboard.rotation);
     }
     if (label) {
       entity.label.setText(label.text);
       entity.label.setSize(label.size);
       entity.label.setColor(...label.color);
+      entity.label.setOutline(label.outline ?? 0);
+      if (label.outlineColor) entity.label.setOutlineColor(...label.outlineColor);
+      entity.label.setAlign(label.align);
+      entity.label.setOffset(...label.offset);
     }
+    reapplyGlobeHighlight(entity);
   });
   return true;
 }
@@ -334,7 +349,7 @@ function labelPoint(geometry) {
  * @returns {import("./types").RGBA} The RGBA colour, transparent for missing colours and patterns.
  */
 function normalizeColor(color) {
-  if (typeof color !== "string" && !Array.isArray(color)) return [0, 0, 0, 0];
+  if (typeof color !== "string" && !Array.isArray(color)) return TRANSPARENT;
   const [r, g, b, a = 1] = asArray(color);
   return [r / 255, g / 255, b / 255, a];
 }
@@ -490,8 +505,8 @@ export function getGeoTIFFRenderOptions(olLayer, variables) {
       // @ts-expect-error private, OL has no public getter for `normalize`
       source.normalize_ ? 1 : OL_ALPHA_VALID,
     ),
-    // Bilinear sampling would blend class values into other classes.
-    ...(!source.getInterpolate() && { resampleMethod: "nearest" }),
+    // og samples nearest by default; blend only where OL interpolates.
+    ...(source.getInterpolate() && { resampleMethod: "bilinear" }),
   });
 }
 
@@ -673,7 +688,9 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
         } else {
           return undefined;
         }
-      });
+      })
+      // The CanvasTiles fallback stays on fetch or style errors.
+      .catch((error) => console.warn(error));
   }
 
   // Check if GeoTIFF layer can be natively rendered in OpenGlobus

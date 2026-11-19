@@ -18,7 +18,9 @@ export const LABEL_ALIGN = Object.freeze({
 });
 
 /** @type {import("../plugins/globe/types").RGBA} */
-export const TRANSPARENT = [0, 0, 0, 0];
+export const TRANSPARENT = /** @type {import("../plugins/globe/types").RGBA} */ (
+  Object.freeze([0, 0, 0, 0])
+);
 
 // Stroke colour of OL's default style
 export const DEFAULT_STROKE_COLOR = "#3399CC";
