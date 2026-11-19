@@ -57,7 +57,7 @@ export type OLAdvancedSources = {
   CartoDB: typeof import("ol/source/CartoDB").default;
   DataTile: typeof import("ol/source/DataTile").default;
   GeoTIFF: typeof import("ol/source/GeoTIFF").default;
-  GeoZarr: typeof import("ol/source/GeoZarr").default;
+  GeoZarr: typeof import("./custom/sources/GeoZarr.js").default;
   Google: typeof import("ol/source/Google").default;
   IIIF: typeof import("ol/source/IIIF").default;
   Image: typeof import("ol/source/Image").default;
