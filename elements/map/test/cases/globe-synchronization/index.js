@@ -272,3 +272,144 @@ export function testSameIdGlobeReplacement() {
     expect(current.opacity).to.equal(0.4);
   });
 }
+
+/**
+ * Creates a network-intercepted XYZ definition with a fixed ID, like the eodash
+ * mosaic layer whose URL changes with the selected time range.
+ *
+ * @param {string} path - Path segment that differs between source versions.
+ * @param {string} [id] - Layer ID.
+ */
+function xyzDefinition(path, id = "mosaic") {
+  return /** @type {import("../../../src/layers.js").EoxLayer} */ ({
+    type: "Tile",
+    properties: { id },
+    source: {
+      type: "XYZ",
+      url: `${window.location.origin}/test-xyz/${path}/{z}/{x}/{y}.png`,
+    },
+  });
+}
+
+/** A new source under the same ID, set through `layers`, reaches the globe. */
+export function testSameIdSourceChange() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [xyzDefinition("a")];
+    const { planet } = activate(map);
+    map.layers = [xyzDefinition("b")];
+    expect(
+      map.getLayerById("mosaic").getSource().getUrls()[0],
+      "OL source",
+    ).to.contain("/test-xyz/b/");
+    expect(planet.getLayerByName("mosaic").url, "globe layer").to.contain(
+      "/test-xyz/b/",
+    );
+  });
+}
+
+/** A layer added through `addOrUpdateLayer` reaches the globe. */
+export function testAddOrUpdateLayerAdd() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    const { planet } = activate(map);
+    map.addOrUpdateLayer(xyzDefinition("a"));
+    expect(map.getLayerById("mosaic"), "OL layer").to.exist;
+    // the globe synchronizes in a microtask
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic"), "globe layer").to.exist;
+    });
+  });
+}
+
+/** A new source set through `addOrUpdateLayer` reaches the globe. */
+export function testAddOrUpdateLayerUpdate() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [xyzDefinition("a")];
+    const { planet } = activate(map);
+    map.addOrUpdateLayer(xyzDefinition("b"));
+    expect(
+      map.getLayerById("mosaic").getSource().getUrls()[0],
+      "OL source",
+    ).to.contain("/test-xyz/b/");
+    // the globe synchronizes in a microtask
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic").url, "globe layer").to.contain(
+        "/test-xyz/b/",
+      );
+    });
+  });
+}
+
+/** A child added to an existing group through `addOrUpdateLayer` reaches the globe. */
+export function testAddOrUpdateLayerGroupChild() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  /** @param {Array<import("../../../src/layers.js").EoxLayer>} layers */
+  const group = (layers) =>
+    /** @type {import("../../../src/layers.js").EoxLayer} */ ({
+      type: "Group",
+      properties: { id: "group" },
+      layers,
+    });
+  withMap((map) => {
+    map.layers = [group([xyzDefinition("a", "first")])];
+    const { planet } = activate(map);
+    map.addOrUpdateLayer(
+      group([xyzDefinition("a", "first"), xyzDefinition("b", "second")]),
+    );
+    expect(map.getLayerById("second"), "OL layer").to.exist;
+    // the globe synchronizes in a microtask
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("second"), "globe layer").to.exist;
+    });
+  });
+}
+
+/** An XYZ URL edited in place on the same source (as eox-layercontrol does) reaches the globe. */
+export function testInPlaceXyzUrlChange() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [xyzDefinition("a")];
+    const { planet } = activate(map);
+    const source = /** @type {any} */ (map.getLayerById("mosaic").getSource());
+    const updatedUrl = `${source.getUrls()[0]}?rescale=2`;
+    // mirrors eox-layercontrol: keep the source, store the URL, bump the key
+    source._updatedUrl = updatedUrl;
+    source.setKey("edited");
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic").url, "globe layer").to.equal(
+        updatedUrl,
+      );
+    });
+  });
+}
+
+/** WMS params updated in place on the same source reach the globe. */
+export function testInPlaceWmsParamsChange() {
+  cy.intercept("**/test-wms*", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [wmsDefinition()];
+    const { planet } = activate(map);
+    const source = /** @type {any} */ (map.getLayerById("dynamic").getSource());
+    source.updateParams({ TIME: "2020-01-01" });
+    cy.wrap(planet).should((p) => {
+      // og WMS keeps all non-layer params only in its private request string
+      expect(p.getLayerByName("dynamic")._extra, "globe layer").to.contain(
+        "TIME=2020-01-01",
+      );
+    });
+  });
+}

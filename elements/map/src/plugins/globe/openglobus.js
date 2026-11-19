@@ -233,6 +233,12 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
         return r.json();
       })
       .then((data) => {
+        // The source or the layer was replaced while fetching.
+        if (
+          olLayer.getSource() !== source ||
+          !EOxMap.map.getAllLayers().includes(olLayer)
+        )
+          return undefined;
         const crs = data["crs"];
         if (crs) {
           if (crs["type"] == "name") {
