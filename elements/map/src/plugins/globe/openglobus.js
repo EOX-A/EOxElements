@@ -26,6 +26,7 @@ import {
   DEFAULT_STROKE_COLOR,
   OG_GEOMETRY_TYPES,
   GEOMETRY_STYLE_SETTERS,
+  OL_ALPHA_VALID,
 } from "../../enums/index.js";
 import { distributeTileToIdealMap } from "./methods.js";
 import { transform } from "../../helpers/index.js";
@@ -394,6 +395,32 @@ export const refreshGlobe = () => {
 };
 
 /**
+ * Translates the style of an OL GeoTIFF layer into OpenGlobus render options,
+ * following its source: the alpha band OL adds for nodata, and its sampling.
+ *
+ * @param {import("ol/layer/WebGLTile.js").default} olLayer - Layer with a GeoTIFF source.
+ * @param {Record<string, any>} [variables] - Style variables, defaults to the layer's.
+ * @returns {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions}
+ */
+export function getGeoTIFFRenderOptions(olLayer, variables) {
+  const source = /** @type {GeoTIFF_ol | null} */ (olLayer.getSource());
+  if (!source) return {};
+  return /** @type {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions} */ ({
+    ...translateOLColorExpression(
+      // @ts-expect-error private; the style, so unstyled layers stay empty and og picks RGB
+      olLayer.style_,
+      // @ts-expect-error private, no public getter for the current variables
+      variables ?? olLayer.styleVariables_,
+      source.nodataBandIndex,
+      // @ts-expect-error private, OL has no public getter for `normalize`
+      source.normalize_ ? 1 : OL_ALPHA_VALID,
+    ),
+    // Bilinear sampling would blend class values into other classes.
+    ...(!source.getInterpolate() && { resampleMethod: "nearest" }),
+  });
+}
+
+/**
  * Translates an OL GeoTIFF source definition into OpenGlobus GeoTIFFLayer source options.
  * A single COG (one entry in `sources`, or a top-level `url`) is passed as `src`,
  * multiple COGs are passed as `sources` and stacked as bands, as in OL.
@@ -577,18 +604,15 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
       !!jsonDef?.source?.url);
 
   if (isGeoTIFF) {
-    const style = jsonDef?.style || olLayer.style_ || {};
-
-    const renderOptions =
-      /** @type {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions} */ (
-        translateOLColorExpression(style, olLayer.styleVariables_)
-      );
+    const tileLayer = /** @type {import("ol/layer/WebGLTile.js").default} */ (
+      /** @type {unknown} */ (olLayer)
+    );
     const geoTIFFLayer = new GeoTIFFLayer(id, {
       ...getGeoTIFFSourceOptions(jsonDef?.source),
       ...getLoadingOptions(olLayer),
       opacity: olLayer.getOpacity(),
       visibility: olLayer.getVisible(),
-      renderOptions,
+      renderOptions: getGeoTIFFRenderOptions(tileLayer),
     });
 
     attachGlobeSelect(EOxMap, olLayer, geoTIFFLayer);
@@ -1016,7 +1040,12 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
       );
       if (globusLayer && typeof globusLayer.setRenderOptions === "function") {
         globusLayer.setRenderOptions(
-          translateOLColorExpression(olLayer, newStyleVariables),
+          getGeoTIFFRenderOptions(
+            /** @type {import("ol/layer/WebGLTile.js").default} */ (
+              /** @type {unknown} */ (olLayer)
+            ),
+            newStyleVariables,
+          ),
         );
       }
 
