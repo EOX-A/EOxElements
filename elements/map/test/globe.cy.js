@@ -4,6 +4,7 @@ import "../src/plugins/globe/index";
 import { isGlobeExist } from "./cases/general";
 import {
   testTranslateColorExpression,
+  testGeoTIFFMaskRendering,
   testGlobeSelect,
   testGlobeSelectStyle,
   testGeoTIFFSourceOptions,
@@ -33,6 +34,12 @@ describe("globe", () => {
    */
   it("translates OpenLayers color expressions into OpenGlobus ColorScale and renderOptions", () =>
     testTranslateColorExpression());
+
+  /**
+   * Test case to hide nodata, NaN and masked pixels when og renders a translated style
+   */
+  it("hides nodata, NaN and masked pixels of a translated style", () =>
+    testGeoTIFFMaskRendering());
 
   /**
    * Test case to pick GeoTIFF band values and parse GetFeatureInfo responses for globe tooltips
