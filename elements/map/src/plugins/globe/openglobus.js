@@ -39,7 +39,6 @@ import UrlTile from "ol/source/UrlTile.js";
 import Vector_ol from "ol/source/Vector.js";
 import GeoTIFF_ol from "ol/source/GeoTIFF.js";
 import BaseTileLayer from "ol/layer/BaseTile.js";
-import { get as getProjection, equivalent } from "ol/proj";
 import FullScreen from "ol/control/FullScreen";
 import { unByKey } from "ol/Observable";
 import { getLayerById } from "../../helpers/layer.js";
@@ -520,7 +519,6 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
   }
   const vectorUrl = source instanceof Vector_ol && source.getUrl();
   if (typeof vectorUrl === "string") {
-    let projection;
     /** @type {import("@openglobus/og").Globe | null | undefined} */
     let targetGlobe = EOxMap?.globe;
     if (!targetGlobe) {
@@ -542,27 +540,12 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
           !EOxMap.map.getAllLayers().includes(olLayer)
         )
           return undefined;
-        const crs = data["crs"];
-        if (crs) {
-          if (crs["type"] == "name") {
-            projection = getProjection(crs["properties"]["name"]);
-          } else if (crs["type"] === "EPSG") {
-            projection = getProjection("EPSG:" + crs["properties"]["code"]);
-          }
-        }
-        if (
-          (projection && equivalent(projection, getProjection("EPSG:4326"))) ||
-          !crs
-        ) {
-          const format = new GeoJSON();
-          const features = data.features
-            .filter((feature) => feature.geometry)
-            .map(
-              (feature) =>
-                /** @type {import("ol/Feature").default} */ (
-                  format.readFeature(feature)
-                ),
-            );
+        const format = new GeoJSON();
+        // A `crs` OL doesn't know keeps the CanvasTiles fallback.
+        if (format.readProjection(data)) {
+          const features = format
+            .readFeatures(data, { featureProjection: "EPSG:4326" })
+            .filter((feature) => feature.getGeometry());
           // Built before the swap, so a style error keeps the CanvasTiles fallback.
           const entities = features.flatMap((feature) =>
             createGlobeEntities(feature, olLayer.getStyleFunction()),
@@ -591,9 +574,6 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
           return undefined;
         }
       });
-    if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
-      return undefined;
-    }
   }
 
   // Check if GeoTIFF layer can be natively rendered in OpenGlobus

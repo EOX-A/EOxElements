@@ -17,4 +17,5 @@ export {
   testTranslateVectorStyle,
   testGlobePointHighlight,
   testGlobeVectorLayer,
+  testGlobeVectorProjection,
 } from "./vector-style.js";
