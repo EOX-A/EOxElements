@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { getLegendConfig, getStartVals, getGeoZarrBandRange } from "../helpers";
+import { syncMinMaxFormValues } from "@eox/elements-utils";
 import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
 import _throttle from "lodash.throttle";
@@ -143,15 +144,15 @@ export class EOxLayerControlLayerConfig extends LitElement {
 
       if (
         this.layerConfig?.min !== undefined &&
-        (isAutofill || schemaProps?.min !== undefined)
+        this.layerConfig?.max !== undefined
       ) {
-        this.#data.min = this.layerConfig.min;
-      }
-      if (
-        this.layerConfig?.max !== undefined &&
-        (isAutofill || schemaProps?.max !== undefined)
-      ) {
-        this.#data.max = this.layerConfig.max;
+        syncMinMaxFormValues(
+          this.#data,
+          schemaProps,
+          this.layerConfig.min,
+          this.layerConfig.max,
+          isAutofill,
+        );
       }
       const activeVar =
         this.layer.get("_lastVariable") ||
@@ -235,14 +236,8 @@ export class EOxLayerControlLayerConfig extends LitElement {
         String(currentVar),
         this.layerConfig,
       );
-      if (e.detail) {
-        if ("min" in e.detail || this.layerConfig?.min !== undefined) {
-          e.detail.min = targetMin;
-        }
-        if ("max" in e.detail || this.layerConfig?.max !== undefined) {
-          e.detail.max = targetMax;
-        }
-      }
+      const schemaProps = this.layerConfig?.schema?.properties;
+      syncMinMaxFormValues(e.detail, schemaProps, targetMin, targetMax);
     }
 
     this.#data = { ...e.detail };

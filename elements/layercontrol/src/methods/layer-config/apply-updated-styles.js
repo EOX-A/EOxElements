@@ -1,7 +1,8 @@
 import { getGeoZarrBandRange, updateGeoZarrBand } from "../../helpers";
+import { syncMinMaxFormValues } from "@eox/elements-utils";
 
 /**
- * @param {Record<string,number>} jsonformOutput
+ * @param {Record<string,any>} jsonformOutput
  * @param { import("ol/layer/Layer").default} layer
  * @param { import("../../components/layer-config").EOxLayerControlLayerConfig['layerConfig']} layerConfig
  * */
@@ -52,10 +53,12 @@ export default async function (jsonformOutput, layer, layerConfig) {
           layerConfig?.schema?.properties?.max !== undefined;
 
         if (hasMinMaxStyle) {
-          if (jsonformOutput) {
-            if ("min" in jsonformOutput) jsonformOutput.min = targetMin;
-            if ("max" in jsonformOutput) jsonformOutput.max = targetMax;
-          }
+          syncMinMaxFormValues(
+            jsonformOutput,
+            layerConfig?.schema?.properties,
+            targetMin,
+            targetMax,
+          );
           updatedValues.min = targetMin;
           updatedValues.max = targetMax;
           if (styles?.variables) {

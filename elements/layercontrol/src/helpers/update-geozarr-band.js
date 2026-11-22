@@ -1,93 +1,11 @@
-/**
- * Computes an appropriate step for number/range inputs based on the range difference.
- * @param {number} min
- * @param {number} max
- * @returns {number}
- */
-export function computeStep(min, max) {
-  const diff = Math.abs(max - min);
-  if (diff === 0) return 0.01;
-  if (diff <= 0.01) return 0.0001;
-  if (diff <= 0.1) return 0.001;
-  if (diff <= 1) return 0.01;
-  if (diff <= 10) return 0.1;
-  return 1;
-}
+import {
+  computeStep,
+  buildMinMaxProperties,
+  applyMinMaxToSchemaProperties,
+  applyLayerStyleVariables,
+} from "@eox/elements-utils";
 
-/**
- * Builds schema property definitions for min and max controls based on valid_range.
- * If validRange is available, uses number inputs with native incrementing buttons (format: "number").
- * If no validRange is available, uses range sliders (format: "range").
- *
- * @param {number} [min]
- * @param {number} [max]
- * @param {number[] | null | undefined} [validRange]
- * @returns {{ minProp: Record<string, any>, maxProp: Record<string, any> }}
- */
-export function buildMinMaxProperties(min, max, validRange) {
-  const hasValidRange =
-    Array.isArray(validRange) &&
-    validRange.length === 2 &&
-    typeof validRange[0] === "number" &&
-    typeof validRange[1] === "number" &&
-    !Number.isNaN(validRange[0]) &&
-    !Number.isNaN(validRange[1]);
-
-  if (hasValidRange) {
-    const rangeMin = validRange[0];
-    const rangeMax = validRange[1];
-    const step = computeStep(rangeMin, rangeMax);
-    const resolvedMin = min !== undefined ? min : rangeMin;
-    const resolvedMax = max !== undefined ? max : rangeMax;
-    return {
-      minProp: {
-        type: "number",
-        format: "number",
-        title: "Min Value",
-        default: resolvedMin,
-        minimum: rangeMin,
-        maximum: rangeMax,
-        step,
-      },
-      maxProp: {
-        type: "number",
-        format: "number",
-        title: "Max Value",
-        default: resolvedMax,
-        minimum: rangeMin,
-        maximum: rangeMax,
-        step,
-      },
-    };
-  }
-
-  const resolvedMin = min !== undefined ? min : 0;
-  const resolvedMax = max !== undefined ? max : 1;
-  const sliderMin = typeof min === "number" ? Math.min(0, min) : 0;
-  const sliderMax =
-    typeof max === "number" && max > sliderMin ? max : sliderMin + 1;
-  const step = computeStep(sliderMin, sliderMax);
-  return {
-    minProp: {
-      type: "number",
-      format: "range",
-      title: "Min Value",
-      default: resolvedMin,
-      minimum: sliderMin,
-      maximum: sliderMax,
-      step,
-    },
-    maxProp: {
-      type: "number",
-      format: "range",
-      title: "Max Value",
-      default: resolvedMax,
-      minimum: sliderMin,
-      maximum: sliderMax,
-      step,
-    },
-  };
-}
+export { computeStep, buildMinMaxProperties };
 
 /**
  * Resolves the target min and max range for a given GeoZarr band.
@@ -205,11 +123,6 @@ export async function updateGeoZarrBand(layer, newBand) {
     ? layer.get("_geozarrVariables")
     : layer?._geozarrVariables;
   const validRange = geozarrVars?.[newBand]?.valid_range;
-  const { minProp, maxProp } = buildMinMaxProperties(
-    targetMin,
-    targetMax,
-    validRange,
-  );
 
   // 3. Update layerConfig (bands, min, max)
   let updatedLayerConfig = layerConfig;
@@ -238,20 +151,14 @@ export async function updateGeoZarrBand(layer, newBand) {
         !!props.redMax || !!props.greenMax || !!props.blueMax;
 
       if (!isMultiChannel) {
-        if (props.min !== undefined || isAutofill) {
-          props.min = {
-            ...(props.min || {}),
-            ...minProp,
-            default: targetMin,
-          };
-        }
-        if (props.max !== undefined || isAutofill) {
-          props.max = {
-            ...(props.max || {}),
-            ...maxProp,
-            default: targetMax,
-          };
-        }
+        applyMinMaxToSchemaProperties(
+          props,
+          targetMin,
+          targetMax,
+          validRange,
+          isAutofill,
+          true,
+        );
       }
     }
 
@@ -291,22 +198,7 @@ export async function updateGeoZarrBand(layer, newBand) {
     layerConfig?.schema?.properties?.max !== undefined;
 
   if (hasMinMaxStyle) {
-    if (typeof layer.updateStyleVariables === "function") {
-      layer.updateStyleVariables({ min: targetMin, max: targetMax });
-    }
-    if (layer.styleVariables_) {
-      layer.styleVariables_.min = targetMin;
-      layer.styleVariables_.max = targetMax;
-    }
-    if (layer.style_?.variables) {
-      layer.style_.variables.min = targetMin;
-      layer.style_.variables.max = targetMax;
-    }
-    const styleObj = layer.get?.("style");
-    if (styleObj?.variables) {
-      styleObj.variables.min = targetMin;
-      styleObj.variables.max = targetMax;
-    }
+    applyLayerStyleVariables(layer, { min: targetMin, max: targetMax });
   }
 
   // 5. Update dimensions (time and non-temporal extra dimensions)

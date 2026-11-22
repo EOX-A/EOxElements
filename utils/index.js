@@ -7,3 +7,10 @@ export {
   findHost,
 } from "./dispatchElementEvent";
 export { safeCloneValue } from "./safeCloneValue";
+export {
+  computeStep,
+  buildMinMaxProperties,
+  applyMinMaxToSchemaProperties,
+  applyLayerStyleVariables,
+  syncMinMaxFormValues,
+} from "./geoZarrRangeHelpers";
