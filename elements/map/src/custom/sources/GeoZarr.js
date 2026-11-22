@@ -401,7 +401,11 @@ export default class GeoZarr extends DataTileSource {
     const overrides = /** @type {RequestInit} */ (this.storeOptions_) || {};
     const store = /** @type {FetchStore} */ (
       withRangeCoalescing(
-        new FetchStore(this.url_, { overrides, fetch: storeFetch }),
+        new FetchStore(this.url_, {
+          overrides,
+          fetch: storeFetch,
+          useSuffixRequest: true,
+        }),
       )
     );
 

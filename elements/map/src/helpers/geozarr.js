@@ -137,7 +137,7 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
 
   try {
     let metadata = { ...source?.consolidatedMetadata_ };
-    if (rootUrl) {
+    if (rootUrl && Object.keys(metadata).length === 0) {
       try {
         let res = await fetch(`${rootUrl}/.zmetadata`);
         if (res.ok) {
