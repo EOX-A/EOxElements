@@ -1,7 +1,9 @@
+import "color-legend-element";
 import "../src/main";
 import "@eox/jsonform";
 import { html } from "lit";
 import BaseObject from "ol/Object.js";
+import { buildMinMaxProperties } from "@eox/elements-utils";
 import { updateGeoZarrBand } from "../src/helpers/update-geozarr-band.js";
 
 describe("LayerControl: LayerConfig form", () => {
@@ -176,6 +178,76 @@ describe("LayerControl: LayerConfig form", () => {
         expect(props.minmax.format).to.equal("minmax");
         expect(props.minmax.properties.min.default).to.equal(-10);
         expect(props.minmax.properties.max.default).to.equal(20);
+      });
+  });
+
+  it("rounds unrounded valid_range bounds for minmax slider and sets dynamic legend tickFormat", () => {
+    const { minProp, maxProp } = buildMinMaxProperties(
+      undefined,
+      undefined,
+      [33.897999999999996, 40.352000000000004],
+    );
+    expect(minProp.minimum).to.equal(33.8);
+    expect(maxProp.maximum).to.equal(40.4);
+    expect(minProp.step).to.equal(0.1);
+
+    const mockLayer = new BaseObject({
+      id: "rounded-geozarr",
+    });
+    const layerAny = /** @type {any} */ (mockLayer);
+    layerAny.style_ = { variables: { min: 33.8, max: 40.4 } };
+    layerAny.getSource = () => ({});
+    layerAny.updateStyleVariables = cy.spy();
+
+    const layerConfig = {
+      type: "style",
+      legend: {
+        title: "Salinity",
+        range: ["#440154", "#fde725"],
+        domainProperties: ["min", "max"],
+      },
+      schema: {
+        type: "object",
+        properties: {
+          minmax: {
+            type: "object",
+            title: "Value Range",
+            format: "minmax",
+            properties: {
+              min: minProp,
+              max: maxProp,
+            },
+          },
+        },
+      },
+    };
+
+    cy.mount(html`
+      <eox-layercontrol-layerconfig
+        .layer=${mockLayer}
+        .layerConfig=${layerConfig}
+      ></eox-layercontrol-layerconfig>
+    `);
+
+    cy.get("eox-layercontrol-layerconfig")
+      .shadow()
+      .find("color-legend")
+      .should("exist")
+      .and(($legend) => {
+        expect($legend[0].getAttribute("tickFormat")).to.equal(".1f");
+        expect(/** @type {any} */ ($legend[0]).domain).to.deep.equal([
+          33.8, 40.4,
+        ]);
+      });
+
+    cy.get("eox-layercontrol-layerconfig")
+      .shadow()
+      .find("eox-jsonform")
+      .find("tc-range-slider")
+      .should("exist")
+      .and(($slider) => {
+        expect($slider[0].getAttribute("min")).to.equal("33.8");
+        expect($slider[0].getAttribute("max")).to.equal("40.4");
       });
   });
 });

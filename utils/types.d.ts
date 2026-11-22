@@ -51,6 +51,16 @@ export declare function safeCloneValue<T = unknown>(val: T): T;
 
 export declare function computeStep(min: number, max: number): number;
 
+export declare function getStepDecimals(step: number): number;
+
+export declare function roundRangeBounds(
+  range: [number, number],
+): [number, number];
+
+export declare function computeLegendTickFormat(
+  domain: [number, number],
+): string;
+
 export declare function buildMinMaxProperties(
   min?: number,
   max?: number,

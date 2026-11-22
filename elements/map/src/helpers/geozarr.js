@@ -4,6 +4,7 @@
  */
 import {
   computeStep,
+  roundRangeBounds,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
@@ -12,6 +13,7 @@ import {
 
 export {
   computeStep,
+  roundRangeBounds,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
@@ -634,8 +636,7 @@ export async function setupGeoZarrLayer(layer) {
     !Number.isNaN(validRange[0]) &&
     !Number.isNaN(validRange[1])
   ) {
-    min = validRange[0];
-    max = validRange[1];
+    [min, max] = roundRangeBounds([validRange[0], validRange[1]]);
   } else if (
     layerConfig?.min !== undefined &&
     typeof layerConfig.min === "number" &&
