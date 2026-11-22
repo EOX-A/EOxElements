@@ -9,3 +9,4 @@ export { default as keepSliceOnUpdate } from "./keep-slice-on-update";
 export { default as openCurrentStepOnEarlyUpdate } from "./open-current-step-on-early-update";
 export { default as openNewCurrentStepOnUpdate } from "./open-new-current-step-on-update";
 export { default as skipSetupOnUnrelatedUpdate } from "./skip-setup-on-unrelated-update";
+export { default as autofillMinmaxBeforeLayerconfig } from "./autofill-minmax-before-layerconfig";
