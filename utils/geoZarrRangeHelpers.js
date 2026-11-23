@@ -72,6 +72,80 @@ export function computeLegendTickFormat(domain) {
 }
 
 /**
+ * Parses a raw Zarr range attribute (array or comma/JSON string) into `[min, max]`, or `null`.
+ *
+ * @param {unknown} raw
+ * @returns {[number, number] | null}
+ */
+export function parseRangeAttribute(raw) {
+  let range = raw;
+  if (typeof range === "string") {
+    try {
+      range = JSON.parse(range);
+    } catch {
+      const parts = range.split(",").map(Number);
+      if (
+        parts.length === 2 &&
+        !Number.isNaN(parts[0]) &&
+        !Number.isNaN(parts[1])
+      ) {
+        range = parts;
+      }
+    }
+  }
+  if (
+    Array.isArray(range) &&
+    range.length === 2 &&
+    Number.isFinite(Number(range[0])) &&
+    Number.isFinite(Number(range[1]))
+  ) {
+    return [Number(range[0]), Number(range[1])];
+  }
+  return null;
+}
+
+/**
+ * Resolves slider bounds (`boundsRange`) and initial default `[min, max]` from
+ * `valid_range` and optional `visualization_range`.
+ * `valid_range` sets the eligible slider `minimum`/`maximum`, while `visualization_range`
+ * sets the initial `default` values (rounded to the bounds step and clamped inside bounds).
+ *
+ * @param {number[] | null | undefined} validRange
+ * @param {number[] | null | undefined} [visualizationRange]
+ * @returns {{ min: number, max: number, boundsRange: [number, number] | null }}
+ */
+export function resolveRangeDefaults(validRange, visualizationRange) {
+  const valid = parseRangeAttribute(validRange);
+  const vis = parseRangeAttribute(visualizationRange);
+  const boundsSource = valid ?? vis;
+
+  if (!boundsSource) {
+    return { min: 0, max: 1, boundsRange: null };
+  }
+
+  const boundsRange = roundRangeBounds(boundsSource);
+  if (!vis) {
+    return { min: boundsRange[0], max: boundsRange[1], boundsRange };
+  }
+
+  const step = computeStep(boundsRange[0], boundsRange[1]);
+  const decimals = getStepDecimals(step);
+  const clampAndRound = (v) =>
+    Math.max(
+      boundsRange[0],
+      Math.min(boundsRange[1], Number(v.toFixed(decimals))),
+    );
+  const visLo = clampAndRound(Math.min(vis[0], vis[1]));
+  const visHi = clampAndRound(Math.max(vis[0], vis[1]));
+
+  return {
+    min: visLo,
+    max: visHi,
+    boundsRange,
+  };
+}
+
+/**
  * Builds schema property definitions for min and max controls based on valid_range.
  * If validRange is available, uses range sliders bounded by rounded valid_range.
  * If no validRange is available, uses number inputs (`format: "number"`).
@@ -310,10 +384,20 @@ export function syncMinMaxFormValues(
 }
 
 /**
+ * Converts raw Zarr coordinate values (including BigInt) into finite numbers.
+ *
+ * @param {any[] | undefined} rawCoords
+ * @returns {number[]}
+ */
+function toNumericCoords(rawCoords) {
+  if (!Array.isArray(rawCoords)) return [];
+  return rawCoords.map((c) => Number(c)).filter(Number.isFinite);
+}
+
+/**
  * Builds a JSONForm schema property for a non-temporal GeoZarr dimension (e.g. `depth`).
- * Uses a `format: "range"` slider with physical coordinate values when spacing is uniform,
- * an `enum` dropdown of exact values when spacing is non-uniform, and falls back to
- * `0 .. size - 1` indices when coordinate values are unavailable.
+ * Uses an `enum` dropdown of exact physical coordinate values when available,
+ * and falls back to `0 .. size - 1` indices when coordinate values are unavailable.
  *
  * @param {string} dimName
  * @param {{ size: number, attributes?: Record<string, any>, coordinates?: any[] }} dimMeta
@@ -326,35 +410,8 @@ export function buildDimensionProperty(dimName, dimMeta) {
   const units = dimMeta?.attributes?.units;
   const displayTitle = units ? `${title} (${units})` : title;
 
-  const rawCoords = Array.isArray(dimMeta?.coordinates)
-    ? dimMeta.coordinates
-    : [];
-  const coords = rawCoords
-    .map((c) => (typeof c === "bigint" ? Number(c) : Number(c)))
-    .filter(Number.isFinite);
-
-  if (coords.length === dimMeta?.size && coords.length > 1) {
-    const firstStep = coords[1] - coords[0];
-    const absStep = Math.abs(firstStep);
-    const isUniform =
-      absStep > 0 &&
-      coords.every(
-        (c, i) =>
-          i === 0 || Math.abs(c - coords[i - 1] - firstStep) <= absStep * 1e-6,
-      );
-
-    if (isUniform) {
-      return {
-        type: "number",
-        title: displayTitle,
-        default: coords[0],
-        minimum: Math.min(coords[0], coords[coords.length - 1]),
-        maximum: Math.max(coords[0], coords[coords.length - 1]),
-        step: Number(absStep.toPrecision(12)),
-        format: "range",
-      };
-    }
-
+  const coords = toNumericCoords(dimMeta?.coordinates);
+  if (coords.length === dimMeta?.size && coords.length > 0) {
     return {
       type: "number",
       title: displayTitle,
@@ -386,14 +443,11 @@ export function resolveDimensionIndex(dimMeta, value) {
   const numVal = Number(value);
   if (!Number.isFinite(numVal)) return 0;
 
-  const rawCoords = Array.isArray(dimMeta?.coordinates)
-    ? dimMeta.coordinates
-    : [];
-  const coords = rawCoords.map((c) =>
-    typeof c === "bigint" ? Number(c) : Number(c),
-  );
+  const coords = toNumericCoords(dimMeta?.coordinates);
+  if (coords.length > 0) {
+    const exactIdx = coords.indexOf(numVal);
+    if (exactIdx !== -1) return exactIdx;
 
-  if (coords.length > 0 && coords.every(Number.isFinite)) {
     let bestIdx = 0;
     let bestDist = Math.abs(coords[0] - numVal);
     for (let i = 1; i < coords.length; i++) {

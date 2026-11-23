@@ -6,6 +6,7 @@ import BaseObject from "ol/Object.js";
 import {
   buildMinMaxProperties,
   buildDimensionProperty,
+  resolveRangeDefaults,
 } from "@eox/elements-utils";
 import { updateGeoZarrBand } from "../src/helpers/update-geozarr-band.js";
 import { applyUpdatedStyles } from "../src/methods/layer-config";
@@ -255,7 +256,7 @@ describe("LayerControl: LayerConfig form", () => {
       });
   });
 
-  it("builds range slider for uniform depth coordinates and enum dropdown for non-uniform coordinates, mapping values to slice indices", () => {
+  it("builds enum dropdowns for coordinate-backed depth dimensions and maps selected values to slice indices", () => {
     const uniformProp = buildDimensionProperty("depth", {
       size: 4,
       attributes: { long_name: "Depth", units: "m" },
@@ -265,10 +266,7 @@ describe("LayerControl: LayerConfig form", () => {
       type: "number",
       title: "Depth (m)",
       default: 0,
-      minimum: 0,
-      maximum: 150,
-      step: 50,
-      format: "range",
+      enum: [0, 50, 100, 150],
     });
 
     const nonUniformProp = buildDimensionProperty("depth", {
@@ -309,5 +307,23 @@ describe("LayerControl: LayerConfig form", () => {
       .then(() => {
         expect(updateDimensionsSpy).to.have.been.calledWith({ depth: 3 });
       });
+  });
+
+  it("uses visualization_range for default values while keeping valid_range as slider bounds", () => {
+    const validRange = [-9000, 5000];
+    const visRange = [-759.42155, 1154.5239];
+    const { min, max, boundsRange } = resolveRangeDefaults(
+      validRange,
+      visRange,
+    );
+    expect(boundsRange).to.deep.equal([-9000, 5000]);
+    expect(min).to.equal(-759);
+    expect(max).to.equal(1155);
+
+    const { minProp, maxProp } = buildMinMaxProperties(min, max, boundsRange);
+    expect(minProp.minimum).to.equal(-9000);
+    expect(maxProp.maximum).to.equal(5000);
+    expect(minProp.default).to.equal(-759);
+    expect(maxProp.default).to.equal(1155);
   });
 });
