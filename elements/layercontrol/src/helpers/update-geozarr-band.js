@@ -1,5 +1,6 @@
 import {
   computeStep,
+  roundRangeBounds,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
@@ -34,8 +35,7 @@ export function getGeoZarrBandRange(layer, band, _layerConfig) {
     !Number.isNaN(validRange[0]) &&
     !Number.isNaN(validRange[1])
   ) {
-    targetMin = validRange[0];
-    targetMax = validRange[1];
+    [targetMin, targetMax] = roundRangeBounds([validRange[0], validRange[1]]);
   }
 
   return {

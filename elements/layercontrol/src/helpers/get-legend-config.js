@@ -1,4 +1,5 @@
 import { flattenObject } from "../methods/layer-config";
+import { computeLegendTickFormat } from "@eox/elements-utils";
 /**
  * extracts legend configurations from `LayerConfig`
  *
@@ -68,7 +69,21 @@ const getLegendConfig = (legendConfig, data, colormapRegistry) => {
         }
         return Object.keys(activeLegend)?.reduce((legend, key) => {
           if (key === "domainProperties") {
-            legend["domain"] = activeLegend[key].map((k) => flatData[k]);
+            const domain = activeLegend[key].map((k) => flatData[k]);
+            legend["domain"] = domain;
+            if (
+              activeLegend.tickFormat === undefined &&
+              domain.length === 2 &&
+              typeof domain[0] === "number" &&
+              typeof domain[1] === "number" &&
+              Number.isFinite(domain[0]) &&
+              Number.isFinite(domain[1])
+            ) {
+              legend["tickFormat"] = computeLegendTickFormat([
+                domain[0],
+                domain[1],
+              ]);
+            }
           } else {
             legend[key] = activeLegend[key];
           }
