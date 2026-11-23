@@ -12,6 +12,8 @@ export {
   getStepDecimals,
   roundRangeBounds,
   computeLegendTickFormat,
+  parseRangeAttribute,
+  resolveRangeDefaults,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,

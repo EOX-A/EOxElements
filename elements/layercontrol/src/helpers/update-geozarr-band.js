@@ -1,6 +1,6 @@
 import {
   computeStep,
-  roundRangeBounds,
+  resolveRangeDefaults,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
@@ -24,24 +24,14 @@ export function getGeoZarrBandRange(layer, band, _layerConfig) {
     ? layer.get("_geozarrVariables")
     : layer?._geozarrVariables;
   const varMeta = geozarrVars?.[band];
-  const validRange = varMeta?.valid_range;
-
-  let targetMin = undefined;
-  let targetMax = undefined;
-  if (
-    Array.isArray(validRange) &&
-    validRange.length === 2 &&
-    typeof validRange[0] === "number" &&
-    typeof validRange[1] === "number" &&
-    !Number.isNaN(validRange[0]) &&
-    !Number.isNaN(validRange[1])
-  ) {
-    [targetMin, targetMax] = roundRangeBounds([validRange[0], validRange[1]]);
-  }
+  const { min, max } = resolveRangeDefaults(
+    varMeta?.valid_range,
+    varMeta?.visualization_range,
+  );
 
   return {
-    targetMin: targetMin !== undefined ? targetMin : 0,
-    targetMax: targetMax !== undefined ? targetMax : 1,
+    targetMin: min,
+    targetMax: max,
   };
 }
 
@@ -123,7 +113,8 @@ export async function updateGeoZarrBand(layer, newBand) {
   const geozarrVars = layer?.get
     ? layer.get("_geozarrVariables")
     : layer?._geozarrVariables;
-  const validRange = geozarrVars?.[newBand]?.valid_range;
+  const varMeta = geozarrVars?.[newBand];
+  const boundsRange = varMeta?.valid_range ?? varMeta?.visualization_range;
 
   // 3. Update layerConfig (bands, min, max)
   let updatedLayerConfig = layerConfig;
@@ -156,7 +147,7 @@ export async function updateGeoZarrBand(layer, newBand) {
           props,
           targetMin,
           targetMax,
-          validRange,
+          boundsRange,
           isAutofill,
           true,
         );
