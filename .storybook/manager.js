@@ -7,7 +7,7 @@ addons.setConfig({
     base: "light",
     brandTitle: "EOX",
     brandUrl: "https://eox.at/",
-    brandImage: "https://eox.at/EOX_Logo.svg",
+    brandImage: "https://hub-brands.eox.at/eox/EOX_Logo.svg",
     brandTarget: "_self",
   }),
   selectedPanel: "eox/storybook-custom-panels/description",
