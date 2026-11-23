@@ -92,3 +92,17 @@ export declare function syncMinMaxFormValues(
   max: number,
   isAutofill?: boolean,
 ): void;
+
+export declare function buildDimensionProperty(
+  dimName: string,
+  dimMeta: {
+    size: number;
+    attributes?: Record<string, any>;
+    coordinates?: any[];
+  },
+): Record<string, any>;
+
+export declare function resolveDimensionIndex(
+  dimMeta: { size?: number; coordinates?: any[] } | undefined,
+  value: number | string,
+): number;

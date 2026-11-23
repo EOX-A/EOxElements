@@ -308,3 +308,104 @@ export function syncMinMaxFormValues(
     target.minmax = { min, max };
   }
 }
+
+/**
+ * Builds a JSONForm schema property for a non-temporal GeoZarr dimension (e.g. `depth`).
+ * Uses a `format: "range"` slider with physical coordinate values when spacing is uniform,
+ * an `enum` dropdown of exact values when spacing is non-uniform, and falls back to
+ * `0 .. size - 1` indices when coordinate values are unavailable.
+ *
+ * @param {string} dimName
+ * @param {{ size: number, attributes?: Record<string, any>, coordinates?: any[] }} dimMeta
+ * @returns {Record<string, any>}
+ */
+export function buildDimensionProperty(dimName, dimMeta) {
+  const title =
+    dimMeta?.attributes?.long_name ||
+    dimName.charAt(0).toUpperCase() + dimName.slice(1);
+  const units = dimMeta?.attributes?.units;
+  const displayTitle = units ? `${title} (${units})` : title;
+
+  const rawCoords = Array.isArray(dimMeta?.coordinates)
+    ? dimMeta.coordinates
+    : [];
+  const coords = rawCoords
+    .map((c) => (typeof c === "bigint" ? Number(c) : Number(c)))
+    .filter(Number.isFinite);
+
+  if (coords.length === dimMeta?.size && coords.length > 1) {
+    const firstStep = coords[1] - coords[0];
+    const absStep = Math.abs(firstStep);
+    const isUniform =
+      absStep > 0 &&
+      coords.every(
+        (c, i) =>
+          i === 0 || Math.abs(c - coords[i - 1] - firstStep) <= absStep * 1e-6,
+      );
+
+    if (isUniform) {
+      return {
+        type: "number",
+        title: displayTitle,
+        default: coords[0],
+        minimum: Math.min(coords[0], coords[coords.length - 1]),
+        maximum: Math.max(coords[0], coords[coords.length - 1]),
+        step: Number(absStep.toPrecision(12)),
+        format: "range",
+      };
+    }
+
+    return {
+      type: "number",
+      title: displayTitle,
+      default: coords[0],
+      enum: coords,
+    };
+  }
+
+  return {
+    type: "integer",
+    title: displayTitle,
+    default: 0,
+    minimum: 0,
+    maximum: Math.max(0, (dimMeta?.size ?? 1) - 1),
+    step: 1,
+    format: "range",
+  };
+}
+
+/**
+ * Resolves a physical coordinate value (or index) from the form into a 0-based
+ * integer slice index for `GeoZarr.prototype.updateDimensions()`.
+ *
+ * @param {{ size?: number, coordinates?: any[] } | undefined} dimMeta
+ * @param {number | string} value
+ * @returns {number}
+ */
+export function resolveDimensionIndex(dimMeta, value) {
+  const numVal = Number(value);
+  if (!Number.isFinite(numVal)) return 0;
+
+  const rawCoords = Array.isArray(dimMeta?.coordinates)
+    ? dimMeta.coordinates
+    : [];
+  const coords = rawCoords.map((c) =>
+    typeof c === "bigint" ? Number(c) : Number(c),
+  );
+
+  if (coords.length > 0 && coords.every(Number.isFinite)) {
+    let bestIdx = 0;
+    let bestDist = Math.abs(coords[0] - numVal);
+    for (let i = 1; i < coords.length; i++) {
+      const dist = Math.abs(coords[i] - numVal);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIdx = i;
+      }
+    }
+    return bestIdx;
+  }
+
+  const maxIdx = Math.max(0, (dimMeta?.size ?? 1) - 1);
+  return Math.max(0, Math.min(maxIdx, Math.round(numVal)));
+}
