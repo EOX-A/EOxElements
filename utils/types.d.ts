@@ -61,6 +61,19 @@ export declare function computeLegendTickFormat(
   domain: [number, number],
 ): string;
 
+export declare function parseRangeAttribute(
+  raw: unknown,
+): [number, number] | null;
+
+export declare function resolveRangeDefaults(
+  validRange: number[] | null | undefined,
+  visualizationRange?: number[] | null,
+): {
+  min: number;
+  max: number;
+  boundsRange: [number, number] | null;
+};
+
 export declare function buildMinMaxProperties(
   min?: number,
   max?: number,

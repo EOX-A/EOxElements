@@ -5,6 +5,8 @@
 import {
   computeStep,
   roundRangeBounds,
+  parseRangeAttribute,
+  resolveRangeDefaults,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
@@ -95,7 +97,7 @@ export function getGeoZarrSourceUrl(layer) {
  * @param {import("ol/layer/Base").default|any} layer
  * @param {any} source
  * @param {string} [rootUrl]
- * @returns {Promise<Record<string, { name: string, valid_range?: [number, number], units?: string, description: string, dimensions?: string[] }>>}
+ * @returns {Promise<Record<string, { name: string, valid_range?: [number, number], visualization_range?: [number, number], units?: string, description: string, dimensions?: string[] }>>}
  */
 export async function discoverGeoZarrVariables(layer, source, rootUrl) {
   /** @type {Record<string, any>} */
@@ -217,11 +219,12 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
         if (dimensions && Array.isArray(dimensions) && dimensions.length <= 1)
           continue;
 
-        // If attrs doesn't have valid_range, try group-level .zattrs or metadata
+        // If attrs doesn't have valid_range or visualization_range, try group-level .zattrs or metadata
         if (
           !attrs.valid_range &&
           !attrs.actual_range &&
           !attrs.valid_min_max &&
+          !attrs.visualization_range &&
           (attrs.valid_min === undefined || attrs.valid_max === undefined)
         ) {
           const groupAttrs =
@@ -233,39 +236,17 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
           }
         }
 
-        let validRange =
-          attrs.valid_range || attrs.actual_range || attrs.valid_min_max;
-        if (
-          !validRange &&
-          attrs.valid_min !== undefined &&
-          attrs.valid_max !== undefined
-        ) {
-          validRange = [attrs.valid_min, attrs.valid_max];
-        }
-        if (typeof validRange === "string") {
-          try {
-            validRange = JSON.parse(validRange);
-          } catch {
-            const rangeParts = validRange.split(",").map(Number);
-            if (
-              rangeParts.length === 2 &&
-              !Number.isNaN(rangeParts[0]) &&
-              !Number.isNaN(rangeParts[1])
-            ) {
-              validRange = rangeParts;
-            }
-          }
-        }
-        if (
-          Array.isArray(validRange) &&
-          validRange.length === 2 &&
-          !Number.isNaN(Number(validRange[0])) &&
-          !Number.isNaN(Number(validRange[1]))
-        ) {
-          validRange = [Number(validRange[0]), Number(validRange[1])];
-        } else {
-          validRange = null;
-        }
+        const rawValidRange =
+          attrs.valid_range ||
+          attrs.actual_range ||
+          attrs.valid_min_max ||
+          (attrs.valid_min !== undefined && attrs.valid_max !== undefined
+            ? [attrs.valid_min, attrs.valid_max]
+            : null);
+        const validRange = parseRangeAttribute(rawValidRange);
+        const visualizationRange = parseRangeAttribute(
+          attrs.visualization_range,
+        );
 
         const description =
           attrs.long_name ||
@@ -278,6 +259,7 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
           variables[varName] = {
             name: varName,
             valid_range: validRange,
+            visualization_range: visualizationRange,
             units,
             description,
             dimensions,
@@ -285,6 +267,9 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
         } else {
           if (validRange && !variables[varName].valid_range) {
             variables[varName].valid_range = validRange;
+          }
+          if (visualizationRange && !variables[varName].visualization_range) {
+            variables[varName].visualization_range = visualizationRange;
           }
           if (units && !variables[varName].units) {
             variables[varName].units = units;
@@ -627,19 +612,19 @@ export async function setupGeoZarrLayer(layer) {
 
   const activeVarMeta = currentBand ? variables[currentBand] : null;
   const validRange = activeVarMeta?.valid_range;
+  const visualizationRange = activeVarMeta?.visualization_range;
+  const {
+    boundsRange,
+    min: resolvedDefaultMin,
+    max: resolvedDefaultMax,
+  } = resolveRangeDefaults(validRange, visualizationRange);
 
   let min = 0;
   let max = 1;
 
-  if (
-    Array.isArray(validRange) &&
-    validRange.length === 2 &&
-    typeof validRange[0] === "number" &&
-    typeof validRange[1] === "number" &&
-    !Number.isNaN(validRange[0]) &&
-    !Number.isNaN(validRange[1])
-  ) {
-    [min, max] = roundRangeBounds([validRange[0], validRange[1]]);
+  if (boundsRange) {
+    min = resolvedDefaultMin;
+    max = resolvedDefaultMax;
   } else if (
     layerConfig?.min !== undefined &&
     typeof layerConfig.min === "number" &&
@@ -656,7 +641,7 @@ export async function setupGeoZarrLayer(layer) {
   const { minProp, maxProp, hasValidRange } = buildMinMaxProperties(
     min,
     max,
-    validRange,
+    boundsRange,
   );
 
   const existingBands =
@@ -810,7 +795,7 @@ export async function setupGeoZarrLayer(layer) {
         }
       }
 
-      applyMinMaxToSchemaProperties(props, min, max, validRange, isAutofill);
+      applyMinMaxToSchemaProperties(props, min, max, boundsRange, isAutofill);
 
       if (nonTemporalDims) {
         for (const [dimName, dimMeta] of Object.entries(nonTemporalDims)) {
