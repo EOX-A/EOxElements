@@ -113,12 +113,10 @@ export function registerGlobeLayerSynchronization(EOxMap, globe, mapPool) {
  * @returns {Globe} The created globe.
  */
 export const create = ({ EOxMap, target }) => {
-  const mapPool = createMapPool(
-    navigator.hardwareConcurrency || 4,
-    EOxMap,
-    target,
-  );
+  const poolSize = Math.min(navigator.hardwareConcurrency || 4, 4);
+  const mapPool = createMapPool(poolSize, EOxMap, target);
   const globe = createGlobe({ EOxMap, target, mapPool });
+  /** @type {any} */ (globe)._mapPool = mapPool;
   EOxMap.globe = globe;
 
   syncGlobeLayerOrder(EOxMap, globe);
