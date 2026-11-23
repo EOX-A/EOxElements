@@ -9,6 +9,9 @@ import {
   testGeoTIFFSourceOptions,
   testGlobeLayerOrder,
   testGlobeFlyPitch,
+  testGlobeZoomExtent,
+  testGlobeViewSwap,
+  testGlobeViewTilt,
 } from "./cases/globe";
 
 /**
@@ -54,4 +57,13 @@ describe("globe", () => {
    * Test case to animate pitch changes as part of the globe flight
    */
   it("animates pitch changes during globe flights", () => testGlobeFlyPitch());
+
+  it("flies to a new center after zoomExtent instead of the old extent", () =>
+    testGlobeZoomExtent());
+
+  it("keeps globe maps synced after their map views are shared", () =>
+    testGlobeViewSwap());
+
+  it("keeps the globe tilt and heading on map view changes", () =>
+    testGlobeViewTilt());
 });
