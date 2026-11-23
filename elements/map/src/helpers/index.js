@@ -26,4 +26,7 @@ export {
   setupGeoZarrLayer,
   computeStep,
   buildMinMaxProperties,
+  applyMinMaxToSchemaProperties,
+  applyLayerStyleVariables,
+  syncMinMaxFormValues,
 } from "./geozarr";
