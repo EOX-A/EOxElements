@@ -20,6 +20,10 @@ import {
   testGlobeVectorRestyle,
   testGlobeVectorLayer,
   testGlobeVectorProjection,
+  testGlobeScaleLine,
+  testGlobeMousePosition,
+  testGlobeStars,
+  testGlobeAtmosphere,
 } from "./cases/globe";
 
 /**
@@ -148,4 +152,13 @@ describe("globe", () => {
 
   it("reprojects GeoJSON vectors with a crs onto the globe", () =>
     testGlobeVectorProjection());
+
+  it("shows the ground scale at the screen centre in 3D", () =>
+    testGlobeScaleLine());
+
+  it("shows the cursor coordinate in 3D", () => testGlobeMousePosition());
+
+  it("draws stars around the globe when enabled", () => testGlobeStars());
+
+  it("draws and removes the atmosphere glow", () => testGlobeAtmosphere());
 });

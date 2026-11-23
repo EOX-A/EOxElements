@@ -9,6 +9,19 @@ export const HORIZON_BISECT_STEPS = 20;
 export const OG_FONTS_SRC =
   "https://cdn.jsdelivr.net/npm/@openglobus/og@1.0.0-rc34/lib/res/fonts";
 
+// Served with the docs (elements/map/stories/public/globe/stars); keep the path stable for released versions.
+const STARS_SRC = "https://eox-a.github.io/EOxElements/globe/stars";
+
+/** @type {import("../types").GlobeStarFaces} */
+export const DEFAULT_STAR_FACES = Object.freeze({
+  px: `${STARS_SRC}/px.webp`,
+  nx: `${STARS_SRC}/nx.webp`,
+  py: `${STARS_SRC}/py.webp`,
+  ny: `${STARS_SRC}/ny.webp`,
+  pz: `${STARS_SRC}/pz.webp`,
+  nz: `${STARS_SRC}/nz.webp`,
+});
+
 // og has no start/end text align.
 export const LABEL_ALIGN = Object.freeze({
   left: "left",
