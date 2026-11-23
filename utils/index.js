@@ -16,4 +16,6 @@ export {
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
   syncMinMaxFormValues,
+  buildDimensionProperty,
+  resolveDimensionIndex,
 } from "./geoZarrRangeHelpers";

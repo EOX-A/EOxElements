@@ -9,6 +9,7 @@ import {
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
   syncMinMaxFormValues,
+  buildDimensionProperty,
 } from "@eox/elements-utils";
 
 export {
@@ -399,16 +400,18 @@ export async function setupGeoZarrDimensions(
         for (const [dimName, dimInfo] of Object.entries(dims)) {
           if (dimName === "time" || !dimInfo || dimInfo.size <= 0) continue;
           /** @type {any[]} */
-          const coordinates = [];
+          let coordinates = [];
           if (typeof source.getValue === "function") {
-            for (let idx = 0; idx < dimInfo.size; idx++) {
-              try {
-                const val = await source.getValue(dimName, idx);
-                coordinates.push(val);
-              } catch {
-                coordinates.push(idx);
-              }
-            }
+            coordinates = await Promise.all(
+              [...Array(dimInfo.size).keys()].map(async (idx) => {
+                try {
+                  const val = await source.getValue(dimName, idx);
+                  return typeof val === "bigint" ? Number(val) : val;
+                } catch {
+                  return idx;
+                }
+              }),
+            );
           }
 
           nonTemporalDims[dimName] = {
@@ -743,21 +746,7 @@ export async function setupGeoZarrLayer(layer) {
     // Non-temporal dimension controls (e.g. depth, height, level, pressure)
     if (nonTemporalDims) {
       for (const [dimName, dimMeta] of Object.entries(nonTemporalDims)) {
-        const title =
-          dimMeta.attributes?.long_name ||
-          dimName.charAt(0).toUpperCase() + dimName.slice(1);
-        const units = dimMeta.attributes?.units;
-        const displayTitle = units ? `${title} (${units})` : title;
-
-        properties[dimName] = {
-          type: "integer",
-          title: displayTitle,
-          default: 0,
-          minimum: 0,
-          maximum: dimMeta.size - 1,
-          step: 1,
-          format: "range",
-        };
+        properties[dimName] = buildDimensionProperty(dimName, dimMeta);
       }
     }
 
@@ -826,20 +815,8 @@ export async function setupGeoZarrLayer(layer) {
       if (nonTemporalDims) {
         for (const [dimName, dimMeta] of Object.entries(nonTemporalDims)) {
           if (props[dimName] !== undefined || isAutofill) {
-            const title =
-              dimMeta.attributes?.long_name ||
-              dimName.charAt(0).toUpperCase() + dimName.slice(1);
-            const units = dimMeta.attributes?.units;
-            const displayTitle = units ? `${title} (${units})` : title;
-
             props[dimName] = {
-              type: "integer",
-              title: displayTitle,
-              default: 0,
-              minimum: 0,
-              maximum: dimMeta.size - 1,
-              step: 1,
-              format: "range",
+              ...buildDimensionProperty(dimName, dimMeta),
               ...props[dimName],
             };
           }

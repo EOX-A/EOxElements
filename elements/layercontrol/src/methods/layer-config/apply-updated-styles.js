@@ -1,5 +1,8 @@
 import { getGeoZarrBandRange, updateGeoZarrBand } from "../../helpers";
-import { syncMinMaxFormValues } from "@eox/elements-utils";
+import {
+  syncMinMaxFormValues,
+  resolveDimensionIndex,
+} from "@eox/elements-utils";
 
 /**
  * @param {Record<string,any>} jsonformOutput
@@ -83,7 +86,10 @@ export default async function (jsonformOutput, layer, layerConfig) {
       const dimUpdates = {};
       for (const dimName of Object.keys(geozarrDims)) {
         if (jsonformOutput[dimName] !== undefined) {
-          dimUpdates[dimName] = Number(jsonformOutput[dimName]);
+          dimUpdates[dimName] = resolveDimensionIndex(
+            geozarrDims[dimName],
+            jsonformOutput[dimName],
+          );
         }
       }
       if (Object.keys(dimUpdates).length > 0) {
