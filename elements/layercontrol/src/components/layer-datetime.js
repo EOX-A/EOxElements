@@ -100,7 +100,15 @@ export class EOxLayerControlLayerDatetime extends LitElement {
         `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
       currentStep = formatDate(dateObj);
     }
-    if (currentStep === this.layerDatetime.currentStep) {
+    const previousStep = this.layerDatetime.currentStep;
+    // TimeControl normalizes to seconds, but the configured step may include milliseconds.
+    if (
+      currentStep === previousStep ||
+      (isDatetimeConfig &&
+        typeof previousStep === "string" &&
+        Math.floor(dateObj.getTime() / 1000) ===
+          Math.floor(Date.parse(previousStep) / 1000))
+    ) {
       return;
     }
 
