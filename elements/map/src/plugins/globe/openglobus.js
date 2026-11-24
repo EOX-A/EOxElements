@@ -15,8 +15,13 @@ import {
   Quat,
 } from "@openglobus/og";
 import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
-import { distributeTileToIdealMap } from "./methods.js";
-import { transform } from "../../helpers/index.js";
+import {
+  distributeTileToIdealMap,
+  clearPoolQueue,
+  disposeMapPool,
+  syncGeoZarrPoolLayer,
+} from "./methods.js";
+import { transform, isGeoZarrLayer } from "../../helpers/index.js";
 import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
@@ -146,6 +151,75 @@ export const refreshGlobe = () => {
 };
 
 /**
+ * Standard WMS GetMap parameters managed directly by OpenGlobus `WMS.createRequestUrl`.
+ * Forwarding these in `extra` produces duplicate or conflicting query parameters
+ * (e.g. `SRS=EPSG:3857` alongside `SRS=EPSG:4326` with an `EPSG:3857` `BBOX`).
+ */
+const RESERVED_WMS_PARAMS = new Set([
+  "layers",
+  "version",
+  "service",
+  "request",
+  "format",
+  "srs",
+  "crs",
+  "bbox",
+  "width",
+  "height",
+]);
+
+/**
+ * Extracts clean OpenGlobus `WMS` options (`url`, `layers`, `version`, `extra`)
+ * from an OpenLayers `TileWMS` source, stripping reserved `GetMap` parameters
+ * from `extra` and preserving vendor/custom parameters (such as `TILED`,
+ * `TRANSPARENT`, `STYLES`, `TIME`, `CQL_FILTER`, or MapServer `map`).
+ *
+ * @param {import("ol/source/TileWMS.js").default} source
+ * @returns {{ url: string, layers: string, version: string, extra: Record<string, string> }}
+ */
+export const getGlobeWMSOptions = (source) => {
+  const rawUrl = source.getUrls?.()?.[0] || "";
+  const wmsParams = source.getParams?.() || {};
+
+  let cleanUrl = rawUrl;
+  /** @type {Record<string, any>} */
+  const mergedParams = {};
+
+  const queryIndex = rawUrl.indexOf("?");
+  if (queryIndex !== -1) {
+    cleanUrl = rawUrl.slice(0, queryIndex);
+    const searchParams = new URLSearchParams(rawUrl.slice(queryIndex + 1));
+    searchParams.forEach((val, key) => {
+      mergedParams[key] = val;
+    });
+  }
+
+  Object.entries(wmsParams).forEach(([key, val]) => {
+    if (val !== undefined && val !== null) {
+      mergedParams[key] = val;
+    }
+  });
+
+  let layers = "default";
+  let version = "1.1.1";
+  /** @type {Record<string, string>} */
+  const extra = {};
+
+  Object.entries(mergedParams).forEach(([key, val]) => {
+    const lower = key.toLowerCase();
+    if (lower === "layers" && val !== "") {
+      layers = String(val);
+    } else if (lower === "version" && val !== "") {
+      version = String(val);
+    } else if (!RESERVED_WMS_PARAMS.has(lower)) {
+      extra[key] = String(val);
+    }
+  });
+
+  return { url: cleanUrl, layers, version, extra };
+};
+
+/**
  * Translates an OL GeoTIFF source definition into OpenGlobus GeoTIFFLayer source options.
  * A single COG (one entry in `sources`, or a top-level `url`) is passed as `src`,
  * multiple COGs are passed as `sources` and stacked as bands, as in OL.
@@ -206,22 +280,16 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
     });
   }
   if (source instanceof WMS_ol) {
-    // Construct WMS URL with parameters
-    const wmsParams = source.getParams();
-    const baseUrl = source.getUrls()[0];
-    const wmsUrl = baseUrl;
-    const wmsLayerNames = wmsParams.LAYERS || wmsParams.layers || "default";
+    const { url, layers, version, extra } = getGlobeWMSOptions(source);
 
     const wmsLayer = new WMS(id, {
       isBaseLayer: olLayer.get("base"),
-      layers: wmsLayerNames,
-      url: wmsUrl,
+      layers,
+      url,
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
-      version: wmsParams.VERSION || wmsParams.Version || "1.1.1",
-      extra: {
-        ...wmsParams,
-      },
+      version,
+      ...(Object.keys(extra).length > 0 ? { extra } : {}),
     });
     attachGlobeSelect(EOxMap, olLayer, wmsLayer);
     return wmsLayer;
@@ -319,13 +387,36 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
     opacity: olLayer.getOpacity(),
     visibility: olLayer.getVisible(),
     async drawTile(material, applyCanvas) {
+      const canvasTilesLayer = /** @type {CanvasTiles} */ (material?.layer);
       if (!material.segment) {
+        canvasTilesLayer?.abortMaterialLoading?.(material);
+        material?.textureNotExists?.();
         return;
       }
+
+      const projCode = material.segment._projection?.code || "EPSG:3857";
+      /** @type {number[] | undefined} */
+      let extent;
+      if (projCode === "EPSG:4326") {
+        const ext =
+          material.segment.getExtentLonLat?.() ||
+          material.segment.getExtent?.();
+        if (ext) {
+          extent = [
+            ext.getWest(),
+            ext.getSouth(),
+            ext.getEast(),
+            ext.getNorth(),
+          ];
+        }
+      }
+
       const tile = {
         x: material.segment.tileX,
         y: material.segment.tileY,
         z: material.segment.tileZoom,
+        projection: projCode,
+        ...(extent ? { extent } : {}),
       };
 
       const mapPoolCandidate = distributeTileToIdealMap(
@@ -334,15 +425,23 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
         tile,
         (renderedMapCanvas) => {
           if (!material.segment?.initialized) {
+            canvasTilesLayer?.abortMaterialLoading?.(material);
             return;
           }
           applyCanvas(renderedMapCanvas);
         },
+        {
+          abort: () => {
+            canvasTilesLayer?.abortMaterialLoading?.(material);
+          },
+          fail: () => {
+            canvasTilesLayer?.abortMaterialLoading?.(material);
+            material.textureNotExists?.();
+          },
+        },
       );
 
-      if (mapPoolCandidate.tileQueue.length === 1) {
-        mapPoolCandidate.loadNextTile();
-      }
+      mapPoolCandidate.loadNextTile();
     },
   });
 };
@@ -532,6 +631,8 @@ export const enableGlobe = (map) => {
 export const disableGlobe = (map) => {
   if (map.globe) {
     const globe = map.globe;
+    const mapPool = /** @type {any} */ (globe)._mapPool;
+    mapPool?.forEach((poolItem) => clearPoolQueue(poolItem));
     disposeGlobeSynchronization(globe);
     const planet = globe.planet;
 
@@ -638,6 +739,7 @@ export const disableGlobe = (map) => {
           }
         }
         unmountGlobeTooltip(map);
+        disposeMapPool(mapPool);
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation
@@ -707,40 +809,101 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
     });
   }, 200);
 
-  const changeKey = olLayer.on("change", () => {
-    if (!disposed && olLayer.styleVariables_) {
-      const layerId = olLayer.get("id");
+  let lastStyleVarsJson = olLayer.styleVariables_
+    ? JSON.stringify(olLayer.styleVariables_)
+    : null;
+  const initialSource = /** @type {any} */ (olLayer).getSource?.();
+  let lastWmsKey =
+    initialSource instanceof WMS_ol
+      ? JSON.stringify(getGlobeWMSOptions(initialSource))
+      : null;
+
+  const syncLayerState = () => {
+    if (disposed) return;
+    const layerId = olLayer.get("id");
+    if (!layerId) return;
+
+    let shouldRefreshCanvasTiles = false;
+
+    if (isGeoZarrLayer(olLayer)) {
+      let poolUpdated = false;
+      mapPool.forEach((poolItem) => {
+        const layerInTileMap = getLayerById(poolItem.tileMap, layerId);
+        if (syncGeoZarrPoolLayer(olLayer, layerInTileMap)) {
+          poolUpdated = true;
+        }
+      });
+      if (poolUpdated) {
+        mapPool.forEach((poolItem) => clearPoolQueue(poolItem));
+        shouldRefreshCanvasTiles = true;
+      }
+    }
+
+    if (olLayer.styleVariables_) {
       const newStyleVariables = /** @type {Record<string, number>} */ (
         olLayer.styleVariables_
       );
-      if (!layerId || !newStyleVariables) return;
+      const nextStyleJson = JSON.stringify(newStyleVariables);
+      if (nextStyleJson !== lastStyleVarsJson) {
+        lastStyleVarsJson = nextStyleJson;
+        mapPool.forEach((poolItem) => {
+          clearPoolQueue(poolItem);
+          const layerInTileMap =
+            /** @type {import("ol/layer/WebGLTile.js").default} */ (
+              /** @type {unknown} */ (getLayerById(poolItem.tileMap, layerId))
+            );
+          if (layerInTileMap && layerInTileMap.updateStyleVariables) {
+            layerInTileMap.updateStyleVariables({ ...newStyleVariables });
+          }
+        });
 
-      mapPool.forEach((poolItem) => {
-        poolItem.tileQueue.length = 0;
-        const layerInTileMap =
-          /** @type {import("ol/layer/WebGLTile.js").default} */ (
-            /** @type {unknown} */ (getLayerById(poolItem.tileMap, layerId))
-          );
-        if (layerInTileMap && layerInTileMap.updateStyleVariables) {
-          layerInTileMap.updateStyleVariables(newStyleVariables);
-        }
-      });
-
-      const globusLayer = /** @type {any} */ (
-        globe.planet.getLayerByName(layerId)
-      );
-      if (globusLayer && typeof globusLayer.setRenderOptions === "function") {
-        globusLayer.setRenderOptions(
-          translateOLColorExpression(olLayer, newStyleVariables),
+        const globusLayer = /** @type {any} */ (
+          globe.planet.getLayerByName(layerId)
         );
-      }
+        if (globusLayer && typeof globusLayer.setRenderOptions === "function") {
+          globusLayer.setRenderOptions(
+            translateOLColorExpression(olLayer, newStyleVariables),
+          );
+        }
 
+        shouldRefreshCanvasTiles = true;
+      }
+    }
+
+    const currentSource = /** @type {any} */ (olLayer).getSource?.();
+    if (currentSource instanceof WMS_ol) {
+      const nextWmsOpts = getGlobeWMSOptions(currentSource);
+      const nextWmsKey = JSON.stringify(nextWmsOpts);
+      if (nextWmsKey !== lastWmsKey) {
+        lastWmsKey = nextWmsKey;
+        const globusLayer = /** @type {any} */ (
+          globe.planet.getLayerByName(layerId)
+        );
+        if (globusLayer && globusLayer instanceof WMS) {
+          globusLayer.url = nextWmsOpts.url;
+          globusLayer.layers = nextWmsOpts.layers;
+          globusLayer.setVersion(nextWmsOpts.version);
+          /** @type {any} */ (globusLayer)._extra = new URLSearchParams(
+            nextWmsOpts.extra,
+          ).toString();
+          globusLayer.redraw();
+        }
+      }
+    }
+
+    if (shouldRefreshCanvasTiles) {
       debouncedRefresh();
     }
-  });
+  };
+
+  const changeKey = olLayer.on("change", syncLayerState);
 
   const propertyKey = olLayer.on("propertychange", ({ key }) => {
     if (disposed) return;
+    if (key === "source") {
+      syncLayerState();
+      return;
+    }
     const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
     if (!globusLayer) return;
     switch (key) {

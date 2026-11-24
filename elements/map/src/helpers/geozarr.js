@@ -22,6 +22,32 @@ export {
 };
 
 /**
+ * Extracts the configured bands from a GeoZarr source, preserving `{ name, group }`
+ * objects for multi-group sources when present.
+ * @param {any} source
+ * @returns {Array<string | { name: string, group: string }>}
+ */
+export function getGeoZarrSourceBands(source) {
+  if (!source) return [];
+  if (typeof source.getBands === "function") {
+    const bands = source.getBands();
+    if (Array.isArray(bands)) return bands;
+  }
+  const names = Array.isArray(source.bands_) ? source.bands_ : [];
+  if (
+    Array.isArray(source.groupPaths_) &&
+    source.groupPaths_.length > 0 &&
+    Array.isArray(source.bandGroupIndex_)
+  ) {
+    return names.map((name, i) => ({
+      name,
+      group: source.groupPaths_[source.bandGroupIndex_[i] ?? 0],
+    }));
+  }
+  return [...names];
+}
+
+/**
  * Checks whether a given OpenLayers layer is a GeoZarr layer.
  * @param {import("ol/layer/Base").default|any} layer
  * @returns {boolean}
@@ -159,6 +185,20 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
     }
 
     if (metadata && Object.keys(metadata).length > 0) {
+      const containerGroups = new Set();
+      for (const metaKey of Object.keys(metadata)) {
+        const cleanKey = metaKey.replace(
+          /\/\.(zarray|zattrs|zgroup)$|\/zarr\.json$/,
+          "",
+        );
+        const parts = cleanKey.split("/").filter(Boolean);
+        for (let i = 0; i < parts.length - 1; i++) {
+          if (!/^\d+$/.test(parts[i + 1])) {
+            containerGroups.add(parts[i]);
+          }
+        }
+      }
+
       for (const [key, val] of Object.entries(metadata)) {
         if (!val || typeof val !== "object") continue;
         if (
@@ -198,7 +238,13 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
           varName = nonNumericParts[nonNumericParts.length - 1];
         }
 
-        if (!varName || coordNames.has(varName)) continue;
+        if (
+          !varName ||
+          coordNames.has(varName) ||
+          containerGroups.has(varName)
+        ) {
+          continue;
+        }
         if (/^\d+$/.test(varName)) continue;
 
         // Skip 1D or 0D coordinate arrays or arrays where dimension is purely itself (e.g., depth: [18] or ['depth'])
@@ -490,9 +536,23 @@ export async function setupGeoZarrDimensions(
  * @param {import("ol/layer/Base").default|any} layer
  * @returns {Promise<void>}
  */
-export async function setupGeoZarrLayer(layer) {
-  if (!isGeoZarrLayer(layer)) return;
+export function setupGeoZarrLayer(layer) {
+  if (!isGeoZarrLayer(layer)) return Promise.resolve();
+  const existingReady = layer.get?.("_geozarrReady");
+  if (existingReady) return existingReady;
+  if (layer.get?.("_geozarrInitialized")) return Promise.resolve();
 
+  const readyPromise = setupGeoZarrLayerInternal(layer);
+  layer.set?.("_geozarrReady", readyPromise, true);
+  return readyPromise;
+}
+
+/**
+ * Internal implementation of GeoZarr layer setup.
+ * @param {import("ol/layer/Base").default|any} layer
+ * @returns {Promise<void>}
+ */
+async function setupGeoZarrLayerInternal(layer) {
   const rootUrl = getGeoZarrRootUrl(layer);
   const sourceUrl = getGeoZarrSourceUrl(layer);
   if (!rootUrl && !sourceUrl) return;
@@ -555,21 +615,29 @@ export async function setupGeoZarrLayer(layer) {
   if (needsNewSource && targetUrl && source.constructor) {
     try {
       const GeoZarrClass = /** @type {any} */ (source.constructor);
+      const jsonSource = layer.get("_jsonDefinition")?.source;
       const proj =
         source.getProjection?.() ||
         layer.get("_mapProjection") ||
-        layer.get("_jsonDefinition")?.source?.projection;
+        jsonSource?.projection;
       const initialBands =
         Array.isArray(bands) && bands.length > 1
           ? bands
           : currentBand
             ? [currentBand]
             : [];
+      const existingDimensions =
+        source.dimensions_ && Object.keys(source.dimensions_).length > 0
+          ? { ...source.dimensions_ }
+          : jsonSource?.dimensions;
+      const transition = jsonSource?.transition ?? source.transition_;
       const newSource = new GeoZarrClass({
         url: targetUrl,
         bands: initialBands,
         crossOrigin: "anonymous",
         ...(proj ? { projection: proj } : {}),
+        ...(existingDimensions ? { dimensions: existingDimensions } : {}),
+        ...(transition !== undefined ? { transition } : {}),
       });
       layer.setSource(newSource);
       activeSource = newSource;

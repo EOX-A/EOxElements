@@ -9,6 +9,9 @@ import {
   testGeoTIFFSourceOptions,
   testGlobeLayerOrder,
   testGlobeFlyPitch,
+  testGlobeWMSOptions,
+  testGlobePolarAndAsyncCanvasTiles,
+  testGlobeGeoZarrPoolSync,
 } from "./cases/globe";
 
 /**
@@ -54,4 +57,22 @@ describe("globe", () => {
    * Test case to animate pitch changes as part of the globe flight
    */
   it("animates pitch changes during globe flights", () => testGlobeFlyPitch());
+
+  /**
+   * Test case to strip conflicting GetMap parameters from globe WMS layers and sync parameter updates
+   */
+  it("strips conflicting GetMap parameters from globe WMS layers and syncs updates", () =>
+    testGlobeWMSOptions());
+
+  /**
+   * Test case to await async DataTile sources, render polar EPSG:4326 segments, and abort queued pool jobs cleanly
+   */
+  it("awaits async DataTile sources and renders polar globe segments via CanvasTiles", () =>
+    testGlobePolarAndAsyncCanvasTiles());
+
+  /**
+   * Test case to initialize GeoZarr layers with empty bands and synchronize pool layers on updates
+   */
+  it("initializes GeoZarr pool layers and syncs band, dimension, and style updates", () =>
+    testGlobeGeoZarrPoolSync());
 });
