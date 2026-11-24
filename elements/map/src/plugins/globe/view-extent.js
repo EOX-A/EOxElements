@@ -124,7 +124,8 @@ function hitTowardsReference(camera, x, y, reference) {
 function isPoleOnScreen(globe, lat) {
   const { camera, ellipsoid } = globe.planet;
   const pole = ellipsoid.lonLatToCartesian(new LonLat(0, lat));
-  if (!camera.isVisible(pole)) return false;
+  const normal = ellipsoid.getSurfaceNormal3v(pole);
+  if (camera.eye.sub(pole).dot(normal) <= 0) return false;
   // project3v mirrors points behind the camera into the viewport.
   if (pole.sub(camera.eye).dot(camera.getForward()) <= 0) return false;
   const { x, y } = camera.project3v(pole);
