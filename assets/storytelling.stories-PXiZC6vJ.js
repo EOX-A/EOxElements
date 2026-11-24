@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-BCiCTKAo.js";import{d as t,t as n}from"./lit-Dt0tyVZI.js";import{n as r}from"./iframe-BEKrmU2t.js";var i;function a(){return(a=e((()=>{n(),i={args:{markdown:`## Hello World, Welcome to EOxStoryTelling.`,id:`markdown-str`},render:e=>t`
+import{n as e}from"./rolldown-runtime-BCiCTKAo.js";import{d as t,t as n}from"./lit-Dt0tyVZI.js";import{n as r}from"./iframe-DUan22nq.js";var i;function a(){return(a=e((()=>{n(),i={args:{markdown:`## Hello World, Welcome to EOxStoryTelling.`,id:`markdown-str`},render:e=>t`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id=${e.id}
