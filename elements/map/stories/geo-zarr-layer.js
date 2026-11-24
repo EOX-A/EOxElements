@@ -5,7 +5,7 @@
  */
 const GeoZarrLayerStory = {
   args: {
-    center: [1407372, 5701616],
+    center: [1363663, 5700582],
     layers: [
       {
         type: "Tile",
@@ -24,7 +24,7 @@ const GeoZarrLayerStory = {
         },
         source: {
           type: "GeoZarr",
-          url: "https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2C_MSIL2A_20260716T100601_N0512_R022_T32TQR_20260716T154011.zarr/measurements/reflectance",
+          url: "https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2C_MSIL2A_20260815T101021_N0512_R022_T32TQR_20260815T152913.zarr/measurements/reflectance",
           bands: ["b04", "b03", "b02"],
         },
         style: {
