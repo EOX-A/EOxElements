@@ -11,7 +11,6 @@ import {
   connectGlobeSynchronization,
 } from "./lifecycle.js";
 import { unByKey } from "ol/Observable";
-import TileSource from "ol/source/Tile.js";
 
 /**
  * @typedef {import("../../main").EOxMap} EOxMap
@@ -29,17 +28,15 @@ import TileSource from "ol/source/Tile.js";
  */
 export function registerGlobeLayerSynchronization(EOxMap, globe, mapPool) {
   let renderedLayers = new Set(EOxMap.map.getAllLayers());
-  // Sources are replaced (`updateLayer`) or edited in place (new key).
-  /** @type {WeakMap<OLLayer, import("./types").BuiltSource>} */
+  // Tracks the OL source instance each globe layer was built from (`updateLayer` / `setSource`).
+  // In-place source edits (`updateParams`, `updateDimensions`, `_updatedUrl`, `setTileUrlFunction`)
+  // are synced without rebuilding layers or `mapPool` by `setupLayerListeners`.
+  /** @type {WeakMap<OLLayer, import("ol/source/Source").default | null>} */
   const builtSources = new WeakMap(
-    EOxMap.map.getAllLayers().map((layer) => [layer, getBuiltSource(layer)]),
+    EOxMap.map.getAllLayers().map((layer) => [layer, layer.getSource()]),
   );
   /** @param {OLLayer} layer */
-  const isOutdated = (layer) => {
-    const built = builtSources.get(layer);
-    const { source, key } = getBuiltSource(layer);
-    return built?.source !== source || built.key !== key;
-  };
+  const isOutdated = (layer) => builtSources.get(layer) !== layer.getSource();
 
   registerGlobeSynchronization(globe, () => {
     const controller = new AbortController();
@@ -111,7 +108,7 @@ export function registerGlobeLayerSynchronization(EOxMap, globe, mapPool) {
         if (!existing) {
           const globeLayer = createGlobusLayer(layer, mapPool, EOxMap);
           if (globeLayer) globe.planet.addLayer(globeLayer);
-          builtSources.set(layer, getBuiltSource(layer));
+          builtSources.set(layer, layer.getSource());
         } else {
           existing.setVisibility(layer.getVisible());
           existing.opacity = layer.getOpacity();
@@ -174,18 +171,3 @@ window.eoxMapGlobe = {
   create,
   refresh: refreshGlobe,
 };
-
-/**
- * The source of an OL layer and its revision key (tile sources only).
- *
- * @param {import("./types").ExtendedOLLayer} layer
- * @returns {import("./types").BuiltSource}
- */
-function getBuiltSource(layer) {
-  const source = layer.getSource();
-  return {
-    source,
-    // getKey is not @api in OL; it changes on in-place URL/param edits.
-    key: source instanceof TileSource ? source.getKey() : undefined,
-  };
-}

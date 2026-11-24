@@ -13,6 +13,7 @@ import {
   testAddOrUpdateLayerGroupChild,
   testInPlaceXyzUrlChange,
   testInPlaceWmsParamsChange,
+  testInPlaceUrlTileChange,
 } from "./cases/globe-synchronization/index.js";
 
 describe("globe synchronization ownership", () => {
@@ -61,5 +62,9 @@ describe("globe synchronization ownership", () => {
   it(
     "syncs WMS params updated in place to the globe",
     testInPlaceWmsParamsChange,
+  );
+  it(
+    "syncs offscreen UrlTile (WMTS) URL functions edited in place to the map pool",
+    testInPlaceUrlTileChange,
   );
 });

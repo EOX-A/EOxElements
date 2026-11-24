@@ -374,42 +374,107 @@ export function testAddOrUpdateLayerGroupChild() {
   });
 }
 
-/** An XYZ URL edited in place on the same source (as eox-layercontrol does) reaches the globe. */
+/** An XYZ URL edited in place on the same source (as eox-layercontrol does) updates the globe layer in place without rebuilding the map pool. */
 export function testInPlaceXyzUrlChange() {
   cy.intercept("**/test-xyz/**", {
     fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
   });
   withMap((map) => {
     map.layers = [xyzDefinition("a")];
-    const { planet } = activate(map);
+    const { planet, pool } = activate(map);
+    const initialGlobeLayer = planet.getLayerByName("mosaic");
+    const poolDispatch = cy
+      .spy(pool[0].tileMap, "dispatchEvent")
+      .withArgs(Cypress.sinon.match.has("type", "layerschanged"));
     const source = /** @type {any} */ (map.getLayerById("mosaic").getSource());
     const updatedUrl = `${source.getUrls()[0]}?rescale=2`;
     // mirrors eox-layercontrol: keep the source, store the URL, bump the key
     source._updatedUrl = updatedUrl;
     source.setKey("edited");
     cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic"), "same globe layer").to.equal(
+        initialGlobeLayer,
+      );
       expect(p.getLayerByName("mosaic").url, "globe layer").to.equal(
         updatedUrl,
       );
+      expect(poolDispatch, "map pool not rebuilt").not.to.have.been.called;
     });
   });
 }
 
-/** WMS params updated in place on the same source reach the globe. */
+/** WMS params updated in place on the same source update the globe layer in place without rebuilding the map pool. */
 export function testInPlaceWmsParamsChange() {
   cy.intercept("**/test-wms*", {
     fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
   });
   withMap((map) => {
     map.layers = [wmsDefinition()];
-    const { planet } = activate(map);
+    const { planet, pool } = activate(map);
+    const initialGlobeLayer = planet.getLayerByName("dynamic");
+    const poolDispatch = cy
+      .spy(pool[0].tileMap, "dispatchEvent")
+      .withArgs(Cypress.sinon.match.has("type", "layerschanged"));
     const source = /** @type {any} */ (map.getLayerById("dynamic").getSource());
     source.updateParams({ TIME: "2020-01-01" });
     cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("dynamic"), "same globe layer").to.equal(
+        initialGlobeLayer,
+      );
       // og WMS keeps all non-layer params only in its private request string
       expect(p.getLayerByName("dynamic")._extra, "globe layer").to.contain(
         "TIME=2020-01-01",
       );
+      expect(poolDispatch, "map pool not rebuilt").not.to.have.been.called;
+    });
+  });
+}
+
+/** Offscreen UrlTile (WMTS) tileUrlFunction edited in place reaches the map pool without rebuilding it. */
+export function testInPlaceUrlTileChange() {
+  cy.intercept("**/test-wmts*", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  const wmtsDef = /** @type {import("../../../src/layers.js").EoxLayer} */ ({
+    type: "Tile",
+    properties: { id: "wmts" },
+    source: {
+      type: "WMTS",
+      url: `${window.location.origin}/test-wmts`,
+      layer: "test",
+      matrixSet: "EPSG:3857",
+      style: "default",
+      tileGrid: /** @type {any} */ ({}),
+    },
+  });
+  withMap((map) => {
+    map.layers = [wmtsDef];
+    const { planet, pool } = activate(map);
+    const initialGlobeLayer = planet.getLayerByName("wmts");
+    const poolDispatch = cy
+      .spy(pool[0].tileMap, "dispatchEvent")
+      .withArgs(Cypress.sinon.match.has("type", "layerschanged"));
+    const source = /** @type {any} */ (map.getLayerById("wmts").getSource());
+    const originalUrlFn = source.getTileUrlFunction();
+    source.setTileUrlFunction(
+      (/** @type {any[]} */ ...args) =>
+        `${originalUrlFn(...args)}&DIM_ELEVATION=500`,
+    );
+    source.setKey("edited-wmts");
+    cy.wrap(pool).should(([poolItem]) => {
+      const poolSource = /** @type {any} */ (
+        poolItem.tileMap.getLayerById("wmts").getSource()
+      );
+      const renderedUrl = poolSource.getTileUrlFunction()(
+        [0, 0, 0],
+        1,
+        poolSource.getProjection(),
+      );
+      expect(renderedUrl, "pool WMTS tile URL").to.contain("DIM_ELEVATION=500");
+      expect(planet.getLayerByName("wmts"), "same globe layer").to.equal(
+        initialGlobeLayer,
+      );
+      expect(poolDispatch, "map pool not rebuilt").not.to.have.been.called;
     });
   });
 }

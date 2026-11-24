@@ -25,6 +25,7 @@ import { transform, isGeoZarrLayer } from "../../helpers/index.js";
 import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
+import UrlTile from "ol/source/UrlTile.js";
 import Vector_ol from "ol/source/Vector.js";
 import GeoTIFF_ol from "ol/source/GeoTIFF.js";
 import { get as getProjection, equivalent } from "ol/proj";
@@ -294,15 +295,26 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
     attachGlobeSelect(EOxMap, olLayer, wmsLayer);
     return wmsLayer;
   }
-  if (source instanceof Vector_ol && source.getUrl()) {
+  const vectorUrl = source instanceof Vector_ol && source.getUrl();
+  if (typeof vectorUrl === "string") {
     let projection;
-    fetch(source.getUrl().toString())
+    /** @type {import("@openglobus/og").Globe | null | undefined} */
+    let targetGlobe = EOxMap?.globe;
+    if (!targetGlobe) {
+      queueMicrotask(() => {
+        targetGlobe = EOxMap?.globe;
+      });
+    }
+    fetch(vectorUrl)
       .then((r) => {
         return r.json();
       })
       .then((data) => {
-        // The source or the layer was replaced while fetching.
+        // The source or the layer was replaced, or globe mode left, while fetching.
         if (
+          !targetGlobe ||
+          EOxMap?.globe !== targetGlobe ||
+          !EOxMap?.globeEnabled ||
           olLayer.getSource() !== source ||
           !EOxMap.map.getAllLayers().includes(olLayer)
         )
@@ -320,9 +332,9 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
           !crs
         ) {
           // remove existing layer with same id if any
-          const existingLayer = globus.planet.getLayerByName(id);
+          const existingLayer = targetGlobe.planet.getLayerByName(id);
           if (existingLayer) {
-            globus.planet.removeLayer(existingLayer);
+            targetGlobe.planet.removeLayer(existingLayer);
           }
           const vectorLayer = new Vector(id, {
             visibility: olLayer.getVisible(),
@@ -330,9 +342,9 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
             isBaseLayer: olLayer.get("base"),
           });
 
-          vectorLayer.addTo(globus.planet);
+          vectorLayer.addTo(targetGlobe.planet);
           // the vector layer is added asynchronously, so re-apply the OL order
-          syncGlobeLayerOrder(EOxMap, globus);
+          syncGlobeLayerOrder(EOxMap, targetGlobe);
           attachGlobeSelect(EOxMap, olLayer, vectorLayer);
           const olStyle = olLayer.getStyle();
 
@@ -823,6 +835,12 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
     initialSource instanceof WMS_ol
       ? JSON.stringify(getGlobeWMSOptions(initialSource))
       : null;
+  let lastUrlTileKey =
+    initialSource instanceof UrlTile &&
+    !(initialSource instanceof XYZ_ol) &&
+    !(initialSource instanceof WMS_ol)
+      ? initialSource.getKey()
+      : null;
 
   const syncLayerState = () => {
     if (disposed) return;
@@ -897,6 +915,53 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
       }
     }
 
+    if (currentSource instanceof XYZ_ol && !(currentSource instanceof OSM)) {
+      const nextXyzUrl =
+        /** @type {any} */ (currentSource)._updatedUrl ||
+        currentSource.getUrls?.()?.[0] ||
+        "";
+      const globusLayer = globe.planet.getLayerByName(layerId);
+      if (
+        nextXyzUrl &&
+        globusLayer &&
+        globusLayer instanceof XYZ &&
+        globusLayer.url !== nextXyzUrl
+      ) {
+        globusLayer.setUrl(nextXyzUrl);
+        globusLayer.redraw();
+      }
+    }
+
+    if (
+      currentSource instanceof UrlTile &&
+      !(currentSource instanceof XYZ_ol) &&
+      !(currentSource instanceof WMS_ol)
+    ) {
+      const nextTileKey = currentSource.getKey();
+      const tileUrlFn = currentSource.getTileUrlFunction();
+      let poolUpdated = false;
+      mapPool.forEach((poolItem) => {
+        const poolLayer = /** @type {any} */ (
+          getLayerById(poolItem.tileMap, layerId)
+        );
+        const poolSource = poolLayer?.getSource?.();
+        if (
+          poolSource instanceof UrlTile &&
+          tileUrlFn &&
+          (nextTileKey !== lastUrlTileKey ||
+            poolSource.getTileUrlFunction() !== tileUrlFn)
+        ) {
+          clearPoolQueue(poolItem);
+          poolSource.setTileUrlFunction(tileUrlFn, nextTileKey);
+          poolUpdated = true;
+        }
+      });
+      lastUrlTileKey = nextTileKey;
+      if (poolUpdated) {
+        shouldRefreshCanvasTiles = true;
+      }
+    }
+
     if (shouldRefreshCanvasTiles) {
       debouncedRefresh();
     }
@@ -921,6 +986,9 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
         break;
     }
   });
+
+  // Reconcile any in-place edits made while the map element was disconnected.
+  syncLayerState();
 
   return () => {
     if (disposed) return;
