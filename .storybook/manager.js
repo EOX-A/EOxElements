@@ -5,9 +5,9 @@ addons.setConfig({
   enableShortcuts: false,
   theme: createTheme({
     base: "light",
-    brandTitle: "EOX",
-    brandUrl: "https://eox.at/",
-    brandImage: "https://hub-brands.eox.at/eox/EOX_Logo.svg",
+    brandTitle: "EOxElements",
+    brandUrl: "./",
+    brandImage: "./EOxElements_Logo.svg",
     brandTarget: "_self",
   }),
   selectedPanel: "eox/storybook-custom-panels/description",
