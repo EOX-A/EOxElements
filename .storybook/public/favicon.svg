@@ -1,0 +1,13 @@
+<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      path, rect { fill: #ffffff; }
+    }
+  </style>
+  <path d="M27.5 -1.5299e-07C29.433 -6.84959e-08 31 1.567 31 3.5V3.5C31 5.433 29.433 7 27.5 7V7C25.567 7 24 5.433 24 3.5V3.5C24 1.567 25.567 -2.37484e-07 27.5 -1.5299e-07V-1.5299e-07Z" fill="#004170"/>
+  <rect x="-7.11871e-07" y="25" width="6" height="6" fill="#004170"/>
+  <rect x="-4.28638e-06" width="6.00001" height="21" fill="#004170"/>
+  <rect x="-1.63918e-07" y="-1.39876e-06" width="20" height="6" fill="#004170"/>
+  <rect x="25" y="11" width="6.00001" height="20" fill="#004170"/>
+  <rect x="10" y="25" width="21" height="6" fill="#004170"/>
+</svg>

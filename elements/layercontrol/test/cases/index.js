@@ -1,4 +1,5 @@
 export {
+  datetimeInitializationWithMilliseconds,
   datetimeInitializationWithoutActivity,
   datetimeProgrammaticSelectionWithoutActivity,
   datetimeUserSelectionActivity,

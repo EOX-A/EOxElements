@@ -4,8 +4,16 @@ import Collection from "ol/Collection";
 
 const dates = ["2024-01-01", "2024-01-02"];
 
-/** @param {boolean} [withCurrentStep=true] */
-function mountDatetime(withCurrentStep = true) {
+/**
+ * @param {boolean} [withCurrentStep=true]
+ * @param {string[]} [controlValues=dates]
+ * @param {boolean} [showUTC=false]
+ */
+function mountDatetime(
+  withCurrentStep = true,
+  controlValues = dates,
+  showUTC = false,
+) {
   const layer = new TileLayer({
     source: new XYZ(),
     properties: {
@@ -14,10 +22,11 @@ function mountDatetime(withCurrentStep = true) {
       layerControlExpand: true,
       layerControlToolsExpand: true,
       layerDatetime: {
-        controlValues: dates,
+        controlValues,
         navigation: true,
         displayFormat: "YYYY-MM-DD",
-        ...(withCurrentStep ? { currentStep: dates[0] } : {}),
+        ...(showUTC ? { showUTC: true } : {}),
+        ...(withCurrentStep ? { currentStep: controlValues[0] } : {}),
       },
     },
   });
@@ -45,7 +54,7 @@ function mountDatetime(withCurrentStep = true) {
     .find("eox-timecontrol-date")
     .shadow()
     .find("input")
-    .should("have.value", dates[withCurrentStep ? 0 : 1]);
+    .should("have.value", controlValues[withCurrentStep ? 0 : 1].slice(0, 10));
   return layer;
 }
 
@@ -76,6 +85,26 @@ export function datetimeProgrammaticSelectionWithoutActivity() {
   });
   assertDatetime(dates[1], layer, false);
   cy.get("@activity").should("not.have.been.called");
+}
+
+export function datetimeInitializationWithMilliseconds() {
+  const initial = "2024-01-01T00:00:00.999Z";
+  const next = "2024-01-02T00:00:00.999Z";
+  const layer = mountDatetime(true, [initial, next], true);
+
+  cy.get("@datetime").should("not.have.been.called");
+  cy.get("@activity").should("not.have.been.called");
+  cy.then(() => {
+    expect(layer.get("layerDatetime").currentStep).to.equal(initial);
+  });
+
+  cy.get("@timecontrol")
+    .find("eox-timecontrol-date")
+    .shadow()
+    .find("button.next")
+    .click();
+  assertDatetime("2024-01-02T00:00:00.000Z", layer, true);
+  cy.get("@activity").should("have.been.calledOnce");
 }
 
 export function datetimeUserSelectionActivity() {
