@@ -1,6 +1,12 @@
-# EOxElements
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".storybook/public/EOxElements_Logo_dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset=".storybook/public/EOxElements_Logo.svg" />
+    <img alt="EOxElements" src=".storybook/public/EOxElements_Logo.svg" height="40" />
+  </picture>
+</p>
 
-A Web Component collection of geospatial UI elements, crafted by EOX.
+A Web Component collection of geospatial UI elements, crafted by [EOX](https://eox.at).
 
 ## Documentation, Examples
 
