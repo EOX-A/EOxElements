@@ -38,8 +38,10 @@ export function runBatch(batch) {
 
   batch.forEach((story) => {
     it(`${story.id}`, () => {
+      const alias = "storyNetwork";
+      cy.waitForNetworkIdlePrepare({ method: "*", pattern: "**", alias });
       cy.visit(`../../docs/iframe.html?id=${story.id}`);
-      cy.waitForNetworkIdle(1000);
+      cy.waitForNetworkIdle(`@${alias}`, 1000);
     });
   });
 }
