@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.15.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.15.0...jsonform-v1.15.1) (2026-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @eox/map bumped from 2.11.0 to 2.12.0
+
 ## [1.15.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.14.2...jsonform-v1.15.0) (2026-11-24)
 
 

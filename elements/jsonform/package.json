@@ -1,13 +1,13 @@
 {
   "name": "@eox/jsonform",
-  "version": "1.15.0",
+  "version": "1.15.1",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "git@github.com:EOX-A/EOxElements.git"
   },
   "devDependencies": {
-    "@eox/map": "2.11.0",
+    "@eox/map": "2.12.0",
     "vite": "^8.3.5"
   },
   "engines": {

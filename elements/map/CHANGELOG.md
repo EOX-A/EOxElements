@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.12.0](https://github.com/EOX-A/EOxElements/compare/map-v2.11.0...map-v2.12.0) (2026-11-25)
+
+
+### Features
+
+* Globe atmosphere and stars options, scale line and mouse position in 3D ([#2688](https://github.com/EOX-A/EOxElements/issues/2688)) ([0f3b142](https://github.com/EOX-A/EOxElements/commit/0f3b142fc0fccf8e1ff4700de324341305d2474f))
+
+
+### Bug Fixes
+
+* Destroy the globe when leaving globe mode ([#2676](https://github.com/EOX-A/EOxElements/issues/2676)) ([95314e6](https://github.com/EOX-A/EOxElements/commit/95314e61a1bee2cfccfee944f4bdbd5d9686bb9d))
+* Mirror OL tile loading on the globe ([#2669](https://github.com/EOX-A/EOxElements/issues/2669)) ([531215c](https://github.com/EOX-A/EOxElements/commit/531215cd178329b31ac7afedb912af6899547a5b))
+* OL styles translation on the globe ([#2683](https://github.com/EOX-A/EOxElements/issues/2683)) ([9184258](https://github.com/EOX-A/EOxElements/commit/9184258449e850ebdd4ad8a70a46f0fdab77f8da))
+* Return the visible extent from lonLatExtent in globe mode ([#2664](https://github.com/EOX-A/EOxElements/issues/2664)) ([2bcd076](https://github.com/EOX-A/EOxElements/commit/2bcd0768c66f5648a7629700d44a76c2ec2a49a2))
+* Sync source changes and addOrUpdateLayer to the globe ([#2665](https://github.com/EOX-A/EOxElements/issues/2665)) ([cafbcaa](https://github.com/EOX-A/EOxElements/commit/cafbcaa71a08392cb7ea61e4fb9110babc583212))
+
 ## [2.11.0](https://github.com/EOX-A/EOxElements/compare/map-v2.10.0...map-v2.11.0) (2026-11-24)
 
 

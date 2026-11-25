@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.11.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.11.0...timecontrol-v2.11.1) (2026-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @eox/map bumped from ^2.11.0 to ^2.12.0
+
 ## [2.11.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.10.1...timecontrol-v2.11.0) (2026-11-24)
 
 

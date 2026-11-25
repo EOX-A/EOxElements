@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.11.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.11.0...layercontrol-v1.11.1) (2026-11-25)
+
+
+### Bug Fixes
+
+* Move globe updates to eox-map ([#2668](https://github.com/EOX-A/EOxElements/issues/2668)) ([7cc8411](https://github.com/EOX-A/EOxElements/commit/7cc841116e3f248c22ea034da3e486fb57b887fd))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @eox/jsonform bumped from 1.15.0 to 1.15.1
+    * @eox/map bumped from 2.11.0 to 2.12.0
+  * peerDependencies
+    * @eox/jsonform bumped from * to 1.15.1
+    * @eox/timecontrol bumped from >=2.0.0 to >=2.11.1
+
 ## [1.11.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.10.1...layercontrol-v1.11.0) (2026-11-24)
 
 
