@@ -40,6 +40,7 @@ import {
   removeControlMethod,
   firstUpdatedMethod,
   setTerrainMethod,
+  setAtmosphereMethod,
 } from "./methods/map/";
 import eoxStyle from "@eox/ui/style.css?inline";
 import { addCommonStylesheet } from "@eox/elements-utils";
@@ -616,12 +617,13 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Sets the properties of the globe such as the terrain.
+   * Sets the properties of the globe such as the terrain and the atmosphere.
    *
-   * @param {GlobeConfig} globeConfig - The globe configuration which contains the terrain boolean.
+   * @param {GlobeConfig} globeConfig - The globe configuration.
    */
   set globeConfig(globeConfig) {
     this.#globeConfig = setTerrainMethod(globeConfig, this);
+    setAtmosphereMethod(globeConfig, this);
   }
 
   /**

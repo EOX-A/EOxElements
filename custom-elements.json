@@ -3629,7 +3629,7 @@
               "description": "Gets the current globe configuration properties.",
               "parameters": [
                 {
-                  "description": "The globe configuration which contains the terrain boolean.",
+                  "description": "The globe configuration.",
                   "name": "globeConfig",
                   "type": {
                     "text": "GlobeConfig"
@@ -4273,7 +4273,7 @@
               "description": "Gets the current globe configuration properties.",
               "parameters": [
                 {
-                  "description": "The globe configuration which contains the terrain boolean.",
+                  "description": "The globe configuration.",
                   "name": "globeConfig",
                   "type": {
                     "text": "GlobeConfig"
