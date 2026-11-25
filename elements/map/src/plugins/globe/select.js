@@ -6,7 +6,9 @@ import TileWMS from "ol/source/TileWMS.js";
 import { register } from "ol/proj/proj4.js";
 import proj4 from "proj4";
 import { transform } from "../../helpers/index.js";
-import { translateOLStyleExpressions } from "./openglobus.js";
+import { flatStyleLikeToStyleFunction } from "ol/render/canvas/style.js";
+import { translateOLStyleExpressions, entityFeatures } from "./openglobus.js";
+import { GEOMETRY_STYLE_SETTERS } from "../../enums/index.js";
 
 /**
  * @typedef {import("../../main").EOxMap} EOxMap
@@ -34,17 +36,6 @@ const highlightedEntities = new WeakMap();
 const clickHighlights = new WeakMap();
 
 /**
- * Maps the OpenGlobus geometry style keys to their setters.
- */
-const GEOMETRY_STYLE_SETTERS = Object.freeze({
-  fillColor: "setFillColor4v",
-  lineColor: "setLineColor4v",
-  strokeColor: "setStrokeColor4v",
-  lineWidth: "setLineWidth",
-  strokeWidth: "setStrokeWidth",
-});
-
-/**
  * Applies the `style` of a select interaction to a globe vector entity,
  * mirroring the highlight style of the 2D select interaction.
  *
@@ -52,26 +43,37 @@ const GEOMETRY_STYLE_SETTERS = Object.freeze({
  * @param {import("../../types").SelectOptions["style"]} style - The OL flat style of the select interaction.
  */
 export function highlightGlobeEntity(entity, style) {
-  const geometry = entity?.geometry;
-  if (!geometry || !style) return;
-  const ogStyle = translateOLStyleExpressions(
-    /** @type {any} */ (style),
-    entity.properties,
+  if (!entity || !style) return;
+  const { geometry, billboard } = translateOLStyleExpressions(
+    flatStyleLikeToStyleFunction(style),
+    entityFeatures.get(entity) ?? new Feature(entity.properties),
   );
   const original = highlightedEntities.get(entity) || {};
-  Object.entries(ogStyle).forEach(([key, value]) => {
-    const setter = GEOMETRY_STYLE_SETTERS[key];
-    if (!setter || value === undefined) return;
-    if (!(key in original)) {
-      const current = geometry._style[key];
-      original[key] = current?.clone ? current.clone() : current;
-    }
-    geometry[setter](
-      key.endsWith("Color") ? utils.createColorRGBA(value) : value,
-    );
-  });
+  if (entity.geometry) {
+    Object.entries(geometry || {}).forEach(([key, value]) => {
+      const setter = GEOMETRY_STYLE_SETTERS[key];
+      if (!setter || value === undefined) return;
+      if (!(key in original)) {
+        const current = entity.geometry._style[key];
+        original[key] = current?.clone ? current.clone() : current;
+      }
+      entity.geometry[setter](
+        typeof value === "number" ? value : utils.createColorRGBA(value),
+      );
+    });
+    entity.geometry.bringToFront();
+  }
+  if (entity.billboard && billboard) {
+    original.billboard ??= {
+      src: entity.billboard.getSrc(),
+      size: [entity.billboard.getWidth(), entity.billboard.getHeight()],
+    };
+    // Size 0 lets og take the image's own size.
+    entity.billboard.setSize(...(billboard.size ?? [0, 0]));
+    entity.billboard.setSrc(billboard.src);
+  }
+  original.style = style;
   highlightedEntities.set(entity, original);
-  geometry.bringToFront();
 }
 
 /**
@@ -82,10 +84,29 @@ export function highlightGlobeEntity(entity, style) {
 export function resetGlobeEntity(entity) {
   const original = highlightedEntities.get(entity);
   if (!original) return;
-  Object.entries(original).forEach(([key, value]) =>
+  const { billboard, style: _style, ...geometry } = original;
+  Object.entries(geometry).forEach(([key, value]) =>
     entity.geometry[GEOMETRY_STYLE_SETTERS[key]](value),
   );
+  if (billboard) {
+    // og applies a cached image's size inside setSrc, so set the size first.
+    entity.billboard.setSize(...billboard.size);
+    entity.billboard.setSrc(billboard.src);
+  }
   highlightedEntities.delete(entity);
+}
+
+/**
+ * Highlights an entity again after its base style changed, so the highlight
+ * stays on top and a later reset restores the new style.
+ *
+ * @param {any} entity - The OpenGlobus entity.
+ */
+export function reapplyGlobeHighlight(entity) {
+  const original = highlightedEntities.get(entity);
+  if (!original) return;
+  highlightedEntities.delete(entity);
+  highlightGlobeEntity(entity, original.style);
 }
 
 /**
@@ -284,6 +305,7 @@ export function hideGlobeTooltip(EOxMap) {
  * @param {Record<string, any> | null} properties - The properties to render; hides the tooltip if `null`.
  * @param {any} event - The OpenGlobus mouse state.
  * @param {LonLat} [lonLat] - The picked location.
+ * @param {string | number} [id] - The id of the picked vector feature.
  */
 export function showGlobeTooltip(
   EOxMap,
@@ -291,6 +313,7 @@ export function showGlobeTooltip(
   properties,
   event,
   lonLat,
+  id,
 ) {
   if (!properties) {
     hideGlobeTooltip(EOxMap);
@@ -303,6 +326,7 @@ export function showGlobeTooltip(
       ? pickedCoordinate(lonLat, options)
       : {}),
   });
+  if (id !== undefined) feature.setId(id);
 
   const wrapper = getTooltipWrapper(EOxMap);
   if (wrapper && interaction.tooltipElement) {
@@ -356,6 +380,7 @@ function pickAndShow(EOxMap, interaction, olLayer, ogLayer, event) {
       event.pickingObject.properties || null,
       event,
       lonLat,
+      entityFeatures.get(event.pickingObject)?.getId(),
     );
     return;
   }

@@ -4,9 +4,11 @@ import "../src/plugins/globe/index";
 import { isGlobeExist } from "./cases/general";
 import {
   testTranslateColorExpression,
+  testGeoTIFFMaskRendering,
   testGlobeSelect,
   testGlobeSelectStyle,
   testGeoTIFFSourceOptions,
+  testGeoTIFFRenderOptions,
   testGlobeLayerOrder,
   testGlobeFlyPitch,
   testGlobeWMSOptions,
@@ -14,6 +16,10 @@ import {
   testGlobeGeoZarrPoolSync,
   testGlobeLonLatExtent,
   testGlobeLifecycle,
+  testTranslateVectorStyle,
+  testGlobeVectorRestyle,
+  testGlobeVectorLayer,
+  testGlobeVectorProjection,
 } from "./cases/globe";
 
 /**
@@ -32,6 +38,12 @@ describe("globe", () => {
     testTranslateColorExpression());
 
   /**
+   * Test case to hide nodata, NaN and masked pixels when og renders a translated style
+   */
+  it("hides nodata, NaN and masked pixels of a translated style", () =>
+    testGeoTIFFMaskRendering());
+
+  /**
    * Test case to pick GeoTIFF band values and parse GetFeatureInfo responses for globe tooltips
    */
   it("picks GeoTIFF values and feature info for globe tooltips", () =>
@@ -48,6 +60,9 @@ describe("globe", () => {
    */
   it("accepts single url and multi source COGs for native globe rendering", () =>
     testGeoTIFFSourceOptions());
+
+  it("follows the OL GeoTIFF source's alpha band and sampling", () =>
+    testGeoTIFFRenderOptions());
 
   /**
    * Test case to mirror the OL layer order (groups, zIndex, reordering) onto the globe layers
@@ -121,4 +136,16 @@ describe("globe", () => {
     ));
 
   it("destroys the globe when leaving globe mode", () => testGlobeLifecycle());
+
+  it("translates OL vector styles to globe entities", () =>
+    testTranslateVectorStyle());
+
+  it("restyles globe vectors in place, including highlighted ones", () =>
+    testGlobeVectorRestyle());
+
+  it("renders, restyles and selects GeoJSON vectors on the globe", () =>
+    testGlobeVectorLayer());
+
+  it("reprojects GeoJSON vectors with a crs onto the globe", () =>
+    testGlobeVectorProjection());
 });
