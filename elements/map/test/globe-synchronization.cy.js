@@ -7,6 +7,18 @@ import {
   testDetachedGlobeRegistration,
   testDynamicGlobeSelection,
   testSameIdGlobeReplacement,
+  testSameIdSourceChange,
+  testAddOrUpdateLayerAdd,
+  testAddOrUpdateLayerUpdate,
+  testAddOrUpdateLayerGroupChild,
+  testInPlaceXyzUrlChange,
+  testInPlaceWmsParamsChange,
+  testInPlaceUrlTileChange,
+  testGlobeLayerZoomRange,
+  testGlobeLayerWithoutZoomRange,
+  testLiveGlobeLayerZoomRange,
+  testGlobeLayerPreload,
+  testFractionalGlobeLayerZoomRange,
 } from "./cases/globe-synchronization/index.js";
 
 describe("globe synchronization ownership", () => {
@@ -37,5 +49,44 @@ describe("globe synchronization ownership", () => {
   it(
     "disconnects old OL instances when replacing layers with the same ID",
     testSameIdGlobeReplacement,
+  );
+  it(
+    "syncs a changed source of the same ID to the globe",
+    testSameIdSourceChange,
+  );
+  it("syncs layers added through addOrUpdateLayer", testAddOrUpdateLayerAdd);
+  it(
+    "syncs sources updated through addOrUpdateLayer",
+    testAddOrUpdateLayerUpdate,
+  );
+  it(
+    "syncs group children added through addOrUpdateLayer",
+    testAddOrUpdateLayerGroupChild,
+  );
+  it("syncs an XYZ URL edited in place to the globe", testInPlaceXyzUrlChange);
+  it(
+    "syncs WMS params updated in place to the globe",
+    testInPlaceWmsParamsChange,
+  );
+  it(
+    "syncs offscreen UrlTile (WMTS) URL functions edited in place to the map pool",
+    testInPlaceUrlTileChange,
+  );
+  it(
+    "limits globe tile loading to the OL layer zoom range",
+    testGlobeLayerZoomRange,
+  );
+  it("loads like OL without an OL zoom range", testGlobeLayerWithoutZoomRange);
+  it(
+    "applies live OL zoom range edits to the same globe layer",
+    testLiveGlobeLayerZoomRange,
+  );
+  it(
+    "loads ancestors for OL preload only without an OL minZoom",
+    testGlobeLayerPreload,
+  );
+  it(
+    "maps fractional OL zooms to the tile zoom OL requests",
+    testFractionalGlobeLayerZoomRange,
   );
 });

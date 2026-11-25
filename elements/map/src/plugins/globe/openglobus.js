@@ -13,26 +13,46 @@ import {
   EmptyTerrain,
   Extent as OgExtent,
   Quat,
+  utils,
 } from "@openglobus/og";
-import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
-import { distributeTileToIdealMap } from "./methods.js";
-import { transform } from "../../helpers/index.js";
+import { asArray } from "ol/color.js";
+import { getFontParameters } from "ol/css.js";
+import Icon from "ol/style/Icon.js";
+import GeoJSON from "ol/format/GeoJSON.js";
+import {
+  OG_FONTS_SRC,
+  LABEL_ALIGN,
+  TRANSPARENT,
+  DEFAULT_STROKE_COLOR,
+  OG_GEOMETRY_TYPES,
+  GEOMETRY_STYLE_SETTERS,
+  OL_ALPHA_VALID,
+} from "../../enums/index.js";
+import {
+  distributeTileToIdealMap,
+  clearPoolQueue,
+  disposeMapPool,
+  syncGeoZarrPoolLayer,
+} from "./methods.js";
+import { transform, isGeoZarrLayer } from "../../helpers/index.js";
 import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
+import UrlTile from "ol/source/UrlTile.js";
 import Vector_ol from "ol/source/Vector.js";
 import GeoTIFF_ol from "ol/source/GeoTIFF.js";
-import { get as getProjection, equivalent } from "ol/proj";
+import BaseTileLayer from "ol/layer/BaseTile.js";
 import FullScreen from "ol/control/FullScreen";
 import { unByKey } from "ol/Observable";
-import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
 import { translateOLColorExpression } from "./colorScale.js";
 import { disposeGlobeSynchronization } from "./lifecycle.js";
+import { createStarsSkyBox } from "./stars.js";
 import {
   attachGlobeSelect,
   mountGlobeTooltip,
   unmountGlobeTooltip,
+  reapplyGlobeHighlight,
 } from "./select.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
@@ -40,45 +60,177 @@ import {
 let globus;
 
 /**
- * Translates an OpenLayers style object, which may contain expressions,
- * into a simple style object for OpenGlobus based on feature properties.
- *
- * @param {import("ol/style/flat.js").FlatStyle & Record<string, any>} olStyle The OpenLayers style object.
- * @param {Record<string, any>} properties The properties of the feature.
- * @returns {Record<string, any>} The resolved OpenGlobus style.
+ * The OL feature behind each globe entity, to highlight and select it.
+ * @type {WeakMap<Entity, import("ol/Feature").default>}
  */
-export function translateOLStyleExpressions(olStyle, properties) {
-  const ogStyle = {};
-  const parsingContext = newParsingContext();
-  const evaluationContext = newEvaluationContext();
-  evaluationContext.properties = properties || {};
+export const entityFeatures = new WeakMap();
 
-  const styleKeys = {
-    fillColor: "fill-color",
-    lineColor: "stroke-color",
-    strokeColor: "stroke-color",
-    lineWidth: "stroke-width",
-    strokeWidth: "stroke-width",
-  };
+/**
+ * All features of a globe vector layer, also those a style hides, to rebuild on style changes.
+ * @type {WeakMap<Vector, import("ol/Feature").default[]>}
+ */
+const layerFeatures = new WeakMap();
 
-  for (const [ogKey, olKey] of Object.entries(styleKeys)) {
-    const styleValue = olStyle[olKey];
-    if (styleValue !== undefined) {
-      if (Array.isArray(styleValue)) {
-        // It's an expression
-        try {
-          // The expected type for color is string, number for width.
-          // We can use a broad expected type and let the expression parser figure it out.
-          const expression = buildExpression(styleValue, 7, parsingContext); // 7 is AnyType
-          ogStyle[ogKey] = expression(evaluationContext);
-        } catch (e) {
-          console.error(`Error evaluating style expression for ${olKey}:`, e);
-        }
-      } else {
-        // It's a literal value.
-        ogStyle[ogKey] = styleValue;
-      }
+/** @type {WeakMap<import("ol/DataTile").ImageLike, string>} */
+const imageDataURLs = new WeakMap();
+
+/**
+ * Creates the og entities of an OL feature in EPSG:4326; og draws points only as billboards.
+ *
+ * @param {import("ol/Feature").default} feature - OL feature in EPSG:4326.
+ * @param {import("ol/style/Style").StyleFunction} styleFunction - The layer's style function.
+ * @returns {Entity[]} One entity per point, or one per line/polygon; none when nothing is styled.
+ */
+export function createGlobeEntities(feature, styleFunction) {
+  const style = translateOLStyleExpressions(styleFunction, feature);
+  const { geometry, billboard, label } = style;
+  const olGeometry = /** @type {import("ol/geom/SimpleGeometry").default} */ (
+    feature.getGeometry()
+  );
+  const type = olGeometry.getType();
+  const properties = { ...feature.getProperties() };
+  delete properties[feature.getGeometryName()];
+
+  /** @type {Entity[]} */
+  let entities = [];
+  if (!hasEntityParts(type, style)) return entities;
+  if (type === "Point" || type === "MultiPoint") {
+    const points =
+      type === "Point"
+        ? [olGeometry.getCoordinates()]
+        : olGeometry.getCoordinates();
+    entities = points.map(
+      (lonlat) => new Entity({ lonlat, billboard, label, properties }),
+    );
+  } else {
+    entities = [
+      new Entity({
+        properties,
+        geometry: {
+          type: OG_GEOMETRY_TYPES[type],
+          coordinates: olGeometry.getCoordinates(),
+          style: {
+            fillColor: geometry?.fillColor ?? TRANSPARENT,
+            lineColor: geometry?.lineColor ?? TRANSPARENT,
+            lineWidth: geometry?.lineWidth,
+          },
+        },
+        ...(label && { lonlat: labelPoint(olGeometry), label }),
+      }),
+    ];
+  }
+  entities.forEach((entity) => entityFeatures.set(entity, feature));
+  return entities;
+}
+
+/**
+ * Restyles the entities of a globe vector layer in place
+ *
+ * @param {Entity[]} entities - Current entities of the layer.
+ * @param {import("ol/Feature").default[]} features - All features of the layer.
+ * @param {import("ol/style/Style").StyleFunction | undefined} styleFunction - The layer's style function.
+ * @returns {boolean} False when the style shows, hides or reshapes entities, which needs a rebuild.
+ */
+export function restyleGlobeEntities(entities, features, styleFunction) {
+  const styles = new Map(
+    features.map((feature) => [
+      feature,
+      translateOLStyleExpressions(styleFunction, feature),
+    ]),
+  );
+  const shown = new Set(entities.map((entity) => entityFeatures.get(entity)));
+  const sameEntities =
+    features.every(
+      (feature) =>
+        shown.has(feature) ===
+        hasEntityParts(feature.getGeometry().getType(), styles.get(feature)),
+    ) &&
+    entities.every((entity) => {
+      const { billboard, label } = styles.get(entityFeatures.get(entity));
+      const pointImage = !entity.geometry && billboard;
+      return (
+        !!entity.billboard === !!pointImage &&
+        (!pointImage || entity.billboard.getScale() === pointImage.scale) &&
+        !!entity.label === !!label
+      );
+    });
+  if (!sameEntities) return false;
+
+  entities.forEach((entity) => {
+    const { geometry, billboard, label } = styles.get(
+      entityFeatures.get(entity),
+    );
+    if (entity.geometry) {
+      const geometryStyle = {
+        fillColor: TRANSPARENT,
+        lineColor: TRANSPARENT,
+        ...geometry,
+      };
+      Object.entries(geometryStyle).forEach(([key, value]) => {
+        if (value === undefined) return;
+        entity.geometry[GEOMETRY_STYLE_SETTERS[key]](
+          typeof value === "number" ? value : utils.createColorRGBA(value),
+        );
+      });
     }
+    if (entity.billboard) {
+      // Same images reuse the og atlas entry instead of reloading.
+      if (entity.billboard.getSrc() !== billboard.src) {
+        entity.billboard.setSize(...(billboard.size ?? [0, 0]));
+        entity.billboard.setSrc(billboard.src);
+      } else if (billboard.size) {
+        entity.billboard.setSize(...billboard.size);
+      }
+      entity.billboard.setColor(...billboard.color);
+      entity.billboard.setOffset(...billboard.offset);
+      entity.billboard.setRotation(billboard.rotation);
+    }
+    if (label) {
+      entity.label.setText(label.text);
+      entity.label.setSize(label.size);
+      entity.label.setColor(...label.color);
+      entity.label.setOutline(label.outline ?? 0);
+      if (label.outlineColor)
+        entity.label.setOutlineColor(...label.outlineColor);
+      entity.label.setAlign(label.align);
+      entity.label.setOffset(...label.offset);
+      entity.label.setRotation(label.rotation);
+    }
+    reapplyGlobeHighlight(entity);
+  });
+  return true;
+}
+
+/**
+ * Whether a feature of this geometry type gets globe entities with this style.
+ *
+ * @param {string} type - OL geometry type.
+ * @param {import("./types").GlobeEntityStyle} style - Translated style.
+ * @returns {boolean}
+ */
+function hasEntityParts(type, { geometry, billboard, label }) {
+  if (type === "Point" || type === "MultiPoint") return !!(billboard || label);
+  return !!(OG_GEOMETRY_TYPES[type] && (geometry || label));
+}
+
+/**
+ * Translates the style OL resolves for a feature, as in 2D, into OpenGlobus entity options.
+ *
+ * @param {import("ol/style/Style").StyleFunction} styleFunction - The layer's or select interaction's style function.
+ * @param {import("ol/Feature").default} feature - The feature to style.
+ * @returns {import("./types").GlobeEntityStyle} The geometry, billboard and label options.
+ */
+export function translateOLStyleExpressions(styleFunction, feature) {
+  /** @type {import("./types").GlobeEntityStyle} */
+  const ogStyle = {};
+  // Later styles are drawn on top in 2D, so their defined values win.
+  for (const style of [].concat(styleFunction?.(feature, 1) ?? [])) {
+    const geometry = geometryOptions(style);
+    const billboard = billboardOptions(style.getImage());
+    const label = labelOptions(style.getText());
+    if (geometry) ogStyle.geometry = { ...ogStyle.geometry, ...geometry };
+    if (billboard) ogStyle.billboard = billboard;
+    if (label) ogStyle.label = label;
   }
   return ogStyle;
 }
@@ -262,6 +414,128 @@ export const setupGlobeSync = (EOxMap, globus) => {
   globus._onMouseWheel = onMouseWheel; // Store for cleanup
 };
 
+/**
+ * Reads the og geometry style from the fill and stroke of an OL style.
+ *
+ * @param {import("ol/style/Style").default} style - Resolved OL style.
+ * @returns {import("./types").GlobeEntityStyle["geometry"]} The geometry style, if the style has a fill or stroke.
+ */
+function geometryOptions(style) {
+  const fill = style.getFill();
+  const stroke = style.getStroke();
+  if (!fill && !stroke) return undefined;
+  const width = stroke?.getWidth() ?? 1;
+  // Only set keys, so merged styles keep earlier fills or strokes.
+  return {
+    ...(fill && { fillColor: normalizeColor(fill.getColor()) }),
+    ...(stroke && {
+      // og draws width 0 as 3, so hide the line by its colour.
+      lineColor: normalizeColor(
+        width ? (stroke.getColor() ?? DEFAULT_STROKE_COLOR) : undefined,
+      ),
+      lineWidth: width,
+    }),
+  };
+}
+
+/**
+ * Reads og billboard options from an OL image style (icon, circle or shape).
+ *
+ * @param {import("ol/style/Image").default | null} image - Resolved OL image style.
+ * @returns {import("./types").GlobeEntityStyle["billboard"]} The billboard options, if the style has an image.
+ */
+function billboardOptions(image) {
+  if (!image) return undefined;
+  const tint = image instanceof Icon && image.getColor();
+  const [r, g, b, a] = tint ? normalizeColor(tint) : [1, 1, 1, 1];
+  return {
+    // og only loads images by src, so circles and shapes become data URLs.
+    src:
+      image instanceof Icon ? image.getSrc() : imageDataURL(image.getImage(1)),
+    // og keeps the first image size, so give it when the image changes.
+    size: /** @type {[number, number]} */ (image.getSize() ?? undefined),
+    scale: image.getScaleArray()[0],
+    offset: /** @type {[number, number]} */ (image.getDisplacement()),
+    rotation: image.getRotation(),
+    color: [r, g, b, a * image.getOpacity()],
+  };
+}
+
+/**
+ * Reads og label options from an OL text style.
+ *
+ * @param {import("ol/style/Text").default | null} text - Resolved OL text style.
+ * @returns {import("./types").GlobeEntityStyle["label"]} The label options, if the style has a text.
+ */
+function labelOptions(text) {
+  const value = text?.getText();
+  if (!value) return undefined;
+  const font = getFontParameters(text.getFont() ?? "10px sans-serif");
+  return {
+    // Rich text alternates text and font.
+    text: Array.isArray(value)
+      ? value.filter((_, i) => i % 2 === 0).join("")
+      : value,
+    size: (parseFloat(font?.size) || 10) * text.getScaleArray()[0],
+    color: normalizeColor(text.getFill()?.getColor()),
+    outline: text.getStroke()?.getWidth(),
+    outlineColor: normalizeColor(text.getStroke()?.getColor()),
+    align: LABEL_ALIGN[text.getTextAlign()] ?? "center",
+    // og offsets point up, OL offsets point down.
+    offset: [text.getOffsetX(), -text.getOffsetY()],
+    rotation: text.getRotation(),
+  };
+}
+
+/**
+ * Copies an OL symbol image to a data URL; OL may hold it as an ImageBitmap, which has no `toDataURL`.
+ *
+ * @param {import("ol/DataTile").ImageLike} image - OL symbol image.
+ * @returns {string} The PNG data URL.
+ */
+function imageDataURL(image) {
+  // OL reuses one image per symbol style, so encode it once.
+  if (!imageDataURLs.has(image)) {
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    canvas.getContext("2d").drawImage(image, 0, 0);
+    imageDataURLs.set(image, canvas.toDataURL());
+  }
+  return imageDataURLs.get(image);
+}
+
+/**
+ * Where OL places a label on a line or polygon.
+ *
+ * @param {any} geometry - OL line or polygon geometry.
+ * @returns {[number, number]} The label lon/lat.
+ */
+function labelPoint(geometry) {
+  switch (geometry.getType()) {
+    case "Polygon":
+      return geometry.getInteriorPoint().getCoordinates().slice(0, 2);
+    case "MultiPolygon":
+      return geometry.getInteriorPoints().getCoordinates()[0].slice(0, 2);
+    case "LineString":
+      return geometry.getCoordinateAt(0.5);
+    default:
+      return geometry.getLineString(0).getCoordinateAt(0.5);
+  }
+}
+
+/**
+ * Normalizes an OL colour to RGBA in 0..1; og parses neither 8-digit hex nor 0-255 arrays.
+ *
+ * @param {any} color - OL colour, colour-like or pattern.
+ * @returns {import("./types").RGBA} The RGBA colour, transparent for missing colours and patterns.
+ */
+function normalizeColor(color) {
+  if (typeof color !== "string" && !Array.isArray(color)) return TRANSPARENT;
+  const [r, g, b, a = 1] = asArray(color);
+  return [r / 255, g / 255, b / 255, a];
+}
+
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
     target,
@@ -270,14 +544,16 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
       .map((l) => createGlobusLayer(l, mapPool, EOxMap))
       .filter((l) => l !== undefined),
     sun: { active: false },
-    atmosphereEnabled: false,
+    atmosphereEnabled: !!EOxMap.globeConfig?.atmosphere,
+    ...(EOxMap.globeConfig?.stars && {
+      skybox: createStarsSkyBox(EOxMap.globeConfig.stars),
+    }),
     transparentBackground: true,
     terrain: EOxMap.globeConfig?.terrain
       ? new GlobusRgbTerrain()
       : new EmptyTerrain(), // Use EOxMap's globeConfig.terrain property
     resourcesSrc: "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res",
-    fontsSrc:
-      "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res/fonts",
+    fontsSrc: OG_FONTS_SRC,
   });
   let currZoom = EOxMap.map.getView().getZoom() - 1;
   if (!EOxMap.globeConfig?.useHighLOD) {
@@ -331,6 +607,101 @@ export const refreshGlobe = (globus) => {
 };
 
 /**
+ * Standard WMS GetMap parameters managed directly by OpenGlobus `WMS.createRequestUrl`.
+ * Forwarding these in `extra` produces duplicate or conflicting query parameters
+ * (e.g. `SRS=EPSG:3857` alongside `SRS=EPSG:4326` with an `EPSG:3857` `BBOX`).
+ */
+const RESERVED_WMS_PARAMS = new Set([
+  "layers",
+  "version",
+  "service",
+  "request",
+  "format",
+  "srs",
+  "crs",
+  "bbox",
+  "width",
+  "height",
+]);
+
+/**
+ * Extracts clean OpenGlobus `WMS` options (`url`, `layers`, `version`, `extra`)
+ * from an OpenLayers `TileWMS` source, stripping reserved `GetMap` parameters
+ * from `extra` and preserving vendor/custom parameters (such as `TILED`,
+ * `TRANSPARENT`, `STYLES`, `TIME`, `CQL_FILTER`, or MapServer `map`).
+ *
+ * @param {import("ol/source/TileWMS.js").default} source
+ * @returns {{ url: string, layers: string, version: string, extra: Record<string, string> }}
+ */
+export const getGlobeWMSOptions = (source) => {
+  const rawUrl = source.getUrls?.()?.[0] || "";
+  const wmsParams = source.getParams?.() || {};
+
+  let cleanUrl = rawUrl;
+  /** @type {Record<string, any>} */
+  const mergedParams = {};
+
+  const queryIndex = rawUrl.indexOf("?");
+  if (queryIndex !== -1) {
+    cleanUrl = rawUrl.slice(0, queryIndex);
+    const searchParams = new URLSearchParams(rawUrl.slice(queryIndex + 1));
+    searchParams.forEach((val, key) => {
+      mergedParams[key] = val;
+    });
+  }
+
+  Object.entries(wmsParams).forEach(([key, val]) => {
+    if (val !== undefined && val !== null) {
+      mergedParams[key] = val;
+    }
+  });
+
+  let layers = "default";
+  let version = "1.1.1";
+  /** @type {Record<string, string>} */
+  const extra = {};
+
+  Object.entries(mergedParams).forEach(([key, val]) => {
+    const lower = key.toLowerCase();
+    if (lower === "layers" && val !== "") {
+      layers = String(val);
+    } else if (lower === "version" && val !== "") {
+      version = String(val);
+    } else if (!RESERVED_WMS_PARAMS.has(lower)) {
+      extra[key] = String(val);
+    }
+  });
+
+  return { url: cleanUrl, layers, version, extra };
+};
+
+/**
+ * Translates the style of an OL GeoTIFF layer into OpenGlobus render options,
+ * following its source: the alpha band OL adds for nodata, and its sampling.
+ *
+ * @param {import("ol/layer/WebGLTile.js").default} olLayer - Layer with a GeoTIFF source.
+ * @param {Record<string, any>} [variables] - Style variables, defaults to the layer's.
+ * @returns {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions}
+ */
+export function getGeoTIFFRenderOptions(olLayer, variables) {
+  const source = /** @type {GeoTIFF_ol | null} */ (olLayer.getSource());
+  if (!source) return {};
+  return /** @type {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions} */ ({
+    ...translateOLColorExpression(
+      // @ts-expect-error private; the style, so unstyled layers stay empty and og picks RGB
+      olLayer.style_,
+      // @ts-expect-error private, no public getter for the current variables
+      variables ?? olLayer.styleVariables_,
+      source.nodataBandIndex,
+      // @ts-expect-error private, OL has no public getter for `normalize`
+      source.normalize_ ? 1 : OL_ALPHA_VALID,
+    ),
+    // og samples nearest by default; blend only where OL interpolates.
+    ...(source.getInterpolate() && { resampleMethod: "bilinear" }),
+  });
+}
+
+/**
  * Translates an OL GeoTIFF source definition into OpenGlobus GeoTIFFLayer source options.
  * A single COG (one entry in `sources`, or a top-level `url`) is passed as `src`,
  * multiple COGs are passed as `sources` and stacked as bands, as in OL.
@@ -361,6 +732,50 @@ export const getGeoTIFFSourceOptions = (sourceDef) => {
 };
 
 /**
+ * OL picks the deeper tile zoom once the fractional zoom reaches log2(4/3).
+ *
+ * @param {number} zoom - OL view zoom.
+ * @returns {number} The tile zoom OL requests at that view zoom.
+ */
+const toTileZoom = (zoom) =>
+  Math.max(0, Math.floor(zoom + 1 - Math.log2(4 / 3)));
+
+/**
+ * og zoom gates that mirror the OL layer zoom range and preload, per tile.
+ *
+ * @param {ExtendedOLLayer} olLayer
+ */
+const getZoomOptions = (olLayer) => {
+  const minZoom = toTileZoom(olLayer.getMinZoom());
+  const max = olLayer.getMaxZoom();
+  // 50 is the og default.
+  const maxZoom = Number.isFinite(max) ? toTileZoom(max) : 50;
+  return {
+    minZoom,
+    minNativeZoom: minZoom,
+    maxZoom,
+    ...(Number.isFinite(max) && { maxNativeZoom: maxZoom }),
+    // og walks every ancestor for any OL preload, ignoring minNativeZoom; GeoTIFF forces it off.
+    waitForParentMaterial:
+      olLayer instanceof BaseTileLayer &&
+      olLayer.getPreload() > 0 &&
+      minZoom === 0 &&
+      !(olLayer.getSource() instanceof GeoTIFF_ol),
+  };
+};
+
+/**
+ * og loading options that mirror OL: no world preload, and per-tile zoom limits.
+ *
+ * @param {ExtendedOLLayer} olLayer
+ * @returns {ReturnType<typeof getZoomOptions> & { preLoadZoomLevels: number[] }}
+ */
+const getLoadingOptions = (olLayer) => ({
+  preLoadZoomLevels: [],
+  ...getZoomOptions(olLayer),
+});
+
+/**
  * Creates the OpenGlobus counterpart of an OL layer.
  *
  * @param {any} olLayer - The OL layer.
@@ -374,6 +789,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
 
   if (source instanceof OSM) {
     return new OpenStreetMap(id, {
+      ...getLoadingOptions(olLayer),
       isBaseLayer: olLayer.get("base"),
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
@@ -384,6 +800,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
     // @ts-expect-error TODO
     const url = source._updatedUrl || source.getUrls()[0];
     return new XYZ(id, {
+      ...getLoadingOptions(olLayer),
       isBaseLayer: olLayer.get("base"),
       url: url,
       visibility: olLayer.getVisible(),
@@ -391,88 +808,80 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
     });
   }
   if (source instanceof WMS_ol) {
-    // Construct WMS URL with parameters
-    const wmsParams = source.getParams();
-    const baseUrl = source.getUrls()[0];
-    const wmsUrl = baseUrl;
-    const wmsLayerNames = wmsParams.LAYERS || wmsParams.layers || "default";
+    const { url, layers, version, extra } = getGlobeWMSOptions(source);
 
     const wmsLayer = new WMS(id, {
+      ...getLoadingOptions(olLayer),
       isBaseLayer: olLayer.get("base"),
-      layers: wmsLayerNames,
-      url: wmsUrl,
+      layers,
+      url,
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
-      version: wmsParams.VERSION || wmsParams.Version || "1.1.1",
-      extra: {
-        ...wmsParams,
-      },
+      version,
+      ...(Object.keys(extra).length > 0 ? { extra } : {}),
     });
     attachGlobeSelect(EOxMap, olLayer, wmsLayer);
     return wmsLayer;
   }
-  if (source instanceof Vector_ol && source.getUrl()) {
-    let projection;
-    fetch(source.getUrl().toString())
+  const vectorUrl = source instanceof Vector_ol && source.getUrl();
+  if (typeof vectorUrl === "string") {
+    /** @type {import("@openglobus/og").Globe | null | undefined} */
+    let targetGlobe = EOxMap?.globe;
+    if (!targetGlobe) {
+      queueMicrotask(() => {
+        targetGlobe = EOxMap?.globe;
+      });
+    }
+    fetch(vectorUrl)
       .then((r) => {
         return r.json();
       })
       .then((data) => {
-        const crs = data["crs"];
-        if (crs) {
-          if (crs["type"] == "name") {
-            projection = getProjection(crs["properties"]["name"]);
-          } else if (crs["type"] === "EPSG") {
-            projection = getProjection("EPSG:" + crs["properties"]["code"]);
-          }
-        }
+        // The source or the layer was replaced, or globe mode left, while fetching.
         if (
-          (projection && equivalent(projection, getProjection("EPSG:4326"))) ||
-          !crs
-        ) {
+          !targetGlobe ||
+          EOxMap?.globe !== targetGlobe ||
+          !EOxMap?.globeEnabled ||
+          olLayer.getSource() !== source ||
+          !EOxMap.map.getAllLayers().includes(olLayer)
+        )
+          return undefined;
+        const format = new GeoJSON();
+        // A `crs` OL doesn't know keeps the CanvasTiles fallback.
+        if (format.readProjection(data)) {
+          const features = format
+            .readFeatures(data, { featureProjection: "EPSG:4326" })
+            .filter((feature) => feature.getGeometry());
+          // Built before the swap, so a style error keeps the CanvasTiles fallback.
+          const entities = features.flatMap((feature) =>
+            createGlobeEntities(feature, olLayer.getStyleFunction()),
+          );
+
           // remove existing layer with same id if any
-          const existingLayer = globus.planet.getLayerByName(id);
+          const existingLayer = targetGlobe.planet.getLayerByName(id);
           if (existingLayer) {
-            globus.planet.removeLayer(existingLayer);
+            targetGlobe.planet.removeLayer(existingLayer);
           }
           const vectorLayer = new Vector(id, {
+            ...getLoadingOptions(olLayer),
             visibility: olLayer.getVisible(),
             opacity: olLayer.getOpacity(),
             isBaseLayer: olLayer.get("base"),
           });
+          layerFeatures.set(vectorLayer, features);
 
-          vectorLayer.addTo(globus.planet);
+          vectorLayer.addTo(targetGlobe.planet);
           // the vector layer is added asynchronously, so re-apply the OL order
-          syncGlobeLayerOrder(EOxMap, globus);
+          syncGlobeLayerOrder(EOxMap, targetGlobe);
           attachGlobeSelect(EOxMap, olLayer, vectorLayer);
-          const olStyle = olLayer.getStyle();
-
-          var f = data.features;
-          for (let i = 0; i < f.length; i++) {
-            var fi = f[i];
-            const vectorStyle = translateOLStyleExpressions(
-              olStyle,
-              fi.properties,
-            );
-            vectorLayer.add(
-              new Entity({
-                properties: fi.properties,
-                geometry: {
-                  type: fi.geometry.type,
-                  coordinates: fi.geometry.coordinates,
-                  style: vectorStyle,
-                },
-              }),
-            );
-          }
+          vectorLayer.addEntities(entities);
           return vectorLayer;
         } else {
           return undefined;
         }
-      });
-    if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
-      return undefined;
-    }
+      })
+      // The CanvasTiles fallback stays on fetch or style errors.
+      .catch((error) => console.warn(error));
   }
 
   // Check if GeoTIFF layer can be natively rendered in OpenGlobus
@@ -482,17 +891,15 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
       !!jsonDef?.source?.url);
 
   if (isGeoTIFF) {
-    const style = jsonDef?.style || olLayer.style_ || {};
-
-    const renderOptions =
-      /** @type {import("@openglobus/og").geotiff.IGeoTIFFRenderOptions} */ (
-        translateOLColorExpression(style, olLayer.styleVariables_)
-      );
+    const tileLayer = /** @type {import("ol/layer/WebGLTile.js").default} */ (
+      /** @type {unknown} */ (olLayer)
+    );
     const geoTIFFLayer = new GeoTIFFLayer(id, {
       ...getGeoTIFFSourceOptions(jsonDef?.source),
+      ...getLoadingOptions(olLayer),
       opacity: olLayer.getOpacity(),
       visibility: olLayer.getVisible(),
-      renderOptions,
+      renderOptions: getGeoTIFFRenderOptions(tileLayer),
     });
 
     attachGlobeSelect(EOxMap, olLayer, geoTIFFLayer);
@@ -501,16 +908,40 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
 
   // Fallback to CanvasTiles for other layer types
   return new CanvasTiles(id, {
+    ...getLoadingOptions(olLayer),
     opacity: olLayer.getOpacity(),
     visibility: olLayer.getVisible(),
     async drawTile(material, applyCanvas) {
+      const canvasTilesLayer = /** @type {CanvasTiles} */ (material?.layer);
       if (!material.segment) {
+        canvasTilesLayer?.abortMaterialLoading?.(material);
+        material?.textureNotExists?.();
         return;
       }
+
+      const projCode = material.segment._projection?.code || "EPSG:3857";
+      /** @type {number[] | undefined} */
+      let extent;
+      if (projCode === "EPSG:4326") {
+        const ext =
+          material.segment.getExtentLonLat?.() ||
+          material.segment.getExtent?.();
+        if (ext) {
+          extent = [
+            ext.getWest(),
+            ext.getSouth(),
+            ext.getEast(),
+            ext.getNorth(),
+          ];
+        }
+      }
+
       const tile = {
         x: material.segment.tileX,
         y: material.segment.tileY,
         z: material.segment.tileZoom,
+        projection: projCode,
+        ...(extent ? { extent } : {}),
       };
 
       const mapPoolCandidate = distributeTileToIdealMap(
@@ -519,15 +950,23 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
         tile,
         (renderedMapCanvas) => {
           if (!material.segment?.initialized) {
+            canvasTilesLayer?.abortMaterialLoading?.(material);
             return;
           }
           applyCanvas(renderedMapCanvas);
         },
+        {
+          abort: () => {
+            canvasTilesLayer?.abortMaterialLoading?.(material);
+          },
+          fail: () => {
+            canvasTilesLayer?.abortMaterialLoading?.(material);
+            material.textureNotExists?.();
+          },
+        },
       );
 
-      if (mapPoolCandidate.tileQueue.length === 1) {
-        mapPoolCandidate.loadNextTile();
-      }
+      mapPoolCandidate.loadNextTile();
     },
   });
 };
@@ -573,14 +1012,9 @@ export const enableGlobe = (map) => {
     "globe-switcher-container",
     "ol-full-screen",
     "loading-indicator",
-  ];
-  const incompatibleClasses = [
-    "ol-rotate",
-    "ol-scale-line",
-    "ol-overviewmap",
     "ol-mouse-position",
-    "geolocation",
   ];
+  const incompatibleClasses = ["ol-rotate", "ol-overviewmap", "geolocation"];
   const allControls = map.shadowRoot?.querySelectorAll(
     ".ol-control, .ol-mouse-position",
   );
@@ -719,6 +1153,8 @@ export const enableGlobe = (map) => {
 export const disableGlobe = (map) => {
   if (map.globe) {
     const globe = map.globe;
+    const mapPool = /** @type {any} */ (globe)._mapPool;
+    mapPool?.forEach((poolItem) => clearPoolQueue(poolItem));
     disposeGlobeSynchronization(globe);
     const planet = globe.planet;
 
@@ -840,6 +1276,7 @@ export const disableGlobe = (map) => {
         globe._detachViewListeners(map.map.getView());
         map.map.un("change:view", globe._viewChangeHandler);
         unmountGlobeTooltip(map);
+        disposeMapPool(mapPool);
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation
@@ -853,6 +1290,9 @@ export const disableGlobe = (map) => {
           /** @type {HTMLElement} */ (mapElement).style.display = ""; // Show the map
         }
         map.globeEnabled = false;
+        // og is mid-frame here; destroy once that frame has finished.
+        queueMicrotask(() => globe.destroy());
+        if (globus === globe) globus = undefined;
       },
     });
   }
@@ -909,40 +1349,183 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
     });
   }, 200);
 
-  const changeKey = olLayer.on("change", () => {
-    if (!disposed && olLayer.styleVariables_) {
-      const layerId = olLayer.get("id");
+  let lastStyleVarsJson = olLayer.styleVariables_
+    ? JSON.stringify(olLayer.styleVariables_)
+    : null;
+  const initialSource = /** @type {any} */ (olLayer).getSource?.();
+  let lastWmsKey =
+    initialSource instanceof WMS_ol
+      ? JSON.stringify(getGlobeWMSOptions(initialSource))
+      : null;
+  let lastUrlTileKey =
+    initialSource instanceof UrlTile &&
+    !(initialSource instanceof XYZ_ol) &&
+    !(initialSource instanceof WMS_ol)
+      ? initialSource.getKey()
+      : null;
+
+  const syncLayerState = () => {
+    if (disposed) return;
+    const layerId = olLayer.get("id");
+    if (!layerId) return;
+
+    let shouldRefreshCanvasTiles = false;
+
+    if (isGeoZarrLayer(olLayer)) {
+      let poolUpdated = false;
+      mapPool.forEach((poolItem) => {
+        const layerInTileMap = getLayerById(poolItem.tileMap, layerId);
+        if (syncGeoZarrPoolLayer(olLayer, layerInTileMap)) {
+          poolUpdated = true;
+        }
+      });
+      if (poolUpdated) {
+        mapPool.forEach((poolItem) => clearPoolQueue(poolItem));
+        shouldRefreshCanvasTiles = true;
+      }
+    }
+
+    if (olLayer.styleVariables_) {
       const newStyleVariables = /** @type {Record<string, number>} */ (
         olLayer.styleVariables_
       );
-      if (!layerId || !newStyleVariables) return;
+      const nextStyleJson = JSON.stringify(newStyleVariables);
+      if (nextStyleJson !== lastStyleVarsJson) {
+        lastStyleVarsJson = nextStyleJson;
+        mapPool.forEach((poolItem) => {
+          clearPoolQueue(poolItem);
+          const layerInTileMap =
+            /** @type {import("ol/layer/WebGLTile.js").default} */ (
+              /** @type {unknown} */ (getLayerById(poolItem.tileMap, layerId))
+            );
+          if (layerInTileMap && layerInTileMap.updateStyleVariables) {
+            layerInTileMap.updateStyleVariables({ ...newStyleVariables });
+          }
+        });
 
-      mapPool.forEach((poolItem) => {
-        poolItem.tileQueue.length = 0;
-        const layerInTileMap =
-          /** @type {import("ol/layer/WebGLTile.js").default} */ (
-            /** @type {unknown} */ (getLayerById(poolItem.tileMap, layerId))
+        const globusLayer = /** @type {any} */ (
+          globe.planet.getLayerByName(layerId)
+        );
+        if (globusLayer && typeof globusLayer.setRenderOptions === "function") {
+          globusLayer.setRenderOptions(
+            getGeoTIFFRenderOptions(
+              /** @type {import("ol/layer/WebGLTile.js").default} */ (
+                /** @type {unknown} */ (olLayer)
+              ),
+              newStyleVariables,
+            ),
           );
-        if (layerInTileMap && layerInTileMap.updateStyleVariables) {
-          layerInTileMap.updateStyleVariables(newStyleVariables);
+        }
+
+        shouldRefreshCanvasTiles = true;
+      }
+    }
+
+    const currentSource = /** @type {any} */ (olLayer).getSource?.();
+    if (currentSource instanceof WMS_ol) {
+      const nextWmsOpts = getGlobeWMSOptions(currentSource);
+      const nextWmsKey = JSON.stringify(nextWmsOpts);
+      if (nextWmsKey !== lastWmsKey) {
+        lastWmsKey = nextWmsKey;
+        const globusLayer = /** @type {any} */ (
+          globe.planet.getLayerByName(layerId)
+        );
+        if (globusLayer && globusLayer instanceof WMS) {
+          globusLayer.url = nextWmsOpts.url;
+          globusLayer.layers = nextWmsOpts.layers;
+          globusLayer.setVersion(nextWmsOpts.version);
+          /** @type {any} */ (globusLayer)._extra = new URLSearchParams(
+            nextWmsOpts.extra,
+          ).toString();
+          globusLayer.redraw();
+        }
+      }
+    }
+
+    if (currentSource instanceof XYZ_ol && !(currentSource instanceof OSM)) {
+      const nextXyzUrl =
+        /** @type {any} */ (currentSource)._updatedUrl ||
+        currentSource.getUrls?.()?.[0] ||
+        "";
+      const globusLayer = globe.planet.getLayerByName(layerId);
+      if (
+        nextXyzUrl &&
+        globusLayer &&
+        globusLayer instanceof XYZ &&
+        globusLayer.url !== nextXyzUrl
+      ) {
+        globusLayer.setUrl(nextXyzUrl);
+        globusLayer.redraw();
+      }
+    }
+
+    if (
+      currentSource instanceof UrlTile &&
+      !(currentSource instanceof XYZ_ol) &&
+      !(currentSource instanceof WMS_ol)
+    ) {
+      const nextTileKey = currentSource.getKey();
+      const tileUrlFn = currentSource.getTileUrlFunction();
+      let poolUpdated = false;
+      mapPool.forEach((poolItem) => {
+        const poolLayer = /** @type {any} */ (
+          getLayerById(poolItem.tileMap, layerId)
+        );
+        const poolSource = poolLayer?.getSource?.();
+        if (
+          poolSource instanceof UrlTile &&
+          tileUrlFn &&
+          (nextTileKey !== lastUrlTileKey ||
+            poolSource.getTileUrlFunction() !== tileUrlFn)
+        ) {
+          clearPoolQueue(poolItem);
+          poolSource.setTileUrlFunction(tileUrlFn, nextTileKey);
+          poolUpdated = true;
         }
       });
-
-      const globusLayer = /** @type {any} */ (
-        globe.planet.getLayerByName(layerId)
-      );
-      if (globusLayer && typeof globusLayer.setRenderOptions === "function") {
-        globusLayer.setRenderOptions(
-          translateOLColorExpression(olLayer, newStyleVariables),
-        );
+      lastUrlTileKey = nextTileKey;
+      if (poolUpdated) {
+        shouldRefreshCanvasTiles = true;
       }
+    }
 
+    if (shouldRefreshCanvasTiles) {
       debouncedRefresh();
+    }
+  };
+
+  const changeKey = olLayer.on("change", syncLayerState);
+
+  const vectorLayer = /** @type {import("ol/layer/Vector").default} */ (
+    /** @type {unknown} */ (olLayer)
+  );
+  let builtStyleFunction = vectorLayer.getStyleFunction?.();
+  // Rebuild only for a new style function; `change` also fires on source edits.
+  const styleKey = olLayer.on("change", () => {
+    const styleFunction = vectorLayer.getStyleFunction?.();
+    if (disposed || styleFunction === builtStyleFunction) return;
+    // Also while loading, as the loaded GeoJSON is built with the current style.
+    builtStyleFunction = styleFunction;
+    const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
+    if (!(globusLayer instanceof Vector)) return;
+    const features = layerFeatures.get(globusLayer) ?? [];
+    if (
+      !restyleGlobeEntities(globusLayer.getEntities(), features, styleFunction)
+    ) {
+      globusLayer.setEntities(
+        features.flatMap((feature) =>
+          createGlobeEntities(feature, styleFunction),
+        ),
+      );
     }
   });
 
   const propertyKey = olLayer.on("propertychange", ({ key }) => {
     if (disposed) return;
+    if (key === "source") {
+      syncLayerState();
+      return;
+    }
     const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
     if (!globusLayer) return;
     switch (key) {
@@ -952,13 +1535,25 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
       case "opacity":
         globusLayer.opacity = olLayer.getOpacity();
         break;
+      case "minZoom":
+      case "maxZoom": {
+        const options = getZoomOptions(olLayer);
+        const minZoomChanged = globusLayer.minZoom !== options.minZoom;
+        Object.assign(globusLayer, options);
+        // og keeps loaded and "no texture" tiles until their materials are cleared.
+        if (minZoomChanged) globusLayer.redraw();
+        break;
+      }
     }
   });
+
+  // Reconcile any in-place edits made while the map element was disconnected.
+  syncLayerState();
 
   return () => {
     if (disposed) return;
     disposed = true;
-    unByKey([changeKey, propertyKey]);
+    unByKey([changeKey, styleKey, propertyKey]);
     debouncedRefresh.cancel();
     animationTimers.forEach((timeout, layer) => {
       clearTimeout(timeout);

@@ -77,6 +77,106 @@ function wmsDefinition() {
   });
 }
 
+/**
+ * @param {(map: EOxMap, planet: ReturnType<typeof createGlobeStub>["planet"]) => void} test
+ * @param {{ minZoom?: number, maxZoom?: number, preload?: number }} [zoomRange] - OL tile layer loading options.
+ */
+function withXyzGlobe(test, zoomRange) {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    const { planet } = activate(map);
+    map.layers = [{ ...xyzDefinition("zoom"), ...zoomRange }];
+    test(map, planet);
+  });
+}
+
+/** An OL zoom range gates globe tile requests per tile and skips the low-zoom loads. */
+export function testGlobeLayerZoomRange() {
+  withXyzGlobe(
+    (_, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      expect(layer).to.include({
+        minZoom: 8,
+        minNativeZoom: 8,
+        maxZoom: 12,
+        maxNativeZoom: 12,
+        waitForParentMaterial: false,
+      });
+      expect(layer._preLoadZoomLevels).to.deep.equal([]);
+    },
+    { minZoom: 8, maxZoom: 12 },
+  );
+}
+
+/** Fractional OL zooms map to the tile zoom OL requests (nearest by resolution). */
+export function testFractionalGlobeLayerZoomRange() {
+  withXyzGlobe(
+    (map, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      expect(layer.minNativeZoom).to.equal(8);
+      map.map.getAllLayers()[0].setMinZoom(8.5);
+      expect(layer.minNativeZoom).to.equal(9);
+    },
+    { minZoom: 8.3 },
+  );
+}
+
+/** Layers without an OL zoom range keep the default zooms but load like OL. */
+export function testGlobeLayerWithoutZoomRange() {
+  withXyzGlobe((_, planet) => {
+    const layer = planet.getLayerByName("mosaic");
+    expect(layer).to.include({
+      minZoom: 0,
+      minNativeZoom: 0,
+      maxZoom: 50,
+      waitForParentMaterial: false,
+    });
+    expect(layer._preLoadZoomLevels).to.deep.equal([]);
+  });
+}
+
+/** OL preload maps to the ancestor walk, which cannot respect an OL minZoom. */
+export function testGlobeLayerPreload() {
+  withXyzGlobe(
+    (map, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      expect(layer.waitForParentMaterial).to.be.true;
+      const olLayer = map.map.getAllLayers()[0];
+      olLayer.setMinZoom(8);
+      expect(layer.waitForParentMaterial).to.be.false;
+      // OL preload reaches z0 for a minZoom of 0.
+      olLayer.setMinZoom(0);
+      expect(layer.waitForParentMaterial).to.be.true;
+    },
+    { preload: Infinity },
+  );
+}
+
+/** Zoom range edits on a live OL layer reach the same globe layer. */
+export function testLiveGlobeLayerZoomRange() {
+  withXyzGlobe(
+    (map, planet) => {
+      const layer = planet.getLayerByName("mosaic");
+      const olLayer = map.map.getAllLayers()[0];
+      const redraw = cy.spy(layer, "redraw");
+      olLayer.setMinZoom(10);
+      olLayer.setMaxZoom(14);
+      // The `layers` setter workaround must not clear loaded tiles.
+      olLayer.setMinZoom(10 - 1e-12);
+      expect(planet.getLayerByName("mosaic")).to.equal(layer);
+      expect(layer).to.include({ minZoom: 10, minNativeZoom: 10, maxZoom: 14 });
+      expect(redraw).to.have.been.calledOnce;
+      olLayer.setMinZoom(-Infinity);
+      olLayer.setMaxZoom(Infinity);
+      expect(layer).to.include({ minZoom: 0, minNativeZoom: 0, maxZoom: 50 });
+      expect(redraw).to.have.been.calledTwice;
+    },
+    { minZoom: 8, maxZoom: 12 },
+  );
+}
+
 /** Internal map events remain local, while root map events still bubble and compose. */
 export function testPoolEventIsolation() {
   withMap((map) => {
@@ -270,5 +370,211 @@ export function testSameIdGlobeReplacement() {
     replacement.setOpacity(0.4);
     expect(visibility).to.have.been.calledOnceWith(false);
     expect(current.opacity).to.equal(0.4);
+  });
+}
+
+/**
+ * Creates a network-intercepted XYZ definition with a fixed ID, like the eodash
+ * mosaic layer whose URL changes with the selected time range.
+ *
+ * @param {string} path - Path segment that differs between source versions.
+ * @param {string} [id] - Layer ID.
+ */
+function xyzDefinition(path, id = "mosaic") {
+  return /** @type {import("../../../src/layers.js").EoxLayer} */ ({
+    type: "Tile",
+    properties: { id },
+    source: {
+      type: "XYZ",
+      url: `${window.location.origin}/test-xyz/${path}/{z}/{x}/{y}.png`,
+    },
+  });
+}
+
+/** A new source under the same ID, set through `layers`, reaches the globe. */
+export function testSameIdSourceChange() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [xyzDefinition("a")];
+    const { planet } = activate(map);
+    map.layers = [xyzDefinition("b")];
+    expect(
+      map.getLayerById("mosaic").getSource().getUrls()[0],
+      "OL source",
+    ).to.contain("/test-xyz/b/");
+    expect(planet.getLayerByName("mosaic").url, "globe layer").to.contain(
+      "/test-xyz/b/",
+    );
+  });
+}
+
+/** A layer added through `addOrUpdateLayer` reaches the globe. */
+export function testAddOrUpdateLayerAdd() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    const { planet } = activate(map);
+    map.addOrUpdateLayer(xyzDefinition("a"));
+    expect(map.getLayerById("mosaic"), "OL layer").to.exist;
+    // the globe synchronizes in a microtask
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic"), "globe layer").to.exist;
+    });
+  });
+}
+
+/** A new source set through `addOrUpdateLayer` reaches the globe. */
+export function testAddOrUpdateLayerUpdate() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [xyzDefinition("a")];
+    const { planet } = activate(map);
+    map.addOrUpdateLayer(xyzDefinition("b"));
+    expect(
+      map.getLayerById("mosaic").getSource().getUrls()[0],
+      "OL source",
+    ).to.contain("/test-xyz/b/");
+    // the globe synchronizes in a microtask
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic").url, "globe layer").to.contain(
+        "/test-xyz/b/",
+      );
+    });
+  });
+}
+
+/** A child added to an existing group through `addOrUpdateLayer` reaches the globe. */
+export function testAddOrUpdateLayerGroupChild() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  /** @param {Array<import("../../../src/layers.js").EoxLayer>} layers */
+  const group = (layers) =>
+    /** @type {import("../../../src/layers.js").EoxLayer} */ ({
+      type: "Group",
+      properties: { id: "group" },
+      layers,
+    });
+  withMap((map) => {
+    map.layers = [group([xyzDefinition("a", "first")])];
+    const { planet } = activate(map);
+    map.addOrUpdateLayer(
+      group([xyzDefinition("a", "first"), xyzDefinition("b", "second")]),
+    );
+    expect(map.getLayerById("second"), "OL layer").to.exist;
+    // the globe synchronizes in a microtask
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("second"), "globe layer").to.exist;
+    });
+  });
+}
+
+/** An XYZ URL edited in place on the same source (as eox-layercontrol does) updates the globe layer in place without rebuilding the map pool. */
+export function testInPlaceXyzUrlChange() {
+  cy.intercept("**/test-xyz/**", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [xyzDefinition("a")];
+    const { planet, pool } = activate(map);
+    const initialGlobeLayer = planet.getLayerByName("mosaic");
+    const poolDispatch = cy
+      .spy(pool[0].tileMap, "dispatchEvent")
+      .withArgs(Cypress.sinon.match.has("type", "layerschanged"));
+    const source = /** @type {any} */ (map.getLayerById("mosaic").getSource());
+    const updatedUrl = `${source.getUrls()[0]}?rescale=2`;
+    // mirrors eox-layercontrol: keep the source, store the URL, bump the key
+    source._updatedUrl = updatedUrl;
+    source.setKey("edited");
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("mosaic"), "same globe layer").to.equal(
+        initialGlobeLayer,
+      );
+      expect(p.getLayerByName("mosaic").url, "globe layer").to.equal(
+        updatedUrl,
+      );
+      expect(poolDispatch, "map pool not rebuilt").not.to.have.been.called;
+    });
+  });
+}
+
+/** WMS params updated in place on the same source update the globe layer in place without rebuilding the map pool. */
+export function testInPlaceWmsParamsChange() {
+  cy.intercept("**/test-wms*", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  withMap((map) => {
+    map.layers = [wmsDefinition()];
+    const { planet, pool } = activate(map);
+    const initialGlobeLayer = planet.getLayerByName("dynamic");
+    const poolDispatch = cy
+      .spy(pool[0].tileMap, "dispatchEvent")
+      .withArgs(Cypress.sinon.match.has("type", "layerschanged"));
+    const source = /** @type {any} */ (map.getLayerById("dynamic").getSource());
+    source.updateParams({ TIME: "2020-01-01" });
+    cy.wrap(planet).should((p) => {
+      expect(p.getLayerByName("dynamic"), "same globe layer").to.equal(
+        initialGlobeLayer,
+      );
+      // og WMS keeps all non-layer params only in its private request string
+      expect(p.getLayerByName("dynamic")._extra, "globe layer").to.contain(
+        "TIME=2020-01-01",
+      );
+      expect(poolDispatch, "map pool not rebuilt").not.to.have.been.called;
+    });
+  });
+}
+
+/** Offscreen UrlTile (WMTS) tileUrlFunction edited in place reaches the map pool without rebuilding it. */
+export function testInPlaceUrlTileChange() {
+  cy.intercept("**/test-wmts*", {
+    fixture: "map/test/fixtures/tiles/osm/0/0/0.png",
+  });
+  const wmtsDef = /** @type {import("../../../src/layers.js").EoxLayer} */ ({
+    type: "Tile",
+    properties: { id: "wmts" },
+    source: {
+      type: "WMTS",
+      url: `${window.location.origin}/test-wmts`,
+      layer: "test",
+      matrixSet: "EPSG:3857",
+      style: "default",
+      tileGrid: /** @type {any} */ ({}),
+    },
+  });
+  withMap((map) => {
+    map.layers = [wmtsDef];
+    const { planet, pool } = activate(map);
+    const initialGlobeLayer = planet.getLayerByName("wmts");
+    const poolDispatch = cy
+      .spy(pool[0].tileMap, "dispatchEvent")
+      .withArgs(Cypress.sinon.match.has("type", "layerschanged"));
+    const source = /** @type {any} */ (map.getLayerById("wmts").getSource());
+    const originalUrlFn = source.getTileUrlFunction();
+    source.setTileUrlFunction(
+      (/** @type {any[]} */ ...args) =>
+        `${originalUrlFn(...args)}&DIM_ELEVATION=500`,
+    );
+    source.setKey("edited-wmts");
+    cy.wrap(pool).should(([poolItem]) => {
+      const poolSource = /** @type {any} */ (
+        poolItem.tileMap.getLayerById("wmts").getSource()
+      );
+      const renderedUrl = poolSource.getTileUrlFunction()(
+        [0, 0, 0],
+        1,
+        poolSource.getProjection(),
+      );
+      expect(renderedUrl, "pool WMTS tile URL").to.contain("DIM_ELEVATION=500");
+      expect(planet.getLayerByName("wmts"), "same globe layer").to.equal(
+        initialGlobeLayer,
+      );
+      expect(poolDispatch, "map pool not rebuilt").not.to.have.been.called;
+    });
   });
 }

@@ -48,3 +48,47 @@ export declare function dispatchElementEvent<T = unknown>(
 ): CustomEvent<T> & { isUser?: boolean };
 
 export declare function safeCloneValue<T = unknown>(val: T): T;
+
+export declare function computeStep(min: number, max: number): number;
+
+export declare function getStepDecimals(step: number): number;
+
+export declare function roundRangeBounds(
+  range: [number, number],
+): [number, number];
+
+export declare function computeLegendTickFormat(
+  domain: [number, number],
+): string;
+
+export declare function buildMinMaxProperties(
+  min?: number,
+  max?: number,
+  validRange?: number[] | null,
+): {
+  minProp: Record<string, any>;
+  maxProp: Record<string, any>;
+  hasValidRange: boolean;
+};
+
+export declare function applyMinMaxToSchemaProperties(
+  props: Record<string, any>,
+  min: number,
+  max: number,
+  validRange?: number[] | null,
+  isAutofill?: boolean,
+  overwriteDefaults?: boolean,
+): void;
+
+export declare function applyLayerStyleVariables(
+  layer: any,
+  variables: Record<string, any>,
+): void;
+
+export declare function syncMinMaxFormValues(
+  target: Record<string, any>,
+  schemaProps: Record<string, any> | undefined,
+  min: number,
+  max: number,
+  isAutofill?: boolean,
+): void;

@@ -4,14 +4,29 @@ import "../src/plugins/globe/index";
 import { isGlobeExist } from "./cases/general";
 import {
   testTranslateColorExpression,
+  testGeoTIFFMaskRendering,
   testGlobeSelect,
   testGlobeSelectStyle,
   testGeoTIFFSourceOptions,
+  testGeoTIFFRenderOptions,
   testGlobeLayerOrder,
   testGlobeFlyPitch,
   testGlobeZoomExtent,
   testGlobeViewSwap,
   testGlobeViewTilt,
+  testGlobeWMSOptions,
+  testGlobePolarAndAsyncCanvasTiles,
+  testGlobeGeoZarrPoolSync,
+  testGlobeLonLatExtent,
+  testGlobeLifecycle,
+  testTranslateVectorStyle,
+  testGlobeVectorRestyle,
+  testGlobeVectorLayer,
+  testGlobeVectorProjection,
+  testGlobeScaleLine,
+  testGlobeMousePosition,
+  testGlobeStars,
+  testGlobeAtmosphere,
 } from "./cases/globe";
 
 /**
@@ -30,6 +45,12 @@ describe("globe", () => {
     testTranslateColorExpression());
 
   /**
+   * Test case to hide nodata, NaN and masked pixels when og renders a translated style
+   */
+  it("hides nodata, NaN and masked pixels of a translated style", () =>
+    testGeoTIFFMaskRendering());
+
+  /**
    * Test case to pick GeoTIFF band values and parse GetFeatureInfo responses for globe tooltips
    */
   it("picks GeoTIFF values and feature info for globe tooltips", () =>
@@ -46,6 +67,9 @@ describe("globe", () => {
    */
   it("accepts single url and multi source COGs for native globe rendering", () =>
     testGeoTIFFSourceOptions());
+
+  it("follows the OL GeoTIFF source's alpha band and sampling", () =>
+    testGeoTIFFRenderOptions());
 
   /**
    * Test case to mirror the OL layer order (groups, zIndex, reordering) onto the globe layers
@@ -66,4 +90,87 @@ describe("globe", () => {
 
   it("keeps the globe tilt and heading on map view changes", () =>
     testGlobeViewTilt());
+
+  /**
+   * Test case to strip conflicting GetMap parameters from globe WMS layers and sync parameter updates
+   */
+  it("strips conflicting GetMap parameters from globe WMS layers and syncs updates", () =>
+    testGlobeWMSOptions());
+
+  /**
+   * Test case to await async DataTile sources, render polar EPSG:4326 segments, and abort queued pool jobs cleanly
+   */
+  it("awaits async DataTile sources and renders polar globe segments via CanvasTiles", () =>
+    testGlobePolarAndAsyncCanvasTiles());
+
+  /**
+   * Test case to initialize GeoZarr layers with empty bands and synchronize pool layers on updates
+   */
+  it("initializes GeoZarr pool layers and syncs band, dimension, and style updates", () =>
+    testGlobeGeoZarrPoolSync());
+
+  /**
+   * Test cases to read the visible extent in lon/lat while the globe is on
+   */
+  it("returns the visible lonLatExtent around the camera", () =>
+    testGlobeLonLatExtent([16.36, 48.2], 1e6, ([minX, , maxX]) =>
+      // a real view extent, not the whole-world fallback
+      expect(maxX - minX).to.be.lessThan(90),
+    ));
+
+  it("returns a lonLatExtent reaching the pole when looking at it", () =>
+    // a low camera: og's own horizon check hid the pole below ~21 km
+    testGlobeLonLatExtent([0, 89.99], 1e4, ([minX, , maxX, maxY]) => {
+      // pole branch, not just border samples reaching high latitudes
+      expect(maxY).to.equal(90);
+      expect([minX, maxX]).to.deep.equal([-180, 180]);
+    }));
+
+  it("returns a lonLatExtent covering both sides of the antimeridian", () =>
+    testGlobeLonLatExtent([179.5, 0], 2e6, ([minX, , maxX]) => {
+      // continues past 180 instead of wrapping to -180
+      expect(minX).to.be.lessThan(180);
+      expect(maxX).to.be.greaterThan(180);
+      expect(maxX - minX).to.be.lessThan(90);
+    }));
+
+  it("returns a lonLatExtent up to the horizon for a tilted camera", () =>
+    testGlobeLonLatExtent(
+      [16.36, 48.2],
+      1e5,
+      ([minX, , maxX, maxY], eoxMap) => {
+        const { camera } = eoxMap.globe.planet;
+        // precondition: the top edge sees space, so the horizon is on screen
+        expect(camera.getRayIntersectionEllipsoid(camera.width / 2, 0)).to.be
+          .undefined;
+        // horizon on screen must not fall back to the whole world
+        expect(maxX - minX).to.be.lessThan(90);
+        // looking north: the extent reaches well beyond the target
+        expect(maxY).to.be.greaterThan(50);
+      },
+      2,
+    ));
+
+  it("destroys the globe when leaving globe mode", () => testGlobeLifecycle());
+
+  it("translates OL vector styles to globe entities", () =>
+    testTranslateVectorStyle());
+
+  it("restyles globe vectors in place, including highlighted ones", () =>
+    testGlobeVectorRestyle());
+
+  it("renders, restyles and selects GeoJSON vectors on the globe", () =>
+    testGlobeVectorLayer());
+
+  it("reprojects GeoJSON vectors with a crs onto the globe", () =>
+    testGlobeVectorProjection());
+
+  it("shows the ground scale at the screen centre in 3D", () =>
+    testGlobeScaleLine());
+
+  it("shows the cursor coordinate in 3D", () => testGlobeMousePosition());
+
+  it("draws stars around the globe when enabled", () => testGlobeStars());
+
+  it("draws and removes the atmosphere glow", () => testGlobeAtmosphere());
 });

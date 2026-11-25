@@ -2,6 +2,49 @@
  * Helper module for multi-dimensional GeoZarr layer support.
  * Connects to zarr.json / GeoZarr dimensions to derive time steps and value ranges.
  */
+import {
+  computeStep,
+  roundRangeBounds,
+  buildMinMaxProperties,
+  applyMinMaxToSchemaProperties,
+  applyLayerStyleVariables,
+  syncMinMaxFormValues,
+} from "@eox/elements-utils";
+
+export {
+  computeStep,
+  roundRangeBounds,
+  buildMinMaxProperties,
+  applyMinMaxToSchemaProperties,
+  applyLayerStyleVariables,
+  syncMinMaxFormValues,
+};
+
+/**
+ * Extracts the configured bands from a GeoZarr source, preserving `{ name, group }`
+ * objects for multi-group sources when present.
+ * @param {any} source
+ * @returns {Array<string | { name: string, group: string }>}
+ */
+export function getGeoZarrSourceBands(source) {
+  if (!source) return [];
+  if (typeof source.getBands === "function") {
+    const bands = source.getBands();
+    if (Array.isArray(bands)) return bands;
+  }
+  const names = Array.isArray(source.bands_) ? source.bands_ : [];
+  if (
+    Array.isArray(source.groupPaths_) &&
+    source.groupPaths_.length > 0 &&
+    Array.isArray(source.bandGroupIndex_)
+  ) {
+    return names.map((name, i) => ({
+      name,
+      group: source.groupPaths_[source.bandGroupIndex_[i] ?? 0],
+    }));
+  }
+  return [...names];
+}
 
 /**
  * Checks whether a given OpenLayers layer is a GeoZarr layer.
@@ -141,6 +184,20 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
     }
 
     if (metadata && Object.keys(metadata).length > 0) {
+      const containerGroups = new Set();
+      for (const metaKey of Object.keys(metadata)) {
+        const cleanKey = metaKey.replace(
+          /\/\.(zarray|zattrs|zgroup)$|\/zarr\.json$/,
+          "",
+        );
+        const parts = cleanKey.split("/").filter(Boolean);
+        for (let i = 0; i < parts.length - 1; i++) {
+          if (!/^\d+$/.test(parts[i + 1])) {
+            containerGroups.add(parts[i]);
+          }
+        }
+      }
+
       for (const [key, val] of Object.entries(metadata)) {
         if (!val || typeof val !== "object") continue;
         if (
@@ -180,7 +237,13 @@ export async function discoverGeoZarrVariables(layer, source, rootUrl) {
           varName = nonNumericParts[nonNumericParts.length - 1];
         }
 
-        if (!varName || coordNames.has(varName)) continue;
+        if (
+          !varName ||
+          coordNames.has(varName) ||
+          containerGroups.has(varName)
+        ) {
+          continue;
+        }
         if (/^\d+$/.test(varName)) continue;
 
         // Skip 1D or 0D coordinate arrays or arrays where dimension is purely itself (e.g., depth: [18] or ['depth'])
@@ -462,96 +525,7 @@ export async function setupGeoZarrDimensions(
   return { slices, nonTemporalDims };
 }
 
-/**
- * Computes an appropriate step for number/range inputs based on the range difference.
- * @param {number} min
- * @param {number} max
- * @returns {number}
- */
-export function computeStep(min, max) {
-  const diff = Math.abs(max - min);
-  if (diff === 0) return 0.01;
-  if (diff <= 0.01) return 0.0001;
-  if (diff <= 0.1) return 0.001;
-  if (diff <= 1) return 0.01;
-  if (diff <= 10) return 0.1;
-  return 1;
-}
-
-/**
- * Builds schema property definitions for min and max controls based on valid_range.
- * If validRange is available, uses number inputs with native incrementing buttons (format: "number").
- * If no validRange is available, uses range sliders (format: "range").
- *
- * @param {number} [min]
- * @param {number} [max]
- * @param {number[] | null | undefined} [validRange]
- * @returns {{ minProp: Record<string, any>, maxProp: Record<string, any> }}
- */
-export function buildMinMaxProperties(min, max, validRange) {
-  const hasValidRange =
-    Array.isArray(validRange) &&
-    validRange.length === 2 &&
-    typeof validRange[0] === "number" &&
-    typeof validRange[1] === "number" &&
-    !Number.isNaN(validRange[0]) &&
-    !Number.isNaN(validRange[1]);
-
-  if (hasValidRange) {
-    const rangeMin = validRange[0];
-    const rangeMax = validRange[1];
-    const step = computeStep(rangeMin, rangeMax);
-    const resolvedMin = min !== undefined ? min : rangeMin;
-    const resolvedMax = max !== undefined ? max : rangeMax;
-    return {
-      minProp: {
-        type: "number",
-        format: "number",
-        title: "Min Value",
-        default: resolvedMin,
-        minimum: rangeMin,
-        maximum: rangeMax,
-        step,
-      },
-      maxProp: {
-        type: "number",
-        format: "number",
-        title: "Max Value",
-        default: resolvedMax,
-        minimum: rangeMin,
-        maximum: rangeMax,
-        step,
-      },
-    };
-  }
-
-  const resolvedMin = min !== undefined ? min : 0;
-  const resolvedMax = max !== undefined ? max : 1;
-  const sliderMin = typeof min === "number" ? Math.min(0, min) : 0;
-  const sliderMax =
-    typeof max === "number" && max > sliderMin ? max : sliderMin + 1;
-  const step = computeStep(sliderMin, sliderMax);
-  return {
-    minProp: {
-      type: "number",
-      format: "range",
-      title: "Min Value",
-      default: resolvedMin,
-      minimum: sliderMin,
-      maximum: sliderMax,
-      step,
-    },
-    maxProp: {
-      type: "number",
-      format: "range",
-      title: "Max Value",
-      default: resolvedMax,
-      minimum: sliderMin,
-      maximum: sliderMax,
-      step,
-    },
-  };
-}
+// Range/schema helpers imported from @eox/elements-utils and re-exported above.
 
 /**
  * Initializes and connects GeoZarr metadata (variables, time, non-temporal dimensions, valid ranges)
@@ -559,9 +533,23 @@ export function buildMinMaxProperties(min, max, validRange) {
  * @param {import("ol/layer/Base").default|any} layer
  * @returns {Promise<void>}
  */
-export async function setupGeoZarrLayer(layer) {
-  if (!isGeoZarrLayer(layer)) return;
+export function setupGeoZarrLayer(layer) {
+  if (!isGeoZarrLayer(layer)) return Promise.resolve();
+  const existingReady = layer.get?.("_geozarrReady");
+  if (existingReady) return existingReady;
+  if (layer.get?.("_geozarrInitialized")) return Promise.resolve();
 
+  const readyPromise = setupGeoZarrLayerInternal(layer);
+  layer.set?.("_geozarrReady", readyPromise, true);
+  return readyPromise;
+}
+
+/**
+ * Internal implementation of GeoZarr layer setup.
+ * @param {import("ol/layer/Base").default|any} layer
+ * @returns {Promise<void>}
+ */
+async function setupGeoZarrLayerInternal(layer) {
   const rootUrl = getGeoZarrRootUrl(layer);
   const sourceUrl = getGeoZarrSourceUrl(layer);
   if (!rootUrl && !sourceUrl) return;
@@ -624,21 +612,29 @@ export async function setupGeoZarrLayer(layer) {
   if (needsNewSource && targetUrl && source.constructor) {
     try {
       const GeoZarrClass = /** @type {any} */ (source.constructor);
+      const jsonSource = layer.get("_jsonDefinition")?.source;
       const proj =
         source.getProjection?.() ||
         layer.get("_mapProjection") ||
-        layer.get("_jsonDefinition")?.source?.projection;
+        jsonSource?.projection;
       const initialBands =
         Array.isArray(bands) && bands.length > 1
           ? bands
           : currentBand
             ? [currentBand]
             : [];
+      const existingDimensions =
+        source.dimensions_ && Object.keys(source.dimensions_).length > 0
+          ? { ...source.dimensions_ }
+          : jsonSource?.dimensions;
+      const transition = jsonSource?.transition ?? source.transition_;
       const newSource = new GeoZarrClass({
         url: targetUrl,
         bands: initialBands,
         crossOrigin: "anonymous",
         ...(proj ? { projection: proj } : {}),
+        ...(existingDimensions ? { dimensions: existingDimensions } : {}),
+        ...(transition !== undefined ? { transition } : {}),
       });
       layer.setSource(newSource);
       activeSource = newSource;
@@ -708,8 +704,7 @@ export async function setupGeoZarrLayer(layer) {
     !Number.isNaN(validRange[0]) &&
     !Number.isNaN(validRange[1])
   ) {
-    min = validRange[0];
-    max = validRange[1];
+    [min, max] = roundRangeBounds([validRange[0], validRange[1]]);
   } else if (
     layerConfig?.min !== undefined &&
     typeof layerConfig.min === "number" &&
@@ -723,7 +718,11 @@ export async function setupGeoZarrLayer(layer) {
     if (typeof styleVars.max === "number") max = styleVars.max;
   }
 
-  const { minProp, maxProp } = buildMinMaxProperties(min, max, validRange);
+  const { minProp, maxProp, hasValidRange } = buildMinMaxProperties(
+    min,
+    max,
+    validRange,
+  );
 
   const existingBands =
     layer.get("bands") ||
@@ -773,6 +772,18 @@ export async function setupGeoZarrLayer(layer) {
     }
   }
 
+  const hasMinMaxStyle =
+    isAutofill ||
+    styleVars?.min !== undefined ||
+    styleVars?.max !== undefined ||
+    layerConfig?.schema?.properties?.min !== undefined ||
+    layerConfig?.schema?.properties?.max !== undefined;
+
+  // Update style variables before setting layerConfig so propertychange listeners read the resolved min/max
+  if (hasMinMaxStyle) {
+    applyLayerStyleVariables(layer, { min, max });
+  }
+
   // 4. Setup layerConfig.schema only if the user has not defined one already
   if (!layerConfig?.schema) {
     /** @type {Record<string, any>} */
@@ -818,8 +829,20 @@ export async function setupGeoZarrLayer(layer) {
       }
     }
 
-    properties.min = minProp;
-    properties.max = maxProp;
+    if (hasValidRange) {
+      properties.minmax = {
+        type: "object",
+        title: "Value Range",
+        properties: {
+          min: minProp,
+          max: maxProp,
+        },
+        format: "minmax",
+      };
+    } else {
+      properties.min = minProp;
+      properties.max = maxProp;
+    }
 
     layerConfig.schema = {
       type: "object",
@@ -866,28 +889,7 @@ export async function setupGeoZarrLayer(layer) {
         }
       }
 
-      if (props.min !== undefined || isAutofill) {
-        props.min = {
-          ...minProp,
-          ...props.min,
-          format: minProp.format,
-          minimum: minProp.minimum,
-          maximum: minProp.maximum,
-          step: minProp.step,
-          default: props.min?.default ?? min,
-        };
-      }
-      if (props.max !== undefined || isAutofill) {
-        props.max = {
-          ...maxProp,
-          ...props.max,
-          format: maxProp.format,
-          minimum: maxProp.minimum,
-          maximum: maxProp.maximum,
-          step: maxProp.step,
-          default: props.max?.default ?? max,
-        };
-      }
+      applyMinMaxToSchemaProperties(props, min, max, validRange, isAutofill);
 
       if (nonTemporalDims) {
         for (const [dimName, dimMeta] of Object.entries(nonTemporalDims)) {
@@ -918,31 +920,5 @@ export async function setupGeoZarrLayer(layer) {
       };
     }
     layer.set("layerConfig", { ...layerConfig });
-  }
-
-  const hasMinMaxStyle =
-    isAutofill ||
-    styleVars?.min !== undefined ||
-    styleVars?.max !== undefined ||
-    layerConfig?.schema?.properties?.min !== undefined ||
-    layerConfig?.schema?.properties?.max !== undefined;
-
-  if (hasMinMaxStyle) {
-    if (typeof layerAny.updateStyleVariables === "function") {
-      layerAny.updateStyleVariables({ min, max });
-    }
-    if (layerAny.styleVariables_) {
-      layerAny.styleVariables_.min = min;
-      layerAny.styleVariables_.max = max;
-    }
-    if (layerAny.style_?.variables) {
-      layerAny.style_.variables.min = min;
-      layerAny.style_.variables.max = max;
-    }
-    const styleObj = layer.get?.("style");
-    if (styleObj?.variables) {
-      styleObj.variables.min = min;
-      styleObj.variables.max = max;
-    }
   }
 }

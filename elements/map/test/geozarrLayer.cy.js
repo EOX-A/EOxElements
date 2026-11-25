@@ -10,6 +10,7 @@ import {
   openCurrentStepOnEarlyUpdate,
   openNewCurrentStepOnUpdate,
   skipSetupOnUnrelatedUpdate,
+  autofillMinmaxBeforeLayerconfig,
 } from "./cases/geozarr/index.js";
 
 /**
@@ -76,4 +77,11 @@ describe("GeoZarr time properties", () => {
    */
   it("does not repeat the time setup when an update only changes another property", () =>
     skipSetupOnUnrelatedUpdate());
+
+  /**
+   * Test case to verify style variables are updated before layerConfig propertychange
+   * and minmax slider schema is generated from valid_range
+   */
+  it("sets resolved valid_range style variables before firing layerConfig change and builds minmax schema", () =>
+    autofillMinmaxBeforeLayerconfig());
 });

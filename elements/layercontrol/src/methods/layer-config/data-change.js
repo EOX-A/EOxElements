@@ -55,22 +55,6 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     source.setKey(new Date().toISOString());
   }
 
-  const map = /** @type {import("../../../../map/src/main").EOxMap} */ (
-    document.querySelector("eox-map")
-  );
-  if (map) {
-    const globe = map.globe;
-    if (globe) {
-      const globusLayer = globe.planet.layers.filter(
-        (l) => l.name == EOxLayerControlLayerConfig.layer.get("id"),
-      )[0];
-      if (globusLayer) {
-        globusLayer.setUrl(updateUrl(globusLayer.url, data));
-      }
-      window.eoxMapGlobe.refresh(globe);
-    }
-  }
-
   return newTileUrlFunc;
 };
 

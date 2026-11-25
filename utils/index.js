@@ -7,3 +7,13 @@ export {
   findHost,
 } from "./dispatchElementEvent";
 export { safeCloneValue } from "./safeCloneValue";
+export {
+  computeStep,
+  getStepDecimals,
+  roundRangeBounds,
+  computeLegendTickFormat,
+  buildMinMaxProperties,
+  applyMinMaxToSchemaProperties,
+  applyLayerStyleVariables,
+  syncMinMaxFormValues,
+} from "./geoZarrRangeHelpers";

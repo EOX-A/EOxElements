@@ -19,6 +19,7 @@ export { getLayerById, getFlatLayersArray } from "./layer";
 export { createLayer, updateLayer } from "./generate";
 export {
   isGeoZarrLayer,
+  getGeoZarrSourceBands,
   getGeoZarrRootUrl,
   getGeoZarrSourceUrl,
   discoverGeoZarrVariables,
@@ -26,4 +27,7 @@ export {
   setupGeoZarrLayer,
   computeStep,
   buildMinMaxProperties,
+  applyMinMaxToSchemaProperties,
+  applyLayerStyleVariables,
+  syncMinMaxFormValues,
 } from "./geozarr";
