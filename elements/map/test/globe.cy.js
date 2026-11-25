@@ -13,6 +13,7 @@ import {
   testGlobePolarAndAsyncCanvasTiles,
   testGlobeGeoZarrPoolSync,
   testGlobeLonLatExtent,
+  testGlobeLifecycle,
 } from "./cases/globe";
 
 /**
@@ -118,4 +119,6 @@ describe("globe", () => {
       },
       2,
     ));
+
+  it("destroys the globe when leaving globe mode", () => testGlobeLifecycle());
 });
