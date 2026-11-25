@@ -3,8 +3,12 @@ import "../src/main";
 import "@eox/jsonform";
 import { html } from "lit";
 import BaseObject from "ol/Object.js";
-import { buildMinMaxProperties } from "@eox/elements-utils";
+import {
+  buildMinMaxProperties,
+  buildDimensionProperty,
+} from "@eox/elements-utils";
 import { updateGeoZarrBand } from "../src/helpers/update-geozarr-band.js";
+import { applyUpdatedStyles } from "../src/methods/layer-config";
 
 describe("LayerControl: LayerConfig form", () => {
   it("keeps the fields of the first anyOf branch after a re-render", () => {
@@ -248,6 +252,62 @@ describe("LayerControl: LayerConfig form", () => {
       .and(($slider) => {
         expect($slider[0].getAttribute("min")).to.equal("33.8");
         expect($slider[0].getAttribute("max")).to.equal("40.4");
+      });
+  });
+
+  it("builds range slider for uniform depth coordinates and enum dropdown for non-uniform coordinates, mapping values to slice indices", () => {
+    const uniformProp = buildDimensionProperty("depth", {
+      size: 4,
+      attributes: { long_name: "Depth", units: "m" },
+      coordinates: [0n, 50n, 100n, 150n],
+    });
+    expect(uniformProp).to.deep.equal({
+      type: "number",
+      title: "Depth (m)",
+      default: 0,
+      minimum: 0,
+      maximum: 150,
+      step: 50,
+      format: "range",
+    });
+
+    const nonUniformProp = buildDimensionProperty("depth", {
+      size: 5,
+      attributes: { long_name: "Depth below sea surface", units: "m" },
+      coordinates: [3, 5, 7, 10, 135],
+    });
+    expect(nonUniformProp).to.deep.equal({
+      type: "number",
+      title: "Depth below sea surface (m)",
+      default: 3,
+      enum: [3, 5, 7, 10, 135],
+    });
+
+    const updateDimensionsSpy = cy.spy().as("updateDimensionsSpy");
+    const mockLayer = new BaseObject({
+      id: "depth-geozarr",
+      _geozarrDimensions: {
+        depth: {
+          size: 5,
+          coordinates: [3, 5, 7, 10, 135],
+        },
+      },
+    });
+    const layerAny = /** @type {any} */ (mockLayer);
+    layerAny.style_ = { variables: { min: 0, max: 1 } };
+    layerAny.getSource = () => ({ updateDimensions: updateDimensionsSpy });
+    layerAny.updateStyleVariables = cy.spy();
+
+    cy.wrap(null)
+      .then(() =>
+        applyUpdatedStyles(
+          { depth: 10 },
+          layerAny,
+          /** @type {any} */ ({ type: "style" }),
+        ),
+      )
+      .then(() => {
+        expect(updateDimensionsSpy).to.have.been.calledWith({ depth: 3 });
       });
   });
 });

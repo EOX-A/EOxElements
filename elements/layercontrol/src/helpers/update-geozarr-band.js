@@ -4,6 +4,7 @@ import {
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
+  buildDimensionProperty,
 } from "@eox/elements-utils";
 
 export { computeStep, buildMinMaxProperties };
@@ -208,11 +209,39 @@ export async function updateGeoZarrBand(layer, newBand) {
       if (dimensions) {
         /** @type {Record<string, any>} */
         const nonTemporalDims = {};
+        const prevDims = layer.get("_geozarrDimensions") || {};
 
         // Discover and inject non-temporal dimensions (depth, height, level, etc.)
         for (const [dimName, dimMeta] of Object.entries(dimensions)) {
           if (dimName === "time" || !dimMeta || dimMeta.size <= 0) continue;
-          nonTemporalDims[dimName] = dimMeta;
+
+          let coordinates =
+            Array.isArray(prevDims[dimName]?.coordinates) &&
+            prevDims[dimName].coordinates.length === dimMeta.size
+              ? prevDims[dimName].coordinates
+              : [];
+
+          if (
+            coordinates.length === 0 &&
+            typeof updatedSource.getValue === "function"
+          ) {
+            coordinates = await Promise.all(
+              [...Array(dimMeta.size).keys()].map(async (idx) => {
+                try {
+                  const val = await updatedSource.getValue(dimName, idx);
+                  return typeof val === "bigint" ? Number(val) : val;
+                } catch {
+                  return idx;
+                }
+              }),
+            );
+          }
+
+          const enrichedDimMeta = {
+            ...dimMeta,
+            coordinates,
+          };
+          nonTemporalDims[dimName] = enrichedDimMeta;
 
           const currentCfg = layer.get("layerConfig") || updatedLayerConfig;
           const isAutofill =
@@ -222,23 +251,11 @@ export async function updateGeoZarrBand(layer, newBand) {
             currentCfg?.schema?.properties &&
             (currentCfg.schema.properties[dimName] !== undefined || isAutofill)
           ) {
-            const title =
-              dimMeta.attributes?.long_name ||
-              dimName.charAt(0).toUpperCase() + dimName.slice(1);
-            const units = dimMeta.attributes?.units;
-            const displayTitle = units ? `${title} (${units})` : title;
-
             const currentProps = { ...currentCfg.schema.properties };
-            currentProps[dimName] = {
-              type: "integer",
-              title: displayTitle,
-              default: 0,
-              minimum: 0,
-              maximum: dimMeta.size - 1,
-              step: 1,
-              format: "range",
-              ...(currentProps[dimName] || {}),
-            };
+            currentProps[dimName] = buildDimensionProperty(
+              dimName,
+              enrichedDimMeta,
+            );
             updatedLayerConfig = {
               ...currentCfg,
               schema: {
@@ -253,6 +270,32 @@ export async function updateGeoZarrBand(layer, newBand) {
             updatedSource.updateDimensions({ [dimName]: 0 });
           }
         }
+
+        // Remove stale dimension controls when switching from a 3D+ variable to a 2D variable
+        const currentCfg = layer.get("layerConfig") || updatedLayerConfig;
+        const isAutofillCfg =
+          currentCfg?.autofill === true ||
+          currentCfg?.schema?.autofill === true;
+        if (isAutofillCfg && currentCfg?.schema?.properties) {
+          const staleDims = Object.keys(prevDims).filter(
+            (d) => !(d in nonTemporalDims) && d in currentCfg.schema.properties,
+          );
+          if (staleDims.length > 0) {
+            const currentProps = { ...currentCfg.schema.properties };
+            for (const staleDim of staleDims) {
+              delete currentProps[staleDim];
+            }
+            updatedLayerConfig = {
+              ...currentCfg,
+              schema: {
+                ...currentCfg.schema,
+                properties: currentProps,
+              },
+            };
+            layer.set("layerConfig", updatedLayerConfig);
+          }
+        }
+
         layer.set("_geozarrDimensions", nonTemporalDims);
 
         // Process time dimension
