@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.15.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.14.2...jsonform-v1.15.0) (2026-11-24)
+
+
+### Features
+
+* Standardize user activity events across EOxElements ([#2648](https://github.com/EOX-A/EOxElements/issues/2648)) ([37643fc](https://github.com/EOX-A/EOxElements/commit/37643fcc119cb82fe564be6b7716acf4d7952eb6))
+
+
+### Bug Fixes
+
+* Restore spatial geometries on external maps ([#2660](https://github.com/EOX-A/EOxElements/issues/2660)) ([0e95c56](https://github.com/EOX-A/EOxElements/commit/0e95c5667614c4e14115b3ee066d630daa06e9d1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @eox/elements-utils bumped from ^1.2.0 to ^1.3.0
+  * devDependencies
+    * @eox/map bumped from * to 2.11.0
+
 ## [1.14.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.14.1...jsonform-v1.14.2) (2026-10-15)
 
 
