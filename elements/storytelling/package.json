@@ -44,7 +44,7 @@
     "glightbox": "^3.3.0",
     "isomorphic-dompurify": "^4.7.0",
     "joi": "^18.3.0",
-    "js-yaml": "^5.4.3",
+    "js-yaml": "^5.5.0",
     "lit": "^3.3.3",
     "lodash.debounce": "^4.0.8",
     "markdown-it": "^15.0.2",
