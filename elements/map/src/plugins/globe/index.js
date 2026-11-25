@@ -10,6 +10,7 @@ import {
   registerGlobeSynchronization,
   connectGlobeSynchronization,
 } from "./lifecycle.js";
+import { mountGlobeControls } from "./controls.js";
 import { unByKey } from "ol/Observable";
 
 /**
@@ -163,6 +164,7 @@ export const create = ({ EOxMap, target }) => {
 
   syncGlobeLayerOrder(EOxMap, globe);
   registerGlobeLayerSynchronization(EOxMap, globe, mapPool);
+  mountGlobeControls(EOxMap, globe);
 
   return globe;
 };

@@ -22,3 +22,5 @@ export {
   testGlobeVectorLayer,
   testGlobeVectorProjection,
 } from "./vector-style.js";
+export { testGlobeScaleLine, testGlobeMousePosition } from "./controls.js";
+export { testGlobeStars, testGlobeAtmosphere } from "./appearance.js";

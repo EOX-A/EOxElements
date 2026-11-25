@@ -479,3 +479,15 @@ export function setTerrainMethod(globeConfig, EOxMap) {
   }
   return globeConfig;
 }
+
+/**
+ * Shows or hides the atmosphere of a running globe.
+ *
+ * @param {import("../../types").GlobeConfig} globeConfig - The new globe configuration.
+ * @param {import("../../main").EOxMap} EOxMap - The map instance.
+ */
+export function setAtmosphereMethod(globeConfig, EOxMap) {
+  if (EOxMap.globe) {
+    EOxMap.globe.planet.atmosphereEnabled = !!globeConfig.atmosphere;
+  }
+}

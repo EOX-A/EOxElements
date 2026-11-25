@@ -269,6 +269,31 @@ export type GlobeConfig = {
    * Defaults to false.
    */
   useHighLOD?: boolean;
+  /**
+   * Whether to draw an atmosphere around the globe.
+   * Defaults to false.
+   */
+  atmosphere?: boolean;
+  /**
+   * Stars around the globe: `true` for the default star map, or the image
+   * URLs of six cube faces. Applies when the globe is created.
+   * Default star map: Solar System Scope, CC BY 4.0.
+   * Defaults to false.
+   * @see https://www.solarsystemscope.com/textures/
+   */
+  stars?: boolean | GlobeStarFaces;
+};
+
+/**
+ * Image URLs of the six cube faces of a sky box, named by the axis they face.
+ */
+export type GlobeStarFaces = {
+  px: string;
+  nx: string;
+  py: string;
+  ny: string;
+  pz: string;
+  nz: string;
 };
 
 export type ConfigObject = {

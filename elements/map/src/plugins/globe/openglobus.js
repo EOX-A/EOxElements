@@ -47,6 +47,7 @@ import { unByKey } from "ol/Observable";
 import { getLayerById } from "../../helpers/layer.js";
 import { translateOLColorExpression } from "./colorScale.js";
 import { disposeGlobeSynchronization } from "./lifecycle.js";
+import { createStarsSkyBox } from "./stars.js";
 import {
   attachGlobeSelect,
   mountGlobeTooltip,
@@ -364,7 +365,10 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
       .map((l) => createGlobusLayer(l, mapPool, EOxMap))
       .filter((l) => l !== undefined),
     sun: { active: false },
-    atmosphereEnabled: false,
+    atmosphereEnabled: !!EOxMap.globeConfig?.atmosphere,
+    ...(EOxMap.globeConfig?.stars && {
+      skybox: createStarsSkyBox(EOxMap.globeConfig.stars),
+    }),
     transparentBackground: true,
     terrain: EOxMap.globeConfig?.terrain
       ? new GlobusRgbTerrain()
@@ -822,14 +826,9 @@ export const enableGlobe = (map) => {
     "globe-switcher-container",
     "ol-full-screen",
     "loading-indicator",
-  ];
-  const incompatibleClasses = [
-    "ol-rotate",
-    "ol-scale-line",
-    "ol-overviewmap",
     "ol-mouse-position",
-    "geolocation",
   ];
+  const incompatibleClasses = ["ol-rotate", "ol-overviewmap", "geolocation"];
   const allControls = map.shadowRoot?.querySelectorAll(
     ".ol-control, .ol-mouse-position",
   );
