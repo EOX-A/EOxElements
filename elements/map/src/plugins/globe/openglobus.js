@@ -28,6 +28,7 @@ import WMS_ol from "ol/source/TileWMS.js";
 import UrlTile from "ol/source/UrlTile.js";
 import Vector_ol from "ol/source/Vector.js";
 import GeoTIFF_ol from "ol/source/GeoTIFF.js";
+import BaseTileLayer from "ol/layer/BaseTile.js";
 import { get as getProjection, equivalent } from "ol/proj";
 import FullScreen from "ol/control/FullScreen";
 import { unByKey } from "ol/Observable";
@@ -251,6 +252,50 @@ export const getGeoTIFFSourceOptions = (sourceDef) => {
 };
 
 /**
+ * OL picks the deeper tile zoom once the fractional zoom reaches log2(4/3).
+ *
+ * @param {number} zoom - OL view zoom.
+ * @returns {number} The tile zoom OL requests at that view zoom.
+ */
+const toTileZoom = (zoom) =>
+  Math.max(0, Math.floor(zoom + 1 - Math.log2(4 / 3)));
+
+/**
+ * og zoom gates that mirror the OL layer zoom range and preload, per tile.
+ *
+ * @param {ExtendedOLLayer} olLayer
+ */
+const getZoomOptions = (olLayer) => {
+  const minZoom = toTileZoom(olLayer.getMinZoom());
+  const max = olLayer.getMaxZoom();
+  // 50 is the og default.
+  const maxZoom = Number.isFinite(max) ? toTileZoom(max) : 50;
+  return {
+    minZoom,
+    minNativeZoom: minZoom,
+    maxZoom,
+    ...(Number.isFinite(max) && { maxNativeZoom: maxZoom }),
+    // og walks every ancestor for any OL preload, ignoring minNativeZoom; GeoTIFF forces it off.
+    waitForParentMaterial:
+      olLayer instanceof BaseTileLayer &&
+      olLayer.getPreload() > 0 &&
+      minZoom === 0 &&
+      !(olLayer.getSource() instanceof GeoTIFF_ol),
+  };
+};
+
+/**
+ * og loading options that mirror OL: no world preload, and per-tile zoom limits.
+ *
+ * @param {ExtendedOLLayer} olLayer
+ * @returns {ReturnType<typeof getZoomOptions> & { preLoadZoomLevels: number[] }}
+ */
+const getLoadingOptions = (olLayer) => ({
+  preLoadZoomLevels: [],
+  ...getZoomOptions(olLayer),
+});
+
+/**
  * Creates the OpenGlobus counterpart of an OL layer.
  *
  * @param {any} olLayer - The OL layer.
@@ -264,6 +309,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
 
   if (source instanceof OSM) {
     return new OpenStreetMap(id, {
+      ...getLoadingOptions(olLayer),
       isBaseLayer: olLayer.get("base"),
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
@@ -274,6 +320,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
     // @ts-expect-error TODO
     const url = source._updatedUrl || source.getUrls()[0];
     return new XYZ(id, {
+      ...getLoadingOptions(olLayer),
       isBaseLayer: olLayer.get("base"),
       url: url,
       visibility: olLayer.getVisible(),
@@ -284,6 +331,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
     const { url, layers, version, extra } = getGlobeWMSOptions(source);
 
     const wmsLayer = new WMS(id, {
+      ...getLoadingOptions(olLayer),
       isBaseLayer: olLayer.get("base"),
       layers,
       url,
@@ -337,6 +385,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
             targetGlobe.planet.removeLayer(existingLayer);
           }
           const vectorLayer = new Vector(id, {
+            ...getLoadingOptions(olLayer),
             visibility: olLayer.getVisible(),
             opacity: olLayer.getOpacity(),
             isBaseLayer: olLayer.get("base"),
@@ -391,6 +440,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
       );
     const geoTIFFLayer = new GeoTIFFLayer(id, {
       ...getGeoTIFFSourceOptions(jsonDef?.source),
+      ...getLoadingOptions(olLayer),
       opacity: olLayer.getOpacity(),
       visibility: olLayer.getVisible(),
       renderOptions,
@@ -402,6 +452,7 @@ export const createGlobusLayer = (olLayer, mapPool, EOxMap) => {
 
   // Fallback to CanvasTiles for other layer types
   return new CanvasTiles(id, {
+    ...getLoadingOptions(olLayer),
     opacity: olLayer.getOpacity(),
     visibility: olLayer.getVisible(),
     async drawTile(material, applyCanvas) {
@@ -984,6 +1035,15 @@ export const setupLayerListeners = (olLayer, globe, mapPool) => {
       case "opacity":
         globusLayer.opacity = olLayer.getOpacity();
         break;
+      case "minZoom":
+      case "maxZoom": {
+        const options = getZoomOptions(olLayer);
+        const minZoomChanged = globusLayer.minZoom !== options.minZoom;
+        Object.assign(globusLayer, options);
+        // og keeps loaded and "no texture" tiles until their materials are cleared.
+        if (minZoomChanged) globusLayer.redraw();
+        break;
+      }
     }
   });
 

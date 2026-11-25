@@ -14,6 +14,11 @@ import {
   testInPlaceXyzUrlChange,
   testInPlaceWmsParamsChange,
   testInPlaceUrlTileChange,
+  testGlobeLayerZoomRange,
+  testGlobeLayerWithoutZoomRange,
+  testLiveGlobeLayerZoomRange,
+  testGlobeLayerPreload,
+  testFractionalGlobeLayerZoomRange,
 } from "./cases/globe-synchronization/index.js";
 
 describe("globe synchronization ownership", () => {
@@ -66,5 +71,22 @@ describe("globe synchronization ownership", () => {
   it(
     "syncs offscreen UrlTile (WMTS) URL functions edited in place to the map pool",
     testInPlaceUrlTileChange,
+  );
+  it(
+    "limits globe tile loading to the OL layer zoom range",
+    testGlobeLayerZoomRange,
+  );
+  it("loads like OL without an OL zoom range", testGlobeLayerWithoutZoomRange);
+  it(
+    "applies live OL zoom range edits to the same globe layer",
+    testLiveGlobeLayerZoomRange,
+  );
+  it(
+    "loads ancestors for OL preload only without an OL minZoom",
+    testGlobeLayerPreload,
+  );
+  it(
+    "maps fractional OL zooms to the tile zoom OL requests",
+    testFractionalGlobeLayerZoomRange,
   );
 });
