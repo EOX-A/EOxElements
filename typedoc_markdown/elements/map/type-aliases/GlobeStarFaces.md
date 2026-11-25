@@ -8,7 +8,7 @@
 
 > **GlobeStarFaces** = `object`
 
-Defined in: [elements/map/src/types.ts:290](https://github.com/EOX-A/EOxElements/blob/7489b4581759784d2a40d47634e3bba401c50c8a/elements/map/src/types.ts#L290)
+Defined in: [elements/map/src/types.ts:290](https://github.com/EOX-A/EOxElements/blob/32ce80f32440360bcc550b5fd79dd0554de502a5/elements/map/src/types.ts#L290)
 
 Image URLs of the six cube faces of a sky box, named by the axis they face.
 
@@ -18,7 +18,7 @@ Image URLs of the six cube faces of a sky box, named by the axis they face.
 
 > **nx**: `string`
 
-Defined in: [elements/map/src/types.ts:292](https://github.com/EOX-A/EOxElements/blob/7489b4581759784d2a40d47634e3bba401c50c8a/elements/map/src/types.ts#L292)
+Defined in: [elements/map/src/types.ts:292](https://github.com/EOX-A/EOxElements/blob/32ce80f32440360bcc550b5fd79dd0554de502a5/elements/map/src/types.ts#L292)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [elements/map/src/types.ts:292](https://github.com/EOX-A/EOxElements
 
 > **ny**: `string`
 
-Defined in: [elements/map/src/types.ts:294](https://github.com/EOX-A/EOxElements/blob/7489b4581759784d2a40d47634e3bba401c50c8a/elements/map/src/types.ts#L294)
+Defined in: [elements/map/src/types.ts:294](https://github.com/EOX-A/EOxElements/blob/32ce80f32440360bcc550b5fd79dd0554de502a5/elements/map/src/types.ts#L294)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [elements/map/src/types.ts:294](https://github.com/EOX-A/EOxElements
 
 > **nz**: `string`
 
-Defined in: [elements/map/src/types.ts:296](https://github.com/EOX-A/EOxElements/blob/7489b4581759784d2a40d47634e3bba401c50c8a/elements/map/src/types.ts#L296)
+Defined in: [elements/map/src/types.ts:296](https://github.com/EOX-A/EOxElements/blob/32ce80f32440360bcc550b5fd79dd0554de502a5/elements/map/src/types.ts#L296)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [elements/map/src/types.ts:296](https://github.com/EOX-A/EOxElements
 
 > **px**: `string`
 
-Defined in: [elements/map/src/types.ts:291](https://github.com/EOX-A/EOxElements/blob/7489b4581759784d2a40d47634e3bba401c50c8a/elements/map/src/types.ts#L291)
+Defined in: [elements/map/src/types.ts:291](https://github.com/EOX-A/EOxElements/blob/32ce80f32440360bcc550b5fd79dd0554de502a5/elements/map/src/types.ts#L291)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [elements/map/src/types.ts:291](https://github.com/EOX-A/EOxElements
 
 > **py**: `string`
 
-Defined in: [elements/map/src/types.ts:293](https://github.com/EOX-A/EOxElements/blob/7489b4581759784d2a40d47634e3bba401c50c8a/elements/map/src/types.ts#L293)
+Defined in: [elements/map/src/types.ts:293](https://github.com/EOX-A/EOxElements/blob/32ce80f32440360bcc550b5fd79dd0554de502a5/elements/map/src/types.ts#L293)
 
 ***
 
@@ -58,4 +58,4 @@ Defined in: [elements/map/src/types.ts:293](https://github.com/EOX-A/EOxElements
 
 > **pz**: `string`
 
-Defined in: [elements/map/src/types.ts:295](https://github.com/EOX-A/EOxElements/blob/7489b4581759784d2a40d47634e3bba401c50c8a/elements/map/src/types.ts#L295)
+Defined in: [elements/map/src/types.ts:295](https://github.com/EOX-A/EOxElements/blob/32ce80f32440360bcc550b5fd79dd0554de502a5/elements/map/src/types.ts#L295)

@@ -1,4 +1,4 @@
 Bundled license information:
 
 markdown-it/dist/markdown-it.mjs:
-  /*! markdown-it 15.0.2 https://github.com/markdown-it/markdown-it @license MIT */
+  /*! markdown-it 15.0.3 https://github.com/markdown-it/markdown-it @license MIT */
