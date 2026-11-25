@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.2.0...elements-utils-v1.3.0) (2026-11-24)
+
+
+### Features
+
+* Standardize user activity events across EOxElements ([#2648](https://github.com/EOX-A/EOxElements/issues/2648)) ([37643fc](https://github.com/EOX-A/EOxElements/commit/37643fcc119cb82fe564be6b7716acf4d7952eb6))
+
+
+### Bug Fixes
+
+* GeoZarr initial style variable race condition and support minmax range slider format ([#2685](https://github.com/EOX-A/EOxElements/issues/2685)) ([d191c4b](https://github.com/EOX-A/EOxElements/commit/d191c4b8b68e311aa51a9dcb8f13b6516ffa51bb))
+* Geozarr range rounding and legend tick format ([#2686](https://github.com/EOX-A/EOxElements/issues/2686)) ([f2ed9d3](https://github.com/EOX-A/EOxElements/commit/f2ed9d37e0fb93c996d2e5bcab6321af1921ee1e))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.1.2...elements-utils-v1.2.0) (2026-06-10)
 
 
