@@ -1,14 +1,14 @@
 {
   "name": "@eox/layercontrol",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "git@github.com:EOX-A/EOxElements.git"
   },
   "devDependencies": {
-    "@eox/jsonform": "1.15.0",
-    "@eox/map": "2.11.0",
+    "@eox/jsonform": "1.15.1",
+    "@eox/map": "2.12.0",
     "@types/lodash.throttle": "^4.1.9",
     "@types/sortablejs": "^1.15.1",
     "ol": "^10.11.0",
