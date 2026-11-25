@@ -923,46 +923,6 @@
       ],
       "unevaluatedProperties": false
     },
-    "EOxChart": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "common_types.json#/$defs/ComponentCommon"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "component": {
-              "const": "EOxChart"
-            },
-            "dataValues": {
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
-              "type": "string"
-            },
-            "spec": {
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
-              "type": "string"
-            },
-            "opt": {
-              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "type": "string"
-            },
-            "noShadow": {
-              "description": "Renders the element without a shadow root",
-              "type": "boolean"
-            },
-            "unstyled": {
-              "description": "Render the element without additional styles",
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "component"
-          ]
-        }
-      ],
-      "unevaluatedProperties": false
-    },
     "EOxDrawtools": {
       "type": "object",
       "allOf": [
@@ -1080,6 +1040,46 @@
       ],
       "unevaluatedProperties": false
     },
+    "EOxChart": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxChart"
+            },
+            "dataValues": {
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "type": "string"
+            },
+            "spec": {
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "type": "string"
+            },
+            "opt": {
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "type": "string"
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
     "EOxFeedback": {
       "type": "object",
       "allOf": [
@@ -1185,6 +1185,88 @@
               "type": "string"
             },
             "eoxMap": {
+              "description": "",
+              "type": "string"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxLayercontrol": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxLayercontrol"
+            },
+            "for": {
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "type": "string"
+            },
+            "idProperty": {
+              "description": "Layer id property",
+              "type": "string"
+            },
+            "titleProperty": {
+              "description": "Layer title property",
+              "type": "string"
+            },
+            "showLayerZoomState": {
+              "description": "Show layer state based on zoom level or not",
+              "type": "boolean"
+            },
+            "tools": {
+              "description": "Layer tools",
+              "type": "array",
+              "items": {}
+            },
+            "addExternalLayers": {
+              "description": "Enable-disable external layer",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "styleOverride": {
+              "description": "Overrides elements current CSS.",
+              "type": "string"
+            },
+            "toolsAsList": {
+              "description": "If enabled, the tools section will be rendered as list.",
+              "type": "boolean"
+            },
+            "globallyExclusiveLayers": {
+              "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
+              "type": "boolean"
+            },
+            "toolsAutoExpand": {
+              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
+              "type": "boolean"
+            },
+            "customEditorInterfaces": {
+              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "type": "array",
+              "items": {}
+            },
+            "eoxMap": {
+              "description": "",
+              "type": "string"
+            },
+            "map": {
+              "description": "The native OL map instance",
+              "type": "string"
+            },
+            "colormapRegistry": {
               "description": "",
               "type": "string"
             }
@@ -1327,145 +1409,6 @@
       ],
       "unevaluatedProperties": false
     },
-    "EOxJsonform": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "common_types.json#/$defs/ComponentCommon"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "component": {
-              "const": "EOxJsonform"
-            },
-            "schema": {
-              "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
-              "type": "string"
-            },
-            "value": {
-              "description": "JSON value of the form editor",
-              "type": "string"
-            },
-            "defaults": {
-              "description": "Default values for the JSONEditor instance",
-              "type": "string"
-            },
-            "options": {
-              "description": "Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).\nSee JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md",
-              "type": "string"
-            },
-            "customEditorInterfaces": {
-              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "type": "array",
-              "items": {}
-            },
-            "noShadow": {
-              "description": "Renders the element without a shadow root",
-              "type": "boolean"
-            },
-            "propertiesToggle": {
-              "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
-              "type": "boolean"
-            },
-            "unstyled": {
-              "description": "Render the element without additional styles",
-              "type": "boolean"
-            },
-            "editor": {
-              "description": "Getter for the JSONEditor instance",
-              "type": "string"
-            }
-          },
-          "required": [
-            "component"
-          ]
-        }
-      ],
-      "unevaluatedProperties": false
-    },
-    "EOxLayercontrol": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "common_types.json#/$defs/ComponentCommon"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "component": {
-              "const": "EOxLayercontrol"
-            },
-            "for": {
-              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
-              "type": "string"
-            },
-            "idProperty": {
-              "description": "Layer id property",
-              "type": "string"
-            },
-            "titleProperty": {
-              "description": "Layer title property",
-              "type": "string"
-            },
-            "showLayerZoomState": {
-              "description": "Show layer state based on zoom level or not",
-              "type": "boolean"
-            },
-            "tools": {
-              "description": "Layer tools",
-              "type": "array",
-              "items": {}
-            },
-            "addExternalLayers": {
-              "description": "Enable-disable external layer",
-              "type": "boolean"
-            },
-            "unstyled": {
-              "description": "Render the element without additional styles",
-              "type": "boolean"
-            },
-            "styleOverride": {
-              "description": "Overrides elements current CSS.",
-              "type": "string"
-            },
-            "toolsAsList": {
-              "description": "If enabled, the tools section will be rendered as list.",
-              "type": "boolean"
-            },
-            "globallyExclusiveLayers": {
-              "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
-              "type": "boolean"
-            },
-            "toolsAutoExpand": {
-              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
-              "type": "boolean"
-            },
-            "customEditorInterfaces": {
-              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "type": "array",
-              "items": {}
-            },
-            "eoxMap": {
-              "description": "",
-              "type": "string"
-            },
-            "map": {
-              "description": "The native OL map instance",
-              "type": "string"
-            },
-            "colormapRegistry": {
-              "description": "",
-              "type": "string"
-            }
-          },
-          "required": [
-            "component"
-          ]
-        }
-      ],
-      "unevaluatedProperties": false
-    },
     "EOxLayout": {
       "type": "object",
       "allOf": [
@@ -1533,6 +1476,63 @@
             },
             "h": {
               "description": "The height (in grid slots) of the layout item.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "component"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "EOxJsonform": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "common_types.json#/$defs/ComponentCommon"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "component": {
+              "const": "EOxJsonform"
+            },
+            "schema": {
+              "description": "Schema for the form editor. Supports full JSON Schema draft-04/07 specs plus JSON-Editor extensions (e.g., `options`, `watch`, `template`, `format: \"minmax\"`).",
+              "type": "string"
+            },
+            "value": {
+              "description": "JSON value of the form editor",
+              "type": "string"
+            },
+            "defaults": {
+              "description": "Default values for the JSONEditor instance",
+              "type": "string"
+            },
+            "options": {
+              "description": "Configuration options for the JSONEditor instance (e.g., `keep_oneof_values: false`, `no_additional_properties: true`, `removeProperties: [...]`).\nSee JSON-Editor options: https://raw.githubusercontent.com/json-editor/json-editor/refs/heads/master/README.md",
+              "type": "string"
+            },
+            "customEditorInterfaces": {
+              "description": "List of custom editor interface\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "type": "array",
+              "items": {}
+            },
+            "noShadow": {
+              "description": "Renders the element without a shadow root",
+              "type": "boolean"
+            },
+            "propertiesToggle": {
+              "description": "Shows a toggle for showing/hiding object properties editing buttons\nTo be used in combination with `options.disable_properties = false`",
+              "type": "boolean"
+            },
+            "unstyled": {
+              "description": "Render the element without additional styles",
+              "type": "boolean"
+            },
+            "editor": {
+              "description": "Getter for the JSONEditor instance",
               "type": "string"
             }
           },

@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-BCiCTKAo.js";import{d as t,t as n}from"./lit-Dt0tyVZI.js";import{h as r,m as i}from"./iframe-DOQ13U3M.js";import{t as a}from"./taggedTemplateLiteral-8F0WHLkG.js";var o;function ee(){return(ee=e((()=>{n(),r(),o={args:{for:`eox-map#only-date`,storyAdditionalComponents:{"eox-map":{id:`only-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format}}},render:e=>t`
+import{n as e}from"./rolldown-runtime-BCiCTKAo.js";import{d as t,t as n}from"./lit-Dt0tyVZI.js";import{h as r,m as i}from"./iframe-C63T9Iz7.js";import{t as a}from"./taggedTemplateLiteral-8F0WHLkG.js";var o;function ee(){return(ee=e((()=>{n(),r(),o={args:{for:`eox-map#only-date`,storyAdditionalComponents:{"eox-map":{id:`only-date`,zoom:i.zoom,center:i.center,layers:i.layers},"eox-timecontrol-date":{storyImport:!1,storySlot:!0,format:i.format}}},render:e=>t`
     <eox-map
       style="width: 100%; height: 500px;"
       id=${e.storyAdditionalComponents[`eox-map`].id}

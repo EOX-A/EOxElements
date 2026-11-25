@@ -4,252 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "elements/chart/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property or attribute in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property/attribute) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property/attribute passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property/attribute.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
-          "name": "EOxChart",
-          "members": [
-            {
-              "kind": "method",
-              "name": "_dispatchItemPointerMoveEvent",
-              "parameters": [
-                {
-                  "name": "detail"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_dispatchItemClickEvent",
-              "parameters": [
-                {
-                  "name": "detail"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_disposeChart",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_observeResize",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "spec",
-              "privacy": "public",
-              "type": {
-                "text": "VisualizationSpec | string"
-              },
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
-              "default": "undefined",
-              "attribute": "spec"
-            },
-            {
-              "kind": "field",
-              "name": "opt",
-              "privacy": "public",
-              "type": {
-                "text": "EmbedOptions"
-              },
-              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "default": "undefined",
-              "attribute": "opt"
-            },
-            {
-              "kind": "field",
-              "name": "dataValues",
-              "privacy": "public",
-              "type": {
-                "text": "{[dataSourceName: string]: InlineData} | string"
-              },
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
-              "default": "undefined",
-              "attribute": "dataValues"
-            },
-            {
-              "kind": "field",
-              "name": "noShadow",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Renders the element without a shadow root",
-              "default": "false",
-              "attribute": "no-shadow"
-            },
-            {
-              "kind": "field",
-              "name": "unstyled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "attribute": "unstyled"
-            },
-            {
-              "kind": "field",
-              "name": "_resizeObserver",
-              "type": {
-                "text": "ResizeObserver | null"
-              },
-              "description": "ResizeObserver instance to handle auto-resizing",
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_vegaView",
-              "type": {
-                "text": "View | null"
-              },
-              "description": "Vega view instance",
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_embedResult",
-              "type": {
-                "text": "Result | null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_renderRequest",
-              "type": {
-                "text": "object | null"
-              },
-              "privacy": "private",
-              "default": "null"
-            }
-          ],
-          "events": [
-            {
-              "name": "pointermove:item",
-              "type": {
-                "text": "CustomEvent<{ event: PointerEvent, item: any }>"
-              },
-              "description": "Chart item is hovered"
-            },
-            {
-              "type": {
-                "text": "CustomEvent<{ event: MouseEvent, item: any }>"
-              },
-              "description": "Chart item is clicked",
-              "name": "click:item"
-            },
-            {
-              "type": {
-                "text": "CustomEvent<EOxActivityDetail>"
-              },
-              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).",
-              "name": "eox:activity"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "dataValues",
-              "type": {
-                "text": "{[dataSourceName: string]: InlineData} | string"
-              },
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
-              "default": "undefined",
-              "fieldName": "dataValues"
-            },
-            {
-              "name": "spec",
-              "type": {
-                "text": "VisualizationSpec | string"
-              },
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
-              "default": "undefined",
-              "fieldName": "spec"
-            },
-            {
-              "name": "opt",
-              "type": {
-                "text": "EmbedOptions"
-              },
-              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "default": "undefined",
-              "fieldName": "opt"
-            },
-            {
-              "name": "no-shadow",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Renders the element without a shadow root",
-              "default": "false",
-              "fieldName": "noShadow"
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "fieldName": "unstyled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "eox-chart",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxChart",
-          "declaration": {
-            "name": "EOxChart",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "base64EncodeSpec",
-          "declaration": {
-            "name": "base64EncodeSpec",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "parseSpec",
-          "declaration": {
-            "name": "parseSpec",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-chart",
-          "declaration": {
-            "name": "EOxChart",
-            "module": "elements/chart/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -821,6 +575,252 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/chart/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property or attribute in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property/attribute) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property/attribute passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property/attribute.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
+          "name": "EOxChart",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_dispatchItemPointerMoveEvent",
+              "parameters": [
+                {
+                  "name": "detail"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_dispatchItemClickEvent",
+              "parameters": [
+                {
+                  "name": "detail"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_disposeChart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_observeResize",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "spec",
+              "privacy": "public",
+              "type": {
+                "text": "VisualizationSpec | string"
+              },
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "default": "undefined",
+              "attribute": "spec"
+            },
+            {
+              "kind": "field",
+              "name": "opt",
+              "privacy": "public",
+              "type": {
+                "text": "EmbedOptions"
+              },
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "default": "undefined",
+              "attribute": "opt"
+            },
+            {
+              "kind": "field",
+              "name": "dataValues",
+              "privacy": "public",
+              "type": {
+                "text": "{[dataSourceName: string]: InlineData} | string"
+              },
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "default": "undefined",
+              "attribute": "dataValues"
+            },
+            {
+              "kind": "field",
+              "name": "noShadow",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Renders the element without a shadow root",
+              "default": "false",
+              "attribute": "no-shadow"
+            },
+            {
+              "kind": "field",
+              "name": "unstyled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "attribute": "unstyled"
+            },
+            {
+              "kind": "field",
+              "name": "_resizeObserver",
+              "type": {
+                "text": "ResizeObserver | null"
+              },
+              "description": "ResizeObserver instance to handle auto-resizing",
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_vegaView",
+              "type": {
+                "text": "View | null"
+              },
+              "description": "Vega view instance",
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_embedResult",
+              "type": {
+                "text": "Result | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_renderRequest",
+              "type": {
+                "text": "object | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            }
+          ],
+          "events": [
+            {
+              "name": "pointermove:item",
+              "type": {
+                "text": "CustomEvent<{ event: PointerEvent, item: any }>"
+              },
+              "description": "Chart item is hovered"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<{ event: MouseEvent, item: any }>"
+              },
+              "description": "Chart item is clicked",
+              "name": "click:item"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking (excludes mouse/pointer movements).",
+              "name": "eox:activity"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "dataValues",
+              "type": {
+                "text": "{[dataSourceName: string]: InlineData} | string"
+              },
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "default": "undefined",
+              "fieldName": "dataValues"
+            },
+            {
+              "name": "spec",
+              "type": {
+                "text": "VisualizationSpec | string"
+              },
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "default": "undefined",
+              "fieldName": "spec"
+            },
+            {
+              "name": "opt",
+              "type": {
+                "text": "EmbedOptions"
+              },
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "default": "undefined",
+              "fieldName": "opt"
+            },
+            {
+              "name": "no-shadow",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Renders the element without a shadow root",
+              "default": "false",
+              "fieldName": "noShadow"
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "fieldName": "unstyled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "eox-chart",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxChart",
+          "declaration": {
+            "name": "EOxChart",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "base64EncodeSpec",
+          "declaration": {
+            "name": "base64EncodeSpec",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseSpec",
+          "declaration": {
+            "name": "parseSpec",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-chart",
+          "declaration": {
+            "name": "EOxChart",
+            "module": "elements/chart/src/main.js"
           }
         }
       ]
@@ -1510,6 +1510,389 @@
           "declaration": {
             "name": "EOxGeoSearch",
             "module": "elements/geosearch/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/layercontrol/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-layercontrol` element provides a user interface for managing and configuring layers of an `eox-map`. It connects to the underlying OpenLayers map instance and displays a list of layers, supporting advanced features such as optional layers, exclusive layers, layer tools, dynamic legends, time controls, and external layer addition.\n\n## Usage\nPlace `<eox-layercontrol></eox-layercontrol>` next to an `<eox-map></eox-map>` element. If there is only one `eox-map` present, `eox-layercontrol` will automatically connect to it. This can be configured\nvia the `for` attribute/property in order to support connecting to a specific map.\n\n## Layer Properties\nTo be displayed and managed correctly, the map layers should have custom properties set (e.g. using `properties.<property>` inside the `eox-map` layer json, or by doing `layer.set(property, value)` on the native OpenLayers layers).\n\n- `id?: string` — Unique identifier for the layer. Recommended for referencing and managing layers; also used for `eox-map` smart layer updating.\n- `title?: string` — Human-readable title for the layer, displayed in the control. Recommended for usability.\n- `layerControlHide?: boolean` — If true, hides the layer from the control UI.\n- `layerControlOptional?: boolean` — If true, the layer is initially hidden and can be added from the optional list.\n- `layerControlExclusive?: boolean` — If true, only one exclusive layer can be visualized at a time (taking into account all other layers on the same level with this property).\n- `layerControlExpand?: boolean` — If true, the layer is \"expanded\" by default, showing description, tools etc. (if available).\n- `layerControlToolsExpand?: boolean` — If true, the layer tools section is expanded by default.\n- `layerConfig?: object` — Configuration for the \"config\" tool, consisting of a JSON schema (rendered by `eox-jsonform`) for editable settings.\n- `layerDatetime?: object` — Configuration for the \"datetime\" tool, supporting time-based controls and playback.\n- `layerLegend?: object` — Configuration for the \"legend\" tool, supporting dynamic color legends.\n\nFor `eox-map` attributes/properties and emitted events, see below.\n\n## Additional Helper Methods\n\n- `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `[\"var\", \"<key>\"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`.\n\nUsage: `import { updateVectorLayerStyle } from \"@eox/layercontrol\";`",
+          "name": "EOxLayerControl",
+          "members": [
+            {
+              "kind": "field",
+              "name": "#eoxMap",
+              "privacy": "private",
+              "description": "Instance of `eox-map` which is a wrapper for the OL",
+              "type": {
+                "text": "EOxMap"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "eoxMap"
+            },
+            {
+              "kind": "method",
+              "name": "#handleLayerControlLayerListChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "evt",
+                  "type": {
+                    "text": "CustomEvent & {target: Element}"
+                  }
+                }
+              ],
+              "description": "Event handler for changes in the layer list"
+            },
+            {
+              "kind": "method",
+              "name": "#handleLayerConfigChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "evt",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ],
+              "description": "Dispatches jsonform updates from layer config to the layercontrol"
+            },
+            {
+              "kind": "field",
+              "name": "#styleEOX",
+              "privacy": "private",
+              "default": "` ${eoxStyle} :host, :root { --padding: 0.5rem; --padding-vertical: .2rem; --list-padding: 2rem; --layer-input-visibility: flex; --layer-summary-visibility: flex; --layer-type-visibility: block; --layer-title-visibility: inline; --layer-visibility: flex; --layer-tools-button-visibility: flex; --layer-toggle-button-visibility: none; --primary-color: var(--primary); --secondary-color: var(--secondary); --item-color: color-mix( in srgb, var(--primary-color) 10%, transparent ); --item-hover-color: color-mix( in srgb, var(--surface) 80%, transparent ); display: flex; flex-direction: column; --background-color: var(--eox-background-color, transparent); background-color: var(--background-color, transparent); } .layerstitle { display: block; padding-left: var(--padding); padding-right: var(--padding); } select { background-color: var(--background-color); } summary > * { pointer-events: all !important; } `"
+            },
+            {
+              "kind": "field",
+              "name": "for",
+              "privacy": "public",
+              "type": {
+                "text": "string | HTMLElement"
+              },
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "default": "\"eox-map\"",
+              "attribute": "for"
+            },
+            {
+              "kind": "field",
+              "name": "idProperty",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Layer id property",
+              "default": "\"id\"",
+              "attribute": "id-property"
+            },
+            {
+              "kind": "field",
+              "name": "map",
+              "privacy": "public",
+              "type": {
+                "text": "Map"
+              },
+              "description": "The native OL map instance",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "titleProperty",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Layer title property",
+              "default": "\"title\"",
+              "attribute": "title-property"
+            },
+            {
+              "kind": "field",
+              "name": "showLayerZoomState",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Show layer state based on zoom level or not",
+              "default": "false",
+              "attribute": "show-layer-zoom-state"
+            },
+            {
+              "kind": "field",
+              "name": "tools",
+              "privacy": "public",
+              "type": {
+                "text": "Array<string>"
+              },
+              "description": "Layer tools",
+              "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
+              "attribute": "tools"
+            },
+            {
+              "kind": "field",
+              "name": "addExternalLayers",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Enable-disable external layer",
+              "default": "false",
+              "attribute": "add-external-layers"
+            },
+            {
+              "kind": "field",
+              "name": "unstyled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "attribute": "unstyled"
+            },
+            {
+              "kind": "field",
+              "name": "styleOverride",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Overrides elements current CSS.",
+              "default": "\"\"",
+              "attribute": "styleOverride"
+            },
+            {
+              "kind": "field",
+              "name": "toolsAsList",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If enabled, the tools section will be rendered as list.",
+              "default": "false",
+              "attribute": "toolsAsList"
+            },
+            {
+              "kind": "field",
+              "name": "globallyExclusiveLayers",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
+              "default": "false",
+              "attribute": "globally-exclusive-layers"
+            },
+            {
+              "kind": "field",
+              "name": "toolsAutoExpand",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
+              "default": "false",
+              "attribute": "tools-auto-expand"
+            },
+            {
+              "kind": "field",
+              "name": "customEditorInterfaces",
+              "privacy": "public",
+              "type": {
+                "text": "Array"
+              },
+              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "default": "[]",
+              "attribute": "customEditorInterfaces"
+            },
+            {
+              "kind": "field",
+              "name": "colormapRegistry",
+              "privacy": "public",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when layers in the map change",
+              "name": "layerchange"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when layer configuration changes",
+              "name": "layerConfig:change"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when datetime is updated for a layer",
+              "name": "datetime:updated"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<EOxActivityDetail>"
+              },
+              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
+              "name": "eox:activity"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "for",
+              "type": {
+                "text": "string | HTMLElement"
+              },
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "default": "\"eox-map\"",
+              "fieldName": "for"
+            },
+            {
+              "name": "id-property",
+              "type": {
+                "text": "string"
+              },
+              "description": "Layer id property",
+              "default": "\"id\"",
+              "fieldName": "idProperty"
+            },
+            {
+              "name": "title-property",
+              "type": {
+                "text": "string"
+              },
+              "description": "Layer title property",
+              "default": "\"title\"",
+              "fieldName": "titleProperty"
+            },
+            {
+              "name": "show-layer-zoom-state",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Show layer state based on zoom level or not",
+              "default": "false",
+              "fieldName": "showLayerZoomState"
+            },
+            {
+              "name": "tools",
+              "type": {
+                "text": "Array<string>"
+              },
+              "description": "Layer tools",
+              "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
+              "fieldName": "tools"
+            },
+            {
+              "name": "add-external-layers",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Enable-disable external layer",
+              "default": "false",
+              "fieldName": "addExternalLayers"
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "fieldName": "unstyled"
+            },
+            {
+              "name": "styleOverride",
+              "type": {
+                "text": "string"
+              },
+              "description": "Overrides elements current CSS.",
+              "default": "\"\"",
+              "fieldName": "styleOverride"
+            },
+            {
+              "name": "toolsAsList",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If enabled, the tools section will be rendered as list.",
+              "default": "false",
+              "fieldName": "toolsAsList"
+            },
+            {
+              "name": "globally-exclusive-layers",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
+              "default": "false",
+              "fieldName": "globallyExclusiveLayers"
+            },
+            {
+              "name": "tools-auto-expand",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
+              "default": "false",
+              "fieldName": "toolsAutoExpand"
+            },
+            {
+              "name": "customEditorInterfaces",
+              "type": {
+                "text": "Array"
+              },
+              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
+              "default": "[]",
+              "fieldName": "customEditorInterfaces"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "eox-layercontrol",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxLayerControl",
+          "declaration": {
+            "name": "EOxLayerControl",
+            "module": "elements/layercontrol/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "updateVectorLayerStyle",
+          "declaration": {
+            "name": "updateVectorLayerStyle",
+            "module": "./methods/layer-config/apply-updated-styles"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-layercontrol",
+          "declaration": {
+            "name": "EOxLayerControl",
+            "module": "elements/layercontrol/src/main.js"
           }
         }
       ]
@@ -2281,6 +2664,154 @@
     },
     {
       "kind": "javascript-module",
+      "path": "elements/layout/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-layout` element provides a flexible grid-based layout system for web applications, based on a 12x12 grid. It consists of two elements:\n- `eox-layout`: the container holding all layout items\n- `eox-layout-item`: the individual items placed on the grid, with defined x/y coordinates and w(idth)/h(eight) dimensions\n\n## Usage\nPlace `<eox-layout></eox-layout>` in your application and add `<eox-layout-item></eox-layout-item>` children to define grid items.\n\n- `x`, `y`: zero-indexed coordinates for grid placement\n- `w`, `h`: width and height (can be single value or three values for small/medium/large screens, separated by `/`)\n- `gap`: spacing between items\n- `row-height`, `column-width`: control grid slot size\n- `fill-grid`: automatically fills available space\n\n## Responsive Layout\nBy providing three values for `x`, `y`, `w`, or `h`, items can be rendered differently on small, medium, and large screens.\n\n## Story Examples\n- Basic grid usage with positioned items\n- Full 12x12 grid visualization\n- Gap and padding demonstration\n- Overflow and scroll behavior\n- Fill-grid for auto layout\n- Responsive layouts for different screen sizes",
+          "name": "EOxLayout",
+          "members": [
+            {
+              "kind": "field",
+              "name": "mediaBreakpoints",
+              "type": {
+                "text": "array"
+              },
+              "description": "The breakpoints for small/medium/large screens (in pixel).",
+              "default": "[0, 600, 1280]"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "column-width",
+              "type": {
+                "text": "string"
+              },
+              "description": "Width of each grid column (e.g., \"200px\", \"1fr\")."
+            },
+            {
+              "name": "fill-grid",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If present, the layout will automatically fill available space."
+            },
+            {
+              "name": "gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Gap between layout items in pixels."
+            },
+            {
+              "name": "row-height",
+              "type": {
+                "text": "string"
+              },
+              "description": "Height of each grid row (e.g., \"100px\", \"1fr\")."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-layout",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "EOxLayoutItem",
+          "members": [],
+          "attributes": [
+            {
+              "name": "x",
+              "type": {
+                "text": "string"
+              },
+              "description": "The x coordinate (zero-indexed) of the layout item."
+            },
+            {
+              "name": "y",
+              "type": {
+                "text": "string"
+              },
+              "description": "The y coordinate (zero-indexed) of the layout item."
+            },
+            {
+              "name": "w",
+              "type": {
+                "text": "string"
+              },
+              "description": "The width (in grid slots) of the layout item."
+            },
+            {
+              "name": "h",
+              "type": {
+                "text": "string"
+              },
+              "description": "The height (in grid slots) of the layout item."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-layout-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxLayout",
+          "declaration": {
+            "name": "EOxLayout",
+            "module": "elements/layout/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EOxLayoutItem",
+          "declaration": {
+            "name": "EOxLayoutItem",
+            "module": "elements/layout/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-layout",
+          "declaration": {
+            "name": "EOxLayout",
+            "module": "elements/layout/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EOxMapWorkspace",
+          "declaration": {
+            "name": "EOxMapWorkspace",
+            "module": "./map-workspace.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EOxMapSideBySide",
+          "declaration": {
+            "name": "EOxMapSideBySide",
+            "module": "./map-side-by-side.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-layout-item",
+          "declaration": {
+            "name": "EOxLayoutItem",
+            "module": "elements/layout/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "elements/jsonform/src/main.js",
       "declarations": [
         {
@@ -2604,537 +3135,6 @@
           "declaration": {
             "name": "EOxJSONForm",
             "module": "elements/jsonform/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/layercontrol/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-layercontrol` element provides a user interface for managing and configuring layers of an `eox-map`. It connects to the underlying OpenLayers map instance and displays a list of layers, supporting advanced features such as optional layers, exclusive layers, layer tools, dynamic legends, time controls, and external layer addition.\n\n## Usage\nPlace `<eox-layercontrol></eox-layercontrol>` next to an `<eox-map></eox-map>` element. If there is only one `eox-map` present, `eox-layercontrol` will automatically connect to it. This can be configured\nvia the `for` attribute/property in order to support connecting to a specific map.\n\n## Layer Properties\nTo be displayed and managed correctly, the map layers should have custom properties set (e.g. using `properties.<property>` inside the `eox-map` layer json, or by doing `layer.set(property, value)` on the native OpenLayers layers).\n\n- `id?: string` — Unique identifier for the layer. Recommended for referencing and managing layers; also used for `eox-map` smart layer updating.\n- `title?: string` — Human-readable title for the layer, displayed in the control. Recommended for usability.\n- `layerControlHide?: boolean` — If true, hides the layer from the control UI.\n- `layerControlOptional?: boolean` — If true, the layer is initially hidden and can be added from the optional list.\n- `layerControlExclusive?: boolean` — If true, only one exclusive layer can be visualized at a time (taking into account all other layers on the same level with this property).\n- `layerControlExpand?: boolean` — If true, the layer is \"expanded\" by default, showing description, tools etc. (if available).\n- `layerControlToolsExpand?: boolean` — If true, the layer tools section is expanded by default.\n- `layerConfig?: object` — Configuration for the \"config\" tool, consisting of a JSON schema (rendered by `eox-jsonform`) for editable settings.\n- `layerDatetime?: object` — Configuration for the \"datetime\" tool, supporting time-based controls and playback.\n- `layerLegend?: object` — Configuration for the \"legend\" tool, supporting dynamic color legends.\n\nFor `eox-map` attributes/properties and emitted events, see below.\n\n## Additional Helper Methods\n\n- `updateVectorLayerStyle`: Resolves a vector layer flat style object  by substituting any `[\"var\", \"<key>\"]` placeholders with values from its `variables` property; imitating OL WebGL flat style variable substitution `webglLayer.updateStyleVariables`.\n\nUsage: `import { updateVectorLayerStyle } from \"@eox/layercontrol\";`",
-          "name": "EOxLayerControl",
-          "members": [
-            {
-              "kind": "field",
-              "name": "#eoxMap",
-              "privacy": "private",
-              "description": "Instance of `eox-map` which is a wrapper for the OL",
-              "type": {
-                "text": "EOxMap"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "eoxMap"
-            },
-            {
-              "kind": "method",
-              "name": "#handleLayerControlLayerListChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "evt",
-                  "type": {
-                    "text": "CustomEvent & {target: Element}"
-                  }
-                }
-              ],
-              "description": "Event handler for changes in the layer list"
-            },
-            {
-              "kind": "method",
-              "name": "#handleLayerConfigChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "evt",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ],
-              "description": "Dispatches jsonform updates from layer config to the layercontrol"
-            },
-            {
-              "kind": "field",
-              "name": "#styleEOX",
-              "privacy": "private",
-              "default": "` ${eoxStyle} :host, :root { --padding: 0.5rem; --padding-vertical: .2rem; --list-padding: 2rem; --layer-input-visibility: flex; --layer-summary-visibility: flex; --layer-type-visibility: block; --layer-title-visibility: inline; --layer-visibility: flex; --layer-tools-button-visibility: flex; --layer-toggle-button-visibility: none; --primary-color: var(--primary); --secondary-color: var(--secondary); --item-color: color-mix( in srgb, var(--primary-color) 10%, transparent ); --item-hover-color: color-mix( in srgb, var(--surface) 80%, transparent ); display: flex; flex-direction: column; --background-color: var(--eox-background-color, transparent); background-color: var(--background-color, transparent); } .layerstitle { display: block; padding-left: var(--padding); padding-right: var(--padding); } select { background-color: var(--background-color); } summary > * { pointer-events: all !important; } `"
-            },
-            {
-              "kind": "field",
-              "name": "for",
-              "privacy": "public",
-              "type": {
-                "text": "string | HTMLElement"
-              },
-              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
-              "default": "\"eox-map\"",
-              "attribute": "for"
-            },
-            {
-              "kind": "field",
-              "name": "idProperty",
-              "privacy": "public",
-              "type": {
-                "text": "string"
-              },
-              "description": "Layer id property",
-              "default": "\"id\"",
-              "attribute": "id-property"
-            },
-            {
-              "kind": "field",
-              "name": "map",
-              "privacy": "public",
-              "type": {
-                "text": "Map"
-              },
-              "description": "The native OL map instance",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "titleProperty",
-              "privacy": "public",
-              "type": {
-                "text": "string"
-              },
-              "description": "Layer title property",
-              "default": "\"title\"",
-              "attribute": "title-property"
-            },
-            {
-              "kind": "field",
-              "name": "showLayerZoomState",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Show layer state based on zoom level or not",
-              "default": "false",
-              "attribute": "show-layer-zoom-state"
-            },
-            {
-              "kind": "field",
-              "name": "tools",
-              "privacy": "public",
-              "type": {
-                "text": "Array<string>"
-              },
-              "description": "Layer tools",
-              "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
-              "attribute": "tools"
-            },
-            {
-              "kind": "field",
-              "name": "addExternalLayers",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Enable-disable external layer",
-              "default": "false",
-              "attribute": "add-external-layers"
-            },
-            {
-              "kind": "field",
-              "name": "unstyled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "attribute": "unstyled"
-            },
-            {
-              "kind": "field",
-              "name": "styleOverride",
-              "privacy": "public",
-              "type": {
-                "text": "string"
-              },
-              "description": "Overrides elements current CSS.",
-              "default": "\"\"",
-              "attribute": "styleOverride"
-            },
-            {
-              "kind": "field",
-              "name": "toolsAsList",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If enabled, the tools section will be rendered as list.",
-              "default": "false",
-              "attribute": "toolsAsList"
-            },
-            {
-              "kind": "field",
-              "name": "globallyExclusiveLayers",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
-              "default": "false",
-              "attribute": "globally-exclusive-layers"
-            },
-            {
-              "kind": "field",
-              "name": "toolsAutoExpand",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
-              "default": "false",
-              "attribute": "tools-auto-expand"
-            },
-            {
-              "kind": "field",
-              "name": "customEditorInterfaces",
-              "privacy": "public",
-              "type": {
-                "text": "Array"
-              },
-              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "default": "[]",
-              "attribute": "customEditorInterfaces"
-            },
-            {
-              "kind": "field",
-              "name": "colormapRegistry",
-              "privacy": "public",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            }
-          ],
-          "events": [
-            {
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Fired when layers in the map change",
-              "name": "layerchange"
-            },
-            {
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Fired when layer configuration changes",
-              "name": "layerConfig:change"
-            },
-            {
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Fired when datetime is updated for a layer",
-              "name": "datetime:updated"
-            },
-            {
-              "type": {
-                "text": "CustomEvent<EOxActivityDetail>"
-              },
-              "description": "Fires on genuine user interactions, wrapping the original event for analytics tracking.",
-              "name": "eox:activity"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "for",
-              "type": {
-                "text": "string | HTMLElement"
-              },
-              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
-              "default": "\"eox-map\"",
-              "fieldName": "for"
-            },
-            {
-              "name": "id-property",
-              "type": {
-                "text": "string"
-              },
-              "description": "Layer id property",
-              "default": "\"id\"",
-              "fieldName": "idProperty"
-            },
-            {
-              "name": "title-property",
-              "type": {
-                "text": "string"
-              },
-              "description": "Layer title property",
-              "default": "\"title\"",
-              "fieldName": "titleProperty"
-            },
-            {
-              "name": "show-layer-zoom-state",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Show layer state based on zoom level or not",
-              "default": "false",
-              "fieldName": "showLayerZoomState"
-            },
-            {
-              "name": "tools",
-              "type": {
-                "text": "Array<string>"
-              },
-              "description": "Layer tools",
-              "default": "[\"info\", \"opacity\", \"datetime\", \"config\", \"remove\", \"sort\"]",
-              "fieldName": "tools"
-            },
-            {
-              "name": "add-external-layers",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Enable-disable external layer",
-              "default": "false",
-              "fieldName": "addExternalLayers"
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "fieldName": "unstyled"
-            },
-            {
-              "name": "styleOverride",
-              "type": {
-                "text": "string"
-              },
-              "description": "Overrides elements current CSS.",
-              "default": "\"\"",
-              "fieldName": "styleOverride"
-            },
-            {
-              "name": "toolsAsList",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If enabled, the tools section will be rendered as list.",
-              "default": "false",
-              "fieldName": "toolsAsList"
-            },
-            {
-              "name": "globally-exclusive-layers",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).",
-              "default": "false",
-              "fieldName": "globallyExclusiveLayers"
-            },
-            {
-              "name": "tools-auto-expand",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If enabled, toggling the layer visibility will also open/close the layer tools.",
-              "default": "false",
-              "fieldName": "toolsAutoExpand"
-            },
-            {
-              "name": "customEditorInterfaces",
-              "type": {
-                "text": "Array"
-              },
-              "description": "List of custom editor interfaces for layer config eox-jsonforms\nRead more about the implementation of custom editor interfaces here:\nhttps://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html",
-              "default": "[]",
-              "fieldName": "customEditorInterfaces"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "eox-layercontrol",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxLayerControl",
-          "declaration": {
-            "name": "EOxLayerControl",
-            "module": "elements/layercontrol/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "updateVectorLayerStyle",
-          "declaration": {
-            "name": "updateVectorLayerStyle",
-            "module": "./methods/layer-config/apply-updated-styles"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-layercontrol",
-          "declaration": {
-            "name": "EOxLayerControl",
-            "module": "elements/layercontrol/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/layout/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-layout` element provides a flexible grid-based layout system for web applications, based on a 12x12 grid. It consists of two elements:\n- `eox-layout`: the container holding all layout items\n- `eox-layout-item`: the individual items placed on the grid, with defined x/y coordinates and w(idth)/h(eight) dimensions\n\n## Usage\nPlace `<eox-layout></eox-layout>` in your application and add `<eox-layout-item></eox-layout-item>` children to define grid items.\n\n- `x`, `y`: zero-indexed coordinates for grid placement\n- `w`, `h`: width and height (can be single value or three values for small/medium/large screens, separated by `/`)\n- `gap`: spacing between items\n- `row-height`, `column-width`: control grid slot size\n- `fill-grid`: automatically fills available space\n\n## Responsive Layout\nBy providing three values for `x`, `y`, `w`, or `h`, items can be rendered differently on small, medium, and large screens.\n\n## Story Examples\n- Basic grid usage with positioned items\n- Full 12x12 grid visualization\n- Gap and padding demonstration\n- Overflow and scroll behavior\n- Fill-grid for auto layout\n- Responsive layouts for different screen sizes",
-          "name": "EOxLayout",
-          "members": [
-            {
-              "kind": "field",
-              "name": "mediaBreakpoints",
-              "type": {
-                "text": "array"
-              },
-              "description": "The breakpoints for small/medium/large screens (in pixel).",
-              "default": "[0, 600, 1280]"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "column-width",
-              "type": {
-                "text": "string"
-              },
-              "description": "Width of each grid column (e.g., \"200px\", \"1fr\")."
-            },
-            {
-              "name": "fill-grid",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If present, the layout will automatically fill available space."
-            },
-            {
-              "name": "gap",
-              "type": {
-                "text": "string"
-              },
-              "description": "Gap between layout items in pixels."
-            },
-            {
-              "name": "row-height",
-              "type": {
-                "text": "string"
-              },
-              "description": "Height of each grid row (e.g., \"100px\", \"1fr\")."
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-layout",
-          "customElement": true
-        },
-        {
-          "kind": "class",
-          "description": "",
-          "name": "EOxLayoutItem",
-          "members": [],
-          "attributes": [
-            {
-              "name": "x",
-              "type": {
-                "text": "string"
-              },
-              "description": "The x coordinate (zero-indexed) of the layout item."
-            },
-            {
-              "name": "y",
-              "type": {
-                "text": "string"
-              },
-              "description": "The y coordinate (zero-indexed) of the layout item."
-            },
-            {
-              "name": "w",
-              "type": {
-                "text": "string"
-              },
-              "description": "The width (in grid slots) of the layout item."
-            },
-            {
-              "name": "h",
-              "type": {
-                "text": "string"
-              },
-              "description": "The height (in grid slots) of the layout item."
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-layout-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxLayout",
-          "declaration": {
-            "name": "EOxLayout",
-            "module": "elements/layout/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "EOxLayoutItem",
-          "declaration": {
-            "name": "EOxLayoutItem",
-            "module": "elements/layout/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-layout",
-          "declaration": {
-            "name": "EOxLayout",
-            "module": "elements/layout/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "EOxMapWorkspace",
-          "declaration": {
-            "name": "EOxMapWorkspace",
-            "module": "./map-workspace.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "EOxMapSideBySide",
-          "declaration": {
-            "name": "EOxMapSideBySide",
-            "module": "./map-side-by-side.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-layout-item",
-          "declaration": {
-            "name": "EOxLayoutItem",
-            "module": "elements/layout/src/main.js"
           }
         }
       ]
