@@ -242,7 +242,7 @@ export const setupGlobeSync = (EOxMap, globus) => {
     // Do not sync from globe to OL if a programmatic move is in progress.
     const cam = planet.camera;
 
-    const centerCartesian = planet.getCartesianFromPixelTerrain(
+    const centerCartesian = planet.getCartesianFromPixelEllipsoid(
       planet.renderer.handler.getCenter(),
     );
     if (!centerCartesian) {
@@ -250,19 +250,25 @@ export const setupGlobeSync = (EOxMap, globus) => {
     }
 
     const lonLat = planet.ellipsoid.cartesianToLonLat(centerCartesian);
-    let zoomFactor = map.globeConfig?.useHighLOD ? 1 : 2;
-    const zoom = Math.log2(21050000 / cam.getLonLat().height) + zoomFactor;
+    let zoomFactor = EOxMap.globeConfig?.useHighLOD ? 1 : 2;
+    const zoom =
+      Math.log2(21050000 / cam.eye.distance(centerCartesian)) + zoomFactor;
     const center = transform(
       [lonLat.lon, lonLat.lat],
       "EPSG:4326",
       map.getView().getProjection().getCode(),
     );
-    const rotation = -1 * cam.getHeading() * (Math.PI / 180);
+    const local = planet
+      .getFrameRotation(centerCartesian)
+      .conjugate()
+      .inverse()
+      .mul(cam.getRotation());
+    const rotation = -local.getYaw();
     EOxMap._isSyncing = true;
     map.getView().setCenter(center);
     map.getView().setZoom(zoom);
     // OL has no tilt; synced globes read it from the shared view.
-    map.getView().set("pitch", cam.getPitch());
+    map.getView().set("pitch", local.getPitch());
     if (!Number.isNaN(rotation) && rotation !== map.getView().getRotation()) {
       map.getView().setRotation(rotation);
     }
@@ -320,10 +326,8 @@ export const setupGlobeSync = (EOxMap, globus) => {
         0,
         globus.planet.getFrameRotation(target),
       );
-      // onGlobeMove reads the zoom from the eye altitude, so keep that altitude.
-      const distance = groundHeight / Math.max(Math.sin(-tilt), 0.1);
       const eye = target.add(
-        orientation.mulVec3(new Vec3(0, 0, 1)).scaleTo(distance),
+        orientation.mulVec3(new Vec3(0, 0, 1)).scaleTo(groundHeight),
       );
       camera.set(eye, target, orientation.mulVec3(new Vec3(0, 1, 0)));
       camera.update();
@@ -1201,6 +1205,8 @@ export const disableGlobe = (map) => {
         // Apply the calculated center and zoom to the OpenLayers map view
         map.map.getView().setCenter(newCenter);
         map.map.getView().setZoom(zoomFromGlobe);
+        map.map.getView().setRotation(0);
+        map.map.getView().unset("pitch");
         // Restore OL controls back to the OL container
         const globeControls =
           map.shadowRoot.querySelector(".ol-globe-controls");

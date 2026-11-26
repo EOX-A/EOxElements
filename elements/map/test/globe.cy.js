@@ -14,6 +14,8 @@ import {
   testGlobeZoomExtent,
   testGlobeViewSwap,
   testGlobeViewTilt,
+  testGlobeViewSyncPose,
+  testGlobeExitView,
   testGlobeWMSOptions,
   testGlobePolarAndAsyncCanvasTiles,
   testGlobeGeoZarrPoolSync,
@@ -90,6 +92,12 @@ describe("globe", () => {
 
   it("keeps the globe tilt and heading on map view changes", () =>
     testGlobeViewTilt());
+
+  it("keeps two synced globes on the same view after moving one", () =>
+    testGlobeViewSyncPose());
+
+  it("returns a north-up, untilted view after leaving the globe", () =>
+    testGlobeExitView());
 
   /**
    * Test case to strip conflicting GetMap parameters from globe WMS layers and sync parameter updates
