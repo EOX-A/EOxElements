@@ -248,7 +248,7 @@ export const setupGlobeSync = (EOxMap, globus) => {
     }
 
     const lonLat = planet.ellipsoid.cartesianToLonLat(centerCartesian);
-    let zoomFactor = EOxMap.globeConfig?.useHighLOD ? 1 : 2;
+    const zoomFactor = EOxMap.globeConfig?.useHighLOD ? 1 : 2;
     const zoom =
       Math.log2(21050000 / cam.eye.distance(centerCartesian)) + zoomFactor;
     const center = transform(
@@ -261,12 +261,17 @@ export const setupGlobeSync = (EOxMap, globus) => {
       .conjugate()
       .inverse()
       .mul(cam.getRotation());
-    const rotation = -local.getYaw();
+    // og's Euler angles move the heading into roll near straight down, so read the axes.
+    const right = local.mulVec3(new Vec3(1, 0, 0));
+    const back = local.mulVec3(new Vec3(0, 0, 1));
+    const rotation = -Math.atan2(right.z, right.x);
     EOxMap._isSyncing = true;
     map.getView().setCenter(center);
     map.getView().setZoom(zoom);
     // OL has no tilt; synced globes read it from the shared view.
-    map.getView().set("pitch", local.getPitch());
+    const pitch = Math.atan2(-back.y, back.z * right.x - back.x * right.z);
+    // The frame is undefined exactly at a pole.
+    if (!Number.isNaN(pitch)) map.getView().set("pitch", pitch);
     if (!Number.isNaN(rotation) && rotation !== map.getView().getRotation()) {
       map.getView().setRotation(rotation);
     }
@@ -1160,8 +1165,8 @@ export const disableGlobe = (map) => {
     disposeGlobeSynchronization(globe);
     const planet = globe.planet;
 
-    // 1. Determine the target point on the terrain at the center of the viewport
-    let c = planet.getCartesianFromPixelTerrain(
+    // 1. The view center on the ellipsoid, as the sync reads it
+    let c = planet.getCartesianFromPixelEllipsoid(
       globe.renderer.handler.getCenter(),
     );
 
