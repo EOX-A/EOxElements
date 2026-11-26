@@ -32,6 +32,7 @@ function createGlobeStub() {
       layers.splice(layers.indexOf(layer), 1),
     getLonLatFromPixelTerrain: () => new LonLat(0, 0),
     getCartesianFromPixelTerrain: () => null,
+    getCartesianFromPixelEllipsoid: () => null,
     camera: { eye: new Vec3(1, 0, 0) },
     flyCartesian: cy.stub(),
   };
