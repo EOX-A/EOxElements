@@ -57,8 +57,6 @@ import {
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
-let globus;
-
 /**
  * The OL feature behind each globe entity, to highlight and select it.
  * @type {WeakMap<Entity, import("ol/Feature").default>}
@@ -541,7 +539,7 @@ function normalizeColor(color) {
 }
 
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
-  globus = new OgGlobe({
+  const globus = new OgGlobe({
     target,
     layers: EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
       .filter((l) => l.get("type") !== "Group")
@@ -1298,7 +1296,6 @@ export const disableGlobe = (map) => {
         map.globeEnabled = false;
         // og is mid-frame here; destroy once that frame has finished.
         queueMicrotask(() => globe.destroy());
-        if (globus === globe) globus = undefined;
       },
     });
   }
