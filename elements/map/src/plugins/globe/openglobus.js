@@ -57,8 +57,6 @@ import {
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
-let globus;
-
 /**
  * The OL feature behind each globe entity, to highlight and select it.
  * @type {WeakMap<Entity, import("ol/Feature").default>}
@@ -235,6 +233,194 @@ export function translateOLStyleExpressions(styleFunction, feature) {
   return ogStyle;
 }
 
+export const setupGlobeSync = (EOxMap, globus) => {
+  const { planet } = globus;
+  const map = EOxMap.map;
+  const onGlobeMove = () => {
+    // Do not sync from globe to OL if a programmatic move is in progress.
+    const cam = planet.camera;
+
+    const centerCartesian = planet.getCartesianFromPixelEllipsoid(
+      planet.renderer.handler.getCenter(),
+    );
+    if (!centerCartesian) {
+      return;
+    }
+
+    const lonLat = planet.ellipsoid.cartesianToLonLat(centerCartesian);
+    const zoomFactor = EOxMap.globeConfig?.useHighLOD ? 1 : 2;
+    const zoom =
+      Math.log2(21050000 / cam.eye.distance(centerCartesian)) + zoomFactor;
+    const center = transform(
+      [lonLat.lon, lonLat.lat],
+      "EPSG:4326",
+      map.getView().getProjection().getCode(),
+    );
+    const local = planet
+      .getFrameRotation(centerCartesian)
+      .conjugate()
+      .inverse()
+      .mul(cam.getRotation());
+    // og's Euler angles move the heading into roll near straight down, so read the axes.
+    const right = local.mulVec3(new Vec3(1, 0, 0));
+    const back = local.mulVec3(new Vec3(0, 0, 1));
+    const rotation = -Math.atan2(right.z, right.x);
+    EOxMap._isSyncing = true;
+    map.getView().setCenter(center);
+    map.getView().setZoom(zoom);
+    // OL has no tilt; synced globes read it from the shared view.
+    const pitch = Math.atan2(-back.y, back.z * right.x - back.x * right.z);
+    // The frame is undefined exactly at a pole.
+    if (!Number.isNaN(pitch)) map.getView().set("pitch", pitch);
+    if (!Number.isNaN(rotation) && rotation !== map.getView().getRotation()) {
+      map.getView().setRotation(rotation);
+    }
+
+    EOxMap._isSyncing = false;
+  };
+
+  const updateGlobeCamera = () => {
+    // A programmatic flight owns the camera; setLonLat would stop it.
+    if (EOxMap._isSyncing || globus.planet.camera.isFlying()) {
+      return;
+    }
+    const view = map.getView();
+    const center = view.getCenter();
+    const resolution = view.getResolution();
+    // const rotation = view.getRotation();
+    // const pitch = view.get("pitch") || -90;
+
+    if (!center || resolution === undefined) {
+      return;
+    }
+
+    const lonLatCenter = transform(
+      center,
+      view.getProjection().getCode(),
+      "EPSG:4326",
+    );
+
+    let currZoom = EOxMap.map.getView().getZoom() - 1;
+    if (!EOxMap.globeConfig?.useHighLOD) {
+      currZoom = currZoom - 1;
+    }
+
+    const groundHeight = 21050000 / Math.pow(2, currZoom);
+
+    EOxMap._isSyncing = true;
+    globus.planet.camera.setLonLat(
+      new LonLat(lonLatCenter[0], lonLatCenter[1], groundHeight),
+      new LonLat(lonLatCenter[0], lonLatCenter[1], 0),
+      Vec3.NORTH,
+    );
+
+    const pitch = view.get("pitch");
+    const rotation = view.getRotation();
+    if (pitch !== undefined || rotation) {
+      // Keep the shared tilt and heading, looking at the view center.
+      const { camera, ellipsoid } = globus.planet;
+      const target = ellipsoid.lonLatToCartesian(
+        new LonLat(lonLatCenter[0], lonLatCenter[1], 0),
+      );
+      const tilt = pitch ?? -Math.PI / 2;
+      const orientation = new Quat().setPitchYawRoll(
+        tilt,
+        -rotation,
+        0,
+        globus.planet.getFrameRotation(target),
+      );
+      const eye = target.add(
+        orientation.mulVec3(new Vec3(0, 0, 1)).scaleTo(groundHeight),
+      );
+      camera.set(eye, target, orientation.mulVec3(new Vec3(0, 1, 0)));
+      camera.update();
+    }
+
+    EOxMap._isSyncing = false;
+  };
+
+  const startMove = () => {
+    // Only attach the listener if we are not in the middle of a programmatic update
+    if (!EOxMap._isSyncing) {
+      planet.renderer.events.on("draw", onGlobeMove);
+    }
+  };
+
+  const endMove = () => {
+    planet.renderer.events.off("draw", onGlobeMove);
+    // Once movement is finished, we can stop listening for the 'moveend' event.
+    planet.camera.events.off("moveend", endMove);
+  };
+
+  // Debounced function to detach the move listener after mouse wheel scrolling stops.
+  const debouncedEndMove = debounce(endMove, 250);
+
+  const onMouseWheel = () => {
+    if (!EOxMap._isSyncing) {
+      // Attach the listener for immediate feedback during scroll
+      startMove();
+      // Reset the timer to detach the listener when scrolling stops
+      debouncedEndMove();
+    }
+  };
+
+  const onMouseUp = () => {
+    // When the mouse is released, we don't stop the sync immediately.
+    // Instead, we wait for the camera to completely stop moving (including inertia).
+    planet.camera.events.on("moveend", endMove);
+    onMouseWheel();
+  };
+
+  // Attach listeners for events that signify the start of a user interaction
+  planet.renderer.events.on("ldown", startMove);
+  planet.renderer.events.on("rdown", startMove);
+  planet.renderer.events.on("mdown", startMove);
+  planet.renderer.events.on("touchstart", startMove);
+
+  // Attach listeners for events that signify the end of a user interaction
+  planet.renderer.events.on("lup", onMouseUp);
+  planet.renderer.events.on("rup", onMouseUp);
+  planet.renderer.events.on("mup", onMouseUp);
+  planet.renderer.events.on("touchend", onMouseUp);
+
+  // Handle mouse wheel separately to use debouncing
+  planet.renderer.events.on("mousewheel", onMouseWheel);
+
+  const viewListeners = [
+    "change:center",
+    "change:resolution",
+    "change:rotation",
+    "change:pitch",
+  ];
+  let currentView = map.getView();
+  const attachViewListeners = (view) => {
+    view.on(viewListeners, updateGlobeCamera);
+  };
+  const detachViewListeners = (view) => {
+    view.un(viewListeners, updateGlobeCamera);
+  };
+
+  attachViewListeners(currentView);
+  const viewChangeHandler = () => {
+    detachViewListeners(currentView);
+    currentView = map.getView();
+    attachViewListeners(currentView);
+    // A shared view (`sync`) may already be elsewhere.
+    updateGlobeCamera();
+  };
+  map.on("change:view", viewChangeHandler);
+
+  // Store for cleanup
+  globus._startMove = startMove;
+  globus._endMove = endMove;
+  globus._onMouseUp = onMouseUp;
+  globus._onGlobeMove = onGlobeMove;
+  globus._updateGlobeCamera = updateGlobeCamera;
+  globus._viewChangeHandler = viewChangeHandler;
+  globus._detachViewListeners = detachViewListeners;
+  globus._onMouseWheel = onMouseWheel; // Store for cleanup
+};
+
 /**
  * Reads the og geometry style from the fill and stroke of an OL style.
  *
@@ -358,7 +544,7 @@ function normalizeColor(color) {
 }
 
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
-  globus = new OgGlobe({
+  const globus = new OgGlobe({
     target,
     layers: EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
       .filter((l) => l.get("type") !== "Group")
@@ -405,10 +591,16 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
     }
   `;
   target.appendChild(style);
+
+  setupGlobeSync(EOxMap, globus);
+
   return globus;
 };
 
-export const refreshGlobe = () => {
+/**
+ * @param {OgGlobe} globus
+ */
+export const refreshGlobe = (globus) => {
   if (globus) {
     globus.planet.layers.forEach((l) => {
       if (l instanceof CanvasTiles) {
@@ -808,7 +1000,7 @@ export const enableGlobe = (map) => {
     map.registerProjectionFromCode("EPSG:3857"); // Ensure projection is registered for OL, globe uses its own.
 
     // Store the globe instance returned by create, if any.
-    map.globe = window.eoxMapGlobe.create({
+    const globe = window.eoxMapGlobe.create({
       EOxMap: map,
       target: globeDiv,
     });
@@ -817,6 +1009,7 @@ export const enableGlobe = (map) => {
     /** @type {HTMLElement} */
     (map.shadowRoot.querySelector("#map")).style.display = "none";
     map.globeEnabled = true;
+    map.globe = globe;
   }
 
   // Keep compatible controls visible, hide others
@@ -961,6 +1154,7 @@ export const enableGlobe = (map) => {
       existingFullScreen.source_ = map.shadowRoot.querySelector("#globe");
     }
   }
+  return map.globe;
 };
 
 export const disableGlobe = (map) => {
@@ -971,8 +1165,8 @@ export const disableGlobe = (map) => {
     disposeGlobeSynchronization(globe);
     const planet = globe.planet;
 
-    // 1. Determine the target point on the terrain at the center of the viewport
-    let c = planet.getCartesianFromPixelTerrain(
+    // 1. The view center on the ellipsoid, as the sync reads it
+    let c = planet.getCartesianFromPixelEllipsoid(
       globe.renderer.handler.getCenter(),
     );
 
@@ -1014,6 +1208,8 @@ export const disableGlobe = (map) => {
         // Apply the calculated center and zoom to the OpenLayers map view
         map.map.getView().setCenter(newCenter);
         map.map.getView().setZoom(zoomFromGlobe);
+        map.map.getView().setRotation(0);
+        map.map.getView().unset("pitch");
         // Restore OL controls back to the OL container
         const globeControls =
           map.shadowRoot.querySelector(".ol-globe-controls");
@@ -1073,6 +1269,21 @@ export const disableGlobe = (map) => {
             existingFullScreen.source_ = map.shadowRoot.querySelector("#map");
           }
         }
+        // Sync cleanup
+        planet.renderer.events.off("draw", globe._onGlobeMove);
+        planet.renderer.events.off("ldown", globe._startMove);
+        planet.renderer.events.off("rdown", globe._startMove);
+        planet.renderer.events.off("mdown", globe._startMove);
+        planet.renderer.events.off("touchstart", globe._startMove);
+        planet.renderer.events.off("lup", globe._onMouseUp);
+        planet.renderer.events.off("rup", globe._onMouseUp);
+        planet.renderer.events.off("mup", globe._onMouseUp);
+        planet.renderer.events.off("touchend", globe._onMouseUp);
+        planet.renderer.events.off("mousewheel", globe._onMouseWheel);
+        // Also ensure the moveend listener is cleaned up
+        planet.camera.events.off("moveend", globe._endMove);
+        globe._detachViewListeners(map.map.getView());
+        map.map.un("change:view", globe._viewChangeHandler);
         unmountGlobeTooltip(map);
         disposeMapPool(mapPool);
         map.globe = null;
@@ -1090,7 +1301,6 @@ export const disableGlobe = (map) => {
         map.globeEnabled = false;
         // og is mid-frame here; destroy once that frame has finished.
         queueMicrotask(() => globe.destroy());
-        if (globus === globe) globus = undefined;
       },
     });
   }
@@ -1478,8 +1688,9 @@ export const getGlobeTargetOrientation = (
  *
  * @param {import("../../main").EOxMap} EOxMap
  * @param {object} animateToOptions
+ * @param {import("ol/extent").Extent} [extent] - Extent to fly to, in the view projection; otherwise center/zoom.
  */
-export const flyGlobeToState = (EOxMap, animateToOptions) => {
+export const flyGlobeToState = (EOxMap, animateToOptions, extent) => {
   if (!EOxMap.globe || !EOxMap.globeEnabled) return;
 
   const planet = EOxMap.globe.planet;
@@ -1504,11 +1715,7 @@ export const flyGlobeToState = (EOxMap, animateToOptions) => {
       ),
     });
 
-  // Check if an extent was requested
-  // @ts-expect-error - _requestedZoomExtent is a custom property
-  if (EOxMap._requestedZoomExtent) {
-    // @ts-expect-error - _requestedZoomExtent is a custom property
-    const extent = EOxMap._requestedZoomExtent;
+  if (extent) {
     // Transform OL extent to EPSG:4326
     const minLonLat = transform(
       [extent[0], extent[1]],

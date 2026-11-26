@@ -9,6 +9,13 @@ export {
 } from "./geotiff-source-options.js";
 export { testGlobeLayerOrder } from "./layer-order.js";
 export { testGlobeFlyPitch } from "./fly-pitch.js";
+export { testGlobeZoomExtent } from "./zoom-extent.js";
+export {
+  testGlobeViewSwap,
+  testGlobeViewTilt,
+  testGlobeViewSyncPose,
+  testGlobeExitView,
+} from "./globe-view-swap.js";
 export {
   testGlobeWMSOptions,
   testGlobePolarAndAsyncCanvasTiles,
