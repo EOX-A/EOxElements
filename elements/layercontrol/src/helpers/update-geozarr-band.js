@@ -67,11 +67,32 @@ export async function updateGeoZarrBand(layer, newBand) {
         source.getProjection?.() ||
         layer.get("_mapProjection") ||
         layer.get("_jsonDefinition")?.source?.projection;
+      const rawDimensions =
+        source.dimensions_ && Object.keys(source.dimensions_).length > 0
+          ? source.dimensions_
+          : layer.get("_jsonDefinition")?.source?.dimensions;
+      const newBandDims = layer.get("_geozarrVariables")?.[newBand]?.dimensions;
+      let existingDimensions;
+      if (rawDimensions) {
+        if (Array.isArray(newBandDims)) {
+          existingDimensions = Object.fromEntries(
+            Object.entries(rawDimensions).filter(([k]) =>
+              newBandDims.includes(k),
+            ),
+          );
+          if (Object.keys(existingDimensions).length === 0) {
+            existingDimensions = undefined;
+          }
+        } else {
+          existingDimensions = { ...rawDimensions };
+        }
+      }
       const newSource = new GeoZarrClass({
         url: sourceUrl,
         bands: [newBand],
         crossOrigin: "anonymous",
         ...(proj ? { projection: proj } : {}),
+        ...(existingDimensions ? { dimensions: existingDimensions } : {}),
       });
       layer.setSource(newSource);
       updatedSource = newSource;
@@ -257,7 +278,10 @@ export async function updateGeoZarrBand(layer, newBand) {
             layer.set("layerConfig", updatedLayerConfig);
           }
 
-          if (typeof updatedSource.updateDimensions === "function") {
+          if (
+            typeof updatedSource.updateDimensions === "function" &&
+            updatedSource.dimensions_?.[dimName] !== 0
+          ) {
             updatedSource.updateDimensions({ [dimName]: 0 });
           }
         }
@@ -292,72 +316,95 @@ export async function updateGeoZarrBand(layer, newBand) {
         // Process time dimension
         if (dimensions?.time && dimensions.time.size > 0) {
           const timeDim = dimensions.time;
-          const { units } = timeDim.attributes || {};
-          let epoch = 0;
-          let multiplier = 1000;
-          if (units && typeof units === "string" && units.includes(" since ")) {
-            const parts = units.split(" since ");
-            let dateStr = parts[1].trim();
-            if (!dateStr.includes("T") && !dateStr.includes("Z")) {
-              dateStr = dateStr.replace(" ", "T") + "Z";
+          const existingDatetime = layer.get("layerDatetime") || {};
+          const hasMatchingTimeSlices =
+            Array.isArray(existingDatetime.controlValues) &&
+            existingDatetime.controlValues.length === timeDim.size &&
+            existingDatetime.sliceMap &&
+            Object.keys(existingDatetime.sliceMap).length === timeDim.size;
+
+          let sliceMap = existingDatetime.sliceMap;
+          let controlValues = existingDatetime.controlValues;
+
+          if (!hasMatchingTimeSlices) {
+            const { units } = timeDim.attributes || {};
+            let epoch = 0;
+            let multiplier = 1000;
+            if (
+              units &&
+              typeof units === "string" &&
+              units.includes(" since ")
+            ) {
+              const parts = units.split(" since ");
+              let dateStr = parts[1].trim();
+              if (!dateStr.includes("T") && !dateStr.includes("Z")) {
+                dateStr = dateStr.replace(" ", "T") + "Z";
+              }
+              epoch = Date.parse(dateStr) || 0;
+              const unitType = parts[0].toLowerCase();
+              if (unitType.includes("day")) multiplier = 86400 * 1000;
+              else if (unitType.includes("nanosecond")) multiplier = 1e-6;
+              else if (unitType.includes("microsecond")) multiplier = 1e-3;
+              else if (unitType.includes("millisecond")) multiplier = 1;
+              else if (unitType.includes("second")) multiplier = 1000;
             }
-            epoch = Date.parse(dateStr) || 0;
-            const unitType = parts[0].toLowerCase();
-            if (unitType.includes("day")) multiplier = 86400 * 1000;
-            else if (unitType.includes("nanosecond")) multiplier = 1e-6;
-            else if (unitType.includes("microsecond")) multiplier = 1e-3;
-            else if (unitType.includes("millisecond")) multiplier = 1;
-            else if (unitType.includes("second")) multiplier = 1000;
+
+            const toDate = (value) => {
+              if (typeof value === "string") return new Date(value);
+              return new Date(epoch + Number(value) * multiplier);
+            };
+
+            const slices = await Promise.all(
+              [...Array(timeDim.size).keys()].map(async (index) => {
+                const rawVal =
+                  typeof updatedSource.getValue === "function"
+                    ? await updatedSource.getValue("time", index)
+                    : index;
+                return {
+                  index,
+                  date: toDate(rawVal),
+                };
+              }),
+            );
+            slices.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+            sliceMap = {};
+            controlValues = slices.map((s) => {
+              const iso = s.date.toISOString();
+              sliceMap[iso] = s.index;
+              return iso;
+            });
           }
 
-          const toDate = (value) => {
-            if (typeof value === "string") return new Date(value);
-            return new Date(epoch + Number(value) * multiplier);
-          };
-
-          const slices = await Promise.all(
-            [...Array(timeDim.size).keys()].map(async (index) => {
-              const rawVal =
-                typeof updatedSource.getValue === "function"
-                  ? await updatedSource.getValue("time", index)
-                  : index;
-              return {
-                index,
-                date: toDate(rawVal),
-              };
-            }),
-          );
-          slices.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-          const sliceMap = {};
-          const controlValues = slices.map((s) => {
-            const iso = s.date.toISOString();
-            sliceMap[iso] = s.index;
-            return iso;
-          });
-
-          const currentDatetime = layer.get("layerDatetime") || {};
           const currentStep =
-            currentDatetime.currentStep &&
-            controlValues.includes(currentDatetime.currentStep)
-              ? currentDatetime.currentStep
+            existingDatetime.currentStep &&
+            controlValues.includes(existingDatetime.currentStep)
+              ? existingDatetime.currentStep
               : controlValues[0];
 
-          layer.set("layerDatetime", {
-            showUTC: true,
-            slider: true,
-            navigation: true,
-            ...currentDatetime,
-            controlValues,
-            sliceMap,
-            currentStep,
-          });
+          if (
+            !hasMatchingTimeSlices ||
+            existingDatetime.currentStep !== currentStep
+          ) {
+            layer.set("layerDatetime", {
+              showUTC: true,
+              slider: true,
+              navigation: true,
+              ...existingDatetime,
+              controlValues,
+              sliceMap,
+              currentStep,
+            });
 
-          const timeControlValues = controlValues.map((date) => ({ date }));
-          layer.set("timeControlValues", timeControlValues);
+            const timeControlValues = controlValues.map((date) => ({ date }));
+            layer.set("timeControlValues", timeControlValues);
+          }
 
           const initialIndex = sliceMap[currentStep] ?? 0;
-          if (typeof updatedSource.updateDimensions === "function") {
+          if (
+            typeof updatedSource.updateDimensions === "function" &&
+            updatedSource.dimensions_?.time !== initialIndex
+          ) {
             updatedSource.updateDimensions({ time: initialIndex });
           }
         }
