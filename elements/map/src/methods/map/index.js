@@ -9,6 +9,7 @@ export {
   setProjectionMethod,
   setSyncMethod,
   setTerrainMethod,
+  setAtmosphereMethod,
 } from "./setters";
 export {
   getLonLatCenterMethod,

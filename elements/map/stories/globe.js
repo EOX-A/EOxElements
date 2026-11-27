@@ -12,6 +12,20 @@ const GlobeStory = {
     globeConfig: {
       terrain: true,
       useHighLOD: true,
+      atmosphere: true,
+      // Custom cube faces; `true` uses the default star map.
+      stars: {
+        px: "globe/stars-plain/px.webp",
+        nx: "globe/stars-plain/nx.webp",
+        py: "globe/stars-plain/py.webp",
+        ny: "globe/stars-plain/ny.webp",
+        pz: "globe/stars-plain/pz.webp",
+        nz: "globe/stars-plain/nz.webp",
+      },
+    },
+    controls: {
+      ScaleLine: {},
+      MousePosition: {},
     },
     layers: [
       {

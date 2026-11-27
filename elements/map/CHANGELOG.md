@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.11.0](https://github.com/EOX-A/EOxElements/compare/map-v2.10.0...map-v2.11.0) (2026-11-24)
+
+
+### Features
+
+* Standardize user activity events across EOxElements ([#2648](https://github.com/EOX-A/EOxElements/issues/2648)) ([37643fc](https://github.com/EOX-A/EOxElements/commit/37643fcc119cb82fe564be6b7716acf4d7952eb6))
+
+
+### Bug Fixes
+
+* GeoZarr initial style variable race condition and support minmax range slider format ([#2685](https://github.com/EOX-A/EOxElements/issues/2685)) ([d191c4b](https://github.com/EOX-A/EOxElements/commit/d191c4b8b68e311aa51a9dcb8f13b6516ffa51bb))
+* Geozarr range rounding and legend tick format ([#2686](https://github.com/EOX-A/EOxElements/issues/2686)) ([f2ed9d3](https://github.com/EOX-A/EOxElements/commit/f2ed9d37e0fb93c996d2e5bcab6321af1921ee1e))
+* Render GeoZarr and parameterized WMS layers on 3D globe ([#2680](https://github.com/EOX-A/EOxElements/issues/2680)) ([79e0398](https://github.com/EOX-A/EOxElements/commit/79e0398065f249402c24b13fd8cf2cd91f9a79e9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @eox/elements-utils bumped from ^1.2.0 to ^1.3.0
+
 ## [2.10.0](https://github.com/EOX-A/EOxElements/compare/map-v2.9.0...map-v2.10.0) (2026-11-09)
 
 

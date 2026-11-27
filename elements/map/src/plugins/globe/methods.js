@@ -103,7 +103,7 @@ export const getPoolLayerDefs = (EOxMap) =>
       const nextDef = {
         ...def,
         ...(cleanProperties ? { properties: cleanProperties } : {}),
-        ...(def.style || liveStyleVars
+        ...(liveStyleVars && !Array.isArray(def.style)
           ? {
               style: {
                 ...(def.style || {}),
