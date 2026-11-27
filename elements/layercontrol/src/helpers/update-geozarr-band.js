@@ -116,11 +116,29 @@ export async function updateGeoZarrBand(layer, newBand) {
   const varMeta = geozarrVars?.[newBand];
   const boundsRange = varMeta?.valid_range ?? varMeta?.visualization_range;
 
-  // 3. Update layerConfig (bands, min, max)
+  // 3. Update style variables on layer before setting layerConfig,
+  // so any propertychange listeners reading styleVariables_ / getStartVals see the updated variable/ranges.
+  const isAutofill =
+    layerConfig?.autofill === true || layerConfig?.schema?.autofill === true;
+  const hasMinMaxStyle =
+    isAutofill ||
+    layer.styleVariables_?.min !== undefined ||
+    layer.styleVariables_?.max !== undefined ||
+    layer.style_?.variables?.min !== undefined ||
+    layer.style_?.variables?.max !== undefined ||
+    layer.get?.("style")?.variables?.min !== undefined ||
+    layer.get?.("style")?.variables?.max !== undefined ||
+    layerConfig?.schema?.properties?.min !== undefined ||
+    layerConfig?.schema?.properties?.max !== undefined;
+
+  applyLayerStyleVariables(layer, {
+    variable: newBand,
+    ...(hasMinMaxStyle ? { min: targetMin, max: targetMax } : {}),
+  });
+
+  // 4. Update layerConfig (bands, min, max)
   let updatedLayerConfig = layerConfig;
   if (layerConfig) {
-    const isAutofill =
-      layerConfig?.autofill === true || layerConfig?.schema?.autofill === true;
     let props = undefined;
     if (layerConfig.schema?.properties) {
       props = { ...layerConfig.schema.properties };
@@ -173,24 +191,6 @@ export async function updateGeoZarrBand(layer, newBand) {
     };
 
     layer.set("layerConfig", updatedLayerConfig);
-  }
-
-  // 4. Update style variables on layer
-  const isAutofill =
-    layerConfig?.autofill === true || layerConfig?.schema?.autofill === true;
-  const hasMinMaxStyle =
-    isAutofill ||
-    layer.styleVariables_?.min !== undefined ||
-    layer.styleVariables_?.max !== undefined ||
-    layer.style_?.variables?.min !== undefined ||
-    layer.style_?.variables?.max !== undefined ||
-    layer.get?.("style")?.variables?.min !== undefined ||
-    layer.get?.("style")?.variables?.max !== undefined ||
-    layerConfig?.schema?.properties?.min !== undefined ||
-    layerConfig?.schema?.properties?.max !== undefined;
-
-  if (hasMinMaxStyle) {
-    applyLayerStyleVariables(layer, { min: targetMin, max: targetMax });
   }
 
   // 5. Update dimensions (time and non-temporal extra dimensions)
