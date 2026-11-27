@@ -326,4 +326,196 @@ describe("LayerControl: LayerConfig form", () => {
     expect(minProp.default).to.equal(-759);
     expect(maxProp.default).to.equal(1155);
   });
+
+  it("updates layer style variables before layerConfig so startVals read the newly selected band", () => {
+    let capturedStartVals;
+    const mockLayer = new BaseObject({
+      id: "test-geozarr",
+      _lastVariable: "lead",
+      _geozarrVariables: {
+        lead: { valid_range: [0, 100] },
+        floes: { valid_range: [0, 1] },
+      },
+      layerConfig: {
+        type: "style",
+        autofill: true,
+        schema: {
+          properties: {
+            variable: {
+              type: "string",
+              enum: ["lead", "floes"],
+              default: "lead",
+            },
+          },
+        },
+      },
+    });
+    const layerAny = /** @type {any} */ (mockLayer);
+    layerAny.styleVariables_ = { variable: "lead", min: 0, max: 100 };
+    layerAny.updateStyleVariables = (vars) => {
+      Object.assign(layerAny.styleVariables_, vars);
+    };
+    layerAny.getSource = () => null;
+
+    mockLayer.on("propertychange", (e) => {
+      if (e.key === "layerConfig") {
+        capturedStartVals = layerAny.styleVariables_.variable;
+      }
+    });
+
+    cy.wrap(null)
+      .then(() => updateGeoZarrBand(mockLayer, "floes"))
+      .then(() => {
+        expect(capturedStartVals).to.equal("floes");
+        expect(layerAny.styleVariables_.variable).to.equal("floes");
+      });
+  });
+
+  it("preserves active time dimension and reuses existing layerDatetime when switching GeoZarr band", () => {
+    const getValueSpy = cy.spy().as("getValueSpy");
+    const updateDimensionsSpy = cy.spy().as("updateDimensionsSpy");
+    /** @type {any[]} */
+    const constructedOptions = [];
+
+    class MockGeoZarrSource {
+      constructor(opts) {
+        constructedOptions.push(opts);
+        this.dimensions_ = opts.dimensions
+          ? { ...opts.dimensions }
+          : { time: 0 };
+      }
+      getProjection() {
+        return "EPSG:6932";
+      }
+      async ready() {}
+      async getDimensions() {
+        return {
+          time: {
+            size: 2,
+            attributes: { units: "days since 2011-02-01 00:00:00" },
+          },
+        };
+      }
+      getValue = getValueSpy;
+      updateDimensions = updateDimensionsSpy;
+    }
+
+    const initialSource = new MockGeoZarrSource({
+      url: "https://example.com/cube.zarr",
+      bands: ["lead"],
+      dimensions: { time: 1 },
+    });
+
+    const mockLayer = new BaseObject({
+      id: "sea-ice-geozarr",
+      _geozarrSourceUrl: "https://example.com/cube.zarr",
+      _lastVariable: "lead",
+      _geozarrVariables: {
+        lead: { valid_range: [0, 100], dimensions: ["time", "y", "x"] },
+        floes: { valid_range: [0, 1], dimensions: ["time", "y", "x"] },
+      },
+      layerDatetime: {
+        currentStep: "2011-03-01T00:00:00.000Z",
+        controlValues: ["2011-02-01T00:00:00.000Z", "2011-03-01T00:00:00.000Z"],
+        sliceMap: {
+          "2011-02-01T00:00:00.000Z": 0,
+          "2011-03-01T00:00:00.000Z": 1,
+        },
+      },
+      layerConfig: {
+        type: "style",
+        autofill: true,
+        schema: {
+          properties: {
+            variable: {
+              type: "string",
+              enum: ["lead", "floes"],
+              default: "lead",
+            },
+          },
+        },
+      },
+    });
+    const layerAny = /** @type {any} */ (mockLayer);
+    layerAny.styleVariables_ = { variable: "lead", min: 0, max: 100 };
+    layerAny.updateStyleVariables = (vars) => {
+      Object.assign(layerAny.styleVariables_, vars);
+    };
+    layerAny.getSource = () => initialSource;
+    layerAny.setSource = (s) => {
+      layerAny._source = s;
+    };
+
+    cy.wrap(null)
+      .then(() => updateGeoZarrBand(mockLayer, "floes"))
+      .then(() => {
+        expect(constructedOptions).to.have.length(2);
+        expect(constructedOptions[1].dimensions).to.deep.equal({ time: 1 });
+        expect(getValueSpy).to.not.have.been.called;
+        expect(updateDimensionsSpy).to.not.have.been.called;
+      });
+  });
+
+  it("skips redundant updateStyleVariables on non-user form ready event when style variables already match", () => {
+    const updateStyleSpy = cy.spy().as("updateStyleSpy");
+    const mockLayer = new BaseObject({
+      id: "ready-geozarr",
+      _lastVariable: "floes",
+      layerConfig: {
+        type: "style",
+        autofill: true,
+        band: "floes",
+        bands: ["floes"],
+        min: 0,
+        max: 1,
+        schema: {
+          type: "object",
+          properties: {
+            variable: {
+              type: "string",
+              enum: ["lead", "floes"],
+              default: "floes",
+            },
+            minmax: {
+              type: "object",
+              format: "minmax",
+              properties: {
+                min: {
+                  type: "number",
+                  format: "range",
+                  minimum: 0,
+                  maximum: 1,
+                  default: 0,
+                },
+                max: {
+                  type: "number",
+                  format: "range",
+                  minimum: 0,
+                  maximum: 1,
+                  default: 1,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    const layerAny = /** @type {any} */ (mockLayer);
+    layerAny.styleVariables_ = { variable: "floes", min: 0, max: 1 };
+    layerAny.style_ = { variables: { variable: "floes", min: 0, max: 1 } };
+    layerAny.updateStyleVariables = updateStyleSpy;
+
+    const layerConfigChangeSpy = cy.spy().as("layerConfigChangeSpy");
+
+    cy.mount(
+      html`<eox-layercontrol-layerconfig
+        .layer=${layerAny}
+        .layerConfig=${mockLayer.get("layerConfig")}
+        @layerConfig:change=${layerConfigChangeSpy}
+      ></eox-layercontrol-layerconfig>`,
+    );
+
+    cy.get("@layerConfigChangeSpy").should("have.been.called");
+    cy.get("@updateStyleSpy").should("not.have.been.called");
+  });
 });
