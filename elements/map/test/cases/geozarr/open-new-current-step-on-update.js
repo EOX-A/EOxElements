@@ -1,5 +1,5 @@
 import { html } from "lit";
-import GeoZarr from "ol/source/GeoZarr";
+import GeoZarr from "@eox/map/src/custom/sources/GeoZarr.js";
 import {
   STORE_TIME,
   geoZarrLayerDefinition,

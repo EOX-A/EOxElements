@@ -12,8 +12,12 @@ export {
   getStepDecimals,
   roundRangeBounds,
   computeLegendTickFormat,
+  parseRangeAttribute,
+  resolveRangeDefaults,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
   syncMinMaxFormValues,
+  buildDimensionProperty,
+  resolveDimensionIndex,
 } from "./geoZarrRangeHelpers";

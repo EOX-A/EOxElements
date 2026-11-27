@@ -1,7 +1,11 @@
 import { LitElement, html, css } from "lit";
 import { getLegendConfig, getStartVals, getGeoZarrBandRange } from "../helpers";
 import { syncMinMaxFormValues } from "@eox/elements-utils";
-import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
+import {
+  dataChangeMethod,
+  applyUpdatedStyles,
+  flattenObject,
+} from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
 import _throttle from "lodash.throttle";
 import "./layer-legend";
@@ -123,6 +127,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    this.throttleDataChange?.cancel?.();
     if (this.layer?.un) {
       this.layer.un("propertychange", this.#layerPropertyChangeListener);
     }
@@ -186,6 +191,38 @@ export class EOxLayerControlLayerConfig extends LitElement {
     }
   };
 
+  /**
+   * Synchronize cached form state before rendering when layer or layerConfig changes.
+   *
+   * @param {import("lit").PropertyValues} changedProperties
+   */
+  willUpdate(changedProperties) {
+    if (
+      changedProperties.has("layer") &&
+      changedProperties.get("layer") !== undefined
+    ) {
+      this.#data = {};
+      this.#startVals = null;
+    }
+    if (changedProperties.has("layerConfig") && this.layer) {
+      const freshStartVals = getStartVals(this.layer, this.layerConfig) || {};
+      const schemaProps = this.layerConfig?.schema?.properties;
+      const isAutofill =
+        this.layerConfig?.autofill === true ||
+        this.layerConfig?.schema?.autofill === true;
+      const merged = { ...this.#data, ...freshStartVals };
+      if (schemaProps && !isAutofill) {
+        const allowedKeys = new Set(Object.keys(schemaProps));
+        for (const k of Object.keys(merged)) {
+          if (!allowedKeys.has(k)) {
+            delete merged[k];
+          }
+        }
+      }
+      this.#data = merged;
+    }
+  }
+
   /** Decide what type of throttling to do based on layerConfig type
    *
    * @param {import("lit").PropertyValues} changedProperties - The changed properties.
@@ -201,6 +238,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
       }
     }
     if (changedProperties.has("layerConfig")) {
+      this.throttleDataChange?.cancel?.();
       const throttleTime =
         this.layerConfig?.type === "style" || this.layerConfig?.style
           ? 100
@@ -246,7 +284,25 @@ export class EOxLayerControlLayerConfig extends LitElement {
       const supportStyleConfig =
         "setStyle" in this.layer || "updateStyleVariables" in this.layer;
       if (supportStyleConfig) {
-        await applyUpdatedStyles(this.#data, this.layer, this.layerConfig);
+        const currentVars =
+          /** @type {any} */ (this.layer).styleVariables_ ||
+          /** @type {any} */ (this.layer)["style_"]?.variables ||
+          this.layer.get?.("style")?.variables;
+        const flatData = flattenObject(this.#data);
+        const geozarrDims = this.layer?.get?.("_geozarrDimensions");
+        const hasGeoZarrDims =
+          geozarrDims && Object.keys(geozarrDims).length > 0;
+        const isRedundantInit =
+          !isUser &&
+          !isVarChange &&
+          !hasGeoZarrDims &&
+          "updateStyleVariables" in this.layer &&
+          Boolean(currentVars) &&
+          Object.keys(flatData).length > 0 &&
+          Object.entries(flatData).every(([k, v]) => currentVars[k] === v);
+        if (!isRedundantInit) {
+          await applyUpdatedStyles(this.#data, this.layer, this.layerConfig);
+        }
       } else {
         console.error(
           `Layer type ${

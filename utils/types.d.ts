@@ -61,6 +61,19 @@ export declare function computeLegendTickFormat(
   domain: [number, number],
 ): string;
 
+export declare function parseRangeAttribute(
+  raw: unknown,
+): [number, number] | null;
+
+export declare function resolveRangeDefaults(
+  validRange: number[] | null | undefined,
+  visualizationRange?: number[] | null,
+): {
+  min: number;
+  max: number;
+  boundsRange: [number, number] | null;
+};
+
 export declare function buildMinMaxProperties(
   min?: number,
   max?: number,
@@ -92,3 +105,17 @@ export declare function syncMinMaxFormValues(
   max: number,
   isAutofill?: boolean,
 ): void;
+
+export declare function buildDimensionProperty(
+  dimName: string,
+  dimMeta: {
+    size: number;
+    attributes?: Record<string, any>;
+    coordinates?: any[];
+  },
+): Record<string, any>;
+
+export declare function resolveDimensionIndex(
+  dimMeta: { size?: number; coordinates?: any[] } | undefined,
+  value: number | string,
+): number;

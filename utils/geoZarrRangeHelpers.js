@@ -72,6 +72,80 @@ export function computeLegendTickFormat(domain) {
 }
 
 /**
+ * Parses a raw Zarr range attribute (array or comma/JSON string) into `[min, max]`, or `null`.
+ *
+ * @param {unknown} raw
+ * @returns {[number, number] | null}
+ */
+export function parseRangeAttribute(raw) {
+  let range = raw;
+  if (typeof range === "string") {
+    try {
+      range = JSON.parse(range);
+    } catch {
+      const parts = range.split(",").map(Number);
+      if (
+        parts.length === 2 &&
+        !Number.isNaN(parts[0]) &&
+        !Number.isNaN(parts[1])
+      ) {
+        range = parts;
+      }
+    }
+  }
+  if (
+    Array.isArray(range) &&
+    range.length === 2 &&
+    Number.isFinite(Number(range[0])) &&
+    Number.isFinite(Number(range[1]))
+  ) {
+    return [Number(range[0]), Number(range[1])];
+  }
+  return null;
+}
+
+/**
+ * Resolves slider bounds (`boundsRange`) and initial default `[min, max]` from
+ * `valid_range` and optional `visualization_range`.
+ * `valid_range` sets the eligible slider `minimum`/`maximum`, while `visualization_range`
+ * sets the initial `default` values (rounded to the bounds step and clamped inside bounds).
+ *
+ * @param {number[] | null | undefined} validRange
+ * @param {number[] | null | undefined} [visualizationRange]
+ * @returns {{ min: number, max: number, boundsRange: [number, number] | null }}
+ */
+export function resolveRangeDefaults(validRange, visualizationRange) {
+  const valid = parseRangeAttribute(validRange);
+  const vis = parseRangeAttribute(visualizationRange);
+  const boundsSource = valid ?? vis;
+
+  if (!boundsSource) {
+    return { min: 0, max: 1, boundsRange: null };
+  }
+
+  const boundsRange = roundRangeBounds(boundsSource);
+  if (!vis) {
+    return { min: boundsRange[0], max: boundsRange[1], boundsRange };
+  }
+
+  const step = computeStep(boundsRange[0], boundsRange[1]);
+  const decimals = getStepDecimals(step);
+  const clampAndRound = (v) =>
+    Math.max(
+      boundsRange[0],
+      Math.min(boundsRange[1], Number(v.toFixed(decimals))),
+    );
+  const visLo = clampAndRound(Math.min(vis[0], vis[1]));
+  const visHi = clampAndRound(Math.max(vis[0], vis[1]));
+
+  return {
+    min: visLo,
+    max: visHi,
+    boundsRange,
+  };
+}
+
+/**
  * Builds schema property definitions for min and max controls based on valid_range.
  * If validRange is available, uses range sliders bounded by rounded valid_range.
  * If no validRange is available, uses number inputs (`format: "number"`).
@@ -307,4 +381,85 @@ export function syncMinMaxFormValues(
   ) {
     target.minmax = { min, max };
   }
+}
+
+/**
+ * Converts raw Zarr coordinate values (including BigInt) into finite numbers.
+ *
+ * @param {any[] | undefined} rawCoords
+ * @returns {number[]}
+ */
+function toNumericCoords(rawCoords) {
+  if (!Array.isArray(rawCoords)) return [];
+  return rawCoords.map((c) => Number(c)).filter(Number.isFinite);
+}
+
+/**
+ * Builds a JSONForm schema property for a non-temporal GeoZarr dimension (e.g. `depth`).
+ * Uses an `enum` dropdown of exact physical coordinate values when available,
+ * and falls back to `0 .. size - 1` indices when coordinate values are unavailable.
+ *
+ * @param {string} dimName
+ * @param {{ size: number, attributes?: Record<string, any>, coordinates?: any[] }} dimMeta
+ * @returns {Record<string, any>}
+ */
+export function buildDimensionProperty(dimName, dimMeta) {
+  const title =
+    dimMeta?.attributes?.long_name ||
+    dimName.charAt(0).toUpperCase() + dimName.slice(1);
+  const units = dimMeta?.attributes?.units;
+  const displayTitle = units ? `${title} (${units})` : title;
+
+  const coords = toNumericCoords(dimMeta?.coordinates);
+  if (coords.length === dimMeta?.size && coords.length > 0) {
+    return {
+      type: "number",
+      title: displayTitle,
+      default: coords[0],
+      enum: coords,
+    };
+  }
+
+  return {
+    type: "integer",
+    title: displayTitle,
+    default: 0,
+    minimum: 0,
+    maximum: Math.max(0, (dimMeta?.size ?? 1) - 1),
+    step: 1,
+    format: "range",
+  };
+}
+
+/**
+ * Resolves a physical coordinate value (or index) from the form into a 0-based
+ * integer slice index for `GeoZarr.prototype.updateDimensions()`.
+ *
+ * @param {{ size?: number, coordinates?: any[] } | undefined} dimMeta
+ * @param {number | string} value
+ * @returns {number}
+ */
+export function resolveDimensionIndex(dimMeta, value) {
+  const numVal = Number(value);
+  if (!Number.isFinite(numVal)) return 0;
+
+  const coords = toNumericCoords(dimMeta?.coordinates);
+  if (coords.length > 0) {
+    const exactIdx = coords.indexOf(numVal);
+    if (exactIdx !== -1) return exactIdx;
+
+    let bestIdx = 0;
+    let bestDist = Math.abs(coords[0] - numVal);
+    for (let i = 1; i < coords.length; i++) {
+      const dist = Math.abs(coords[i] - numVal);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIdx = i;
+      }
+    }
+    return bestIdx;
+  }
+
+  const maxIdx = Math.max(0, (dimMeta?.size ?? 1) - 1);
+  return Math.max(0, Math.min(maxIdx, Math.round(numVal)));
 }

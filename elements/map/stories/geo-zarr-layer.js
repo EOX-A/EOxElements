@@ -1,5 +1,8 @@
 /**
- * Renders `GeoZarr` layer as `WebGLTile`
+ * Renders `GeoZarr` layer as `WebGLTile` through the advanced-sources plugin.
+ * This experimental build uses the vendored source from OpenLayers PR #17740,
+ * including south-up `spatial:transform` support and transform-derived extents.
+ * The same layer configuration works for north-up and south-up stores.
  *
  * @returns {object} The story configuration with arguments for the component.
  */

@@ -1,9 +1,10 @@
 import {
   computeStep,
-  roundRangeBounds,
+  resolveRangeDefaults,
   buildMinMaxProperties,
   applyMinMaxToSchemaProperties,
   applyLayerStyleVariables,
+  buildDimensionProperty,
 } from "@eox/elements-utils";
 
 export { computeStep, buildMinMaxProperties };
@@ -23,24 +24,14 @@ export function getGeoZarrBandRange(layer, band, _layerConfig) {
     ? layer.get("_geozarrVariables")
     : layer?._geozarrVariables;
   const varMeta = geozarrVars?.[band];
-  const validRange = varMeta?.valid_range;
-
-  let targetMin = undefined;
-  let targetMax = undefined;
-  if (
-    Array.isArray(validRange) &&
-    validRange.length === 2 &&
-    typeof validRange[0] === "number" &&
-    typeof validRange[1] === "number" &&
-    !Number.isNaN(validRange[0]) &&
-    !Number.isNaN(validRange[1])
-  ) {
-    [targetMin, targetMax] = roundRangeBounds([validRange[0], validRange[1]]);
-  }
+  const { min, max } = resolveRangeDefaults(
+    varMeta?.valid_range,
+    varMeta?.visualization_range,
+  );
 
   return {
-    targetMin: targetMin !== undefined ? targetMin : 0,
-    targetMax: targetMax !== undefined ? targetMax : 1,
+    targetMin: min,
+    targetMax: max,
   };
 }
 
@@ -76,11 +67,32 @@ export async function updateGeoZarrBand(layer, newBand) {
         source.getProjection?.() ||
         layer.get("_mapProjection") ||
         layer.get("_jsonDefinition")?.source?.projection;
+      const rawDimensions =
+        source.dimensions_ && Object.keys(source.dimensions_).length > 0
+          ? source.dimensions_
+          : layer.get("_jsonDefinition")?.source?.dimensions;
+      const newBandDims = layer.get("_geozarrVariables")?.[newBand]?.dimensions;
+      let existingDimensions;
+      if (rawDimensions) {
+        if (Array.isArray(newBandDims)) {
+          existingDimensions = Object.fromEntries(
+            Object.entries(rawDimensions).filter(([k]) =>
+              newBandDims.includes(k),
+            ),
+          );
+          if (Object.keys(existingDimensions).length === 0) {
+            existingDimensions = undefined;
+          }
+        } else {
+          existingDimensions = { ...rawDimensions };
+        }
+      }
       const newSource = new GeoZarrClass({
         url: sourceUrl,
         bands: [newBand],
         crossOrigin: "anonymous",
         ...(proj ? { projection: proj } : {}),
+        ...(existingDimensions ? { dimensions: existingDimensions } : {}),
       });
       layer.setSource(newSource);
       updatedSource = newSource;
@@ -122,13 +134,32 @@ export async function updateGeoZarrBand(layer, newBand) {
   const geozarrVars = layer?.get
     ? layer.get("_geozarrVariables")
     : layer?._geozarrVariables;
-  const validRange = geozarrVars?.[newBand]?.valid_range;
+  const varMeta = geozarrVars?.[newBand];
+  const boundsRange = varMeta?.valid_range ?? varMeta?.visualization_range;
 
-  // 3. Update layerConfig (bands, min, max)
+  // 3. Update style variables on layer before setting layerConfig,
+  // so any propertychange listeners reading styleVariables_ / getStartVals see the updated variable/ranges.
+  const isAutofill =
+    layerConfig?.autofill === true || layerConfig?.schema?.autofill === true;
+  const hasMinMaxStyle =
+    isAutofill ||
+    layer.styleVariables_?.min !== undefined ||
+    layer.styleVariables_?.max !== undefined ||
+    layer.style_?.variables?.min !== undefined ||
+    layer.style_?.variables?.max !== undefined ||
+    layer.get?.("style")?.variables?.min !== undefined ||
+    layer.get?.("style")?.variables?.max !== undefined ||
+    layerConfig?.schema?.properties?.min !== undefined ||
+    layerConfig?.schema?.properties?.max !== undefined;
+
+  applyLayerStyleVariables(layer, {
+    variable: newBand,
+    ...(hasMinMaxStyle ? { min: targetMin, max: targetMax } : {}),
+  });
+
+  // 4. Update layerConfig (bands, min, max)
   let updatedLayerConfig = layerConfig;
   if (layerConfig) {
-    const isAutofill =
-      layerConfig?.autofill === true || layerConfig?.schema?.autofill === true;
     let props = undefined;
     if (layerConfig.schema?.properties) {
       props = { ...layerConfig.schema.properties };
@@ -155,7 +186,7 @@ export async function updateGeoZarrBand(layer, newBand) {
           props,
           targetMin,
           targetMax,
-          validRange,
+          boundsRange,
           isAutofill,
           true,
         );
@@ -183,24 +214,6 @@ export async function updateGeoZarrBand(layer, newBand) {
     layer.set("layerConfig", updatedLayerConfig);
   }
 
-  // 4. Update style variables on layer
-  const isAutofill =
-    layerConfig?.autofill === true || layerConfig?.schema?.autofill === true;
-  const hasMinMaxStyle =
-    isAutofill ||
-    layer.styleVariables_?.min !== undefined ||
-    layer.styleVariables_?.max !== undefined ||
-    layer.style_?.variables?.min !== undefined ||
-    layer.style_?.variables?.max !== undefined ||
-    layer.get?.("style")?.variables?.min !== undefined ||
-    layer.get?.("style")?.variables?.max !== undefined ||
-    layerConfig?.schema?.properties?.min !== undefined ||
-    layerConfig?.schema?.properties?.max !== undefined;
-
-  if (hasMinMaxStyle) {
-    applyLayerStyleVariables(layer, { min: targetMin, max: targetMax });
-  }
-
   // 5. Update dimensions (time and non-temporal extra dimensions)
   if (updatedSource && typeof updatedSource.getDimensions === "function") {
     try {
@@ -208,11 +221,39 @@ export async function updateGeoZarrBand(layer, newBand) {
       if (dimensions) {
         /** @type {Record<string, any>} */
         const nonTemporalDims = {};
+        const prevDims = layer.get("_geozarrDimensions") || {};
 
         // Discover and inject non-temporal dimensions (depth, height, level, etc.)
         for (const [dimName, dimMeta] of Object.entries(dimensions)) {
           if (dimName === "time" || !dimMeta || dimMeta.size <= 0) continue;
-          nonTemporalDims[dimName] = dimMeta;
+
+          let coordinates =
+            Array.isArray(prevDims[dimName]?.coordinates) &&
+            prevDims[dimName].coordinates.length === dimMeta.size
+              ? prevDims[dimName].coordinates
+              : [];
+
+          if (
+            coordinates.length === 0 &&
+            typeof updatedSource.getValue === "function"
+          ) {
+            coordinates = await Promise.all(
+              [...Array(dimMeta.size).keys()].map(async (idx) => {
+                try {
+                  const val = await updatedSource.getValue(dimName, idx);
+                  return typeof val === "bigint" ? Number(val) : val;
+                } catch {
+                  return idx;
+                }
+              }),
+            );
+          }
+
+          const enrichedDimMeta = {
+            ...dimMeta,
+            coordinates,
+          };
+          nonTemporalDims[dimName] = enrichedDimMeta;
 
           const currentCfg = layer.get("layerConfig") || updatedLayerConfig;
           const isAutofill =
@@ -222,23 +263,11 @@ export async function updateGeoZarrBand(layer, newBand) {
             currentCfg?.schema?.properties &&
             (currentCfg.schema.properties[dimName] !== undefined || isAutofill)
           ) {
-            const title =
-              dimMeta.attributes?.long_name ||
-              dimName.charAt(0).toUpperCase() + dimName.slice(1);
-            const units = dimMeta.attributes?.units;
-            const displayTitle = units ? `${title} (${units})` : title;
-
             const currentProps = { ...currentCfg.schema.properties };
-            currentProps[dimName] = {
-              type: "integer",
-              title: displayTitle,
-              default: 0,
-              minimum: 0,
-              maximum: dimMeta.size - 1,
-              step: 1,
-              format: "range",
-              ...(currentProps[dimName] || {}),
-            };
+            currentProps[dimName] = buildDimensionProperty(
+              dimName,
+              enrichedDimMeta,
+            );
             updatedLayerConfig = {
               ...currentCfg,
               schema: {
@@ -249,81 +278,133 @@ export async function updateGeoZarrBand(layer, newBand) {
             layer.set("layerConfig", updatedLayerConfig);
           }
 
-          if (typeof updatedSource.updateDimensions === "function") {
+          if (
+            typeof updatedSource.updateDimensions === "function" &&
+            updatedSource.dimensions_?.[dimName] !== 0
+          ) {
             updatedSource.updateDimensions({ [dimName]: 0 });
           }
         }
+
+        // Remove stale dimension controls when switching from a 3D+ variable to a 2D variable
+        const currentCfg = layer.get("layerConfig") || updatedLayerConfig;
+        const isAutofillCfg =
+          currentCfg?.autofill === true ||
+          currentCfg?.schema?.autofill === true;
+        if (isAutofillCfg && currentCfg?.schema?.properties) {
+          const staleDims = Object.keys(prevDims).filter(
+            (d) => !(d in nonTemporalDims) && d in currentCfg.schema.properties,
+          );
+          if (staleDims.length > 0) {
+            const currentProps = { ...currentCfg.schema.properties };
+            for (const staleDim of staleDims) {
+              delete currentProps[staleDim];
+            }
+            updatedLayerConfig = {
+              ...currentCfg,
+              schema: {
+                ...currentCfg.schema,
+                properties: currentProps,
+              },
+            };
+            layer.set("layerConfig", updatedLayerConfig);
+          }
+        }
+
         layer.set("_geozarrDimensions", nonTemporalDims);
 
         // Process time dimension
         if (dimensions?.time && dimensions.time.size > 0) {
           const timeDim = dimensions.time;
-          const { units } = timeDim.attributes || {};
-          let epoch = 0;
-          let multiplier = 1000;
-          if (units && typeof units === "string" && units.includes(" since ")) {
-            const parts = units.split(" since ");
-            let dateStr = parts[1].trim();
-            if (!dateStr.includes("T") && !dateStr.includes("Z")) {
-              dateStr = dateStr.replace(" ", "T") + "Z";
+          const existingDatetime = layer.get("layerDatetime") || {};
+          const hasMatchingTimeSlices =
+            Array.isArray(existingDatetime.controlValues) &&
+            existingDatetime.controlValues.length === timeDim.size &&
+            existingDatetime.sliceMap &&
+            Object.keys(existingDatetime.sliceMap).length === timeDim.size;
+
+          let sliceMap = existingDatetime.sliceMap;
+          let controlValues = existingDatetime.controlValues;
+
+          if (!hasMatchingTimeSlices) {
+            const { units } = timeDim.attributes || {};
+            let epoch = 0;
+            let multiplier = 1000;
+            if (
+              units &&
+              typeof units === "string" &&
+              units.includes(" since ")
+            ) {
+              const parts = units.split(" since ");
+              let dateStr = parts[1].trim();
+              if (!dateStr.includes("T") && !dateStr.includes("Z")) {
+                dateStr = dateStr.replace(" ", "T") + "Z";
+              }
+              epoch = Date.parse(dateStr) || 0;
+              const unitType = parts[0].toLowerCase();
+              if (unitType.includes("day")) multiplier = 86400 * 1000;
+              else if (unitType.includes("nanosecond")) multiplier = 1e-6;
+              else if (unitType.includes("microsecond")) multiplier = 1e-3;
+              else if (unitType.includes("millisecond")) multiplier = 1;
+              else if (unitType.includes("second")) multiplier = 1000;
             }
-            epoch = Date.parse(dateStr) || 0;
-            const unitType = parts[0].toLowerCase();
-            if (unitType.includes("day")) multiplier = 86400 * 1000;
-            else if (unitType.includes("nanosecond")) multiplier = 1e-6;
-            else if (unitType.includes("microsecond")) multiplier = 1e-3;
-            else if (unitType.includes("millisecond")) multiplier = 1;
-            else if (unitType.includes("second")) multiplier = 1000;
+
+            const toDate = (value) => {
+              if (typeof value === "string") return new Date(value);
+              return new Date(epoch + Number(value) * multiplier);
+            };
+
+            const slices = await Promise.all(
+              [...Array(timeDim.size).keys()].map(async (index) => {
+                const rawVal =
+                  typeof updatedSource.getValue === "function"
+                    ? await updatedSource.getValue("time", index)
+                    : index;
+                return {
+                  index,
+                  date: toDate(rawVal),
+                };
+              }),
+            );
+            slices.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+            sliceMap = {};
+            controlValues = slices.map((s) => {
+              const iso = s.date.toISOString();
+              sliceMap[iso] = s.index;
+              return iso;
+            });
           }
 
-          const toDate = (value) => {
-            if (typeof value === "string") return new Date(value);
-            return new Date(epoch + Number(value) * multiplier);
-          };
-
-          const slices = await Promise.all(
-            [...Array(timeDim.size).keys()].map(async (index) => {
-              const rawVal =
-                typeof updatedSource.getValue === "function"
-                  ? await updatedSource.getValue("time", index)
-                  : index;
-              return {
-                index,
-                date: toDate(rawVal),
-              };
-            }),
-          );
-          slices.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-          const sliceMap = {};
-          const controlValues = slices.map((s) => {
-            const iso = s.date.toISOString();
-            sliceMap[iso] = s.index;
-            return iso;
-          });
-
-          const currentDatetime = layer.get("layerDatetime") || {};
           const currentStep =
-            currentDatetime.currentStep &&
-            controlValues.includes(currentDatetime.currentStep)
-              ? currentDatetime.currentStep
+            existingDatetime.currentStep &&
+            controlValues.includes(existingDatetime.currentStep)
+              ? existingDatetime.currentStep
               : controlValues[0];
 
-          layer.set("layerDatetime", {
-            showUTC: true,
-            slider: true,
-            navigation: true,
-            ...currentDatetime,
-            controlValues,
-            sliceMap,
-            currentStep,
-          });
+          if (
+            !hasMatchingTimeSlices ||
+            existingDatetime.currentStep !== currentStep
+          ) {
+            layer.set("layerDatetime", {
+              showUTC: true,
+              slider: true,
+              navigation: true,
+              ...existingDatetime,
+              controlValues,
+              sliceMap,
+              currentStep,
+            });
 
-          const timeControlValues = controlValues.map((date) => ({ date }));
-          layer.set("timeControlValues", timeControlValues);
+            const timeControlValues = controlValues.map((date) => ({ date }));
+            layer.set("timeControlValues", timeControlValues);
+          }
 
           const initialIndex = sliceMap[currentStep] ?? 0;
-          if (typeof updatedSource.updateDimensions === "function") {
+          if (
+            typeof updatedSource.updateDimensions === "function" &&
+            updatedSource.dimensions_?.time !== initialIndex
+          ) {
             updatedSource.updateDimensions({ time: initialIndex });
           }
         }
